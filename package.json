@@ -1,0 +1,9 @@
+{
+  "name": "fortune-telling",
+  "main": "dist/",
+  "scripts": {
+    "build": "tsc",
+    "test": "jest"
+  },
+  "license": "UNLICENSED"
+}

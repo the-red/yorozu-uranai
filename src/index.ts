@@ -1,3 +1,5 @@
-export const hello = () => console.log('hello')
+import { Count } from './Count'
 
-hello()
+const count = new Count('123')
+console.log(count.value)
+console.log(count.twice())

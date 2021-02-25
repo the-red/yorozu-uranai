@@ -9,7 +9,7 @@ describe('Count', () => {
     expect(count.twice()).toEqual(246)
   })
   it('文字列をコンストラクタに渡しても同じ', () => {
-    const countFromString = new Count(123)
+    const countFromString = new Count('123')
     expect(count.value).toEqual(countFromString.value)
   })
 })

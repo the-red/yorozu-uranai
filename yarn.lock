@@ -707,6 +707,11 @@ assign-symbols@^1.0.0:
   resolved "https://registry.npmjs.org/assign-symbols/-/assign-symbols-1.0.0.tgz#59667f41fadd4f20ccbc2bb96b8d4f7f78ec0367"
   integrity sha1-WWZ/QfrdTyDMvCu5a41Pf3jsA2c=
 
+astronomy-engine@^2.0.1:
+  version "2.0.1"
+  resolved "https://registry.yarnpkg.com/astronomy-engine/-/astronomy-engine-2.0.1.tgz#0cf7a2d690ef79f16c8830d17be046931eaf1be5"
+  integrity sha512-j4jKDdq5rjt3AmrZeUX8c7kFxftlzBb8CxskvEUC2K6Nf1aJJvoBQUiqqf/esqglN6kvrlWocITu0XvAoxEOIg==
+
 asynckit@^0.4.0:
   version "0.4.0"
   resolved "https://registry.npmjs.org/asynckit/-/asynckit-0.4.0.tgz#c79ed97f7f34cb8f2ba1bc9790bcc366474b4b79"

@@ -23,26 +23,23 @@ function ParseDate(text) {
 }
 
 function Demo() {
-  if (process.argv.length === 4 || process.argv.length === 5) {
+  if (process.argv.length === 5) {
     const latitude = ParseNumber(process.argv[2], 'latitude')
     const longitude = ParseNumber(process.argv[3], 'longitude')
     const observer = new Astronomy.Observer(latitude, longitude, 0)
     const date = process.argv.length === 5 ? ParseDate(process.argv[4]) : new Date()
     console.log(`UTC date = ${date.toISOString()}`)
     console.log('')
-    console.log(`${'BODY'.padEnd(8)} ${'RA'.padStart(8)} ${'DEC'.padStart(8)} ${'AZ'.padStart(8)} ${'ALT'.padStart(8)}`)
+    console.log(`${'BODY'.padEnd(8)} ${'ELON'.padStart(8)} ${'DEC'.padStart(8)}`)
     for (let body of ['Sun', 'Moon', 'Mercury', 'Venus', 'Mars', 'Jupiter', 'Saturn', 'Uranus', 'Neptune', 'Pluto']) {
-      let equ_2000 = Astronomy.Equator(body, date, observer, false, true)
-      let equ_ofdate = Astronomy.Equator(body, date, observer, true, true)
-      let hor = Astronomy.Horizon(date, observer, equ_ofdate.ra, equ_ofdate.dec, 'normal')
-      console.log(
-        `${body.padEnd(8)} ${Format(equ_2000.ra)} ${Format(equ_2000.dec)} ` +
-          `${Format(hor.azimuth)} ${Format(hor.altitude)}`
-      )
+      const vector = Astronomy.GeoVector(body, date, true)
+      const ecliptic = Astronomy.Ecliptic(vector.x, vector.y, vector.z)
+      const equator = Astronomy.Equator(body, date, observer, false, true)
+      console.log(`${body.padEnd(8)} ${Format(ecliptic.elon)} ${Format(equator.dec)}`)
     }
     process.exit(0)
   }
-  console.log('USAGE: node positions.js latitude longitude [date]')
+  console.log('USAGE: node positions.js latitude longitude date')
   process.exit(1)
 }
 

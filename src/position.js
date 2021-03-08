@@ -1,4 +1,4 @@
-const Astronomy = require('astronomy-engine')
+const { Observer, GeoVector, Ecliptic, Equator } = require('astronomy-engine')
 
 function Format(x) {
   return x.toFixed(2).padStart(8)
@@ -26,15 +26,15 @@ function Demo() {
   if (process.argv.length === 5) {
     const latitude = ParseNumber(process.argv[2], 'latitude')
     const longitude = ParseNumber(process.argv[3], 'longitude')
-    const observer = new Astronomy.Observer(latitude, longitude, 0)
+    const observer = new Observer(latitude, longitude, 0)
     const date = process.argv.length === 5 ? ParseDate(process.argv[4]) : new Date()
     console.log(`UTC date = ${date.toISOString()}`)
     console.log('')
     console.log(`${'BODY'.padEnd(8)} ${'ELON'.padStart(8)} ${'DEC'.padStart(8)}`)
     for (let body of ['Sun', 'Moon', 'Mercury', 'Venus', 'Mars', 'Jupiter', 'Saturn', 'Uranus', 'Neptune', 'Pluto']) {
-      const vector = Astronomy.GeoVector(body, date, true)
-      const ecliptic = Astronomy.Ecliptic(vector.x, vector.y, vector.z)
-      const equator = Astronomy.Equator(body, date, observer, false, true)
+      const vector = GeoVector(body, date, true)
+      const ecliptic = Ecliptic(vector.x, vector.y, vector.z)
+      const equator = Equator(body, date, observer, false, true)
       console.log(`${body.padEnd(8)} ${Format(ecliptic.elon)} ${Format(equator.dec)}`)
     }
     process.exit(0)

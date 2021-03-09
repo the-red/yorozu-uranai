@@ -30,12 +30,18 @@ function Demo() {
     const date = process.argv.length === 5 ? ParseDate(process.argv[4]) : new Date()
     console.log(`UTC date = ${date.toISOString()}`)
     console.log('')
-    console.log(`${'BODY'.padEnd(8)} ${'ELON'.padStart(8)} ${'DEC'.padStart(8)}`)
+    console.log(`${'BODY'.padEnd(8)} ${'SIGN'} ${'DEGREES'.padStart(8)} ${'ELON'.padStart(8)} ${'DEC'.padStart(8)}`)
     for (let body of ['Sun', 'Moon', 'Mercury', 'Venus', 'Mars', 'Jupiter', 'Saturn', 'Uranus', 'Neptune', 'Pluto']) {
       const vector = GeoVector(body, date, true)
       const ecliptic = Ecliptic(vector.x, vector.y, vector.z)
       const equator = Equator(body, date, observer, false, true)
-      console.log(`${body.padEnd(8)} ${Format(ecliptic.elon)} ${Format(equator.dec)}`)
+      const sign = Math.trunc(ecliptic.elon / 30)
+      const degrees = ecliptic.elon - sign * 30
+      console.log(
+        `${body.padEnd(8)} ${String(sign).padStart(4)} ${Format(degrees)} ${Format(ecliptic.elon)} ${Format(
+          equator.dec
+        )}`
+      )
     }
     process.exit(0)
   }

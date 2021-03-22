@@ -16,4 +16,13 @@ describe('Sign', () => {
   it('火', () => {
     expect(sign.fire()).toEqual(['sun'])
   })
+  it('土', () => {
+    expect(sign.earth()).toEqual(['sun'])
+  })
+  it('男性', () => {
+    expect(sign.masculine()).toEqual(['sun'])
+  })
+  it('女性', () => {
+    expect(sign.feminine()).toEqual(['sun'])
+  })
 })

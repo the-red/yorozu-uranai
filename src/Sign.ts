@@ -40,7 +40,15 @@ export class Sign {
     return ['sun']
   }
 
-  soil() {
-    return []
+  earth(): Star[] {
+    return ['sun']
+  }
+
+  masculine(): Star[] {
+    return ['sun']
+  }
+
+  feminine(): Star[] {
+    return ['sun']
   }
 }

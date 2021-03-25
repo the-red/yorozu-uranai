@@ -14,8 +14,7 @@ type ZodiacSign =
   | '水瓶座'
   | '魚座'
 
-// ToDo：変数名はPlanetPosition（惑星）の方が良さそう
-type StarPosition = {
+type PlanetPosition = {
   sun: ZodiacSign
   moon: ZodiacSign
   mercury: ZodiacSign
@@ -28,56 +27,58 @@ type StarPosition = {
   pluto: ZodiacSign
 }
 
-type Star = keyof StarPosition
+type Planet = keyof PlanetPosition
 
 export class Sign {
-  private starPosition: StarPosition
-  private stars: Star[]
+  private planetPosition: PlanetPosition
+  private planets: Planet[]
 
-  constructor(starPosition: StarPosition) {
-    this.starPosition = starPosition
-    this.stars = Object.keys(this.starPosition) as Star[]
+  constructor(starPosition: PlanetPosition) {
+    this.planetPosition = starPosition
+    this.planets = Object.keys(this.planetPosition) as Planet[]
   }
 
-  fire(): Star[] {
-    return this.stars.filter(
-      (star) =>
-        this.starPosition[star] === '牡羊座' ||
-        this.starPosition[star] === '獅子座' ||
-        this.starPosition[star] === '射手座'
+  fire(): Planet[] {
+    return this.planets.filter(
+      (planet) =>
+        this.planetPosition[planet] === '牡羊座' ||
+        this.planetPosition[planet] === '獅子座' ||
+        this.planetPosition[planet] === '射手座'
     )
   }
 
-  earth(): Star[] {
-    return this.stars.filter(
-      (star) =>
-        this.starPosition[star] === '牡牛座' ||
-        this.starPosition[star] === '乙女座' ||
-        this.starPosition[star] === '山羊座'
+  earth(): Planet[] {
+    return this.planets.filter(
+      (planet) =>
+        this.planetPosition[planet] === '牡牛座' ||
+        this.planetPosition[planet] === '乙女座' ||
+        this.planetPosition[planet] === '山羊座'
     )
   }
 
-  air(): Star[] {
-    return this.stars.filter(
-      (star) =>
-        this.starPosition[star] === '双子座' ||
-        this.starPosition[star] === '天秤座' ||
-        this.starPosition[star] === '水瓶座'
+  air(): Planet[] {
+    return this.planets.filter(
+      (planet) =>
+        this.planetPosition[planet] === '双子座' ||
+        this.planetPosition[planet] === '天秤座' ||
+        this.planetPosition[planet] === '水瓶座'
     )
   }
 
-  water(): Star[] {
-    return this.stars.filter(
-      (star) =>
-        this.starPosition[star] === '蟹座' || this.starPosition[star] === '蠍座' || this.starPosition[star] === '魚座'
+  water(): Planet[] {
+    return this.planets.filter(
+      (planet) =>
+        this.planetPosition[planet] === '蟹座' ||
+        this.planetPosition[planet] === '蠍座' ||
+        this.planetPosition[planet] === '魚座'
     )
   }
 
-  masculine(): Star[] {
+  masculine(): Planet[] {
     return [...this.fire(), ...this.air()]
   }
 
-  feminine(): Star[] {
+  feminine(): Planet[] {
     return [...this.earth(), ...this.water()]
   }
 }

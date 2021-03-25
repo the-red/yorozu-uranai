@@ -17,12 +17,18 @@ describe('Sign', () => {
     expect(sign.fire()).toEqual(['jupiter', 'saturn', 'uranus'])
   })
   it('土', () => {
-    expect(sign.earth()).toEqual(['sun'])
+    expect(sign.earth()).toEqual(['sun', 'venus', 'mars', 'neptune'])
+  })
+  it('風', () => {
+    expect(sign.air()).toEqual(['mercury'])
+  })
+  it('水', () => {
+    expect(sign.water()).toEqual(['moon', 'pluto'])
   })
   it('男性', () => {
-    expect(sign.masculine()).toEqual(['sun'])
+    expect(sign.masculine()).toEqual(['jupiter', 'saturn', 'uranus', 'mercury'])
   })
   it('女性', () => {
-    expect(sign.feminine()).toEqual(['sun'])
+    expect(sign.feminine()).toEqual(['sun', 'venus', 'mars', 'neptune', 'moon', 'pluto'])
   })
 })

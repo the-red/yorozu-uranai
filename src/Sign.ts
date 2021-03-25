@@ -32,31 +32,52 @@ type Star = keyof StarPosition
 
 export class Sign {
   private starPosition: StarPosition
-  private keys: Star[]
+  private stars: Star[]
 
   constructor(starPosition: StarPosition) {
     this.starPosition = starPosition
-    this.keys = Object.keys(this.starPosition) as Star[]
+    this.stars = Object.keys(this.starPosition) as Star[]
   }
 
   fire(): Star[] {
-    return this.keys.filter(
-      (key) =>
-        this.starPosition[key] === '牡羊座' ||
-        this.starPosition[key] === '獅子座' ||
-        this.starPosition[key] === '射手座'
+    return this.stars.filter(
+      (star) =>
+        this.starPosition[star] === '牡羊座' ||
+        this.starPosition[star] === '獅子座' ||
+        this.starPosition[star] === '射手座'
     )
   }
 
   earth(): Star[] {
-    return ['sun']
+    return this.stars.filter(
+      (star) =>
+        this.starPosition[star] === '牡牛座' ||
+        this.starPosition[star] === '乙女座' ||
+        this.starPosition[star] === '山羊座'
+    )
+  }
+
+  air(): Star[] {
+    return this.stars.filter(
+      (star) =>
+        this.starPosition[star] === '双子座' ||
+        this.starPosition[star] === '天秤座' ||
+        this.starPosition[star] === '水瓶座'
+    )
+  }
+
+  water(): Star[] {
+    return this.stars.filter(
+      (star) =>
+        this.starPosition[star] === '蟹座' || this.starPosition[star] === '蠍座' || this.starPosition[star] === '魚座'
+    )
   }
 
   masculine(): Star[] {
-    return ['sun']
+    return [...this.fire(), ...this.air()]
   }
 
   feminine(): Star[] {
-    return ['sun']
+    return [...this.earth(), ...this.water()]
   }
 }

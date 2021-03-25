@@ -14,7 +14,7 @@ describe('Sign', () => {
     pluto: '蠍座',
   })
   it('火', () => {
-    expect(sign.fire()).toEqual(['sun'])
+    expect(sign.fire()).toEqual(['jupiter', 'saturn', 'uranus'])
   })
   it('土', () => {
     expect(sign.earth()).toEqual(['sun'])

@@ -14,6 +14,7 @@ type ZodiacSign =
   | '水瓶座'
   | '魚座'
 
+// ToDo：変数名はPlanetPosition（惑星）の方が良さそう
 type StarPosition = {
   sun: ZodiacSign
   moon: ZodiacSign
@@ -31,13 +32,20 @@ type Star = keyof StarPosition
 
 export class Sign {
   private starPosition: StarPosition
+  private keys: Star[]
 
   constructor(starPosition: StarPosition) {
     this.starPosition = starPosition
+    this.keys = Object.keys(this.starPosition) as Star[]
   }
 
   fire(): Star[] {
-    return ['sun']
+    return this.keys.filter(
+      (key) =>
+        this.starPosition[key] === '牡羊座' ||
+        this.starPosition[key] === '獅子座' ||
+        this.starPosition[key] === '射手座'
+    )
   }
 
   earth(): Star[] {

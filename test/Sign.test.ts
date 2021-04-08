@@ -15,24 +15,24 @@ describe('Sign', () => {
   })
   describe('Element', () => {
     it('火', () => {
-      expect(sign.fire()).toEqual(['jupiter', 'saturn', 'uranus'])
+      expect(sign.fire).toEqual(['jupiter', 'saturn', 'uranus'])
     })
     it('土', () => {
-      expect(sign.earth()).toEqual(['sun', 'venus', 'mars', 'neptune'])
+      expect(sign.earth).toEqual(['sun', 'venus', 'mars', 'neptune'])
     })
     it('風', () => {
-      expect(sign.air()).toEqual(['mercury'])
+      expect(sign.air).toEqual(['mercury'])
     })
     it('水', () => {
-      expect(sign.water()).toEqual(['moon', 'pluto'])
+      expect(sign.water).toEqual(['moon', 'pluto'])
     })
   })
   describe('Polarity', () => {
     it('男性', () => {
-      expect(sign.masculine()).toEqual(['jupiter', 'saturn', 'uranus', 'mercury'])
+      expect(sign.masculine).toEqual(['jupiter', 'saturn', 'uranus', 'mercury'])
     })
     it('女性', () => {
-      expect(sign.feminine()).toEqual(['sun', 'venus', 'mars', 'neptune', 'moon', 'pluto'])
+      expect(sign.feminine).toEqual(['sun', 'venus', 'mars', 'neptune', 'moon', 'pluto'])
     })
   })
 })

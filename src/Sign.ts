@@ -1,45 +1,15 @@
 import { ZoneOptions } from 'luxon'
-
-type ZodiacSign =
-  | '牡羊座'
-  | '牡牛座'
-  | '双子座'
-  | '蟹座'
-  | '獅子座'
-  | '乙女座'
-  | '天秤座'
-  | '蠍座'
-  | '射手座'
-  | '山羊座'
-  | '水瓶座'
-  | '魚座'
-
-type PlanetPosition = {
-  sun: ZodiacSign
-  moon: ZodiacSign
-  mercury: ZodiacSign
-  venus: ZodiacSign
-  mars: ZodiacSign
-  jupiter: ZodiacSign
-  saturn: ZodiacSign
-  uranus: ZodiacSign
-  neptune: ZodiacSign
-  pluto: ZodiacSign
-}
-
-type Planet = keyof PlanetPosition
+import { ALL_PLANETS, Planet, PlanetPosition } from './Planet'
 
 export class Sign {
   private planetPosition: PlanetPosition
-  private planets: Planet[]
 
   constructor(starPosition: PlanetPosition) {
     this.planetPosition = starPosition
-    this.planets = Object.keys(this.planetPosition) as Planet[]
   }
 
   fire(): Planet[] {
-    return this.planets.filter(
+    return ALL_PLANETS.filter(
       (planet) =>
         this.planetPosition[planet] === '牡羊座' ||
         this.planetPosition[planet] === '獅子座' ||
@@ -48,7 +18,7 @@ export class Sign {
   }
 
   earth(): Planet[] {
-    return this.planets.filter(
+    return ALL_PLANETS.filter(
       (planet) =>
         this.planetPosition[planet] === '牡牛座' ||
         this.planetPosition[planet] === '乙女座' ||
@@ -57,7 +27,7 @@ export class Sign {
   }
 
   air(): Planet[] {
-    return this.planets.filter(
+    return ALL_PLANETS.filter(
       (planet) =>
         this.planetPosition[planet] === '双子座' ||
         this.planetPosition[planet] === '天秤座' ||
@@ -66,7 +36,7 @@ export class Sign {
   }
 
   water(): Planet[] {
-    return this.planets.filter(
+    return ALL_PLANETS.filter(
       (planet) =>
         this.planetPosition[planet] === '蟹座' ||
         this.planetPosition[planet] === '蠍座' ||

@@ -1,4 +1,3 @@
-import { ZoneOptions } from 'luxon'
 import { ALL_PLANETS, Planet, PlanetPosition } from './Planet'
 
 export class Sign {

@@ -25,7 +25,7 @@ export class CZodiacSign {
 
     let index = Math.trunc(fullDegrees / INTERVAL)
     if (this.degrees === 0) {
-      index -= 1
+      index = index > 0 ? index - 1 : ALL_ZODIAC_SIGNS.length - 1
     }
 
     this.sign = ALL_ZODIAC_SIGNS[index]

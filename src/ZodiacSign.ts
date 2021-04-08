@@ -21,9 +21,13 @@ export class CZodiacSign {
 
   constructor(fullDegrees: number) {
     const INTERVAL = 30 as const
-    const index = Math.trunc(fullDegrees / INTERVAL)
+    this.degrees = fullDegrees % INTERVAL
+
+    let index = Math.trunc(fullDegrees / INTERVAL)
+    if (this.degrees === 0) {
+      index -= 1
+    }
 
     this.sign = ALL_ZODIAC_SIGNS[index]
-    this.degrees = fullDegrees % INTERVAL
   }
 }

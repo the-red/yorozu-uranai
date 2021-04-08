@@ -9,39 +9,19 @@ export class Sign {
   }
 
   fire(): Planet[] {
-    return ALL_PLANETS.filter(
-      (planet) =>
-        this.planetPosition[planet] === '牡羊座' ||
-        this.planetPosition[planet] === '獅子座' ||
-        this.planetPosition[planet] === '射手座'
-    )
+    return ALL_PLANETS.filter((planet) => ['牡羊座', '獅子座', '射手座'].includes(this.planetPosition[planet]))
   }
 
   earth(): Planet[] {
-    return ALL_PLANETS.filter(
-      (planet) =>
-        this.planetPosition[planet] === '牡牛座' ||
-        this.planetPosition[planet] === '乙女座' ||
-        this.planetPosition[planet] === '山羊座'
-    )
+    return ALL_PLANETS.filter((planet) => ['牡牛座', '乙女座', '山羊座'].includes(this.planetPosition[planet]))
   }
 
   air(): Planet[] {
-    return ALL_PLANETS.filter(
-      (planet) =>
-        this.planetPosition[planet] === '双子座' ||
-        this.planetPosition[planet] === '天秤座' ||
-        this.planetPosition[planet] === '水瓶座'
-    )
+    return ALL_PLANETS.filter((planet) => ['双子座', '天秤座', '水瓶座'].includes(this.planetPosition[planet]))
   }
 
   water(): Planet[] {
-    return ALL_PLANETS.filter(
-      (planet) =>
-        this.planetPosition[planet] === '蟹座' ||
-        this.planetPosition[planet] === '蠍座' ||
-        this.planetPosition[planet] === '魚座'
-    )
+    return ALL_PLANETS.filter((planet) => ['蟹座', '蠍座', '魚座'].includes(this.planetPosition[planet]))
   }
 
   masculine(): Planet[] {

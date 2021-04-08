@@ -19,7 +19,7 @@ export class CZodiacSign {
   readonly sign: string
   readonly degrees: number
 
-  constructor(fullDegrees: number) {
+  constructor(readonly fullDegrees: number) {
     const INTERVAL = 30 as const
     this.degrees = fullDegrees % INTERVAL
 

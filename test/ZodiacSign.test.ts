@@ -9,6 +9,6 @@ describe('ZodiacSign', () => {
   it('61', () => {
     const zodiacSign = new CZodiacSign(61.89)
     expect(zodiacSign.sign).toEqual('双子座')
-    expect(zodiacSign.degrees).toEqual(1)
+    expect(zodiacSign.degrees).toEqual(1.8900000000000006)
   })
 })

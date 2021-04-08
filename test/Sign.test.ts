@@ -27,6 +27,17 @@ describe('Sign', () => {
       expect(sign.water).toEqual(['moon', 'pluto'])
     })
   })
+  describe('Quality', () => {
+    it('活動宮', () => {
+      expect(sign.cardinal).toEqual(['mercury', 'jupiter', 'neptune'])
+    })
+    it('不動宮', () => {
+      expect(sign.fixed).toEqual(['pluto'])
+    })
+    it('柔軟宮', () => {
+      expect(sign.mutable).toEqual(['sun', 'moon', 'venus', 'mars', 'saturn', 'uranus'])
+    })
+  })
   describe('Polarity', () => {
     it('男性', () => {
       expect(sign.masculine).toEqual(['jupiter', 'saturn', 'uranus', 'mercury'])

@@ -18,6 +18,15 @@ export class Sign {
   }
 
   // Quality
+  get cardinal(): Planet[] {
+    return ALL_PLANETS.filter((planet) => ['牡羊座', '蟹座', '天秤座', '山羊座'].includes(this.planetPosition[planet]))
+  }
+  get fixed(): Planet[] {
+    return ALL_PLANETS.filter((planet) => ['牡牛座', '獅子座', '蠍座', '水瓶座'].includes(this.planetPosition[planet]))
+  }
+  get mutable(): Planet[] {
+    return ALL_PLANETS.filter((planet) => ['双子座', '乙女座', '射手座', '魚座'].includes(this.planetPosition[planet]))
+  }
 
   // Polarity
   get masculine(): Planet[] {

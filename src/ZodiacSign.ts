@@ -24,6 +24,6 @@ export class CZodiacSign {
     const index = Math.trunc(fullDegrees / INTERVAL)
 
     this.sign = ALL_ZODIAC_SIGNS[index]
-    this.degrees = fullDegrees - index * INTERVAL
+    this.degrees = fullDegrees % INTERVAL
   }
 }

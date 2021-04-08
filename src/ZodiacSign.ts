@@ -14,3 +14,16 @@ export const ALL_ZODIAC_SIGNS = [
 ] as const
 
 export type ZodiacSign = typeof ALL_ZODIAC_SIGNS[number]
+
+export class CZodiacSign {
+  readonly sign: string
+  readonly degrees: number
+
+  constructor(fullDegrees: number) {
+    const INTERVAL = 30 as const
+    const index = Math.trunc(fullDegrees / INTERVAL)
+
+    this.sign = ALL_ZODIAC_SIGNS[index]
+    this.degrees = fullDegrees - index * INTERVAL
+  }
+}

@@ -1,20 +1,20 @@
-export const ALL_ZODIAC_SIGNS = [
-  '牡羊座',
-  '牡牛座',
-  '双子座',
-  '蟹座',
-  '獅子座',
-  '乙女座',
-  '天秤座',
-  '蠍座',
-  '射手座',
-  '山羊座',
-  '水瓶座',
-  '魚座',
-] as const
-
 export class ZodiacSign {
-  readonly sign: typeof ALL_ZODIAC_SIGNS[number]
+  static ALL_SIGNS = [
+    '牡羊座',
+    '牡牛座',
+    '双子座',
+    '蟹座',
+    '獅子座',
+    '乙女座',
+    '天秤座',
+    '蠍座',
+    '射手座',
+    '山羊座',
+    '水瓶座',
+    '魚座',
+  ] as const
+
+  readonly sign: typeof ZodiacSign.ALL_SIGNS[number]
   readonly degrees: number
 
   constructor(readonly fullDegrees: number) {
@@ -23,9 +23,9 @@ export class ZodiacSign {
 
     let index = Math.trunc(fullDegrees / INTERVAL)
     if (this.degrees === 0) {
-      index = index > 0 ? index - 1 : ALL_ZODIAC_SIGNS.length - 1
+      index = index > 0 ? index - 1 : ZodiacSign.ALL_SIGNS.length - 1
     }
 
-    this.sign = ALL_ZODIAC_SIGNS[index]
+    this.sign = ZodiacSign.ALL_SIGNS[index]
   }
 }

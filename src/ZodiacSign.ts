@@ -28,4 +28,10 @@ export class ZodiacSign {
 
     this.sign = ZodiacSign.ALL_SIGNS[index]
   }
+
+  aspect(target: ZodiacSign) {
+    // TODO: ここをもっと気の利いたロジックに
+    const diff = target.fullDegrees - this.fullDegrees
+    return diff
+  }
 }

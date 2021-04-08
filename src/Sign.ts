@@ -1,11 +1,7 @@
 import { ALL_PLANETS, Planet, PlanetPosition } from './Planet'
 
 export class Sign {
-  private planetPosition: PlanetPosition
-
-  constructor(starPosition: PlanetPosition) {
-    this.planetPosition = starPosition
-  }
+  constructor(private planetPosition: PlanetPosition) {}
 
   get fire(): Planet[] {
     return ALL_PLANETS.filter((planet) => ['牡羊座', '獅子座', '射手座'].includes(this.planetPosition[planet]))

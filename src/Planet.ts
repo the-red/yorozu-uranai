@@ -14,4 +14,4 @@ export const ALL_PLANETS = [
 ] as const
 
 export type Planet = typeof ALL_PLANETS[number]
-export type PlanetPosition = Record<Planet, ZodiacSign>
+export type PlanetPosition = Record<Planet, ZodiacSign['sign']>

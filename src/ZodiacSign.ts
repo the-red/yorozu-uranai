@@ -13,10 +13,8 @@ export const ALL_ZODIAC_SIGNS = [
   '魚座',
 ] as const
 
-export type ZodiacSign = typeof ALL_ZODIAC_SIGNS[number]
-
-export class CZodiacSign {
-  readonly sign: string
+export class ZodiacSign {
+  readonly sign: typeof ALL_ZODIAC_SIGNS[number]
   readonly degrees: number
 
   constructor(readonly fullDegrees: number) {

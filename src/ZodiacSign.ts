@@ -29,11 +29,11 @@ export class ZodiacSign {
     this.sign = ZodiacSign.ALL_SIGNS[index]
   }
 
-  aspect(target: ZodiacSign) {
+  aspect(target: ZodiacSign, orb: number) {
     // TODO: ここをもっと気の利いたロジックに
     const diff = target.fullDegrees - this.fullDegrees
-    // return diff
-    if (180 - 1 <= diff && diff <= 180 + 1) {
+
+    if (180 - orb <= diff && diff <= 180 + orb) {
       return 'opposition'
     } else {
       return null

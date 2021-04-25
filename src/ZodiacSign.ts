@@ -33,7 +33,7 @@ export class ZodiacSign {
     // TODO: ここをもっと気の利いたロジックに
     const diff = target.fullDegrees - this.fullDegrees
     // return diff
-    if (diff === 180) {
+    if (180 - 1 <= diff && diff <= 180 + 1) {
       return 'opposition'
     } else {
       return null

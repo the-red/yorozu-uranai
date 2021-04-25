@@ -26,10 +26,30 @@ describe('ZodiacSign', () => {
   })
 
   describe('アスペクト', () => {
-    it('180', () => {
+    it('ちょうど180', () => {
       const sign0 = new ZodiacSign(0)
       const sign180 = new ZodiacSign(180)
       expect(sign0.aspect(sign180)).toEqual('opposition')
+    })
+    it('180より小さい、許容範囲内', () => {
+      const sign0 = new ZodiacSign(0)
+      const sign179 = new ZodiacSign(179)
+      expect(sign0.aspect(sign179)).toEqual('opposition')
+    })
+    it('180より小さい、許容範囲外', () => {
+      const sign0 = new ZodiacSign(0)
+      const sign178 = new ZodiacSign(178)
+      expect(sign0.aspect(sign178)).toEqual(null)
+    })
+    it('180より大きい、許容範囲内', () => {
+      const sign0 = new ZodiacSign(0)
+      const sign181 = new ZodiacSign(181)
+      expect(sign0.aspect(sign181)).toEqual('opposition')
+    })
+    it('180より大きい、許容範囲外', () => {
+      const sign0 = new ZodiacSign(0)
+      const sign182 = new ZodiacSign(182)
+      expect(sign0.aspect(sign182)).toEqual(null)
     })
   })
 })

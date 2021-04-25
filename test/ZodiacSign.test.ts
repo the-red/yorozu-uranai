@@ -29,7 +29,7 @@ describe('ZodiacSign', () => {
     it('180', () => {
       const sign0 = new ZodiacSign(0)
       const sign180 = new ZodiacSign(180)
-      expect(sign0.aspect(sign180)).toEqual(180)
+      expect(sign0.aspect(sign180)).toEqual('opposition')
     })
   })
 })

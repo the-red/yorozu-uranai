@@ -26,6 +26,13 @@ describe('ZodiacSign', () => {
     })
   })
 
+  describe('Element', () => {
+    it('牡羊座:火', () => {
+      const zodiacSign = new ZodiacSign(0.5) // 牡羊座
+      expect(zodiacSign.element).toEqual('fire')
+    })
+  })
+
   describe('アスペクト', () => {
     const orb = 6
     it('ちょうど180', () => {

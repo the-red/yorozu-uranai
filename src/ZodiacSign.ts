@@ -29,6 +29,21 @@ export class ZodiacSign {
     this.sign = ZodiacSign.ALL_SIGNS[index]
   }
 
+  get element() {
+    if (['牡羊座', '獅子座', '射手座'].includes(this.sign)) {
+      return 'fire'
+    }
+    if (['牡牛座', '乙女座', '山羊座'].includes(this.sign)) {
+      return 'earth'
+    }
+    if (['双子座', '天秤座', '水瓶座'].includes(this.sign)) {
+      return 'air'
+    }
+    if (['蟹座', '蠍座', '魚座'].includes(this.sign)) {
+      return 'water'
+    }
+  }
+
   aspect(target: ZodiacSign, orb: number) {
     const diff = target.fullDegrees - this.fullDegrees
 

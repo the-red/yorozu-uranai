@@ -1,6 +1,6 @@
 import { ALL_PLANETS, Planet, PlanetPosition } from './Planet'
 
-export class Sign {
+export class XSign {
   constructor(private planetPosition: PlanetPosition) {}
 
   // Element

@@ -53,7 +53,7 @@ export class ZodiacSign {
 
   aspect(target: ZodiacSign, orb: number): Aspect | null {
     const diff = target.fullDegrees - this.fullDegrees
-
+    // 180度以外も実装する
     if (180 - orb <= diff && diff <= 180 + orb) {
       return 'opposition'
     } else {

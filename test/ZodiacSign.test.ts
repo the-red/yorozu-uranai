@@ -27,7 +27,7 @@ describe('ZodiacSign', () => {
   })
 
   describe('アスペクト', () => {
-    const orb = 1
+    const orb = 6
     it('ちょうど180', () => {
       const sign0 = new ZodiacSign(0)
       const sign180 = new ZodiacSign(180)
@@ -35,23 +35,23 @@ describe('ZodiacSign', () => {
     })
     it('180より小さい、許容範囲内', () => {
       const sign0 = new ZodiacSign(0)
-      const sign179 = new ZodiacSign(179)
-      expect(sign0.aspect(sign179, orb)).toEqual('opposition')
+      const sign174 = new ZodiacSign(174)
+      expect(sign0.aspect(sign174, orb)).toEqual('opposition')
     })
     it('180より小さい、許容範囲外', () => {
       const sign0 = new ZodiacSign(0)
-      const sign178 = new ZodiacSign(178)
-      expect(sign0.aspect(sign178, orb)).toEqual(null)
+      const sign173 = new ZodiacSign(173)
+      expect(sign0.aspect(sign173, orb)).toEqual(null)
     })
     it('180より大きい、許容範囲内', () => {
       const sign0 = new ZodiacSign(0)
-      const sign181 = new ZodiacSign(181)
-      expect(sign0.aspect(sign181, orb)).toEqual('opposition')
+      const sign186 = new ZodiacSign(186)
+      expect(sign0.aspect(sign186, orb)).toEqual('opposition')
     })
     it('180より大きい、許容範囲外', () => {
       const sign0 = new ZodiacSign(0)
-      const sign182 = new ZodiacSign(182)
-      expect(sign0.aspect(sign182, orb)).toEqual(null)
+      const sign187 = new ZodiacSign(187)
+      expect(sign0.aspect(sign187, orb)).toEqual(null)
     })
   })
 })

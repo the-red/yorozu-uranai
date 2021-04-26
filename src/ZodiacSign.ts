@@ -30,7 +30,6 @@ export class ZodiacSign {
   }
 
   aspect(target: ZodiacSign, orb: number) {
-    // TODO: ここをもっと気の利いたロジックに
     const diff = target.fullDegrees - this.fullDegrees
 
     if (180 - orb <= diff && diff <= 180 + orb) {

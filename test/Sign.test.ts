@@ -1,7 +1,7 @@
-import { Sign } from '../src/Sign'
+import { XSign } from '../src/XSign'
 
 describe('Sign', () => {
-  const sign = new Sign({
+  const sign = new XSign({
     sun: '乙女座',
     moon: '魚座',
     mercury: '天秤座',

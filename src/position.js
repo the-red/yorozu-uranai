@@ -1,50 +1,51 @@
-const { Observer, GeoVector, Ecliptic, Equator } = require('astronomy-engine')
+const { strict: assert } = require('assert')
+const swisseph = require('swisseph')
 
-function Format(x) {
-  return x.toFixed(2).padStart(8)
-}
+const planets = [
+  'SUN',
+  'MOON',
+  'MERCURY',
+  'VENUS',
+  'MARS',
+  'JUPITER',
+  'SATURN',
+  'URANUS',
+  'NEPTUNE',
+  'PLUTO',
+]
 
-function ParseNumber(text, name) {
-  const x = Number(text)
-  if (!Number.isFinite(x)) {
-    console.error(`ERROR: Not a valid numeric value for ${name}: "${text}"`)
-    process.exit(1)
-  }
-  return x
-}
+// Test date
+const year = 1987
+const month = 9
+const day = 8
+const hour = 8
+const minutes = 53
+const offset = 9
+console.log('Test date:', { year, month, day, hour, minutes, offset })
 
-function ParseDate(text) {
-  const d = new Date(text)
-  if (!Number.isFinite(d.getTime())) {
-    console.error(`ERROR: Not a valid date: "${text}"`)
-    process.exit(1)
-  }
-  return d
-}
+// Julian day
+swisseph.swe_julday(year, month, day, hour + minutes / 60 - offset, swisseph.SE_GREG_CAL, function (julday_ut) {
+  assert.equal(julday_ut, 2447046.4951388887)
+  console.log('Julian UT day for date:', julday_ut)
 
-function Demo() {
-  if (process.argv.length < 5) {
-    console.log('USAGE: node positions.js latitude longitude date')
-    process.exit(1)
-  }
+  planets.forEach((planet) => {
+    // position
+    swisseph.swe_calc_ut(julday_ut, swisseph[`SE_${planet}`], swisseph.SEFLG_SPEED, function (body) {
+      assert(!body.error, body.error)
+      const fullDegrees = body.longitude
 
-  const latitude = ParseNumber(process.argv[2], 'latitude')
-  const longitude = ParseNumber(process.argv[3], 'longitude')
-  const observer = new Observer(latitude, longitude, 0)
-  const date = ParseDate(process.argv[4])
-  console.log(`UTC date = ${date.toISOString()}`)
-  console.log('')
-  console.log(`${'BODY'.padEnd(8)} ${'SIGN'} ${'DEGREES'.padStart(8)} ${'ELON'.padStart(8)} ${'DEC'.padStart(8)}`)
-  for (let body of ['Sun', 'Moon', 'Mercury', 'Venus', 'Mars', 'Jupiter', 'Saturn', 'Uranus', 'Neptune', 'Pluto']) {
-    const vector = GeoVector(body, date, true)
-    const ecliptic = Ecliptic(vector.x, vector.y, vector.z)
-    const equator = Equator(body, date, observer, false, true)
-    const sign = Math.trunc(ecliptic.elon / 30)
-    const degrees = ecliptic.elon - sign * 30
-    console.log(
-      `${body.padEnd(8)} ${String(sign).padStart(4)} ${Format(degrees)} ${Format(ecliptic.elon)} ${Format(equator.dec)}`
-    )
-  }
-}
+      const sign = Math.trunc(fullDegrees / 30)
 
-Demo()
+      const degrees = fullDegrees % 30
+      const degreesInt = Math.trunc(degrees)
+      const degreesMin = (degrees - degreesInt) * 60
+      const degreesMinInt = Math.trunc(degreesMin)
+      const degreesSec = (degreesMin - degreesMinInt) * 60
+      const degreesSecInt = Math.trunc(degreesSec)
+      const degreesToPrint = `${String(degreesInt).padStart(2)}°${String(degreesMinInt).padStart(2, 0)}′${String(
+        degreesSecInt
+      ).padStart(2, 0)}″`
+      console.log(`${planet}:`, { sign, degrees: degreesToPrint })
+    })
+  })
+})

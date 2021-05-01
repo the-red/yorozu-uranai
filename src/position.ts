@@ -16,16 +16,19 @@ type EclipticPosition = {
 const planets = ['SUN', 'MOON', 'MERCURY', 'VENUS', 'MARS', 'JUPITER', 'SATURN', 'URANUS', 'NEPTUNE', 'PLUTO'] as const
 
 // Test date
-const year = 1987
-const month = 9
-const day = 8
-const hour = 8
-const minute = 53
-const offset = 9
+const date = new Date('1987-09-08T08:53:00+09:00')
+const year = date.getFullYear()
+const month = date.getMonth() + 1
+const day = date.getDate()
+const hour = date.getHours()
+const minute = date.getMinutes()
+const second = date.getSeconds() + date.getMilliseconds() / 1000
+const offset = date.getTimezoneOffset()
+const utcHourMinuteSecond = hour + (minute + second / 60 + offset) / 60
 console.log('Test date:', { year, month, day, hour, minute, offset })
 
 // Julian day
-swisseph.swe_julday(year, month, day, hour + minute / 60 - offset, swisseph.SE_GREG_CAL, (julday_ut: number) => {
+swisseph.swe_julday(year, month, day, utcHourMinuteSecond, swisseph.SE_GREG_CAL, (julday_ut: number) => {
   assert.equal(julday_ut, 2447046.4951388887)
   console.log('Julian UT day for date:', julday_ut)
 

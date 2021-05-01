@@ -2,7 +2,7 @@ import { strict as assert } from 'assert'
 // @ts-ignore
 import swisseph from 'swisseph'
 
-const julday = (date: Date, gregflag: number, callback: (julday_ut: number) => void) => {
+const julday = (date: Date, gregflag: number): Promise<number> => {
   const year = date.getFullYear()
   const month = date.getMonth() + 1
   const day = date.getDate()
@@ -13,7 +13,9 @@ const julday = (date: Date, gregflag: number, callback: (julday_ut: number) => v
   const offset = date.getTimezoneOffset()
   const utcHourMinuteSecond = hour + (minute + second / 60 + offset) / 60
 
-  return swisseph.swe_julday(year, month, day, utcHourMinuteSecond, gregflag, callback)
+  return new Promise((resolve) =>
+    swisseph.swe_julday(year, month, day, utcHourMinuteSecond, gregflag, (julday_ut: number) => resolve(julday_ut))
+  )
 }
 
 type EclipticPosition = {
@@ -27,6 +29,11 @@ type EclipticPosition = {
   error?: any
 }
 
+const eclipticPosition = (julday_ut: number, planetNumber: number, iflag: number): Promise<EclipticPosition> =>
+  new Promise((resolve) =>
+    swisseph.swe_calc_ut(julday_ut, planetNumber, iflag, (body: EclipticPosition) => resolve(body))
+  )
+
 const planets = ['SUN', 'MOON', 'MERCURY', 'VENUS', 'MARS', 'JUPITER', 'SATURN', 'URANUS', 'NEPTUNE', 'PLUTO'] as const
 
 // Test date
@@ -34,13 +41,13 @@ const date = new Date('1987-09-08T08:53:00+09:00')
 console.log('Test date:', date)
 
 // Julian day
-julday(date, swisseph.SE_GREG_CAL, (julday_ut) => {
+julday(date, swisseph.SE_GREG_CAL).then((julday_ut) => {
   assert.equal(julday_ut, 2447046.4951388887)
   console.log('Julian UT day for date:', julday_ut)
 
   planets.forEach((planet) => {
     // position
-    swisseph.swe_calc_ut(julday_ut, swisseph[`SE_${planet}`], swisseph.SEFLG_SPEED, (body: EclipticPosition) => {
+    eclipticPosition(julday_ut, swisseph[`SE_${planet}`], swisseph.SEFLG_SPEED).then((body: EclipticPosition) => {
       assert(!body.error, body.error)
       const fullDegrees = body.longitude
 

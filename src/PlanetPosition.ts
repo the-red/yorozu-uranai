@@ -1,6 +1,7 @@
 // @ts-ignore
 import swisseph from 'swisseph'
 
+// ユリウス日の計算（ライブラリの関数をラップ）
 const julday = (date: Date, gregflag: number): Promise<number> => {
   const year = date.getFullYear()
   const month = date.getMonth() + 1
@@ -42,6 +43,7 @@ type EclipticPosition = {
   error?: any
 }
 
+// 黄道座標の計算（ライブラリの関数をラップ）
 const eclipticPosition = (julday_ut: number, planetNumber: number, iflag: number): Promise<EclipticPosition> =>
   new Promise((resolve, reject) =>
     swisseph.swe_calc_ut(julday_ut, planetNumber, iflag, (body: EclipticPosition) => {
@@ -50,6 +52,7 @@ const eclipticPosition = (julday_ut: number, planetNumber: number, iflag: number
     })
   )
 
+// 惑星1つ分の座標
 export class PlanetPosition {
   static async getInstance(planet: PlanetName, julday_ut: number) {
     const position = await eclipticPosition(julday_ut, swisseph[`SE_${planet.toUpperCase()}`], swisseph.SEFLG_SPEED)
@@ -81,6 +84,7 @@ export class PlanetPosition {
   }
 }
 
+// 全惑星の座標
 export class PlanetPositions {
   readonly sun: PlanetPosition
   readonly moon: PlanetPosition
@@ -119,12 +123,3 @@ export class PlanetPositions {
     this.pluto = all.pluto
   }
 }
-
-// Test date
-const date = new Date('1987-09-08T08:53:00+09:00')
-console.log('Test date:', date)
-
-PlanetPositions.getInstance(date).then((positions) => {
-  const { fullDegrees, sign, degrees } = positions.sun
-  console.log({ fullDegrees, sign, degrees })
-})

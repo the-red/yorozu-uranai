@@ -1,19 +1,4 @@
-// @ts-ignore
-import swisseph from 'swisseph'
-
-const ALL_PLANETS = [
-  'sun',
-  'moon',
-  'mercury',
-  'venus',
-  'mars',
-  'jupiter',
-  'saturn',
-  'uranus',
-  'neptune',
-  'pluto',
-] as const
-type PlanetName = typeof ALL_PLANETS[number]
+import { julday, eclipticPosition, ALL_PLANETS, PlanetName } from './swisseph'
 
 const ALL_SIGNS = [
   '牡羊座',
@@ -31,49 +16,12 @@ const ALL_SIGNS = [
 ] as const
 type Sign = typeof ALL_SIGNS[number]
 
-type EclipticPosition = {
-  longitude: number
-  latitude: number
-  distance: number
-  longitudeSpeed: number
-  latitudeSpeed: number
-  distanceSpeed: number
-  rflag: number
-  error?: any
-}
-
-// ユリウス日の計算（ライブラリの関数をラップ）
-const julday = (date: Date, gregflag: number): Promise<number> => {
-  const year = date.getFullYear()
-  const month = date.getMonth() + 1
-  const day = date.getDate()
-
-  const hour = date.getHours()
-  const minute = date.getMinutes()
-  const second = date.getSeconds() + date.getMilliseconds() / 1000
-  const offset = date.getTimezoneOffset()
-  const utcHourMinuteSecond = hour + (minute + second / 60 + offset) / 60
-
-  return new Promise((resolve) =>
-    swisseph.swe_julday(year, month, day, utcHourMinuteSecond, gregflag, (julday_ut: number) => resolve(julday_ut))
-  )
-}
-
-// 黄道座標の計算（ライブラリの関数をラップ）
-const eclipticPosition = (julday_ut: number, planetNumber: number, iflag: number): Promise<EclipticPosition> =>
-  new Promise((resolve, reject) =>
-    swisseph.swe_calc_ut(julday_ut, planetNumber, iflag, (body: EclipticPosition) => {
-      if (body.error) reject(body.error)
-      resolve(body)
-    })
-  )
-
 // 惑星1つ分の座標
 export class PlanetPosition {
   private INTERVAL = 30 as const
 
-  static async getInstance(planet: PlanetName, julday_ut: number) {
-    const position = await eclipticPosition(julday_ut, swisseph[`SE_${planet.toUpperCase()}`], swisseph.SEFLG_SPEED)
+  static async getInstance(julday_ut: number, planet: PlanetName) {
+    const position = await eclipticPosition(julday_ut, planet)
     return new PlanetPosition(position.longitude)
   }
 
@@ -122,11 +70,11 @@ export class PlanetPositions {
   readonly pluto: PlanetPosition
 
   static async getInstance(date: Date) {
-    const julday_ut = await julday(date, swisseph.SE_GREG_CAL)
+    const julday_ut = await julday(date)
 
     const positions = await Promise.all(
       ALL_PLANETS.map(async (planet) => {
-        const planetPosition = await PlanetPosition.getInstance(planet, julday_ut)
+        const planetPosition = await PlanetPosition.getInstance(julday_ut, planet)
         return [planet, planetPosition] as [PlanetName, PlanetPosition]
       })
     )

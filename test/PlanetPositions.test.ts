@@ -1,4 +1,4 @@
-import { PlanetPositions } from '../src/PlanetPosition'
+import { PlanetPositions } from '../src/PlanetPositions'
 
 describe('PlanetPositions', () => {
   const funadyBirthday = new Date('1987-09-08T08:53:00+09:00')

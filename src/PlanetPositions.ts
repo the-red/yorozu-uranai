@@ -53,7 +53,7 @@ const eclipticPosition = (julday_ut: number, planetNumber: number, iflag: number
   )
 
 // 惑星1つ分の座標
-export class PlanetPosition {
+class PlanetPosition {
   static async getInstance(planet: PlanetName, julday_ut: number) {
     const position = await eclipticPosition(julday_ut, swisseph[`SE_${planet.toUpperCase()}`], swisseph.SEFLG_SPEED)
     return new PlanetPosition(position)

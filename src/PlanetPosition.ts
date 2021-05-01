@@ -1,23 +1,6 @@
 // @ts-ignore
 import swisseph from 'swisseph'
 
-// ユリウス日の計算（ライブラリの関数をラップ）
-const julday = (date: Date, gregflag: number): Promise<number> => {
-  const year = date.getFullYear()
-  const month = date.getMonth() + 1
-  const day = date.getDate()
-
-  const hour = date.getHours()
-  const minute = date.getMinutes()
-  const second = date.getSeconds() + date.getMilliseconds() / 1000
-  const offset = date.getTimezoneOffset()
-  const utcHourMinuteSecond = hour + (minute + second / 60 + offset) / 60
-
-  return new Promise((resolve) =>
-    swisseph.swe_julday(year, month, day, utcHourMinuteSecond, gregflag, (julday_ut: number) => resolve(julday_ut))
-  )
-}
-
 const ALL_PLANETS = [
   'sun',
   'moon',
@@ -41,6 +24,23 @@ type EclipticPosition = {
   distanceSpeed: number
   rflag: number
   error?: any
+}
+
+// ユリウス日の計算（ライブラリの関数をラップ）
+const julday = (date: Date, gregflag: number): Promise<number> => {
+  const year = date.getFullYear()
+  const month = date.getMonth() + 1
+  const day = date.getDate()
+
+  const hour = date.getHours()
+  const minute = date.getMinutes()
+  const second = date.getSeconds() + date.getMilliseconds() / 1000
+  const offset = date.getTimezoneOffset()
+  const utcHourMinuteSecond = hour + (minute + second / 60 + offset) / 60
+
+  return new Promise((resolve) =>
+    swisseph.swe_julday(year, month, day, utcHourMinuteSecond, gregflag, (julday_ut: number) => resolve(julday_ut))
+  )
 }
 
 // 黄道座標の計算（ライブラリの関数をラップ）

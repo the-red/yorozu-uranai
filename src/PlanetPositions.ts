@@ -69,7 +69,7 @@ const eclipticPosition = (julday_ut: number, planetNumber: number, iflag: number
   )
 
 // 惑星1つ分の座標
-class PlanetPosition {
+export class PlanetPosition {
   private INTERVAL = 30 as const
 
   static async getInstance(planet: PlanetName, julday_ut: number) {

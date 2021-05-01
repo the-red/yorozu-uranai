@@ -1,4 +1,27 @@
-import { PlanetPositions } from '../src/PlanetPositions'
+import { PlanetPosition, PlanetPositions } from '../src/PlanetPositions'
+
+describe('PlanetPosition 星座の境界値', () => {
+  it('0.0: 魚座', () => {
+    const planetPosition = new PlanetPosition(0)
+    expect(planetPosition.sign).toEqual('魚座')
+    expect(planetPosition.degrees).toEqual(0)
+  })
+  it('0.5: 牡羊座', () => {
+    const planetPosition = new PlanetPosition(0.5)
+    expect(planetPosition.sign).toEqual('牡羊座')
+    expect(planetPosition.degrees).toEqual(0.5)
+  })
+  it('60.0: 牡牛座', () => {
+    const planetPosition = new PlanetPosition(60)
+    expect(planetPosition.sign).toEqual('牡牛座')
+    expect(planetPosition.degrees).toEqual(0)
+  })
+  it('61.89: 双子座', () => {
+    const planetPosition = new PlanetPosition(61.89)
+    expect(planetPosition.sign).toEqual('双子座')
+    expect(planetPosition.degrees).toEqual(1.8900000000000006)
+  })
+})
 
 describe('PlanetPositions', () => {
   const funadyBirthday = new Date('1987-09-08T08:53:00+09:00')

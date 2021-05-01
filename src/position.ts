@@ -20,12 +20,12 @@ const year = 1987
 const month = 9
 const day = 8
 const hour = 8
-const minutes = 53
+const minute = 53
 const offset = 9
-console.log('Test date:', { year, month, day, hour, minutes, offset })
+console.log('Test date:', { year, month, day, hour, minute, offset })
 
 // Julian day
-swisseph.swe_julday(year, month, day, hour + minutes / 60 - offset, swisseph.SE_GREG_CAL, (julday_ut: number) => {
+swisseph.swe_julday(year, month, day, hour + minute / 60 - offset, swisseph.SE_GREG_CAL, (julday_ut: number) => {
   assert.equal(julday_ut, 2447046.4951388887)
   console.log('Julian UT day for date:', julday_ut)
 

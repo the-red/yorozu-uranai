@@ -74,7 +74,7 @@ export class PlanetPosition {
     const degreesMinStr = `${String(degreesMinInt).padStart(2, '0')}′`
 
     const degreesSec = (degreesMin - degreesMinInt) * 60
-    const degreesSecInt = Math.trunc(degreesSec)
+    const degreesSecInt = Math.round(degreesSec)
     const degreesSecStr = `${String(degreesSecInt).padStart(2, '0')}″`
 
     return degreesStr + degreesMinStr + degreesSecStr

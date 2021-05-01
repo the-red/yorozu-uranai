@@ -15,6 +15,22 @@ const ALL_PLANETS = [
 ] as const
 type PlanetName = typeof ALL_PLANETS[number]
 
+const ALL_SIGNS = [
+  '牡羊座',
+  '牡牛座',
+  '双子座',
+  '蟹座',
+  '獅子座',
+  '乙女座',
+  '天秤座',
+  '蠍座',
+  '射手座',
+  '山羊座',
+  '水瓶座',
+  '魚座',
+] as const
+type Sign = typeof ALL_SIGNS[number]
+
 type EclipticPosition = {
   longitude: number
   latitude: number
@@ -54,33 +70,41 @@ const eclipticPosition = (julday_ut: number, planetNumber: number, iflag: number
 
 // 惑星1つ分の座標
 class PlanetPosition {
+  private INTERVAL = 30 as const
+
   static async getInstance(planet: PlanetName, julday_ut: number) {
     const position = await eclipticPosition(julday_ut, swisseph[`SE_${planet.toUpperCase()}`], swisseph.SEFLG_SPEED)
-    return new PlanetPosition(position)
+    return new PlanetPosition(position.longitude)
   }
 
-  constructor(readonly position: EclipticPosition) {}
+  constructor(readonly longitude: number) {}
 
-  get fullDegrees() {
-    return this.position.longitude
-  }
-  get sign() {
-    return Math.trunc(this.fullDegrees / 30)
-  }
   get degrees() {
-    const degrees = this.fullDegrees % 30
-    const degreesInt = Math.trunc(degrees)
+    return this.longitude % this.INTERVAL
+  }
+
+  get formattedDegrees() {
+    const degreesInt = Math.trunc(this.degrees)
     const degreesStr = `${String(degreesInt).padStart(2)}°`
 
-    const degreesMin = (degrees - degreesInt) * 60
+    const MINUTE = 60
+    const degreesMin = (this.degrees - degreesInt) * MINUTE
     const degreesMinInt = Math.trunc(degreesMin)
     const degreesMinStr = `${String(degreesMinInt).padStart(2, '0')}′`
 
-    const degreesSec = (degreesMin - degreesMinInt) * 60
+    const degreesSec = (degreesMin - degreesMinInt) * MINUTE
     const degreesSecInt = Math.round(degreesSec)
     const degreesSecStr = `${String(degreesSecInt).padStart(2, '0')}″`
 
     return degreesStr + degreesMinStr + degreesSecStr
+  }
+
+  get sign() {
+    let index = Math.trunc(this.longitude / this.INTERVAL)
+    if (this.degrees === 0) {
+      index = index > 0 ? index - 1 : ALL_SIGNS.length - 1
+    }
+    return ALL_SIGNS[index]
   }
 }
 

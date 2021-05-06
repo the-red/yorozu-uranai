@@ -62,8 +62,12 @@ export class ZodiacSign {
     }
   }
 
+  diffDegrees(targetFullDegrees: number): number {
+    return targetFullDegrees - this.fullDegrees
+  }
+
   majorAspect(target: ZodiacSign, orb: number): MajorAspect | null {
-    const diff = target.fullDegrees - this.fullDegrees
+    const diff = this.diffDegrees(target.fullDegrees)
     if (Math.abs(diff) <= orb) {
       return 'conjunction'
     }
@@ -81,8 +85,9 @@ export class ZodiacSign {
     }
     return null
   }
+
   minorAspect(target: ZodiacSign, orb: number): MinorAspect | null {
-    const diff = target.fullDegrees - this.fullDegrees
+    const diff = this.diffDegrees(target.fullDegrees)
     if (30 - orb <= diff && diff <= 30 + orb) {
       return 'semi-sextile'
     }

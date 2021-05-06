@@ -17,9 +17,20 @@ type Sign = typeof ALL_SIGNS[number]
 const ALL_MAJOR_ASPECTS = ['conjunction', 'sextile', 'square', 'trine', 'opposition'] as const
 type MajorAspect = typeof ALL_MAJOR_ASPECTS[number]
 
+const ALL_MINOR_ASPECTS = [
+  'semi-sextile',
+  'semi-square',
+  'quintile',
+  'sesquiquadrate',
+  'biquintile',
+  'quincunx',
+] as const
+type MinorAspect = typeof ALL_MINOR_ASPECTS[number]
+
 export class ZodiacSign {
   static ALL_SIGNS = ALL_SIGNS
   static ALL_MAJOR_ASPECTS = ALL_MAJOR_ASPECTS
+  static ALL_MINOR_ASPECTS = ALL_MINOR_ASPECTS
 
   readonly sign: Sign
   readonly degrees: number
@@ -67,6 +78,13 @@ export class ZodiacSign {
     }
     if (180 - orb <= diff && diff <= 180 + orb) {
       return 'opposition'
+    }
+    return null
+  }
+  minorAspect(target: ZodiacSign, orb: number): MinorAspect | null {
+    const diff = target.fullDegrees - this.fullDegrees
+    if (30 - orb <= diff && diff <= 30 + orb) {
+      return 'semi-sextile'
     }
     return null
   }

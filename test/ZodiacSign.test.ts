@@ -171,4 +171,35 @@ describe('ZodiacSign', () => {
       })
     })
   })
+
+  describe('マイナーアスペクト', () => {
+    const orb = 2
+    describe('30度：セミセクスタイル', () => {
+      it('ちょうど30', () => {
+        const sign0 = new ZodiacSign(0)
+        const sign30 = new ZodiacSign(30)
+        expect(sign0.minorAspect(sign30, orb)).toEqual('semi-sextile')
+      })
+      it('30より小さい、許容範囲内', () => {
+        const sign0 = new ZodiacSign(0)
+        const sign28 = new ZodiacSign(28)
+        expect(sign0.minorAspect(sign28, orb)).toEqual('semi-sextile')
+      })
+      it('30より小さい、許容範囲外', () => {
+        const sign0 = new ZodiacSign(0)
+        const sign27 = new ZodiacSign(27)
+        expect(sign0.minorAspect(sign27, orb)).toEqual(null)
+      })
+      it('30より大きい、許容範囲内', () => {
+        const sign0 = new ZodiacSign(0)
+        const sign32 = new ZodiacSign(32)
+        expect(sign0.minorAspect(sign32, orb)).toEqual('semi-sextile')
+      })
+      it('30より大きい、許容範囲外', () => {
+        const sign0 = new ZodiacSign(0)
+        const sign33 = new ZodiacSign(33)
+        expect(sign0.minorAspect(sign33, orb)).toEqual(null)
+      })
+    })
+  })
 })

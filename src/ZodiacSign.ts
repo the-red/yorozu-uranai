@@ -14,7 +14,7 @@ const ALL_SIGNS = [
 ] as const
 type Sign = typeof ALL_SIGNS[number]
 
-const ALL_ASPECTS = ['conjunction', 'opposition'] as const
+const ALL_ASPECTS = ['conjunction', 'sextile', 'square', 'trine', 'opposition'] as const
 type Aspect = typeof ALL_ASPECTS[number]
 
 export class ZodiacSign {
@@ -55,10 +55,19 @@ export class ZodiacSign {
     const diff = target.fullDegrees - this.fullDegrees
     if (Math.abs(diff) <= orb) {
       return 'conjunction'
-    } else if (180 - orb <= diff && diff <= 180 + orb) {
-      return 'opposition'
-    } else {
-      return null
     }
+    if (60 - orb <= diff && diff <= 60 + orb) {
+      return 'sextile'
+    }
+    if (90 - orb <= diff && diff <= 90 + orb) {
+      return 'square'
+    }
+    if (120 - orb <= diff && diff <= 120 + orb) {
+      return 'trine'
+    }
+    if (180 - orb <= diff && diff <= 180 + orb) {
+      return 'opposition'
+    }
+    return null
   }
 }

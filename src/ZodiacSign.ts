@@ -14,12 +14,12 @@ const ALL_SIGNS = [
 ] as const
 type Sign = typeof ALL_SIGNS[number]
 
-const ALL_ASPECTS = ['conjunction', 'sextile', 'square', 'trine', 'opposition'] as const
-type Aspect = typeof ALL_ASPECTS[number]
+const ALL_MAJOR_ASPECTS = ['conjunction', 'sextile', 'square', 'trine', 'opposition'] as const
+type MajorAspect = typeof ALL_MAJOR_ASPECTS[number]
 
 export class ZodiacSign {
   static ALL_SIGNS = ALL_SIGNS
-  static ALL_ASPECTS = ALL_ASPECTS
+  static ALL_MAJOR_ASPECTS = ALL_MAJOR_ASPECTS
 
   readonly sign: Sign
   readonly degrees: number
@@ -51,7 +51,7 @@ export class ZodiacSign {
     }
   }
 
-  aspect(target: ZodiacSign, orb: number): Aspect | null {
+  majorAspect(target: ZodiacSign, orb: number): MajorAspect | null {
     const diff = target.fullDegrees - this.fullDegrees
     if (Math.abs(diff) <= orb) {
       return 'conjunction'

@@ -62,6 +62,27 @@ export class ZodiacSign {
     }
   }
 
+  get quality() {
+    if (['牡羊座', '蟹座', '天秤座', '山羊座'].includes(this.sign)) {
+      return 'cardinal'
+    }
+    if (['牡牛座', '獅子座', '蠍座', '水瓶座'].includes(this.sign)) {
+      return 'fixed'
+    }
+    if (['双子座', '乙女座', '射手座', '魚座'].includes(this.sign)) {
+      return 'mutable'
+    }
+  }
+
+  get polarity() {
+    if (['牡羊座', '双子座', '獅子座', '天秤座', '射手座', '水瓶座'].includes(this.sign)) {
+      return 'masculine'
+    }
+    if (['牡牛座', '蟹座', '乙女座', '蠍座', '山羊座', '魚座'].includes(this.sign)) {
+      return 'feminine'
+    }
+  }
+
   diffDegrees(targetFullDegrees: number): number {
     return targetFullDegrees - this.fullDegrees
   }

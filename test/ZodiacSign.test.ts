@@ -27,9 +27,155 @@ describe('ZodiacSign', () => {
   })
 
   describe('Element', () => {
-    it('牡羊座:火', () => {
+    it('牡羊座：火', () => {
       const zodiacSign = new ZodiacSign(0.5) // 牡羊座
       expect(zodiacSign.element).toEqual('fire')
+    })
+    it('牡牛座：地', () => {
+      const zodiacSign = new ZodiacSign(30.5) // 牡牛座
+      expect(zodiacSign.element).toEqual('earth')
+    })
+    it('双子座：風', () => {
+      const zodiacSign = new ZodiacSign(60.5) // 双子座
+      expect(zodiacSign.element).toEqual('air')
+    })
+    it('蟹座：水', () => {
+      const zodiacSign = new ZodiacSign(90.5) // 蟹座
+      expect(zodiacSign.element).toEqual('water')
+    })
+    it('獅子座：火', () => {
+      const zodiacSign = new ZodiacSign(120.5) // 獅子座
+      expect(zodiacSign.element).toEqual('fire')
+    })
+    it('乙女座：地', () => {
+      const zodiacSign = new ZodiacSign(150.5) // 乙女座
+      expect(zodiacSign.element).toEqual('earth')
+    })
+    it('天秤座：風', () => {
+      const zodiacSign = new ZodiacSign(180.5) // 天秤座
+      expect(zodiacSign.element).toEqual('air')
+    })
+    it('蠍座：水', () => {
+      const zodiacSign = new ZodiacSign(210.5) // 蠍座
+      expect(zodiacSign.element).toEqual('water')
+    })
+    it('射手座：火', () => {
+      const zodiacSign = new ZodiacSign(240.5) // 射手座
+      expect(zodiacSign.element).toEqual('fire')
+    })
+    it('山羊座：地', () => {
+      const zodiacSign = new ZodiacSign(270.5) // 山羊座
+      expect(zodiacSign.element).toEqual('earth')
+    })
+    it('水瓶座：風', () => {
+      const zodiacSign = new ZodiacSign(300.5) // 水瓶座
+      expect(zodiacSign.element).toEqual('air')
+    })
+    it('魚座：水', () => {
+      const zodiacSign = new ZodiacSign(330.5) // 魚座
+      expect(zodiacSign.element).toEqual('water')
+    })
+  })
+
+  describe('Quality', () => {
+    it('牡羊座：活動宮', () => {
+      const zodiacSign = new ZodiacSign(0.5) // 牡羊座
+      expect(zodiacSign.quality).toEqual('cardinal')
+    })
+    it('牡牛座：不動宮', () => {
+      const zodiacSign = new ZodiacSign(30.5) // 牡牛座
+      expect(zodiacSign.quality).toEqual('fixed')
+    })
+    it('双子座：柔軟宮', () => {
+      const zodiacSign = new ZodiacSign(60.5) // 双子座
+      expect(zodiacSign.quality).toEqual('mutable')
+    })
+    it('蟹座：活動宮', () => {
+      const zodiacSign = new ZodiacSign(90.5) // 蟹座
+      expect(zodiacSign.quality).toEqual('cardinal')
+    })
+    it('獅子座：不動宮', () => {
+      const zodiacSign = new ZodiacSign(120.5) // 獅子座
+      expect(zodiacSign.quality).toEqual('fixed')
+    })
+    it('乙女座：柔軟宮', () => {
+      const zodiacSign = new ZodiacSign(150.5) // 乙女座
+      expect(zodiacSign.quality).toEqual('mutable')
+    })
+    it('天秤座：活動宮', () => {
+      const zodiacSign = new ZodiacSign(180.5) // 天秤座
+      expect(zodiacSign.quality).toEqual('cardinal')
+    })
+    it('蠍座：不動宮', () => {
+      const zodiacSign = new ZodiacSign(210.5) // 蠍座
+      expect(zodiacSign.quality).toEqual('fixed')
+    })
+    it('射手座：柔軟宮', () => {
+      const zodiacSign = new ZodiacSign(240.5) // 射手座
+      expect(zodiacSign.quality).toEqual('mutable')
+    })
+    it('山羊座：活動宮', () => {
+      const zodiacSign = new ZodiacSign(270.5) // 山羊座
+      expect(zodiacSign.quality).toEqual('cardinal')
+    })
+    it('水瓶座：不動宮', () => {
+      const zodiacSign = new ZodiacSign(300.5) // 水瓶座
+      expect(zodiacSign.quality).toEqual('fixed')
+    })
+    it('魚座：柔軟宮', () => {
+      const zodiacSign = new ZodiacSign(330.5) // 魚座
+      expect(zodiacSign.quality).toEqual('mutable')
+    })
+  })
+
+  describe('Polarity', () => {
+    it('牡羊座：男性', () => {
+      const zodiacSign = new ZodiacSign(0.5) // 牡羊座
+      expect(zodiacSign.polarity).toEqual('masculine')
+    })
+    it('牡牛座：女性', () => {
+      const zodiacSign = new ZodiacSign(30.5) // 牡牛座
+      expect(zodiacSign.polarity).toEqual('feminine')
+    })
+    it('双子座：男性', () => {
+      const zodiacSign = new ZodiacSign(60.5) // 双子座
+      expect(zodiacSign.polarity).toEqual('masculine')
+    })
+    it('蟹座：女性', () => {
+      const zodiacSign = new ZodiacSign(90.5) // 蟹座
+      expect(zodiacSign.polarity).toEqual('feminine')
+    })
+    it('獅子座：男性', () => {
+      const zodiacSign = new ZodiacSign(120.5) // 獅子座
+      expect(zodiacSign.polarity).toEqual('masculine')
+    })
+    it('乙女座：女性', () => {
+      const zodiacSign = new ZodiacSign(150.5) // 乙女座
+      expect(zodiacSign.polarity).toEqual('feminine')
+    })
+    it('天秤座：男性', () => {
+      const zodiacSign = new ZodiacSign(180.5) // 天秤座
+      expect(zodiacSign.polarity).toEqual('masculine')
+    })
+    it('蠍座：女性', () => {
+      const zodiacSign = new ZodiacSign(210.5) // 蠍座
+      expect(zodiacSign.polarity).toEqual('feminine')
+    })
+    it('射手座：男性', () => {
+      const zodiacSign = new ZodiacSign(240.5) // 射手座
+      expect(zodiacSign.polarity).toEqual('masculine')
+    })
+    it('山羊座：女性', () => {
+      const zodiacSign = new ZodiacSign(270.5) // 山羊座
+      expect(zodiacSign.polarity).toEqual('feminine')
+    })
+    it('水瓶座：男性', () => {
+      const zodiacSign = new ZodiacSign(300.5) // 水瓶座
+      expect(zodiacSign.polarity).toEqual('masculine')
+    })
+    it('魚座：女性', () => {
+      const zodiacSign = new ZodiacSign(330.5) // 魚座
+      expect(zodiacSign.polarity).toEqual('feminine')
     })
   })
 

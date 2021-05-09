@@ -91,6 +91,21 @@ export class ZodiacSign {
     if (30 - orb <= diff && diff <= 30 + orb) {
       return 'semi-sextile'
     }
+    if (45 - orb <= diff && diff <= 45 + orb) {
+      return 'semi-square'
+    }
+    if (72 - orb <= diff && diff <= 72 + orb) {
+      return 'quintile'
+    }
+    if (135 - orb <= diff && diff <= 135 + orb) {
+      return 'sesquiquadrate'
+    }
+    if (144 - orb <= diff && diff <= 144 + orb) {
+      return 'biquintile'
+    }
+    if (150 - orb <= diff && diff <= 150 + orb) {
+      return 'quincunx'
+    }
     return null
   }
 }

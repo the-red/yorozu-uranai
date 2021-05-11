@@ -27,7 +27,7 @@ const ALL_MINOR_ASPECTS = [
 ] as const
 type MinorAspect = typeof ALL_MINOR_ASPECTS[number]
 
-export class ZodiacSign {
+export class Planet {
   static ALL_SIGNS = ALL_SIGNS
   static ALL_MAJOR_ASPECTS = ALL_MAJOR_ASPECTS
   static ALL_MINOR_ASPECTS = ALL_MINOR_ASPECTS
@@ -41,10 +41,10 @@ export class ZodiacSign {
 
     let index = Math.trunc(fullDegrees / INTERVAL)
     if (this.degrees === 0) {
-      index = index > 0 ? index - 1 : ZodiacSign.ALL_SIGNS.length - 1
+      index = index > 0 ? index - 1 : Planet.ALL_SIGNS.length - 1
     }
 
-    this.sign = ZodiacSign.ALL_SIGNS[index]
+    this.sign = Planet.ALL_SIGNS[index]
   }
 
   get element() {
@@ -87,7 +87,7 @@ export class ZodiacSign {
     return targetFullDegrees - this.fullDegrees
   }
 
-  majorAspect(target: ZodiacSign, orb: number): MajorAspect | null {
+  majorAspect(target: Planet, orb: number): MajorAspect | null {
     const diff = this.diffDegrees(target.fullDegrees)
     if (Math.abs(diff) <= orb) {
       return 'conjunction'
@@ -107,7 +107,7 @@ export class ZodiacSign {
     return null
   }
 
-  minorAspect(target: ZodiacSign, orb: number): MinorAspect | null {
+  minorAspect(target: Planet, orb: number): MinorAspect | null {
     const diff = this.diffDegrees(target.fullDegrees)
     if (30 - orb <= diff && diff <= 30 + orb) {
       return 'semi-sextile'

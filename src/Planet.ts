@@ -32,19 +32,36 @@ export class Planet {
   static ALL_MAJOR_ASPECTS = ALL_MAJOR_ASPECTS
   static ALL_MINOR_ASPECTS = ALL_MINOR_ASPECTS
 
-  readonly sign: Sign
-  readonly degrees: number
+  private INTERVAL = 30 as const
 
-  constructor(readonly fullDegrees: number) {
-    const INTERVAL = 30 as const
-    this.degrees = fullDegrees % INTERVAL
+  constructor(readonly longitude: number) {}
 
-    let index = Math.trunc(fullDegrees / INTERVAL)
+  get degrees() {
+    return this.longitude % this.INTERVAL
+  }
+
+  get formattedDegrees() {
+    const degreesInt = Math.trunc(this.degrees)
+    const degreesStr = `${String(degreesInt).padStart(2)}°`
+
+    const MINUTE = 60
+    const degreesMin = (this.degrees - degreesInt) * MINUTE
+    const degreesMinInt = Math.trunc(degreesMin)
+    const degreesMinStr = `${String(degreesMinInt).padStart(2, '0')}′`
+
+    const degreesSec = (degreesMin - degreesMinInt) * MINUTE
+    const degreesSecInt = Math.round(degreesSec)
+    const degreesSecStr = `${String(degreesSecInt).padStart(2, '0')}″`
+
+    return degreesStr + degreesMinStr + degreesSecStr
+  }
+
+  get sign() {
+    let index = Math.trunc(this.longitude / this.INTERVAL)
     if (this.degrees === 0) {
-      index = index > 0 ? index - 1 : Planet.ALL_SIGNS.length - 1
+      index = index > 0 ? index - 1 : ALL_SIGNS.length - 1
     }
-
-    this.sign = Planet.ALL_SIGNS[index]
+    return ALL_SIGNS[index]
   }
 
   get element() {
@@ -84,11 +101,11 @@ export class Planet {
   }
 
   diffDegrees(targetFullDegrees: number): number {
-    return targetFullDegrees - this.fullDegrees
+    return targetFullDegrees - this.longitude
   }
 
   majorAspect(target: Planet, orb: number): MajorAspect | null {
-    const diff = this.diffDegrees(target.fullDegrees)
+    const diff = this.diffDegrees(target.longitude)
     if (Math.abs(diff) <= orb) {
       return 'conjunction'
     }
@@ -108,7 +125,7 @@ export class Planet {
   }
 
   minorAspect(target: Planet, orb: number): MinorAspect | null {
-    const diff = this.diffDegrees(target.fullDegrees)
+    const diff = this.diffDegrees(target.longitude)
     if (30 - orb <= diff && diff <= 30 + orb) {
       return 'semi-sextile'
     }

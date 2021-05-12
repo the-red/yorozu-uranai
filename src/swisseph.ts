@@ -15,7 +15,6 @@ export const ALL_PLANETS = [
 ] as const
 export type PlanetName = typeof ALL_PLANETS[number]
 
-
 type EclipticPosition = {
   longitude: number
   latitude: number
@@ -40,15 +39,22 @@ export const julday = (date: Date): Promise<number> => {
   const utcHourMinuteSecond = hour + (minute + second / 60 + offset) / 60
 
   return new Promise((resolve) =>
-    swisseph.swe_julday(year, month, day, utcHourMinuteSecond, swisseph.SE_GREG_CAL, (julday_ut: number) => resolve(julday_ut))
+    swisseph.swe_julday(year, month, day, utcHourMinuteSecond, swisseph.SE_GREG_CAL, (julday_ut: number) =>
+      resolve(julday_ut)
+    )
   )
 }
 
 // 黄道座標の計算（ライブラリの関数をラップ）
 export const eclipticPosition = (julday_ut: number, planet: PlanetName): Promise<EclipticPosition> =>
   new Promise((resolve, reject) =>
-    swisseph.swe_calc_ut(julday_ut, swisseph[`SE_${planet.toUpperCase()}`], swisseph.SEFLG_SPEED, (body: EclipticPosition) => {
-      if (body.error) reject(body.error)
-      resolve(body)
-    })
+    swisseph.swe_calc_ut(
+      julday_ut,
+      swisseph[`SE_${planet.toUpperCase()}`],
+      swisseph.SEFLG_SPEED,
+      (body: EclipticPosition) => {
+        if (body.error) reject(body.error)
+        resolve(body)
+      }
+    )
   )

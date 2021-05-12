@@ -1,6 +1,6 @@
 import { Horoscope } from '../src/Horoscope'
 
-describe('PlanetPositions', () => {
+describe('Horoscope', () => {
   const funadyBirthday = new Date('1987-09-08T08:53:00+09:00')
 
   it('longitude', async () => {

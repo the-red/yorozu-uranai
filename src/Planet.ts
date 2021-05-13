@@ -21,7 +21,8 @@ const ALL_MAJOR_ASPECTS = [
   { degrees: 120, name: 'trine' },
   { degrees: 180, name: 'opposition' },
 ] as const
-type MajorAspect = typeof ALL_MAJOR_ASPECTS[number]
+const majorAspectName = ALL_MAJOR_ASPECTS.map((aspect) => aspect.name)
+type MajorAspect = typeof majorAspectName[number]
 
 const ALL_MINOR_ASPECTS = [
   'semi-sextile',
@@ -110,24 +111,9 @@ export class Planet {
     return targetFullDegrees - this.longitude
   }
 
-  majorAspect(target: Planet, orb: number): MajorAspect | null {
+  majorAspect(target: Planet, orb: number): MajorAspect | undefined {
     const diff = this.diffDegrees(target.longitude)
-    if (Math.abs(diff) <= orb) {
-      return 'conjunction'
-    }
-    if (60 - orb <= diff && diff <= 60 + orb) {
-      return 'sextile'
-    }
-    if (90 - orb <= diff && diff <= 90 + orb) {
-      return 'square'
-    }
-    if (120 - orb <= diff && diff <= 120 + orb) {
-      return 'trine'
-    }
-    if (180 - orb <= diff && diff <= 180 + orb) {
-      return 'opposition'
-    }
-    return null
+    return ALL_MAJOR_ASPECTS.find((aspect) => Math.abs(diff - aspect.degrees) <= orb)?.name
   }
 
   minorAspect(target: Planet, orb: number): MinorAspect | null {

@@ -195,7 +195,7 @@ describe('Planet', () => {
       it('0より小さい、許容範囲外', () => {
         const planet1 = new Planet(10)
         const planet2 = new Planet(3)
-        expect(planet1.majorAspect(planet2, orb)).toEqual(null)
+        expect(planet1.majorAspect(planet2, orb)).toEqual(undefined)
       })
       it('0より大きい、許容範囲内', () => {
         const planet1 = new Planet(10)
@@ -205,7 +205,7 @@ describe('Planet', () => {
       it('0より大きい、許容範囲外', () => {
         const planet1 = new Planet(10)
         const planet2 = new Planet(17)
-        expect(planet1.majorAspect(planet2, orb)).toEqual(null)
+        expect(planet1.majorAspect(planet2, orb)).toEqual(undefined)
       })
     })
     describe('60度：セクスタイル', () => {
@@ -222,7 +222,7 @@ describe('Planet', () => {
       it('60より小さい、許容範囲外', () => {
         const planet1 = new Planet(0)
         const planet2 = new Planet(53)
-        expect(planet1.majorAspect(planet2, orb)).toEqual(null)
+        expect(planet1.majorAspect(planet2, orb)).toEqual(undefined)
       })
       it('60より大きい、許容範囲内', () => {
         const planet1 = new Planet(0)
@@ -232,7 +232,7 @@ describe('Planet', () => {
       it('60より大きい、許容範囲外', () => {
         const planet1 = new Planet(0)
         const planet2 = new Planet(67)
-        expect(planet1.majorAspect(planet2, orb)).toEqual(null)
+        expect(planet1.majorAspect(planet2, orb)).toEqual(undefined)
       })
     })
     describe('90度：スクエア', () => {
@@ -249,7 +249,7 @@ describe('Planet', () => {
       it('90より小さい、許容範囲外', () => {
         const planet1 = new Planet(0)
         const planet2 = new Planet(83)
-        expect(planet1.majorAspect(planet2, orb)).toEqual(null)
+        expect(planet1.majorAspect(planet2, orb)).toEqual(undefined)
       })
       it('90より大きい、許容範囲内', () => {
         const planet1 = new Planet(0)
@@ -259,7 +259,7 @@ describe('Planet', () => {
       it('90より大きい、許容範囲外', () => {
         const planet1 = new Planet(0)
         const planet2 = new Planet(97)
-        expect(planet1.majorAspect(planet2, orb)).toEqual(null)
+        expect(planet1.majorAspect(planet2, orb)).toEqual(undefined)
       })
     })
     describe('120度：トライン', () => {
@@ -276,7 +276,7 @@ describe('Planet', () => {
       it('120より小さい、許容範囲外', () => {
         const planet1 = new Planet(0)
         const planet2 = new Planet(113)
-        expect(planet1.majorAspect(planet2, orb)).toEqual(null)
+        expect(planet1.majorAspect(planet2, orb)).toEqual(undefined)
       })
       it('120より大きい、許容範囲内', () => {
         const planet1 = new Planet(0)
@@ -286,7 +286,7 @@ describe('Planet', () => {
       it('120より大きい、許容範囲外', () => {
         const planet1 = new Planet(0)
         const planet2 = new Planet(127)
-        expect(planet1.majorAspect(planet2, orb)).toEqual(null)
+        expect(planet1.majorAspect(planet2, orb)).toEqual(undefined)
       })
     })
     describe('180度：オポジション', () => {
@@ -303,7 +303,7 @@ describe('Planet', () => {
       it('180より小さい、許容範囲外', () => {
         const planet1 = new Planet(0)
         const planet2 = new Planet(173)
-        expect(planet1.majorAspect(planet2, orb)).toEqual(null)
+        expect(planet1.majorAspect(planet2, orb)).toEqual(undefined)
       })
       it('180より大きい、許容範囲内', () => {
         const planet1 = new Planet(0)
@@ -313,7 +313,7 @@ describe('Planet', () => {
       it('180より大きい、許容範囲外', () => {
         const planet1 = new Planet(0)
         const planet2 = new Planet(187)
-        expect(planet1.majorAspect(planet2, orb)).toEqual(null)
+        expect(planet1.majorAspect(planet2, orb)).toEqual(undefined)
       })
     })
   })

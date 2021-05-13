@@ -14,7 +14,13 @@ const ALL_SIGNS = [
 ] as const
 type Sign = typeof ALL_SIGNS[number]
 
-const ALL_MAJOR_ASPECTS = ['conjunction', 'sextile', 'square', 'trine', 'opposition'] as const
+const ALL_MAJOR_ASPECTS = [
+  { degrees: 0, name: 'conjunction' },
+  { degrees: 60, name: 'sextile' },
+  { degrees: 90, name: 'square' },
+  { degrees: 120, name: 'trine' },
+  { degrees: 180, name: 'opposition' },
+] as const
 type MajorAspect = typeof ALL_MAJOR_ASPECTS[number]
 
 const ALL_MINOR_ASPECTS = [

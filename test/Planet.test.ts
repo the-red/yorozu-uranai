@@ -187,19 +187,34 @@ describe('Planet', () => {
         const planet2 = new Planet(10)
         expect(planet1.majorAspect(planet2, orb)).toEqual('conjunction')
       })
-      it('基準値より小さい、許容範囲内', () => {
+      it('基準値より小さい、許容範囲内1', () => {
         const planet1 = new Planet(10)
         const planet2 = new Planet(4)
         expect(planet1.majorAspect(planet2, orb)).toEqual('conjunction')
       })
-      it('基準値より小さい、許容範囲外', () => {
+      it('基準値より小さい、許容範囲内2', () => {
+        const planet1 = new Planet(4)
+        const planet2 = new Planet(10)
+        expect(planet1.majorAspect(planet2, orb)).toEqual('conjunction')
+      })
+      it('基準値より小さい、許容範囲外1', () => {
         const planet1 = new Planet(10)
         const planet2 = new Planet(3)
         expect(planet1.majorAspect(planet2, orb)).toEqual(undefined)
       })
-      it('基準値より大きい、許容範囲内', () => {
+      it('基準値より小さい、許容範囲外2', () => {
+        const planet1 = new Planet(3)
+        const planet2 = new Planet(10)
+        expect(planet1.majorAspect(planet2, orb)).toEqual(undefined)
+      })
+      it('基準値より大きい、許容範囲内1', () => {
         const planet1 = new Planet(10)
         const planet2 = new Planet(16)
+        expect(planet1.majorAspect(planet2, orb)).toEqual('conjunction')
+      })
+      it('基準値より大きい、許容範囲内2', () => {
+        const planet1 = new Planet(16)
+        const planet2 = new Planet(10)
         expect(planet1.majorAspect(planet2, orb)).toEqual('conjunction')
       })
       it('基準値より大きい、許容範囲外', () => {
@@ -207,31 +222,61 @@ describe('Planet', () => {
         const planet2 = new Planet(17)
         expect(planet1.majorAspect(planet2, orb)).toEqual(undefined)
       })
-    })
-    describe('60度：セクスタイル', () => {
-      it('ちょうど基準値', () => {
-        const planet1 = new Planet(0)
-        const planet2 = new Planet(60)
-        expect(planet1.majorAspect(planet2, orb)).toEqual('sextile')
-      })
-      it('基準値より小さい、許容範囲内', () => {
-        const planet1 = new Planet(0)
-        const planet2 = new Planet(54)
-        expect(planet1.majorAspect(planet2, orb)).toEqual('sextile')
-      })
-      it('基準値より小さい、許容範囲外', () => {
-        const planet1 = new Planet(0)
-        const planet2 = new Planet(53)
+      it('基準値より大きい、許容範囲外', () => {
+        const planet1 = new Planet(17)
+        const planet2 = new Planet(10)
         expect(planet1.majorAspect(planet2, orb)).toEqual(undefined)
       })
-      it('基準値より大きい、許容範囲内', () => {
-        const planet1 = new Planet(0)
-        const planet2 = new Planet(66)
+    })
+    describe('60度：セクスタイル', () => {
+      it('ちょうど基準値1', () => {
+        const planet1 = new Planet(10)
+        const planet2 = new Planet(70)
         expect(planet1.majorAspect(planet2, orb)).toEqual('sextile')
       })
-      it('基準値より大きい、許容範囲外', () => {
-        const planet1 = new Planet(0)
-        const planet2 = new Planet(67)
+      it('ちょうど基準値2', () => {
+        const planet1 = new Planet(70)
+        const planet2 = new Planet(10)
+        expect(planet1.majorAspect(planet2, orb)).toEqual('sextile')
+      })
+      it('基準値より小さい、許容範囲内1', () => {
+        const planet1 = new Planet(10)
+        const planet2 = new Planet(64)
+        expect(planet1.majorAspect(planet2, orb)).toEqual('sextile')
+      })
+      it('基準値より小さい、許容範囲内2', () => {
+        const planet1 = new Planet(64)
+        const planet2 = new Planet(10)
+        expect(planet1.majorAspect(planet2, orb)).toEqual('sextile')
+      })
+      it('基準値より小さい、許容範囲外1', () => {
+        const planet1 = new Planet(10)
+        const planet2 = new Planet(63)
+        expect(planet1.majorAspect(planet2, orb)).toEqual(undefined)
+      })
+      it('基準値より小さい、許容範囲外2', () => {
+        const planet1 = new Planet(63)
+        const planet2 = new Planet(10)
+        expect(planet1.majorAspect(planet2, orb)).toEqual(undefined)
+      })
+      it('基準値より大きい、許容範囲内1', () => {
+        const planet1 = new Planet(10)
+        const planet2 = new Planet(76)
+        expect(planet1.majorAspect(planet2, orb)).toEqual('sextile')
+      })
+      it('基準値より大きい、許容範囲内2', () => {
+        const planet1 = new Planet(76)
+        const planet2 = new Planet(10)
+        expect(planet1.majorAspect(planet2, orb)).toEqual('sextile')
+      })
+      it('基準値より大きい、許容範囲外1', () => {
+        const planet1 = new Planet(10)
+        const planet2 = new Planet(77)
+        expect(planet1.majorAspect(planet2, orb)).toEqual(undefined)
+      })
+      it('基準値より大きい、許容範囲外2', () => {
+        const planet1 = new Planet(77)
+        const planet2 = new Planet(10)
         expect(planet1.majorAspect(planet2, orb)).toEqual(undefined)
       })
     })

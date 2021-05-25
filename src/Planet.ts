@@ -107,7 +107,7 @@ export class Planet {
   }
 
   diffDegrees(targetFullDegrees: number): number {
-    return targetFullDegrees - this.longitude
+    return Math.abs(targetFullDegrees - this.longitude)
   }
 
   majorAspect(target: Planet, orb: number): MajorAspect | undefined {

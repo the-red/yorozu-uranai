@@ -21,8 +21,7 @@ const ALL_MAJOR_ASPECTS = [
   { degrees: 120, name: 'trine' },
   { degrees: 180, name: 'opposition' },
 ] as const
-const majorAspectName = ALL_MAJOR_ASPECTS.map((aspect) => aspect.name)
-type MajorAspect = typeof majorAspectName[number]
+type MajorAspect = typeof ALL_MAJOR_ASPECTS[number]['name']
 
 const ALL_MINOR_ASPECTS = [
   'semi-sextile',

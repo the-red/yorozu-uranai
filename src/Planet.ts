@@ -106,17 +106,17 @@ export class Planet {
     }
   }
 
-  diffDegrees(targetFullDegrees: number): number {
-    return Math.abs(targetFullDegrees - this.longitude)
+  diffLongitude(targetLongitude: number): number {
+    return Math.abs(targetLongitude - this.longitude)
   }
 
   majorAspect(target: Planet, orb: number): MajorAspect | undefined {
-    const diff = this.diffDegrees(target.longitude)
+    const diff = this.diffLongitude(target.longitude)
     return ALL_MAJOR_ASPECTS.find((aspect) => Math.abs(diff - aspect.degrees) <= orb)?.name
   }
 
   minorAspect(target: Planet, orb: number): MinorAspect | undefined {
-    const diff = this.diffDegrees(target.longitude)
+    const diff = this.diffLongitude(target.longitude)
     return ALL_MINOR_ASPECTS.find((aspect) => Math.abs(diff - aspect.degrees) <= orb)?.name
   }
 }

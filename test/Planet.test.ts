@@ -334,7 +334,7 @@ describe('Planet', () => {
       it('基準値より小さい、許容範囲外', () => {
         const planet1 = new Planet(0)
         const planet2 = new Planet(27)
-        expect(planet1.minorAspect(planet2, orb)).toEqual(null)
+        expect(planet1.minorAspect(planet2, orb)).toEqual(undefined)
       })
       it('基準値より大きい、許容範囲内', () => {
         const planet1 = new Planet(0)
@@ -344,7 +344,7 @@ describe('Planet', () => {
       it('基準値より大きい、許容範囲外', () => {
         const planet1 = new Planet(0)
         const planet2 = new Planet(33)
-        expect(planet1.minorAspect(planet2, orb)).toEqual(null)
+        expect(planet1.minorAspect(planet2, orb)).toEqual(undefined)
       })
     })
     describe('45度：セミスクエア', () => {
@@ -361,7 +361,7 @@ describe('Planet', () => {
       it('基準値より小さい、許容範囲外', () => {
         const planet1 = new Planet(0)
         const planet2 = new Planet(42)
-        expect(planet1.minorAspect(planet2, orb)).toEqual(null)
+        expect(planet1.minorAspect(planet2, orb)).toEqual(undefined)
       })
       it('基準値より大きい、許容範囲内', () => {
         const planet1 = new Planet(0)
@@ -371,7 +371,7 @@ describe('Planet', () => {
       it('基準値より大きい、許容範囲外', () => {
         const planet1 = new Planet(0)
         const planet2 = new Planet(48)
-        expect(planet1.minorAspect(planet2, orb)).toEqual(null)
+        expect(planet1.minorAspect(planet2, orb)).toEqual(undefined)
       })
     })
     describe('72度：クィンタイル', () => {
@@ -388,7 +388,7 @@ describe('Planet', () => {
       it('基準値より小さい、許容範囲外', () => {
         const planet1 = new Planet(0)
         const planet2 = new Planet(69)
-        expect(planet1.minorAspect(planet2, orb)).toEqual(null)
+        expect(planet1.minorAspect(planet2, orb)).toEqual(undefined)
       })
       it('基準値より大きい、許容範囲内', () => {
         const planet1 = new Planet(0)
@@ -398,7 +398,7 @@ describe('Planet', () => {
       it('基準値より大きい、許容範囲外', () => {
         const planet1 = new Planet(0)
         const planet2 = new Planet(75)
-        expect(planet1.minorAspect(planet2, orb)).toEqual(null)
+        expect(planet1.minorAspect(planet2, orb)).toEqual(undefined)
       })
     })
     describe('135度：セスキコードレート', () => {
@@ -415,7 +415,7 @@ describe('Planet', () => {
       it('基準値より小さい、許容範囲外', () => {
         const planet1 = new Planet(132)
         const planet2 = new Planet(27)
-        expect(planet1.minorAspect(planet2, orb)).toEqual(null)
+        expect(planet1.minorAspect(planet2, orb)).toEqual(undefined)
       })
       it('基準値より大きい、許容範囲内', () => {
         const planet1 = new Planet(0)
@@ -425,7 +425,7 @@ describe('Planet', () => {
       it('基準値より大きい、許容範囲外', () => {
         const planet1 = new Planet(0)
         const planet2 = new Planet(138)
-        expect(planet1.minorAspect(planet2, orb)).toEqual(null)
+        expect(planet1.minorAspect(planet2, orb)).toEqual(undefined)
       })
     })
     describe('144度：バイクインタイル', () => {
@@ -442,7 +442,7 @@ describe('Planet', () => {
       it('基準値より小さい、許容範囲外', () => {
         const planet1 = new Planet(0)
         const planet2 = new Planet(141)
-        expect(planet1.minorAspect(planet2, orb)).toEqual(null)
+        expect(planet1.minorAspect(planet2, orb)).toEqual(undefined)
       })
       it('基準値より大きい、許容範囲内', () => {
         const planet1 = new Planet(0)
@@ -452,7 +452,7 @@ describe('Planet', () => {
       it('基準値より大きい、許容範囲外', () => {
         const planet1 = new Planet(0)
         const planet2 = new Planet(147)
-        expect(planet1.minorAspect(planet2, orb)).toEqual(null)
+        expect(planet1.minorAspect(planet2, orb)).toEqual(undefined)
       })
     })
     describe('150度：クインカンクス', () => {
@@ -469,7 +469,7 @@ describe('Planet', () => {
       it('基準値より小さい、許容範囲外', () => {
         const planet1 = new Planet(0)
         const planet2 = new Planet(147)
-        expect(planet1.minorAspect(planet2, orb)).toEqual(null)
+        expect(planet1.minorAspect(planet2, orb)).toEqual(undefined)
       })
       it('基準値より大きい、許容範囲内', () => {
         const planet1 = new Planet(0)
@@ -479,7 +479,7 @@ describe('Planet', () => {
       it('基準値より大きい、許容範囲外', () => {
         const planet1 = new Planet(0)
         const planet2 = new Planet(153)
-        expect(planet1.minorAspect(planet2, orb)).toEqual(null)
+        expect(planet1.minorAspect(planet2, orb)).toEqual(undefined)
       })
     })
   })

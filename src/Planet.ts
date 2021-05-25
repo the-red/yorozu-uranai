@@ -24,14 +24,14 @@ const ALL_MAJOR_ASPECTS = [
 type MajorAspect = typeof ALL_MAJOR_ASPECTS[number]['name']
 
 const ALL_MINOR_ASPECTS = [
-  'semi-sextile',
-  'semi-square',
-  'quintile',
-  'sesquiquadrate',
-  'biquintile',
-  'quincunx',
+  { degrees: 30, name: 'semi-sextile' },
+  { degrees: 45, name: 'semi-square' },
+  { degrees: 72, name: 'quintile' },
+  { degrees: 135, name: 'sesquiquadrate' },
+  { degrees: 144, name: 'biquintile' },
+  { degrees: 150, name: 'quincunx' },
 ] as const
-type MinorAspect = typeof ALL_MINOR_ASPECTS[number]
+type MinorAspect = typeof ALL_MINOR_ASPECTS[number]['name']
 
 export class Planet {
   static ALL_SIGNS = ALL_SIGNS
@@ -115,26 +115,8 @@ export class Planet {
     return ALL_MAJOR_ASPECTS.find((aspect) => Math.abs(diff - aspect.degrees) <= orb)?.name
   }
 
-  minorAspect(target: Planet, orb: number): MinorAspect | null {
+  minorAspect(target: Planet, orb: number): MinorAspect | undefined {
     const diff = this.diffDegrees(target.longitude)
-    if (30 - orb <= diff && diff <= 30 + orb) {
-      return 'semi-sextile'
-    }
-    if (45 - orb <= diff && diff <= 45 + orb) {
-      return 'semi-square'
-    }
-    if (72 - orb <= diff && diff <= 72 + orb) {
-      return 'quintile'
-    }
-    if (135 - orb <= diff && diff <= 135 + orb) {
-      return 'sesquiquadrate'
-    }
-    if (144 - orb <= diff && diff <= 144 + orb) {
-      return 'biquintile'
-    }
-    if (150 - orb <= diff && diff <= 150 + orb) {
-      return 'quincunx'
-    }
-    return null
+    return ALL_MINOR_ASPECTS.find((aspect) => Math.abs(diff - aspect.degrees) <= orb)?.name
   }
 }

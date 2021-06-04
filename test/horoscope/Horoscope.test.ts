@@ -1,4 +1,4 @@
-import { Horoscope } from '../src/Horoscope'
+import { Horoscope } from '../../src/horoscope/Horoscope'
 
 describe('Horoscope', () => {
   const funadyBirthday = new Date('1987-09-08T08:53:00+09:00')

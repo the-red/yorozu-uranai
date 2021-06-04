@@ -1,4 +1,4 @@
-import { Planet } from '../src/Planet'
+import { Planet } from '../../src/horoscope/Planet'
 
 describe('Planet', () => {
   describe('星座と角度', () => {

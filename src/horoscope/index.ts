@@ -1,1 +1,2 @@
-console.log('fortune telling')
+export { Horoscope } from './Horoscope'
+export { Planet } from './Planet'

@@ -1,23 +1,28 @@
 {
   "name": "fortune-telling",
-  "main": "dist/",
+  "private": true,
   "scripts": {
-    "start": "ts-node src",
-    "build": "tsc",
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
     "test": "jest"
   },
   "license": "UNLICENSED",
   "devDependencies": {
     "@types/jest": "^26.0.20",
     "@types/luxon": "^1.26.0",
+    "@types/react": "^17.0.9",
     "jest": "^26.6.3",
     "prettier": "^2.2.1",
     "ts-jest": "^26.5.1",
     "ts-node": "^9.1.1",
-    "typescript": "^4.1.5"
+    "typescript": "^4.3.2"
   },
   "dependencies": {
-    "luxon": "^1.26.0",
+    "luxon": "^1.27.0",
+    "next": "10.2.3",
+    "react": "17.0.2",
+    "react-dom": "17.0.2",
     "swisseph": "^0.5.15"
   }
 }

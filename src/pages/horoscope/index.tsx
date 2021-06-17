@@ -1,4 +1,4 @@
-import type { GetServerSideProps, InferGetServerSidePropsType } from 'next'
+import useSWR from 'swr'
 
 type Planet = {
   longitude: number
@@ -19,23 +19,28 @@ type Horoscope = {
   }
 }
 
-export const getServerSideProps: GetServerSideProps<{ horoscope: Horoscope }> = async (context) => {
-  const origin = context.req.headers.referer?.replace(context.resolvedUrl, '')
-  const res = await fetch(`${origin}/api/horoscope`, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ birthday: '1987-09-08T08:53:00+09:00' }),
+function Horoscope() {
+  const { data, error } = useSWR('/api/horoscope', async (url) => {
+    const res = await fetch(url, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ birthday: '1987-09-08T08:53:00+09:00' }),
+    })
+    if (!res.ok) {
+      const { errorMessage } = await res.json()
+      throw new Error(errorMessage)
+    }
+    const horoscope: Horoscope = await res.json()
+    return horoscope
   })
-  const horoscope: Horoscope = await res.json()
-  return { props: { horoscope } }
-}
 
-function Horoscope({ horoscope }: InferGetServerSidePropsType<typeof getServerSideProps>) {
-  console.log(horoscope)
+  if (error) return <div>failed to load: {JSON.stringify(error.message)}</div>
+  if (!data) return <div>loading...</div>
+
   return (
     <>
       <p>Horoscope</p>
-      <pre>{JSON.stringify(horoscope, null, 2)}</pre>
+      <pre>{JSON.stringify(data, null, 2)}</pre>
     </>
   )
 }

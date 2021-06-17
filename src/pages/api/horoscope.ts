@@ -2,15 +2,13 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
 import { Horoscope } from '../../horoscope/Horoscope'
 
-type Data = {
-  horoscope: Horoscope
-}
+type Data = { horoscope: Horoscope } | { errorMessage: string }
 
 export default async (req: NextApiRequest, res: NextApiResponse<Data>) => {
   console.log(req.body.birthday)
   const birthday = new Date(req.body.birthday as string)
   if (birthday.toString() === 'Invalid Date') {
-    throw new Error('error')
+    return res.status(400).json({ errorMessage: 'Invalid birthday' })
   }
   const horoscope = await Horoscope.getInstance(birthday)
   // TODO: class内の情報が全部取れてないので、

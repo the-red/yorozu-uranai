@@ -20,7 +20,7 @@ export class Horoscope {
     const positions = await Promise.all(
       ALL_PLANETS.map(async (planetName) => {
         const position = await eclipticPosition(julday_ut, planetName)
-        const planet = new Planet(position.longitude)
+        const planet = new Planet(position.longitude, planetName)
         return [planetName, planet] as [PlanetName, Planet]
       })
     )
@@ -28,7 +28,7 @@ export class Horoscope {
     return new Horoscope(positionsMap)
   }
 
-  constructor(readonly all: Record<PlanetName, Planet>) {
+  constructor(all: Record<PlanetName, Planet>) {
     this.sun = all.sun
     this.moon = all.moon
     this.mercury = all.mercury

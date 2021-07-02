@@ -11,7 +11,5 @@ export default async (req: NextApiRequest, res: NextApiResponse<Data>) => {
     return res.status(400).json({ errorMessage: 'Invalid birthday' })
   }
   const horoscope = await Horoscope.getInstance(birthday)
-  // TODO: class内の情報が全部取れてないので、
-  // Planet, HoroscopeそれぞれにtoJSON()を実装する
   res.status(200).json({ horoscope })
 }

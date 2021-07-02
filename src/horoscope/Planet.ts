@@ -1,3 +1,5 @@
+import type { PlanetName } from './swisseph'
+
 const ALL_SIGNS = [
   '牡羊座',
   '牡牛座',
@@ -40,7 +42,7 @@ export class Planet {
 
   private INTERVAL = 30 as const
 
-  constructor(readonly longitude: number) {}
+  constructor(readonly longitude: number, readonly name: PlanetName) {}
 
   get degrees() {
     return this.longitude % this.INTERVAL
@@ -118,5 +120,18 @@ export class Planet {
   minorAspect(target: Planet, orb: number): MinorAspect | undefined {
     const diff = this.diffLongitude(target.longitude)
     return ALL_MINOR_ASPECTS.find((aspect) => Math.abs(diff - aspect.degrees) <= orb)?.name
+  }
+
+  toJSON() {
+    return {
+      name: this.name,
+      longitude: this.longitude,
+      degrees: this.degrees,
+      formattedDegrees: this.formattedDegrees,
+      sign: this.sign,
+      element: this.element,
+      quality: this.quality,
+      polarity: this.polarity,
+    }
   }
 }

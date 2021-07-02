@@ -39,23 +39,37 @@ function Horoscope() {
   if (error) return <div>failed to load: {JSON.stringify(error.message)}</div>
   if (!data) return <div>loading...</div>
 
-  const planets = Object.entries(data).map(([key, value]) => ({ name: key, longitude: value.longitude }))
+  const planets = Object.entries(data).map(([key, value]) => ({
+    name: key,
+    degrees: value.degrees,
+    element: value.element,
+    formattedDegrees: value.formattedDegrees,
+    longitude: value.longitude,
+    polarity: value.polarity,
+    quality: value.quality,
+    sign: value.sign,
+  }))
 
   return (
     <>
       <p>Horoscope</p>
+      <p>【天体の位置】</p>
       <table>
         <thead>
           <tr>
             <th>惑星</th>
+            <th>星座</th>
             <th>角度</th>
+            <th>ハウス</th>
           </tr>
         </thead>
         <tbody>
           {planets.map((planet) => (
             <tr>
               <td>{planet.name}</td>
-              <td>{planet.longitude}</td>
+              <td>{planet.sign}</td>
+              <td>{planet.formattedDegrees}</td>
+              <td>1ハウス</td>
             </tr>
           ))}
         </tbody>

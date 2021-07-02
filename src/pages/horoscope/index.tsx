@@ -6,6 +6,7 @@ type Planet = {
 }
 type Horoscope = {
   horoscope: {
+    all: any
     sun: Planet
     moon: Planet
     mercury: Planet
@@ -32,7 +33,7 @@ function Horoscope() {
     }
     const horoscope: Horoscope = await res.json()
     delete horoscope.horoscope.all
-    return horoscope
+    return horoscope.horoscope
   })
 
   if (error) return <div>failed to load: {JSON.stringify(error.message)}</div>

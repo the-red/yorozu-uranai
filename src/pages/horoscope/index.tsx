@@ -39,10 +39,7 @@ function Horoscope() {
   if (error) return <div>failed to load: {JSON.stringify(error.message)}</div>
   if (!data) return <div>loading...</div>
 
-  const planets = [
-    { name: '太陽', longitude: 15.12345 },
-    { name: '月', longitude: 8.12345 },
-  ]
+  const planets = Object.entries(data).map(([key, value]) => ({ name: key, longitude: value.longitude }))
 
   return (
     <>
@@ -63,7 +60,6 @@ function Horoscope() {
           ))}
         </tbody>
       </table>
-      <pre>{JSON.stringify(data, null, 2)}</pre>
     </>
   )
 }

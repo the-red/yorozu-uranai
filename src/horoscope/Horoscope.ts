@@ -1,5 +1,5 @@
-import { julday, eclipticPosition, ALL_PLANETS, PlanetName } from './swisseph'
-import { Planet } from './Planet'
+import { julday, eclipticPosition } from './swisseph'
+import { Planet, ALL_PLANETS, PlanetName } from './Planet'
 
 // 全惑星の座標
 export class Horoscope {

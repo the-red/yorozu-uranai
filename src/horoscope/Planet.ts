@@ -1,4 +1,16 @@
-import type { PlanetName } from './swisseph'
+export const ALL_PLANETS = [
+  'sun',
+  'moon',
+  'mercury',
+  'venus',
+  'mars',
+  'jupiter',
+  'saturn',
+  'uranus',
+  'neptune',
+  'pluto',
+] as const
+export type PlanetName = typeof ALL_PLANETS[number]
 
 const ALL_SIGNS = [
   '牡羊座',

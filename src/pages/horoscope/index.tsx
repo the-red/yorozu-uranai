@@ -31,6 +31,7 @@ function Horoscope() {
       throw new Error(errorMessage)
     }
     const horoscope: Horoscope = await res.json()
+    delete horoscope.horoscope.all
     return horoscope
   })
 
@@ -40,6 +41,20 @@ function Horoscope() {
   return (
     <>
       <p>Horoscope</p>
+      <table>
+        <thead>
+          <tr>
+            <th>惑星</th>
+            <th>角度</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>太陽</td>
+            <td>15.12345°</td>
+          </tr>
+        </tbody>
+      </table>
       <pre>{JSON.stringify(data, null, 2)}</pre>
     </>
   )

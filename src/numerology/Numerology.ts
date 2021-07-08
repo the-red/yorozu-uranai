@@ -63,7 +63,7 @@ export class Numerology {
     return this.sumOfDigits(this.DD.split('').map((v) => Number(v)))
   }
 
-  // 各桁の和を求める。ゾロ目または1桁になるまで再帰的に計算する。
+  // 各桁の和を求める。ゾロ目または1桁になるまで再帰的に計算する
   private sumOfDigits(digits: number[]): number {
     const sum = digits.reduce((prev, curr) => prev + curr, 0)
     if (sum % 11 === 0 || sum % 111 === 0 || Math.floor(sum / 10) === 0) return sum

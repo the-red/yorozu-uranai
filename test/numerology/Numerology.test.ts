@@ -8,4 +8,16 @@ describe('Numerology', () => {
   it('destiny number', () => {
     expect(numerology.destinyNumber()).toEqual(7)
   })
+  it('soul number', () => {
+    expect(numerology.soulNumber()).toEqual(8)
+  })
+  it('personality number', () => {
+    expect(numerology.personalityNumber()).toEqual(8)
+  })
+  it('maturity number', () => {
+    expect(numerology.maturityNumber()).toEqual(29)
+  })
+  it('birthday number', () => {
+    expect(numerology.birthdayNumber()).toEqual(4)
+  })
 })

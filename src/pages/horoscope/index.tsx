@@ -74,61 +74,63 @@ function Horoscope() {
           ))}
         </tbody>
       </table>
-      <p>Sign</p>
-      <table>
-        <thead>
-          <tr>
-            <td>区分</td>
-            <td>惑星</td>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>火：</td>
-            <td>木星　天王星　海王星</td>
-          </tr>
-          <tr>
-            <td>土：</td>
-            <td>太陽　水星</td>
-          </tr>
-          <tr>
-            <td>風：</td>
-            <td>火星　土星　冥王星</td>
-          </tr>
-          <tr>
-            <td>水：</td>
-            <td>月　金星</td>
-          </tr>
-        </tbody>
-      </table>
-      <table>
-        <tbody>
-          <tr>
-            <td>活動宮：</td>
-            <td>月　金星　土星　冥王星</td>
-          </tr>
-          <tr>
-            <td>不動宮：</td>
-            <td>太陽　水星</td>
-          </tr>
-          <tr>
-            <td>柔軟宮：</td>
-            <td>火星　木星　天王星　海王星</td>
-          </tr>
-        </tbody>
-      </table>
-      <table>
-        <tbody>
-          <tr>
-            <td>男性宮：</td>
-            <td>火星　木星　土星　天王星　海王星　冥王星</td>
-          </tr>
-          <tr>
-            <td>女性宮：</td>
-            <td>太陽　月　水星　金星</td>
-          </tr>
-        </tbody>
-      </table>
+      <div>
+        <p>【サイン区分】</p>
+        <table>
+          <thead>
+            <tr>
+              <th>４区分</th>
+              <th>惑星</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>火：</td>
+              <td>{planets.map((planet) => (planet.element === 'fire' ? planet.name : '')).join('  ')}</td>
+            </tr>
+            <tr>
+              <td>土：</td>
+              <td>{planets.map((planet) => (planet.element === 'earth' ? planet.name : '')).join('  ')}</td>
+            </tr>
+            <tr>
+              <td>風：</td>
+              <td>{planets.map((planet) => (planet.element === 'air' ? planet.name : '')).join('  ')}</td>
+            </tr>
+            <tr>
+              <td>水：</td>
+              <td>{planets.map((planet) => (planet.element === 'water' ? planet.name : '')).join('  ')}</td>
+            </tr>
+            <tr>
+              <th>３区分</th>
+              <th>惑星</th>
+            </tr>
+            <tr>
+              <td>活動宮：</td>
+              <td>{planets.map((planet) => (planet.quality === 'cardinal' ? planet.name : '')).join('  ')}</td>
+            </tr>
+            <tr>
+              <td>不動宮：</td>
+              <td>{planets.map((planet) => (planet.quality === 'fixed' ? planet.name : '')).join('  ')}</td>
+            </tr>
+            <tr>
+              <td>柔軟宮：</td>
+              <td>{planets.map((planet) => (planet.quality === 'mutable' ? planet.name : '')).join(' ')}</td>
+            </tr>
+            <tr>
+              <th>２区分</th>
+              <th>惑星</th>
+            </tr>
+            <tr>
+              <td>男性宮：</td>
+              <td>{planets.map((planet) => (planet.polarity === 'masculine' ? planet.name : '')).join('  ')}</td>
+            </tr>
+            <tr>
+              <td>女性宮：</td>
+              <td>{planets.map((planet) => (planet.polarity === 'feminine' ? planet.name : '')).join(' ')}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
     </>
   )
 }

@@ -11,19 +11,19 @@ export class Numerology {
     this.lastName = lastName
   }
 
-  get YYYY() {
+  private get YYYY() {
     return String(this.birthDate.getFullYear()).padStart(4, '0')
   }
 
-  get MM() {
+  private get MM() {
     return String(this.birthDate.getMonth() + 1).padStart(2, '0')
   }
 
-  get DD() {
+  private get DD() {
     return String(this.birthDate.getDate()).padStart(2, '0')
   }
 
-  get fullName() {
+  private get fullName() {
     return this.firstName + this.lastName
   }
 

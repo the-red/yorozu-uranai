@@ -1,14 +1,12 @@
 export class Numerology {
   birthDate: Date
-  firstName: string
-  lastName: string
+  fullName: string
 
   private VOWELS = 'AIUEO'
 
-  constructor({ birthDate, firstName, lastName }: { birthDate: Date; firstName: string; lastName: string }) {
+  constructor({ birthDate, fullName }: { birthDate: Date; fullName: string }) {
     this.birthDate = birthDate
-    this.firstName = firstName
-    this.lastName = lastName
+    this.fullName = fullName.replace(/\s+/g, '')
   }
 
   private get YYYY() {
@@ -21,10 +19,6 @@ export class Numerology {
 
   private get DD() {
     return String(this.birthDate.getDate()).padStart(2, '0')
-  }
-
-  private get fullName() {
-    return this.firstName + this.lastName
   }
 
   // 生年月日が対象
@@ -62,19 +56,23 @@ export class Numerology {
   }
 
   get birthdayNumber(): number {
-    return this.sumOfDigits(this.DD.split('').map((v) => Number(v)))
+    return this.sumOfDigits(this.DD.split('').map(Number))
   }
 
   // 各桁の和を求める。ゾロ目または1桁になるまで再帰的に計算する
   private sumOfDigits(digits: number[]): number {
     const sum = digits.reduce((prev, curr) => prev + curr, 0)
-    if (sum % 11 === 0 || sum % 111 === 0 || Math.floor(sum / 10) === 0) return sum
-    return this.sumOfDigits([Math.floor(sum / 10), sum % 10])
+    if (this.isSameNumberDigits(String(sum).split('').map(Number))) return sum
+    return this.sumOfDigits(String(sum).split('').map(Number))
   }
 
   // ABC...IJ... -> 123...91... に変換する
   private putagorianConvert(char: string): number {
-    const temp = char.toUpperCase().charCodeAt(0) - 'A'.charCodeAt(0) + 1
-    return temp % 9 || 9
+    const count = char.toUpperCase().charCodeAt(0) - 'A'.charCodeAt(0) + 1
+    return count % 9 || 9
+  }
+
+  private isSameNumberDigits(digits: number[]) {
+    return digits.every((val, _, ary) => val === ary[0], true)
   }
 }

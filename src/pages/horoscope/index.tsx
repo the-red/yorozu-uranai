@@ -50,6 +50,15 @@ function Horoscope() {
     sign: value.sign,
   }))
 
+  type A = typeof planets
+
+  const hoge = (planets: A, type: string) => {
+    return planets
+      .filter((planet) => planet.element === type)
+      .map((planet) => planet.name)
+      .join(' ')
+  }
+
   return (
     <>
       <p>Horoscope</p>
@@ -79,18 +88,26 @@ function Horoscope() {
         <table>
           <thead>
             <tr>
-              <th>４区分</th>
+              <th>区分</th>
               <th>惑星</th>
             </tr>
           </thead>
           <tbody>
             <tr>
+              <th colSpan={2}>４区分</th>
+            </tr>
+            <tr>
               <td>火：</td>
-              <td>{planets.map((planet) => (planet.element === 'fire' ? planet.name : '')).join('  ')}</td>
+              <td>
+                {planets
+                  .filter((planet) => planet.element === 'fire')
+                  .map((planet) => planet.name)
+                  .join(' ')}
+              </td>
             </tr>
             <tr>
               <td>土：</td>
-              <td>{planets.map((planet) => (planet.element === 'earth' ? planet.name : '')).join('  ')}</td>
+              <td>{planets.flatMap((planet) => (planet.element === 'earth' ? planet.name : [])).join(' ')}</td>
             </tr>
             <tr>
               <td>風：</td>
@@ -101,8 +118,7 @@ function Horoscope() {
               <td>{planets.map((planet) => (planet.element === 'water' ? planet.name : '')).join('  ')}</td>
             </tr>
             <tr>
-              <th>３区分</th>
-              <th>惑星</th>
+              <th colSpan={2}>３区分</th>
             </tr>
             <tr>
               <td>活動宮：</td>
@@ -117,8 +133,7 @@ function Horoscope() {
               <td>{planets.map((planet) => (planet.quality === 'mutable' ? planet.name : '')).join(' ')}</td>
             </tr>
             <tr>
-              <th>２区分</th>
-              <th>惑星</th>
+              <th colSpan={2}>２区分</th>
             </tr>
             <tr>
               <td>男性宮：</td>

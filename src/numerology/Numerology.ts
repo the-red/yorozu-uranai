@@ -35,14 +35,13 @@ export class Numerology {
 
   // ローマ字表記の名前をピュタゴリアン変換したものが対象
   get destinyNumber(): number {
-    const digits = this.fullName.toUpperCase().split('').map(this.putagorianConvert)
+    const digits = this.fullName.split('').map(this.putagorianConvert)
     return this.sumOfDigits(digits)
   }
 
   // ローマ字表記の名前の母音をピュタゴリアン変換したものが対象
   get soulNumber(): number {
     const digits = this.fullName
-      .toUpperCase()
       .split('')
       .filter((v) => this.VOWELS.includes(v))
       .map(this.putagorianConvert)
@@ -52,7 +51,6 @@ export class Numerology {
   // ローマ字表記の名前の子音をピュタゴリアン変換したものが対象
   get personalityNumber(): number {
     const digits = this.fullName
-      .toUpperCase()
       .split('')
       .filter((v) => !this.VOWELS.includes(v))
       .map(this.putagorianConvert)
@@ -76,7 +74,7 @@ export class Numerology {
 
   // ABC...IJ... -> 123...91... に変換する
   private putagorianConvert(char: string): number {
-    const temp = char.charCodeAt(0) - 'A'.charCodeAt(0) + 1
+    const temp = char.toUpperCase().charCodeAt(0) - 'A'.charCodeAt(0) + 1
     return temp % 9 || 9
   }
 }

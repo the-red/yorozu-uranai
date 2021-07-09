@@ -1,8 +1,27 @@
 import useSWR from 'swr'
 
+type PlanetName = 'sun' | 'moon' | 'mercury' | 'venus' | 'mars' | 'jupiter' | 'saturn' | 'uranus' | 'neptune' | 'pluto'
 type Planet = {
+  name: PlanetName
   longitude: number
-  INTERVAL: number
+  degrees: number
+  formattedDegrees: string
+  sign:
+    | '牡羊座'
+    | '牡牛座'
+    | '双子座'
+    | '蟹座'
+    | '獅子座'
+    | '乙女座'
+    | '天秤座'
+    | '蠍座'
+    | '射手座'
+    | '山羊座'
+    | '水瓶座'
+    | '魚座'
+  element: string
+  quality: string
+  polarity: string
 }
 type Horoscope = {
   horoscope: {

@@ -35,13 +35,15 @@ export class Numerology {
 
   // ローマ字表記の名前を数字に置き換えたものが対象
   get destinyNumber(): number {
-    const digits = [...this.fullName.toUpperCase().split('')].map(this.putagorianConvert)
+    const digits = this.fullName.toUpperCase().split('').map(this.putagorianConvert)
     return this.sumOfDigits(digits)
   }
 
   // ローマ字表記の名前の母音を数字に置き換えたものが対象
   get soulNumber(): number {
-    const digits = [...this.fullName.toUpperCase().split('')]
+    const digits = this.fullName
+      .toUpperCase()
+      .split('')
       .filter((v) => this.VOWELS.includes(v))
       .map(this.putagorianConvert)
     return this.sumOfDigits(digits)
@@ -49,7 +51,9 @@ export class Numerology {
 
   // ローマ字表記の名前の子音を数字に置き換えたものが対象
   get personalityNumber(): number {
-    const digits = [...this.fullName.toUpperCase().split('')]
+    const digits = this.fullName
+      .toUpperCase()
+      .split('')
       .filter((v) => !this.VOWELS.includes(v))
       .map(this.putagorianConvert)
     return this.sumOfDigits(digits)

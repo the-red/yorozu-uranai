@@ -62,8 +62,9 @@ export class Numerology {
   // 各桁の和を求める。ゾロ目または1桁になるまで再帰的に計算する
   private sumOfDigits(digits: number[]): number {
     const sum = digits.reduce((prev, curr) => prev + curr, 0)
-    if (this.isSameNumberDigits(String(sum).split('').map(Number))) return sum
-    return this.sumOfDigits(String(sum).split('').map(Number))
+    const nextDigits = String(sum).split('').map(Number)
+    if (this.isSameNumberDigits(nextDigits)) return sum
+    return this.sumOfDigits(nextDigits)
   }
 
   // ABC...IJ... -> 123...91... に変換する

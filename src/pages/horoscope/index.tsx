@@ -69,21 +69,21 @@ function Horoscope() {
     sign: value.sign,
   }))
 
-  type A = typeof planets
+  type Position = typeof planets
 
-  const makeElementSingleSentence = (planets: A, type: string) => {
+  const makeElementSingleSentence = (planets: Position, type: string) => {
     return planets
       .filter((planet) => planet.element === type)
       .map((planet) => planet.name)
       .join(' ')
   }
-  const makeQualitySingleSentence = (planets: A, type: string) => {
+  const makeQualitySingleSentence = (planets: Position, type: string) => {
     return planets
       .filter((planet) => planet.quality === type)
       .map((planet) => planet.name)
       .join(' ')
   }
-  const makePolaritySingleSentence = (planets: A, type: string) => {
+  const makePolaritySingleSentence = (planets: Position, type: string) => {
     return planets
       .filter((planet) => planet.polarity === type)
       .map((planet) => planet.name)

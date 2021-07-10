@@ -71,9 +71,21 @@ function Horoscope() {
 
   type A = typeof planets
 
-  const hoge = (planets: A, type: string) => {
+  const makeElementSingleSentence = (planets: A, type: string) => {
     return planets
       .filter((planet) => planet.element === type)
+      .map((planet) => planet.name)
+      .join(' ')
+  }
+  const makeQualitySingleSentence = (planets: A, type: string) => {
+    return planets
+      .filter((planet) => planet.quality === type)
+      .map((planet) => planet.name)
+      .join(' ')
+  }
+  const makePolaritySingleSentence = (planets: A, type: string) => {
+    return planets
+      .filter((planet) => planet.polarity === type)
       .map((planet) => planet.name)
       .join(' ')
   }
@@ -117,50 +129,45 @@ function Horoscope() {
             </tr>
             <tr>
               <td>火：</td>
-              <td>
-                {planets
-                  .filter((planet) => planet.element === 'fire')
-                  .map((planet) => planet.name)
-                  .join(' ')}
-              </td>
+              <td>{makeElementSingleSentence(planets, 'fire')}</td>
             </tr>
             <tr>
               <td>土：</td>
-              <td>{planets.flatMap((planet) => (planet.element === 'earth' ? planet.name : [])).join(' ')}</td>
+              <td>{makeElementSingleSentence(planets, 'earth')}</td>
             </tr>
             <tr>
               <td>風：</td>
-              <td>{planets.map((planet) => (planet.element === 'air' ? planet.name : '')).join('  ')}</td>
+              <td>{makeElementSingleSentence(planets, 'air')}</td>
             </tr>
             <tr>
               <td>水：</td>
-              <td>{planets.map((planet) => (planet.element === 'water' ? planet.name : '')).join('  ')}</td>
+              <td>{makeElementSingleSentence(planets, 'water')}</td>
             </tr>
             <tr>
               <th colSpan={2}>３区分</th>
             </tr>
             <tr>
               <td>活動宮：</td>
-              <td>{planets.map((planet) => (planet.quality === 'cardinal' ? planet.name : '')).join('  ')}</td>
+              <td>{makeQualitySingleSentence(planets, 'cardinal')}</td>
             </tr>
             <tr>
               <td>不動宮：</td>
-              <td>{planets.map((planet) => (planet.quality === 'fixed' ? planet.name : '')).join('  ')}</td>
+              <td>{makeQualitySingleSentence(planets, 'fixed')}</td>
             </tr>
             <tr>
               <td>柔軟宮：</td>
-              <td>{planets.map((planet) => (planet.quality === 'mutable' ? planet.name : '')).join(' ')}</td>
+              <td>{makeQualitySingleSentence(planets, 'mutable')}</td>
             </tr>
             <tr>
               <th colSpan={2}>２区分</th>
             </tr>
             <tr>
               <td>男性宮：</td>
-              <td>{planets.map((planet) => (planet.polarity === 'masculine' ? planet.name : '')).join('  ')}</td>
+              <td>{makePolaritySingleSentence(planets, 'masculine')}</td>
             </tr>
             <tr>
               <td>女性宮：</td>
-              <td>{planets.map((planet) => (planet.polarity === 'feminine' ? planet.name : '')).join(' ')}</td>
+              <td>{makePolaritySingleSentence(planets, 'feminine')}</td>
             </tr>
           </tbody>
         </table>

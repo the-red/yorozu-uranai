@@ -1,19 +1,6 @@
 // @ts-ignore
 import swisseph from 'swisseph'
-
-export const ALL_PLANETS = [
-  'sun',
-  'moon',
-  'mercury',
-  'venus',
-  'mars',
-  'jupiter',
-  'saturn',
-  'uranus',
-  'neptune',
-  'pluto',
-] as const
-export type PlanetName = typeof ALL_PLANETS[number]
+import type { PlanetName } from './Planet'
 
 type EclipticPosition = {
   longitude: number

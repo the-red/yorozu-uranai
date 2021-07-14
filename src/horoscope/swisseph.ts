@@ -52,9 +52,9 @@ export const eclipticPosition = (julday_ut: number, planet: PlanetName): Promise
       julday_ut,
       swisseph[`SE_${planet.toUpperCase()}`],
       swisseph.SEFLG_SPEED,
-      (body: EclipticPosition) => {
-        if (body.error) reject(body.error)
-        resolve(body)
+      (result: EclipticPosition) => {
+        if (result.error) reject(result.error)
+        resolve(result)
       }
     )
   )

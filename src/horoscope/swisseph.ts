@@ -3,26 +3,26 @@ import swisseph from 'swisseph'
 import type { PlanetName } from './Planet'
 
 type EclipticPosition = {
-  longitude: number
   latitude: number
+  longitude: number
   distance: number
-  longitudeSpeed: number
   latitudeSpeed: number
+  longitudeSpeed: number
   distanceSpeed: number
   rflag: number
   error?: any
 }
 
 type Houses = {
-  armc: number
-  ascendant: number
-  equatorialAscendant: number
   house: [number, number, number, number, number, number, number, number, number, number, number, number]
-  kochCoAscendant: number
+  ascendant: number
   mc: number
+  armc: number
+  vertex: number
+  equatorialAscendant: number
+  kochCoAscendant: number
   munkaseyCoAscendant: number
   munkaseyPolarAscendant: number
-  vertex: number
   error?: any
 }
 

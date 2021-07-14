@@ -1,4 +1,4 @@
-import { julday, eclipticPosition, houses, houseName } from '../../src/horoscope/swisseph'
+import { julday, eclipticPosition, houses, houseSystemName } from '../../src/horoscope/swisseph'
 
 describe('swisseph', () => {
   const funadyBirthday = new Date('1987-09-08T08:53:00+09:00')
@@ -86,8 +86,8 @@ describe('swisseph', () => {
     })
 
     it('ハウスシステム名', async () => {
-      expect(houseName('A')).toEqual('equal')
-      expect(houseName()).toEqual('Placidus')
+      expect(houseSystemName('A')).toEqual('equal')
+      expect(houseSystemName()).toEqual('Placidus')
     })
   })
 })

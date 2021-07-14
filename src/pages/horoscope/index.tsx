@@ -1,28 +1,8 @@
 import useSWR from 'swr'
+import type { Planet as P } from '../../horoscope'
 
-type PlanetName = 'sun' | 'moon' | 'mercury' | 'venus' | 'mars' | 'jupiter' | 'saturn' | 'uranus' | 'neptune' | 'pluto'
-type Planet = {
-  name: PlanetName
-  longitude: number
-  degrees: number
-  formattedDegrees: string
-  sign:
-    | '牡羊座'
-    | '牡牛座'
-    | '双子座'
-    | '蟹座'
-    | '獅子座'
-    | '乙女座'
-    | '天秤座'
-    | '蠍座'
-    | '射手座'
-    | '山羊座'
-    | '水瓶座'
-    | '魚座'
-  element: string
-  quality: string
-  polarity: string
-}
+type Planet = InstanceType<typeof P>['toJSON']
+type PlanetName = Planet['name']
 type Horoscope = {
   horoscope: {
     all: any

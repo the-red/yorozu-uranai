@@ -1,9 +1,10 @@
 import { julday, houses, houseName } from '../../src/horoscope/swisseph'
 
 describe('swisseph', () => {
-  it('Houses', async () => {
-    const funadyBirthday = await julday(new Date('1987-09-08T08:53:00+09:00'))
-    expect(await houses(funadyBirthday)).toEqual({
+  const funadyBirthday = new Date('1987-09-08T08:53:00+09:00')
+
+  it('ハウス デフォルト（プラシーダス）', async () => {
+    expect(await houses(await julday(funadyBirthday))).toEqual({
       armc: 344.77110120936857,
       ascendant: 75.97652436522719,
       equatorialAscendant: 75.97652436522719,
@@ -29,7 +30,34 @@ describe('swisseph', () => {
     })
   })
 
-  it('House name', async () => {
+  it('ハウス コッホ', async () => {
+    expect(await houses(await julday(funadyBirthday), 0, 0, 'K')).toEqual({
+      armc: 344.77110120936857,
+      ascendant: 75.97652436522719,
+      equatorialAscendant: 75.97652436522719,
+      house: [
+        75.97652436522719,
+        103.59896686851516,
+        132.30692418822358,
+        163.4727945776035,
+        196.03442532325167,
+        227.23697195087027,
+        255.9765243652272,
+        283.59896686851516,
+        312.30692418822355,
+        343.47279457760345,
+        16.03442532325167,
+        47.23697195087028,
+      ],
+      kochCoAscendant: 75.97652436522719,
+      mc: 343.47279457760345,
+      munkaseyCoAscendant: 180,
+      munkaseyPolarAscendant: 255.9765243652272,
+      vertex: 180,
+    })
+  })
+
+  it('ハウス名', async () => {
     expect(houseName('A')).toEqual('equal')
     expect(houseName()).toEqual('Placidus')
   })

@@ -34,14 +34,14 @@ describe('swisseph', () => {
         rflag: 260,
       })
     })
-    it('天王星', async () => {
-      expect(await eclipticPosition(await julday(funadyBirthday), 'uranus')).toEqual({
-        latitude: -0.15848633834193857,
-        longitude: 262.7351126192776,
-        distance: 19.06390534663185,
-        latitudeSpeed: -0.000024813878868292088,
-        longitudeSpeed: 0.005383490011894379,
-        distanceSpeed: 0.01690557805114359,
+    it('海王星', async () => {
+      expect(await eclipticPosition(await julday(funadyBirthday), 'neptune')).toEqual({
+        latitude: 1.0185764917632376,
+        longitude: 275.2538857353284,
+        distance: 29.86613333344484,
+        latitudeSpeed: -0.0007056260149444306,
+        longitudeSpeed: -0.005075500082524267,
+        distanceSpeed: 0.01593239776616034,
         rflag: 260,
       })
     })

@@ -26,7 +26,7 @@ type Houses = {
   error?: any
 }
 
-// ユリウス日の計算（ライブラリの関数をラップ）
+// ユリウス日の計算
 export const julday = (date: Date): Promise<number> => {
   const year = date.getFullYear()
   const month = date.getMonth() + 1
@@ -45,7 +45,7 @@ export const julday = (date: Date): Promise<number> => {
   )
 }
 
-// 黄道座標の計算（ライブラリの関数をラップ）
+// 黄道座標の計算
 export const eclipticPosition = (julday_ut: number, planet: PlanetName): Promise<EclipticPosition> =>
   new Promise((resolve, reject) =>
     swisseph.swe_calc_ut(
@@ -59,6 +59,7 @@ export const eclipticPosition = (julday_ut: number, planet: PlanetName): Promise
     )
   )
 
+// ハウスの計算
 export const houses = (julday_ut: number, geolat: number = 0, geolon: number = 0, hsys?: string): Promise<Houses> =>
   new Promise((resolve, reject) =>
     swisseph.swe_houses(julday_ut, geolat, geolon, hsys, (result: Houses) => {

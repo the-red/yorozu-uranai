@@ -14,8 +14,9 @@ type EclipticPosition = {
   error?: any
 }
 
+type HouseCusps = [number, number, number, number, number, number, number, number, number, number, number, number]
 type Houses = {
-  house: [number, number, number, number, number, number, number, number, number, number, number, number]
+  house: HouseCusps
   ascendant: number
   mc: number
   armc: number
@@ -77,6 +78,18 @@ export const houses = (julday_ut: number, geolat: number, geolon: number, hsys: 
   new Promise((resolve, reject) =>
     swisseph.swe_houses(julday_ut, geolat, geolon, hsys, (result: Houses) => {
       if (result.error) reject(result.error)
+
+      // 処理系が変わると少し誤差が出るので丸めておく
+      result.house = result.house.map(round12) as HouseCusps
+      result.ascendant = round12(result.ascendant)
+      result.mc = round12(result.mc)
+      result.armc = round12(result.armc)
+      result.vertex = round12(result.vertex)
+      result.equatorialAscendant = round12(result.equatorialAscendant)
+      result.kochCoAscendant = round12(result.kochCoAscendant)
+      result.munkaseyCoAscendant = round12(result.munkaseyCoAscendant)
+      result.munkaseyPolarAscendant = round12(result.munkaseyPolarAscendant)
+
       resolve(result)
     })
   )

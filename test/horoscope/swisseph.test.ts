@@ -14,36 +14,36 @@ describe('swisseph', () => {
   describe('黄道座標', () => {
     it('太陽', async () => {
       expect(await eclipticPosition(await julday(funadyBirthday), 'sun')).toEqual({
-        distance: 1.007604596270388,
-        distanceSpeed: -0.00025429537328022545,
-        latitude: -0.00006313562977911692,
-        latitudeSpeed: 0.00004069736167083942,
-        longitude: 164.81733724787827,
-        longitudeSpeed: 0.9701875737153962,
+        latitude: -0.0000631356298,
+        longitude: 164.8173372478783,
+        distance: 1.0076045962704,
+        latitudeSpeed: 0.0000406973617,
+        longitudeSpeed: 0.9701875737154,
+        distanceSpeed: -0.0002542953733,
         rflag: 260,
         isRetrograde: false,
       })
     })
     it('月', async () => {
       expect(await eclipticPosition(await julday(funadyBirthday), 'moon')).toEqual({
-        latitude: -1.3031616339282852,
+        latitude: -1.3031616339283,
         longitude: 348.062352793152,
-        distance: 0.002432078097773855,
-        latitudeSpeed: 1.3079900219071734,
-        longitudeSpeed: 14.677112523678339,
-        distanceSpeed: 0.00002032263041767712,
+        distance: 0.0024320780978,
+        latitudeSpeed: 1.3079900219479,
+        longitudeSpeed: 14.677112523805,
+        distanceSpeed: 0.0000203226304,
         rflag: 260,
         isRetrograde: false,
       })
     })
     it('海王星', async () => {
       expect(await eclipticPosition(await julday(funadyBirthday), 'neptune')).toEqual({
-        latitude: 1.0185764917632376,
-        longitude: 275.2538857353284,
-        distance: 29.86613333344484,
-        latitudeSpeed: -0.0007056260149444306,
-        longitudeSpeed: -0.005075500082524267,
-        distanceSpeed: 0.01593239776616034,
+        latitude: 1.0185764917632,
+        longitude: 275.253885735327,
+        distance: 29.8661333334448,
+        latitudeSpeed: -0.000705637518,
+        longitudeSpeed: -0.0050754974618,
+        distanceSpeed: 0.0159323926597,
         rflag: 260,
         isRetrograde: true,
       })

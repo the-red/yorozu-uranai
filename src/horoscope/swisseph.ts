@@ -27,6 +27,8 @@ type Houses = {
   error?: any
 }
 
+const round12 = (num: number) => Math.round(num * 10 ** 13) / 10 ** 13
+
 // ユリウス日の計算
 export const julday = (date: Date): Promise<number> => {
   const year = date.getFullYear()
@@ -55,6 +57,15 @@ export const eclipticPosition = (julday_ut: number, planet: PlanetName): Promise
       swisseph.SEFLG_SPEED,
       (result: EclipticPosition) => {
         if (result.error) reject(result.error)
+
+        // 処理系が変わると少し誤差が出るので丸めておく
+        result.latitude = round12(result.latitude)
+        result.longitude = round12(result.longitude)
+        result.distance = round12(result.distance)
+        result.latitudeSpeed = round12(result.latitudeSpeed)
+        result.longitudeSpeed = round12(result.longitudeSpeed)
+        result.distanceSpeed = round12(result.distanceSpeed)
+
         result.isRetrograde = result.longitudeSpeed < 0
         resolve(result)
       }

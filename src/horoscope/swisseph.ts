@@ -10,6 +10,7 @@ type EclipticPosition = {
   longitudeSpeed: number
   distanceSpeed: number
   rflag: number
+  isRetrograde: boolean // trueなら逆行
   error?: any
 }
 
@@ -54,6 +55,7 @@ export const eclipticPosition = (julday_ut: number, planet: PlanetName): Promise
       swisseph.SEFLG_SPEED,
       (result: EclipticPosition) => {
         if (result.error) reject(result.error)
+        result.isRetrograde = result.longitudeSpeed < 0
         resolve(result)
       }
     )

@@ -21,6 +21,7 @@ describe('swisseph', () => {
         longitude: 164.81733724787827,
         longitudeSpeed: 0.9701875737153962,
         rflag: 260,
+        isRetrograde: false,
       })
     })
     it('月', async () => {
@@ -32,6 +33,7 @@ describe('swisseph', () => {
         longitudeSpeed: 14.677112523678339,
         distanceSpeed: 0.00002032263041767712,
         rflag: 260,
+        isRetrograde: false,
       })
     })
     it('海王星', async () => {
@@ -43,6 +45,7 @@ describe('swisseph', () => {
         longitudeSpeed: -0.005075500082524267,
         distanceSpeed: 0.01593239776616034,
         rflag: 260,
+        isRetrograde: true,
       })
     })
   })

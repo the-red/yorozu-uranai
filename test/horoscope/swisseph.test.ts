@@ -2,6 +2,8 @@ import { julday, eclipticPosition, houses, houseName } from '../../src/horoscope
 
 describe('swisseph', () => {
   const funadyBirthday = new Date('1987-09-08T08:53:00+09:00')
+  const funadyBirthLat = 43.0666666666666666 // 43°04′
+  const funadyBirthLon = 141.35 // 141°21′
 
   describe('黄道座標', () => {
     it('太陽', async () => {
@@ -30,56 +32,56 @@ describe('swisseph', () => {
 
   describe('ハウス', () => {
     it('プラシーダス（デフォルト）', async () => {
-      expect(await houses(await julday(funadyBirthday))).toEqual({
-        armc: 344.77110120936857,
-        ascendant: 75.97652436522719,
-        equatorialAscendant: 75.97652436522719,
+      expect(await houses(await julday(funadyBirthday), funadyBirthLat, funadyBirthLon)).toEqual({
+        armc: 126.12110120936859,
+        ascendant: 207.90859102075328,
+        equatorialAscendant: 218.50008798504103,
         house: [
-          75.97652436522719,
-          105.4932191207119,
-          134.26397918272784,
-          163.4727945776035,
-          193.92081041421886,
-          225.1964179401407,
-          255.9765243652272,
-          285.4932191207119,
-          314.26397918272784,
-          343.4727945776035,
-          13.920810414218863,
-          45.19641794014069,
+          207.90859102075328,
+          232.89132860893773,
+          265.0234015616215,
+          303.8037098326129,
+          338.3750938357241,
+          4.881007314670569,
+          27.908591020753306,
+          52.89132860893773,
+          85.02340156162148,
+          123.80370983261292,
+          158.3750938357241,
+          184.88100731467057,
         ],
-        kochCoAscendant: 75.97652436522719,
-        mc: 343.47279457760345,
-        munkaseyCoAscendant: 180,
-        munkaseyPolarAscendant: 255.9765243652272,
-        vertex: 180,
+        kochCoAscendant: 237.93903135607738,
+        mc: 123.80370983261292,
+        munkaseyCoAscendant: 206.8052002395509,
+        munkaseyPolarAscendant: 57.93903135607738,
+        vertex: 61.84789427412842,
       })
     })
 
     it('コッホ', async () => {
-      expect(await houses(await julday(funadyBirthday), 0, 0, 'K')).toEqual({
-        armc: 344.77110120936857,
-        ascendant: 75.97652436522719,
-        equatorialAscendant: 75.97652436522719,
+      expect(await houses(await julday(funadyBirthday), funadyBirthLat, funadyBirthLon, 'K')).toEqual({
+        armc: 126.12110120936859,
+        ascendant: 207.90859102075328,
+        equatorialAscendant: 218.50008798504103,
         house: [
-          75.97652436522719,
-          103.59896686851516,
-          132.30692418822358,
-          163.4727945776035,
-          196.03442532325167,
-          227.23697195087027,
-          255.9765243652272,
-          283.59896686851516,
-          312.30692418822355,
-          343.47279457760345,
-          16.03442532325167,
-          47.23697195087028,
+          207.90859102075328,
+          235.80988643050398,
+          265.45286737576083,
+          303.8037098326129,
+          331.70846115364276,
+          359.8065566362668,
+          27.908591020753306,
+          55.80988643050398,
+          85.45286737576083,
+          123.80370983261292,
+          151.70846115364276,
+          179.80655663626678,
         ],
-        kochCoAscendant: 75.97652436522719,
-        mc: 343.47279457760345,
-        munkaseyCoAscendant: 180,
-        munkaseyPolarAscendant: 255.9765243652272,
-        vertex: 180,
+        kochCoAscendant: 237.93903135607738,
+        mc: 123.80370983261292,
+        munkaseyCoAscendant: 206.8052002395509,
+        munkaseyPolarAscendant: 57.93903135607738,
+        vertex: 61.84789427412842,
       })
     })
 

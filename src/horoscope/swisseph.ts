@@ -68,8 +68,8 @@ export const houses = (julday_ut: number, geolat: number, geolon: number, hsys?:
     })
   )
 
-// swe_house_name()がNode.js版では使えないので
-// ここのをコピって独自実装
+// ハウスシステム名を略称から引く
+// swe_house_name()がNode.js版では使えないので↓のをコピって独自実装
 // https://github.com/mivion/swisseph/blob/327e9ff871db2d27062d96ca30f1656d99cd5ec9/deps/swisseph/swehouse.c#L822-L853
 export const houseName = (hsys?: string) => {
   switch (hsys) {

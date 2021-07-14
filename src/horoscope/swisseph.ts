@@ -45,3 +45,69 @@ export const eclipticPosition = (julday_ut: number, planet: PlanetName): Promise
       }
     )
   )
+
+export const houses = (julday_ut: number, geolat: number = 0, geolon: number = 0, hsys?: string) =>
+  new Promise((resolve, reject) =>
+    swisseph.swe_houses(julday_ut, geolat, geolon, hsys, (result: any) => {
+      if (result.error) reject(result.error)
+      resolve(result)
+    })
+  )
+
+// swe_house_name()がNode.js版では使えないので
+// ここのをコピって独自実装
+// https://github.com/mivion/swisseph/blob/327e9ff871db2d27062d96ca30f1656d99cd5ec9/deps/swisseph/swehouse.c#L822-L853
+export const houseName = (hsys?: string) => {
+  switch (hsys) {
+    case 'A':
+      return 'equal'
+    case 'B':
+      return 'Alcabitius'
+    case 'C':
+      return 'Campanus'
+    case 'D':
+      return 'equal (MC)'
+    case 'E':
+      return 'equal'
+    case 'F':
+      return 'Carter poli-equ.'
+    case 'G':
+      return 'Gauquelin sectors'
+    case 'H':
+      return 'horizon/azimut'
+    case 'I':
+      return 'Sunshine'
+    case 'i':
+      return 'Sunshine/alt.'
+    case 'K':
+      return 'Koch'
+    case 'L':
+      return 'Pullen SD'
+    case 'M':
+      return 'Morinus'
+    case 'N':
+      return 'equal/1=Aries'
+    case 'O':
+      return 'Porphyry'
+    case 'Q':
+      return 'Pullen SR'
+    case 'R':
+      return 'Regiomontanus'
+    case 'S':
+      return 'Sripati'
+    case 'T':
+      return 'Polich/Page'
+    case 'U':
+      return 'Krusinski-Pisa-Goelzer'
+    case 'V':
+      return 'equal/Vehlow'
+    case 'W':
+      return 'equal/ whole sign'
+    case 'X':
+      return 'axial rotation system/Meridian houses'
+    case 'Y':
+      return 'APC houses'
+    default:
+      return 'Placidus'
+  }
+}

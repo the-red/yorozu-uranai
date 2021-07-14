@@ -28,6 +28,17 @@ describe('swisseph', () => {
         rflag: 260,
       })
     })
+    it('天王星', async () => {
+      expect(await eclipticPosition(await julday(funadyBirthday), 'uranus')).toEqual({
+        distance: 19.06390534663185,
+        distanceSpeed: 0.01690557805114359,
+        latitude: -0.15848633834193857,
+        latitudeSpeed: -0.000024813878868292088,
+        longitude: 262.7351126192776,
+        longitudeSpeed: 0.005383490011894379,
+        rflag: 260,
+      })
+    })
   })
 
   describe('ハウス', () => {

@@ -5,6 +5,12 @@ describe('swisseph', () => {
   const funadyBirthLat = 43.0666666666666666 // 43°04′
   const funadyBirthLon = 141.35 // 141°21′
 
+  describe('ユリウス日', () => {
+    it('ユリウス日', async () => {
+      expect(await julday(funadyBirthday)).toEqual(2447046.4951388887)
+    })
+  })
+
   describe('黄道座標', () => {
     it('太陽', async () => {
       expect(await eclipticPosition(await julday(funadyBirthday), 'sun')).toEqual({

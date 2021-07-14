@@ -13,6 +13,19 @@ type EclipticPosition = {
   error?: any
 }
 
+type Houses = {
+  armc: number
+  ascendant: number
+  equatorialAscendant: number
+  house: [number, number, number, number, number, number, number, number, number, number, number, number]
+  kochCoAscendant: number
+  mc: number
+  munkaseyCoAscendant: number
+  munkaseyPolarAscendant: number
+  vertex: number
+  error?: any
+}
+
 // ユリウス日の計算（ライブラリの関数をラップ）
 export const julday = (date: Date): Promise<number> => {
   const year = date.getFullYear()
@@ -46,9 +59,9 @@ export const eclipticPosition = (julday_ut: number, planet: PlanetName): Promise
     )
   )
 
-export const houses = (julday_ut: number, geolat: number = 0, geolon: number = 0, hsys?: string) =>
+export const houses = (julday_ut: number, geolat: number = 0, geolon: number = 0, hsys?: string): Promise<Houses> =>
   new Promise((resolve, reject) =>
-    swisseph.swe_houses(julday_ut, geolat, geolon, hsys, (result: any) => {
+    swisseph.swe_houses(julday_ut, geolat, geolon, hsys, (result: Houses) => {
       if (result.error) reject(result.error)
       resolve(result)
     })

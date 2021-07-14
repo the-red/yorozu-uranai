@@ -28,7 +28,7 @@ type Houses = {
   error?: any
 }
 
-const round10 = (num: number) => Math.trunc(num * 10 ** 10) / 10 ** 10
+const round6 = (num: number) => Math.trunc(num * 10 ** 6) / 10 ** 6
 
 // ユリウス日の計算
 export const julday = (date: Date): Promise<number> => {
@@ -60,12 +60,12 @@ export const eclipticPosition = (julday_ut: number, planet: PlanetName): Promise
         if (result.error) reject(result.error)
 
         // 処理系が変わると少し誤差が出るので丸めておく
-        result.latitude = round10(result.latitude)
-        result.longitude = round10(result.longitude)
-        result.distance = round10(result.distance)
-        result.latitudeSpeed = round10(result.latitudeSpeed)
-        result.longitudeSpeed = round10(result.longitudeSpeed)
-        result.distanceSpeed = round10(result.distanceSpeed)
+        result.latitude = round6(result.latitude)
+        result.longitude = round6(result.longitude)
+        result.distance = round6(result.distance)
+        result.latitudeSpeed = round6(result.latitudeSpeed)
+        result.longitudeSpeed = round6(result.longitudeSpeed)
+        result.distanceSpeed = round6(result.distanceSpeed)
 
         result.isRetrograde = result.longitudeSpeed < 0
         resolve(result)
@@ -80,15 +80,15 @@ export const houses = (julday_ut: number, geolat: number, geolon: number, hsys: 
       if (result.error) reject(result.error)
 
       // 処理系が変わると少し誤差が出るので丸めておく
-      result.house = result.house.map(round10) as HouseCusps
-      result.ascendant = round10(result.ascendant)
-      result.mc = round10(result.mc)
-      result.armc = round10(result.armc)
-      result.vertex = round10(result.vertex)
-      result.equatorialAscendant = round10(result.equatorialAscendant)
-      result.kochCoAscendant = round10(result.kochCoAscendant)
-      result.munkaseyCoAscendant = round10(result.munkaseyCoAscendant)
-      result.munkaseyPolarAscendant = round10(result.munkaseyPolarAscendant)
+      result.house = result.house.map(round6) as HouseCusps
+      result.ascendant = round6(result.ascendant)
+      result.mc = round6(result.mc)
+      result.armc = round6(result.armc)
+      result.vertex = round6(result.vertex)
+      result.equatorialAscendant = round6(result.equatorialAscendant)
+      result.kochCoAscendant = round6(result.kochCoAscendant)
+      result.munkaseyCoAscendant = round6(result.munkaseyCoAscendant)
+      result.munkaseyPolarAscendant = round6(result.munkaseyPolarAscendant)
 
       resolve(result)
     })

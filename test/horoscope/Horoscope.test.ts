@@ -5,16 +5,16 @@ describe('Horoscope', () => {
 
   it('longitude', async () => {
     const horoscope = await Horoscope.getInstance(funadyBirthday)
-    expect(horoscope.sun.longitude).toEqual(164.8173372478)
-    expect(horoscope.moon.longitude).toEqual(348.0623527931)
-    expect(horoscope.mercury.longitude).toEqual(180.6773808524)
-    expect(horoscope.venus.longitude).toEqual(169.1128586411)
-    expect(horoscope.mars.longitude).toEqual(160.292990171)
-    expect(horoscope.jupiter.longitude).toEqual(29.1256981836)
-    expect(horoscope.saturn.longitude).toEqual(254.8456615537)
-    expect(horoscope.uranus.longitude).toEqual(262.7351126192)
-    expect(horoscope.neptune.longitude).toEqual(275.2538857353)
-    expect(horoscope.pluto.longitude).toEqual(217.8903727536)
+    expect(horoscope.sun.longitude).toEqual(164.817337)
+    expect(horoscope.moon.longitude).toEqual(348.062352)
+    expect(horoscope.mercury.longitude).toEqual(180.67738)
+    expect(horoscope.venus.longitude).toEqual(169.112858)
+    expect(horoscope.mars.longitude).toEqual(160.29299)
+    expect(horoscope.jupiter.longitude).toEqual(29.125698)
+    expect(horoscope.saturn.longitude).toEqual(254.845661)
+    expect(horoscope.uranus.longitude).toEqual(262.735112)
+    expect(horoscope.neptune.longitude).toEqual(275.253885)
+    expect(horoscope.pluto.longitude).toEqual(217.890372)
   })
 
   it('sign', async () => {

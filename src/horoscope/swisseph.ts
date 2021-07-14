@@ -4,10 +4,10 @@ import type { PlanetName } from './Planet'
 
 type EclipticPosition = {
   latitude: number
-  longitude: number
-  distance: number
   latitudeSpeed: number
+  longitude: number
   longitudeSpeed: number
+  distance: number
   distanceSpeed: number
   rflag: number
   isRetrograde: boolean // trueなら逆行

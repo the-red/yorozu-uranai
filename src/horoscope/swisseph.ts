@@ -28,7 +28,7 @@ type Houses = {
   error?: any
 }
 
-const round10 = (num: number) => Math.round(num * 10 ** 10) / 10 ** 10
+const round10 = (num: number) => Math.trunc(num * 10 ** 10) / 10 ** 10
 
 // ユリウス日の計算
 export const julday = (date: Date): Promise<number> => {

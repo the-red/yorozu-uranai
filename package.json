@@ -2,9 +2,12 @@
   "name": "fortune-telling",
   "private": true,
   "scripts": {
-    "dev": "next dev",
-    "build": "next build",
-    "start": "next start",
+    "dev": "run-p dev:*",
+    "dev:next": "next dev",
+    "dev:path": "pathpida --watch",
+    "build": "pathpida && next build",
+    "start": "run-p dev:path start:next",
+    "start:next": "next start",
     "test": "jest"
   },
   "license": "UNLICENSED",

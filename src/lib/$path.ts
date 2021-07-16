@@ -2,9 +2,6 @@
 // prettier-ignore
 export const pagesPath = {
   horoscope: {
-    foo: {
-      $url: (url?: { hash?: string }) => ({ pathname: '/horoscope/foo' as const, hash: url?.hash })
-    },
     $url: (url?: { hash?: string }) => ({ pathname: '/horoscope' as const, hash: url?.hash })
   },
   numerology: {

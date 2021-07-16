@@ -1,6 +1,4 @@
 import useSWR from 'swr'
-import Link from 'next/link'
-import { pagesPath } from '../../lib/$path'
 
 type Planet = {
   longitude: number
@@ -46,7 +44,6 @@ function Horoscope() {
   return (
     <>
       <p>Horoscope</p>
-      <Link href={pagesPath.horoscope.foo.$url()}>foo</Link>
       <table>
         <thead>
           <tr>

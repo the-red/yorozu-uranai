@@ -1,4 +1,4 @@
-import { julday, eclipticPosition } from './swisseph'
+import { julday, eclipticPosition, calcHouses, Houses } from './swisseph'
 import { Planet, ALL_PLANETS, PlanetName } from './Planet'
 
 // 全惑星の座標
@@ -14,7 +14,8 @@ export class Horoscope {
   readonly neptune: Planet
   readonly pluto: Planet
 
-  static async getInstance(date: Date) {
+  // TODO: 省略されたときに良い感じにする
+  static async getInstance(date: Date, geolat?: number, geolon?: number, hsys: string = '') {
     const julday_ut = await julday(date)
 
     const positions = await Promise.all(
@@ -25,19 +26,21 @@ export class Horoscope {
       })
     )
     const positionsMap = Object.fromEntries(positions) as Record<PlanetName, Planet>
-    return new Horoscope(positionsMap)
+
+    const houses: Houses | undefined = geolat && geolon ? await calcHouses(julday_ut, geolat, geolon, hsys) : undefined
+    return new Horoscope(positionsMap, houses)
   }
 
-  constructor(all: Record<PlanetName, Planet>) {
-    this.sun = all.sun
-    this.moon = all.moon
-    this.mercury = all.mercury
-    this.venus = all.venus
-    this.mars = all.mars
-    this.jupiter = all.jupiter
-    this.saturn = all.saturn
-    this.uranus = all.uranus
-    this.neptune = all.neptune
-    this.pluto = all.pluto
+  constructor(positionsMap: Record<PlanetName, Planet>, readonly houses: Houses | undefined) {
+    this.sun = positionsMap.sun
+    this.moon = positionsMap.moon
+    this.mercury = positionsMap.mercury
+    this.venus = positionsMap.venus
+    this.mars = positionsMap.mars
+    this.jupiter = positionsMap.jupiter
+    this.saturn = positionsMap.saturn
+    this.uranus = positionsMap.uranus
+    this.neptune = positionsMap.neptune
+    this.pluto = positionsMap.pluto
   }
 }

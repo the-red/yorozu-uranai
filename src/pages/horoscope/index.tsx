@@ -1,18 +1,22 @@
 import useSWR from 'swr'
 import type { Planet as PlanetClass } from '../../horoscope'
+import type { Houses } from '../../horoscope'
 
 type Planet = ReturnType<PlanetClass['toJSON']>
 type Horoscope = {
-  sun: Planet
-  moon: Planet
-  mercury: Planet
-  venus: Planet
-  mars: Planet
-  jupiter: Planet
-  saturn: Planet
-  uranus: Planet
-  neptune: Planet
-  pluto: Planet
+  houses: Houses
+  planets: {
+    sun: Planet
+    moon: Planet
+    mercury: Planet
+    venus: Planet
+    mars: Planet
+    jupiter: Planet
+    saturn: Planet
+    uranus: Planet
+    neptune: Planet
+    pluto: Planet
+  }
 }
 
 function HoroscopePage() {
@@ -20,20 +24,27 @@ function HoroscopePage() {
     const res = await fetch(url, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ birthday: '1987-09-08T08:53:00+09:00' }),
+      body: JSON.stringify({
+        birthday: '1987-09-08T08:53:00+09:00',
+        lat: 43.0666666666666666,
+        lon: 141.35,
+        // hsys: 'Placidus(default)',
+      }),
     })
     if (!res.ok) {
       const { errorMessage } = await res.json()
       throw new Error(errorMessage)
     }
-    const json: { data: Horoscope } = await res.json()
-    return json.data
+    const json = await res.json()
+    const { houses, ...planets } = json.data
+    console.log({ houses, planets })
+    return { houses, planets } as Horoscope
   })
 
   if (error) return <div>failed to load: {JSON.stringify(error.message)}</div>
   if (!horoscope) return <div>loading...</div>
 
-  const planets = Object.values<Planet>(horoscope).map<Planet>((value) => ({
+  const planets = Object.values<Planet>(horoscope.planets).map<Planet>((value) => ({
     name: value.name,
     degrees: value.degrees,
     element: value.element,
@@ -59,27 +70,44 @@ function HoroscopePage() {
   return (
     <>
       <p>Horoscope</p>
-      <p>【天体の位置】</p>
-      <table>
-        <thead>
-          <tr>
-            <th>惑星</th>
-            <th>星座</th>
-            <th>角度</th>
-            <th>ハウス</th>
-          </tr>
-        </thead>
-        <tbody>
-          {planets.map((planet) => (
+      <div>
+        <p>【天体の位置】</p>
+        <table>
+          <thead>
             <tr>
-              <td>{planet.name}</td>
-              <td>{planet.sign}</td>
-              <td>{planet.formattedDegrees}</td>
-              <td>1ハウス</td>
+              <th>惑星</th>
+              <th>星座</th>
+              <th>角度</th>
+              <th>ハウス</th>
             </tr>
-          ))}
-        </tbody>
-      </table>
+          </thead>
+          <tbody>
+            {planets.map((planet) => (
+              <tr>
+                <td>{planet.name}</td>
+                <td>{planet.sign}</td>
+                <td>{planet.formattedDegrees}</td>
+                <td>1ハウス</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+
+      <div>
+        <p>【ハウスのカスプ】</p>
+        <table>
+          <tbody>
+            {horoscope.houses.house.map((longitude, i) => (
+              <tr>
+                <td>{i + 1}ハウス</td>
+                <td>{longitude}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+
       <div>
         <p>【サイン区分】</p>
         <table>

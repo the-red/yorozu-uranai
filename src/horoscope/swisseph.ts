@@ -15,7 +15,7 @@ type EclipticPosition = {
 }
 
 type HouseCusps = [number, number, number, number, number, number, number, number, number, number, number, number]
-type Houses = {
+export type Houses = {
   house: HouseCusps
   ascendant: number
   mc: number
@@ -74,7 +74,7 @@ export const eclipticPosition = (julday_ut: number, planet: PlanetName): Promise
   )
 
 // ハウスの計算
-export const houses = (julday_ut: number, geolat: number, geolon: number, hsys: string = ''): Promise<Houses> =>
+export const calcHouses = (julday_ut: number, geolat: number, geolon: number, hsys: string = ''): Promise<Houses> =>
   new Promise((resolve, reject) =>
     swisseph.swe_houses(julday_ut, geolat, geolon, hsys, (result: Houses) => {
       if (result.error) reject(result.error)

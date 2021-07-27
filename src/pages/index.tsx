@@ -1,5 +1,7 @@
 import Head from 'next/head'
+import Link from 'next/link'
 import styles from '../styles/Home.module.css'
+import { pagesPath } from '../lib/$path'
 
 export default function Home() {
   return (
@@ -18,15 +20,19 @@ export default function Home() {
         </p>
 
         <div className={styles.grid}>
-          <a href="/horoscope" className={styles.card}>
-            <h2>Horoscope &rarr;</h2>
-            <p>西洋占星術</p>
-          </a>
+          <Link href={pagesPath.horoscope.$url()}>
+            <a className={styles.card}>
+              <h2>Horoscope &rarr;</h2>
+              <p>西洋占星術</p>
+            </a>
+          </Link>
 
-          <a href="/numerology" className={styles.card}>
-            <h2>Numerology &rarr;</h2>
-            <p>数秘術</p>
-          </a>
+          <Link href={pagesPath.numerology.$url()}>
+            <a className={styles.card}>
+              <h2>Numerology &rarr;</h2>
+              <p>数秘術</p>
+            </a>
+          </Link>
 
           <a href="https://nextjs.org/docs" className={styles.card}>
             <h2>Documentation &rarr;</h2>

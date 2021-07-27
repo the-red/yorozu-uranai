@@ -69,23 +69,14 @@ function Horoscope() {
     sign: value.sign,
   }))
 
-  type Position = typeof planets
+  const makeElementSingleSentence = (type: 'fire' | 'earth' | 'air' | 'water') =>
+    makeSignSingleSentence(type, 'element')
+  const makeQualitySingleSentence = (type: 'cardinal' | 'fixed' | 'mutable') => makeSignSingleSentence(type, 'quality')
+  const makePolaritySingleSentence = (type: 'masculine' | 'feminine') => makeSignSingleSentence(type, 'polarity')
 
-  const makeElementSingleSentence = (planets: Position, type: string) => {
+  const makeSignSingleSentence = (type: string, key: 'element' | 'quality' | 'polarity') => {
     return planets
-      .filter((planet) => planet.element === type)
-      .map((planet) => planet.name)
-      .join(' ')
-  }
-  const makeQualitySingleSentence = (planets: Position, type: string) => {
-    return planets
-      .filter((planet) => planet.quality === type)
-      .map((planet) => planet.name)
-      .join(' ')
-  }
-  const makePolaritySingleSentence = (planets: Position, type: string) => {
-    return planets
-      .filter((planet) => planet.polarity === type)
+      .filter((planet) => planet[key] === type)
       .map((planet) => planet.name)
       .join(' ')
   }
@@ -129,45 +120,45 @@ function Horoscope() {
             </tr>
             <tr>
               <td>火：</td>
-              <td>{makeElementSingleSentence(planets, 'fire')}</td>
+              <td>{makeElementSingleSentence('fire')}</td>
             </tr>
             <tr>
               <td>土：</td>
-              <td>{makeElementSingleSentence(planets, 'earth')}</td>
+              <td>{makeElementSingleSentence('earth')}</td>
             </tr>
             <tr>
               <td>風：</td>
-              <td>{makeElementSingleSentence(planets, 'air')}</td>
+              <td>{makeElementSingleSentence('air')}</td>
             </tr>
             <tr>
               <td>水：</td>
-              <td>{makeElementSingleSentence(planets, 'water')}</td>
+              <td>{makeElementSingleSentence('water')}</td>
             </tr>
             <tr>
               <th colSpan={2}>３区分</th>
             </tr>
             <tr>
               <td>活動宮：</td>
-              <td>{makeQualitySingleSentence(planets, 'cardinal')}</td>
+              <td>{makeQualitySingleSentence('cardinal')}</td>
             </tr>
             <tr>
               <td>不動宮：</td>
-              <td>{makeQualitySingleSentence(planets, 'fixed')}</td>
+              <td>{makeQualitySingleSentence('fixed')}</td>
             </tr>
             <tr>
               <td>柔軟宮：</td>
-              <td>{makeQualitySingleSentence(planets, 'mutable')}</td>
+              <td>{makeQualitySingleSentence('mutable')}</td>
             </tr>
             <tr>
               <th colSpan={2}>２区分</th>
             </tr>
             <tr>
               <td>男性宮：</td>
-              <td>{makePolaritySingleSentence(planets, 'masculine')}</td>
+              <td>{makePolaritySingleSentence('masculine')}</td>
             </tr>
             <tr>
               <td>女性宮：</td>
-              <td>{makePolaritySingleSentence(planets, 'feminine')}</td>
+              <td>{makePolaritySingleSentence('feminine')}</td>
             </tr>
           </tbody>
         </table>

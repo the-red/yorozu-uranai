@@ -1,12 +1,24 @@
+export type MaxSameNumber = 22 | 33 | 44 | 99
+
 export class Numerology {
   birthDate: Date
   fullName: string
+  maxSameNumber?: MaxSameNumber
 
   private VOWELS = 'AIUEO'
 
-  constructor({ birthDate, fullName }: { birthDate: Date; fullName: string }) {
+  constructor({
+    birthDate,
+    fullName,
+    maxSameNumber = undefined,
+  }: {
+    birthDate: Date
+    fullName: string
+    maxSameNumber?: MaxSameNumber
+  }) {
     this.birthDate = birthDate
     this.fullName = fullName.replace(/\s+/g, '')
+    this.maxSameNumber = maxSameNumber
   }
 
   private get YYYY() {
@@ -62,8 +74,9 @@ export class Numerology {
   // 各桁の和を求める。ゾロ目または1桁になるまで再帰的に計算する
   private sumOfDigits(digits: number[]): number {
     const sum = digits.reduce((prev, curr) => prev + curr, 0)
+    if (sum < 10) return sum
     const nextDigits = String(sum).split('').map(Number)
-    if (this.isSameNumberDigits(nextDigits)) return sum
+    if (this.isSameNumber(nextDigits)) return sum
     return this.sumOfDigits(nextDigits)
   }
 
@@ -73,7 +86,12 @@ export class Numerology {
     return count % 9 || 9
   }
 
-  private isSameNumberDigits(digits: number[]) {
-    return digits.every((val, _, ary) => val === ary[0], true)
+  private isSameNumber(digits: number[]) {
+    if (this.maxSameNumber) {
+      const number = Number(digits.map(String).join(''))
+      return number <= this.maxSameNumber && digits.every((val, _, ary) => val === ary[0], true)
+    } else {
+      return false
+    }
   }
 }

@@ -10,7 +10,7 @@ export class Numerology {
   constructor({
     birthDate,
     fullName,
-    maxSameNumber = undefined,
+    maxSameNumber,
   }: {
     birthDate: Date
     fullName: string
@@ -87,11 +87,8 @@ export class Numerology {
   }
 
   private isSameNumber(digits: number[]) {
-    if (this.maxSameNumber) {
-      const number = Number(digits.map(String).join(''))
-      return number <= this.maxSameNumber && digits.every((val, _, ary) => val === ary[0], true)
-    } else {
-      return false
-    }
+    if (!this.maxSameNumber) return false
+    const number = Number(digits.map(String).join(''))
+    return number <= this.maxSameNumber && digits.every((val, _, ary) => val === ary[0], true)
   }
 }

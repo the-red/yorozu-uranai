@@ -54,24 +54,9 @@ const signCoordinate = {
   水瓶座: { icon: '♒', coordinate: calcSignCoordinate(300) },
   魚座: { icon: '♓', coordinate: calcSignCoordinate(330) },
 }
-console.log(signCoordinate)
 
 export default function HoroscopeCircle({ horoscope }: { horoscope: Horoscope }) {
   const { planets } = horoscope
-  console.log(
-    JSON.stringify({
-      sun: planets.sun.coordinate,
-      moon: planets.moon.coordinate,
-      mercury: planets.mercury.coordinate,
-      venus: planets.venus.coordinate,
-      mars: planets.mars.coordinate,
-      jupiter: planets.jupiter.coordinate,
-      saturn: planets.saturn.coordinate,
-      uranus: planets.uranus.coordinate,
-      neptune: planets.neptune.coordinate,
-      pluto: planets.pluto.coordinate,
-    })
-  )
   return (
     <Stage width={500} height={500}>
       <Layer>

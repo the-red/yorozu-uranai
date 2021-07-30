@@ -46,7 +46,6 @@ function HoroscopePage() {
     }
     const json = await res.json()
     const { houses, ...planets } = json.data
-    console.log({ houses, planets })
     return { houses, planets } as Horoscope
   })
 

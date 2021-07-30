@@ -1,5 +1,5 @@
 import useSWR from 'swr'
-import Head from 'next/head'
+import { useState } from 'react'
 import type { Planet as PlanetClass } from '../../horoscope'
 import type { Houses } from '../../horoscope'
 
@@ -28,17 +28,19 @@ type Horoscope = {
   }
 }
 
+type HoroscopeSeed = { birthday: Date; lat: number; lon: number; hsys?: string }
 function HoroscopePage() {
+  const [horoscopeSeed, useHoroscopeSeed] = useState<HoroscopeSeed>({
+    birthday: new Date('1987-09-08T08:53:00+09:00'),
+    lat: 43.0666666666666666,
+    lon: 141.35,
+    // hsys: 'Placidus(default)',
+  })
   const { data: horoscope, error } = useSWR('/api/horoscope', async (url) => {
     const res = await fetch(url, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        birthday: '1987-09-08T08:53:00+09:00',
-        lat: 43.0666666666666666,
-        lon: 141.35,
-        // hsys: 'Placidus(default)',
-      }),
+      body: JSON.stringify(horoscopeSeed),
     })
     if (!res.ok) {
       const { errorMessage } = await res.json()

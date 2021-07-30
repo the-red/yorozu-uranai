@@ -1,4 +1,5 @@
 import useSWR from 'swr'
+import Head from 'next/head'
 import type { Planet as PlanetClass } from '../../horoscope'
 import type { Houses } from '../../horoscope'
 
@@ -64,13 +65,30 @@ function HoroscopePage() {
   }))
 
   return (
-    <>
-      <p>Horoscope</p>
-      <HoroscopeForm onSubmit={(val) => console.log(val)} />
-      <PlanetPositions planets={planets}></PlanetPositions>
-      <HouseCusp houses={horoscope.houses}></HouseCusp>
-      <SignTable planets={planets}></SignTable>
-    </>
+    <div>
+      <div style={{ width: '720px', margin: '20px auto' }}>
+        <div style={{ fontFamily: 'Farewell Pro Regular', fontSize: '60px', marginBottom: '20px' }}>Horoscope</div>
+        <div style={{ display: 'flex', marginBottom: '20px' }}>
+          <div style={{ width: '50%' }}>{/* 図が入る */}</div>
+          <div style={{ width: '50%' }}>
+            <HoroscopeForm onSubmit={(val) => console.log(val)} />
+          </div>
+        </div>
+        <div style={{ display: 'flex', marginBottom: '20px' }}>
+          <div style={{ width: '50%', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+            <PlanetPositions planets={planets}></PlanetPositions>
+          </div>
+          <div style={{ width: '50%', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+            <HouseCusp houses={horoscope.houses}></HouseCusp>
+          </div>
+        </div>
+        <div style={{ display: 'flex' }}>
+          <div style={{ width: '50%', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+            <SignTable planets={planets}></SignTable>
+          </div>
+        </div>
+      </div>
+    </div>
   )
 }
 

@@ -2,46 +2,52 @@ import { ChangeEventHandler, FormEventHandler, useMemo, useState, VFC } from 're
 import { DateTime } from 'luxon'
 type HoroscopeFormProps = {
   onSubmit: (formValues: FormValues) => void
+  defaultValues: FormValues
 }
 
-type FormValues = {
-  date: string
-  hours: number
-  minutes: number
-  timeUnknown: boolean
-  longitude?: number
-  latitude?: number
+export type FormValues = {
+  birthday: Date
+  lon: number
+  lat: number
 }
 
-export const HoroscopeForm: VFC<HoroscopeFormProps> = ({ onSubmit }) => {
-  const now = useMemo(() => DateTime.fromJSDate(new Date()), [])
+export const HoroscopeForm: VFC<HoroscopeFormProps> = ({ onSubmit, defaultValues }) => {
+  const defaultDateTime = useMemo(() => DateTime.fromJSDate(defaultValues.birthday), [])
+  const defaultPlace = { latitude: defaultValues.lat, longitude: defaultValues.lon }
 
-  const [date, setDate] = useState(now.toFormat('yyyy-MM-dd'))
+  const [date, setDate] = useState(defaultDateTime.toFormat('yyyy-MM-dd'))
   const handleChangeDate: ChangeEventHandler<HTMLInputElement> = (e) => setDate(e.target.value)
 
-  const [hours, setHours] = useState(now.hour)
+  const [hours, setHours] = useState(defaultDateTime.hour)
   const handleChangeHours: ChangeEventHandler<HTMLInputElement> = (e) => setHours(Number(e.target.value))
 
-  const [minutes, setMinutes] = useState(now.minute)
+  const [minutes, setMinutes] = useState(defaultDateTime.minute)
   const handleChangeMinutes: ChangeEventHandler<HTMLInputElement> = (e) => setMinutes(Number(e.target.value))
 
   const [timeUnknown, setTimeUnknown] = useState(false)
   const handleCheckTimeUnknown: ChangeEventHandler<HTMLInputElement> = (e) => setTimeUnknown(e.target.checked)
 
-  const [longitude, setLongitude] = useState<number>()
+  const [longitude, setLongitude] = useState<number>(defaultPlace.longitude)
+  const [latitude, setLatitude] = useState<number>(defaultPlace.latitude)
+
+  const handleChangeLatitude: ChangeEventHandler<HTMLInputElement> = (e) => {
+    setLatitude(Number(e.target.value))
+  }
+
   const handleChangeLongitude: ChangeEventHandler<HTMLInputElement> = (e) => {
     // TODO: input側で 0 を入力できず、空文字が 0 になる
     setLongitude(Number(e.target.value))
   }
 
-  const [latitude, setLatitude] = useState<number>()
-  const handleChangeLatitude: ChangeEventHandler<HTMLInputElement> = (e) => {
-    setLatitude(Number(e.target.value))
-  }
-
   const handleSubmit: FormEventHandler<HTMLFormElement> = (e) => {
     e.preventDefault()
-    onSubmit({ date, hours, minutes, timeUnknown, longitude, latitude })
+    if (timeUnknown) {
+      setHours(12)
+      setMinutes(0)
+    }
+    const isoDate = `${date}T${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}+09:00`
+    const dateTime = new Date(isoDate)
+    onSubmit({ birthday: dateTime, lon: longitude, lat: latitude })
   }
 
   return (
@@ -69,6 +75,9 @@ export const HoroscopeForm: VFC<HoroscopeFormProps> = ({ onSubmit }) => {
               style={{ marginRight: '8px' }}
             />
             <span>分</span>
+            <span>（JST）</span>
+          </div>
+          <div>
             <span style={{ marginLeft: '12px' }}>
               <input type="checkbox" checked={timeUnknown} onChange={handleCheckTimeUnknown} />
               <label>時刻不明</label>
@@ -83,28 +92,28 @@ export const HoroscopeForm: VFC<HoroscopeFormProps> = ({ onSubmit }) => {
         <label style={{ width: 100 }}>出生場所</label>
         <div>
           <div>
-            <label style={{ marginRight: '8px' }}>経度</label>
+            <label style={{ marginRight: '8px' }}>緯度</label>
             <input
               type="number"
-              step="0.001"
-              min="0"
-              max="180"
-              value={longitude || ''}
-              onChange={handleChangeLongitude}
+              step="0.0000000000000001"
+              min="-90"
+              max="90"
+              value={latitude || ''}
+              onChange={handleChangeLatitude}
               style={{
                 width: 80,
               }}
             />
           </div>
           <div>
-            <label style={{ marginRight: '8px' }}>緯度</label>
+            <label style={{ marginRight: '8px' }}>経度</label>
             <input
               type="number"
-              step="0.001"
-              min="0"
-              max="90"
-              value={latitude || ''}
-              onChange={handleChangeLatitude}
+              step="0.0000000000000001"
+              min="-180"
+              max="180"
+              value={longitude || ''}
+              onChange={handleChangeLongitude}
               style={{
                 width: 80,
               }}

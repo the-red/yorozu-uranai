@@ -5,8 +5,6 @@ import { Horoscope } from '../../horoscope/Horoscope'
 type Data = { data: Horoscope } | { errorMessage: string }
 
 export default async (req: NextApiRequest, res: NextApiResponse<Data>) => {
-  // 生年月日
-  console.log(req.body.birthday)
   const birthday = new Date(req.body.birthday as string)
   if (birthday.toString() === 'Invalid Date') {
     return res.status(400).json({ errorMessage: 'Invalid birthday' })

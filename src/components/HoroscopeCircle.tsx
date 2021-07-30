@@ -56,7 +56,6 @@ const signCoordinate = {
   水瓶座: { icon: '♒', coordinate: calcSignCoordinate(300) },
   魚座: { icon: '♓', coordinate: calcSignCoordinate(330) },
 }
-console.log(signCoordinate)
 
 type SignImageProps = { url: string }
 const SignImage = ({ url }: SignImageProps) => {
@@ -67,20 +66,6 @@ const SignImage = ({ url }: SignImageProps) => {
 
 export default function HoroscopeCircle({ horoscope }: { horoscope: Horoscope }) {
   const { planets } = horoscope
-  console.log(
-    JSON.stringify({
-      sun: planets.sun.coordinate,
-      moon: planets.moon.coordinate,
-      mercury: planets.mercury.coordinate,
-      venus: planets.venus.coordinate,
-      mars: planets.mars.coordinate,
-      jupiter: planets.jupiter.coordinate,
-      saturn: planets.saturn.coordinate,
-      uranus: planets.uranus.coordinate,
-      neptune: planets.neptune.coordinate,
-      pluto: planets.pluto.coordinate,
-    })
-  )
   const [sign1] = useImage('/images/astro-sign-1.png')
   const [sign2] = useImage('/images/astro-sign-2.png')
   const [sign3] = useImage('/images/astro-sign-3.png')

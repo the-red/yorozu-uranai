@@ -23,7 +23,11 @@ export default function HoroscopeCircle() {
         <Text text="♋" x={50} y={300} fontSize={20} fontFamily={'Calibri'} fill="black" align="left" />
         <Text text="♌" x={100} y={400} fontSize={20} fontFamily={'Calibri'} fill="black" align="left" />
         <Text text="♍" x={200} y={450} fontSize={20} fontFamily={'Calibri'} fill="black" align="left" />
-        {/*TODO: この間の星座の配置する */}
+        <Text text="♎" x={200} y={450} fontSize={20} fontFamily={'Calibri'} fill="black" align="left" />
+        <Text text="♏" x={200} y={450} fontSize={20} fontFamily={'Calibri'} fill="black" align="left" />
+        <Text text="♐" x={200} y={450} fontSize={20} fontFamily={'Calibri'} fill="black" align="left" />
+        <Text text="♑" x={200} y={450} fontSize={20} fontFamily={'Calibri'} fill="black" align="left" />
+        <Text text="♒" x={200} y={450} fontSize={20} fontFamily={'Calibri'} fill="black" align="left" />
         <Text text="♓" x={250} y={50} fontSize={20} fontFamily={'Calibri'} fill="black" align="left" />
         {/* 惑星 */}
         {/*TODO: 自動的に配置 */}

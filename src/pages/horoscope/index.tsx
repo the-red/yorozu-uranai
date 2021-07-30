@@ -74,7 +74,7 @@ function HoroscopePage() {
     <>
       <p>Horoscope</p>
       <div>
-        <HoroscopeCircle></HoroscopeCircle>
+        <HoroscopeCircle horoscope={horoscope}></HoroscopeCircle>
       </div>
 
       <div>

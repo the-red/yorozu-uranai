@@ -62,14 +62,17 @@ function HoroscopePage() {
     polarity: value.polarity,
     quality: value.quality,
     sign: value.sign,
+    coordinate: value.coordinate,
   }))
 
   return (
     <div>
-      <div style={{ width: '720px', margin: '20px auto' }}>
+      <div style={{ width: '960px', margin: '20px auto' }}>
         <div style={{ fontFamily: 'Farewell Pro Regular', fontSize: '60px', marginBottom: '20px' }}>Horoscope</div>
         <div style={{ display: 'flex', marginBottom: '20px' }}>
-          <div style={{ width: '50%' }}>{/* 図が入る */}</div>
+          <div style={{ width: '50%' }}>
+            <HoroscopeCircle horoscope={horoscope}></HoroscopeCircle>
+          </div>
           <div style={{ width: '50%' }}>
             <HoroscopeForm onSubmit={(val) => console.log(val)} />
           </div>

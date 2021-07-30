@@ -1,6 +1,15 @@
 import useSWR from 'swr'
+import { useState } from 'react'
 import type { Planet as PlanetClass } from '../../horoscope'
 import type { Houses } from '../../horoscope'
+
+import HouseCusp from '../../components/HouseCusp'
+import SignTable from '../../components/SignTable'
+import PlanetPositions from '../../components/PlanetPositions'
+import { HoroscopeForm, FormValues } from '../../components/HoroscopeForm'
+import dynamic from 'next/dynamic'
+
+const HoroscopeCircle = dynamic(() => import('../../components/HoroscopeCircle'), { ssr: false })
 
 type Planet = ReturnType<PlanetClass['toJSON']>
 type Horoscope = {
@@ -19,27 +28,41 @@ type Horoscope = {
   }
 }
 
+type HoroscopeSeed = { birthday: Date; lat: number; lon: number; hsys?: string }
 function HoroscopePage() {
-  const { data: horoscope, error } = useSWR('/api/horoscope', async (url) => {
-    const res = await fetch(url, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        birthday: '1987-09-08T08:53:00+09:00',
-        lat: 43.0666666666666666,
-        lon: 141.35,
-        // hsys: 'Placidus(default)',
-      }),
-    })
-    if (!res.ok) {
-      const { errorMessage } = await res.json()
-      throw new Error(errorMessage)
-    }
-    const json = await res.json()
-    const { houses, ...planets } = json.data
-    console.log({ houses, planets })
-    return { houses, planets } as Horoscope
-  })
+  const defaultValues = {
+    birthday: new Date(),
+    lat: 35.604839,
+    lon: 139.667717,
+    // hsys: 'Placidus(default)',
+  }
+  // {
+  //   birthday: new Date('1987-09-08T08:53:00+09:00'),
+  //   lat: 43.066666,
+  //   lon: 141.35,
+  //   // hsys: 'Placidus(default)',
+  // }
+
+  const [horoscopeSeed, setHoroscopeSeed] = useState<HoroscopeSeed>(defaultValues)
+  const { data: horoscope, error } = useSWR(
+    '/api/horoscope',
+    async (url) => {
+      console.log('swr', horoscopeSeed.birthday)
+      const res = await fetch(url, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(horoscopeSeed),
+      })
+      if (!res.ok) {
+        const { errorMessage } = await res.json()
+        throw new Error(errorMessage)
+      }
+      const json = await res.json()
+      const { houses, ...planets } = json.data
+      return { houses, planets } as Horoscope
+    },
+    { onSuccess: (data) => console.log('success!', data.planets.sun), refreshInterval: 1000 }
+  )
 
   if (error) return <div>failed to load: {JSON.stringify(error.message)}</div>
   if (!horoscope) return <div>loading...</div>
@@ -53,120 +76,46 @@ function HoroscopePage() {
     polarity: value.polarity,
     quality: value.quality,
     sign: value.sign,
+    coordinate: value.coordinate,
   }))
 
-  const makeElementSingleSentence = (type: 'fire' | 'earth' | 'air' | 'water') =>
-    makeSignSingleSentence(type, 'element')
-  const makeQualitySingleSentence = (type: 'cardinal' | 'fixed' | 'mutable') => makeSignSingleSentence(type, 'quality')
-  const makePolaritySingleSentence = (type: 'masculine' | 'feminine') => makeSignSingleSentence(type, 'polarity')
-
-  const makeSignSingleSentence = (type: string, key: 'element' | 'quality' | 'polarity') => {
-    return planets
-      .filter((planet) => planet[key] === type)
-      .map((planet) => planet.name)
-      .join(' ')
-  }
-
   return (
-    <>
-      <p>Horoscope</p>
-      <div>
-        <p>【天体の位置】</p>
-        <table>
-          <thead>
-            <tr>
-              <th>惑星</th>
-              <th>星座</th>
-              <th>角度</th>
-              <th>ハウス</th>
-            </tr>
-          </thead>
-          <tbody>
-            {planets.map((planet) => (
-              <tr>
-                <td>{planet.name}</td>
-                <td>{planet.sign}</td>
-                <td>{planet.formattedDegrees}</td>
-                <td>1ハウス</td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
+    <div>
+      <div style={{ width: '960px', margin: '20px auto' }}>
+        <div style={{ fontFamily: 'Farewell Pro Regular', fontSize: '60px', marginBottom: '20px' }}>Horoscope</div>
+        <div style={{ display: 'flex', marginBottom: '20px' }}>
+          <div style={{ width: '50%', display: 'flex', justifyContent: 'center' }}>
+            <HoroscopeCircle horoscope={horoscope}></HoroscopeCircle>
+          </div>
+          <div style={{ width: '50%', display: 'flex', justifyContent: 'center', paddingTop: '50px' }}>
+            <HoroscopeForm
+              onSubmit={({ birthday: dateTime, lat: latitude, lon: longitude }: FormValues) => {
+                setHoroscopeSeed({
+                  birthday: dateTime,
+                  lat: latitude,
+                  lon: longitude,
+                })
+                console.log('submit', horoscopeSeed.birthday)
+              }}
+              defaultValues={defaultValues}
+            />
+          </div>
+        </div>
+        <div style={{ display: 'flex', marginBottom: '20px' }}>
+          <div style={{ width: '50%', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+            <PlanetPositions planets={planets}></PlanetPositions>
+          </div>
+          <div style={{ width: '50%', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+            <HouseCusp houses={horoscope.houses}></HouseCusp>
+          </div>
+        </div>
+        <div style={{ display: 'flex' }}>
+          <div style={{ width: '50%', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+            <SignTable planets={planets}></SignTable>
+          </div>
+        </div>
       </div>
-
-      <div>
-        <p>【ハウスのカスプ】</p>
-        <table>
-          <tbody>
-            {horoscope.houses.house.map((longitude, i) => (
-              <tr>
-                <td>{i + 1}ハウス</td>
-                <td>{longitude}</td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
-
-      <div>
-        <p>【サイン区分】</p>
-        <table>
-          <thead>
-            <tr>
-              <th>区分</th>
-              <th>惑星</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <th colSpan={2}>４区分</th>
-            </tr>
-            <tr>
-              <td>火：</td>
-              <td>{makeElementSingleSentence('fire')}</td>
-            </tr>
-            <tr>
-              <td>土：</td>
-              <td>{makeElementSingleSentence('earth')}</td>
-            </tr>
-            <tr>
-              <td>風：</td>
-              <td>{makeElementSingleSentence('air')}</td>
-            </tr>
-            <tr>
-              <td>水：</td>
-              <td>{makeElementSingleSentence('water')}</td>
-            </tr>
-            <tr>
-              <th colSpan={2}>３区分</th>
-            </tr>
-            <tr>
-              <td>活動宮：</td>
-              <td>{makeQualitySingleSentence('cardinal')}</td>
-            </tr>
-            <tr>
-              <td>不動宮：</td>
-              <td>{makeQualitySingleSentence('fixed')}</td>
-            </tr>
-            <tr>
-              <td>柔軟宮：</td>
-              <td>{makeQualitySingleSentence('mutable')}</td>
-            </tr>
-            <tr>
-              <th colSpan={2}>２区分</th>
-            </tr>
-            <tr>
-              <td>男性宮：</td>
-              <td>{makePolaritySingleSentence('masculine')}</td>
-            </tr>
-            <tr>
-              <td>女性宮：</td>
-              <td>{makePolaritySingleSentence('feminine')}</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-    </>
+    </div>
   )
 }
 

@@ -34,27 +34,27 @@ const calcLineCoordinate = (longitude: number) => {
   return [x1, y1, x2, y2]
 }
 
-const signCoordinate = (longitude: number) => {
+const calcSignCoordinate = (longitude: number) => {
   const radian = (longitude - 75) * (Math.PI / 180)
   const x = origin + Math.sin(radian) * singRadius - singRadius / 15
   const y = origin + Math.cos(radian) * singRadius - singRadius / 30
   return { x, y }
 }
-const SignCoordinate = {
-  牡羊座: { icon: '♈', coordinate: signCoordinate(0) },
-  牡牛座: { icon: '♉', coordinate: signCoordinate(30) },
-  双子座: { icon: '♊', coordinate: signCoordinate(60) },
-  蟹座: { icon: '♋', coordinate: signCoordinate(90) },
-  獅子座: { icon: '♌', coordinate: signCoordinate(120) },
-  乙女座: { icon: '♍', coordinate: signCoordinate(150) },
-  天秤座: { icon: '♎', coordinate: signCoordinate(180) },
-  蠍座: { icon: '♏', coordinate: signCoordinate(210) },
-  射手座: { icon: '♐', coordinate: signCoordinate(240) },
-  山羊座: { icon: '♑', coordinate: signCoordinate(270) },
-  水瓶座: { icon: '♒', coordinate: signCoordinate(300) },
-  魚座: { icon: '♓', coordinate: signCoordinate(330) },
+const signCoordinate = {
+  牡羊座: { icon: '♈', coordinate: calcSignCoordinate(0) },
+  牡牛座: { icon: '♉', coordinate: calcSignCoordinate(30) },
+  双子座: { icon: '♊', coordinate: calcSignCoordinate(60) },
+  蟹座: { icon: '♋', coordinate: calcSignCoordinate(90) },
+  獅子座: { icon: '♌', coordinate: calcSignCoordinate(120) },
+  乙女座: { icon: '♍', coordinate: calcSignCoordinate(150) },
+  天秤座: { icon: '♎', coordinate: calcSignCoordinate(180) },
+  蠍座: { icon: '♏', coordinate: calcSignCoordinate(210) },
+  射手座: { icon: '♐', coordinate: calcSignCoordinate(240) },
+  山羊座: { icon: '♑', coordinate: calcSignCoordinate(270) },
+  水瓶座: { icon: '♒', coordinate: calcSignCoordinate(300) },
+  魚座: { icon: '♓', coordinate: calcSignCoordinate(330) },
 }
-console.log(SignCoordinate)
+console.log(signCoordinate)
 
 export default function HoroscopeCircle({ horoscope }: { horoscope: Horoscope }) {
   const { planets } = horoscope
@@ -91,86 +91,86 @@ export default function HoroscopeCircle({ horoscope }: { horoscope: Horoscope })
         <Circle stroke="black" strokeWidth={1} fill="white" x={250} y={250} radius={80} opacity={1} />
         {/* 星座 */}
         <Text
-          text={SignCoordinate.牡羊座.icon}
-          x={SignCoordinate.牡羊座.coordinate.x}
-          y={SignCoordinate.牡羊座.coordinate.y}
+          text={signCoordinate.牡羊座.icon}
+          x={signCoordinate.牡羊座.coordinate.x}
+          y={signCoordinate.牡羊座.coordinate.y}
           fontSize={iconSize}
           fill="black"
         />
         <Text
-          text={SignCoordinate.牡牛座.icon}
-          x={SignCoordinate.牡牛座.coordinate.x}
-          y={SignCoordinate.牡牛座.coordinate.y}
+          text={signCoordinate.牡牛座.icon}
+          x={signCoordinate.牡牛座.coordinate.x}
+          y={signCoordinate.牡牛座.coordinate.y}
           fontSize={iconSize}
           fill="black"
         />
         <Text
-          text={SignCoordinate.双子座.icon}
-          x={SignCoordinate.双子座.coordinate.x}
-          y={SignCoordinate.双子座.coordinate.y}
+          text={signCoordinate.双子座.icon}
+          x={signCoordinate.双子座.coordinate.x}
+          y={signCoordinate.双子座.coordinate.y}
           fontSize={iconSize}
           fill="black"
         />
         <Text
-          text={SignCoordinate.蟹座.icon}
-          x={SignCoordinate.蟹座.coordinate.x}
-          y={SignCoordinate.蟹座.coordinate.y}
+          text={signCoordinate.蟹座.icon}
+          x={signCoordinate.蟹座.coordinate.x}
+          y={signCoordinate.蟹座.coordinate.y}
           fontSize={iconSize}
           fill="black"
         />
         <Text
-          text={SignCoordinate.獅子座.icon}
-          x={SignCoordinate.獅子座.coordinate.x}
-          y={SignCoordinate.獅子座.coordinate.y}
+          text={signCoordinate.獅子座.icon}
+          x={signCoordinate.獅子座.coordinate.x}
+          y={signCoordinate.獅子座.coordinate.y}
           fontSize={iconSize}
           fill="black"
         />
         <Text
-          text={SignCoordinate.乙女座.icon}
-          x={SignCoordinate.乙女座.coordinate.x}
-          y={SignCoordinate.乙女座.coordinate.y}
+          text={signCoordinate.乙女座.icon}
+          x={signCoordinate.乙女座.coordinate.x}
+          y={signCoordinate.乙女座.coordinate.y}
           fontSize={iconSize}
           fill="black"
         />
         <Text
-          text={SignCoordinate.天秤座.icon}
-          x={SignCoordinate.天秤座.coordinate.x}
-          y={SignCoordinate.天秤座.coordinate.y}
+          text={signCoordinate.天秤座.icon}
+          x={signCoordinate.天秤座.coordinate.x}
+          y={signCoordinate.天秤座.coordinate.y}
           fontSize={iconSize}
           fill="black"
         />
         <Text
-          text={SignCoordinate.蠍座.icon}
-          x={SignCoordinate.蠍座.coordinate.x}
-          y={SignCoordinate.蠍座.coordinate.y}
+          text={signCoordinate.蠍座.icon}
+          x={signCoordinate.蠍座.coordinate.x}
+          y={signCoordinate.蠍座.coordinate.y}
           fontSize={iconSize}
           fill="black"
         />
         <Text
-          text={SignCoordinate.射手座.icon}
-          x={SignCoordinate.射手座.coordinate.x}
-          y={SignCoordinate.射手座.coordinate.y}
+          text={signCoordinate.射手座.icon}
+          x={signCoordinate.射手座.coordinate.x}
+          y={signCoordinate.射手座.coordinate.y}
           fontSize={iconSize}
           fill="black"
         />
         <Text
-          text={SignCoordinate.山羊座.icon}
-          x={SignCoordinate.山羊座.coordinate.x}
-          y={SignCoordinate.山羊座.coordinate.y}
+          text={signCoordinate.山羊座.icon}
+          x={signCoordinate.山羊座.coordinate.x}
+          y={signCoordinate.山羊座.coordinate.y}
           fontSize={iconSize}
           fill="black"
         />
         <Text
-          text={SignCoordinate.水瓶座.icon}
-          x={SignCoordinate.水瓶座.coordinate.x}
-          y={SignCoordinate.水瓶座.coordinate.y}
+          text={signCoordinate.水瓶座.icon}
+          x={signCoordinate.水瓶座.coordinate.x}
+          y={signCoordinate.水瓶座.coordinate.y}
           fontSize={iconSize}
           fill="black"
         />
         <Text
-          text={SignCoordinate.魚座.icon}
-          x={SignCoordinate.魚座.coordinate.x}
-          y={SignCoordinate.魚座.coordinate.y}
+          text={signCoordinate.魚座.icon}
+          x={signCoordinate.魚座.coordinate.x}
+          y={signCoordinate.魚座.coordinate.y}
           fontSize={iconSize}
           fill="black"
         />

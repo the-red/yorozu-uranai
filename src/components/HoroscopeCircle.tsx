@@ -24,8 +24,17 @@ const singRadius = 200
 const planetRadius = 150
 const iconSize = 20
 
+const calcLineCoordinate = (longitude: number) => {
+  const radian1 = (longitude - 90) * (Math.PI / 180)
+  const x1 = origin + Math.sin(radian1) * singRadius
+  const y1 = origin + Math.cos(radian1) * singRadius
+  const radian2 = (longitude + 90) * (Math.PI / 180)
+  const x2 = origin + Math.sin(radian2) * singRadius
+  const y2 = origin + Math.cos(radian2) * singRadius
+  return [x1, y1, x2, y2]
+}
+
 const signCoordinate = (longitude: number) => {
-  // ホロスコープに描画する際の座標（左端中央が原点）
   const radian = (longitude - 75) * (Math.PI / 180)
   const x = origin + Math.sin(radian) * singRadius - singRadius / 15
   const y = origin + Math.cos(radian) * singRadius - singRadius / 30
@@ -73,10 +82,12 @@ export default function HoroscopeCircle({ horoscope }: { horoscope: Horoscope })
         <Circle stroke="black" strokeWidth={1} fill="white" x={250} y={250} radius={180} opacity={1} />
         <Circle stroke="black" strokeWidth={1} fill="white" x={250} y={250} radius={100} opacity={1} />
         {/* 線 */}
-        <Line points={[250, 250, 250, 50]} stroke="black" strokeWidth={1} />
-        <Line points={[250, 250, 450, 250]} stroke="black" strokeWidth={1} />
-        <Line points={[250, 250, 250, 450]} stroke="black" strokeWidth={1} />
-        <Line points={[250, 250, 50, 250]} stroke="black" strokeWidth={1} />
+        <Line points={calcLineCoordinate(0)} stroke="black" strokeWidth={1} opacity={0.2} />
+        <Line points={calcLineCoordinate(30)} stroke="black" strokeWidth={1} opacity={0.2} />
+        <Line points={calcLineCoordinate(60)} stroke="black" strokeWidth={1} opacity={0.2} />
+        <Line points={calcLineCoordinate(90)} stroke="black" strokeWidth={1} opacity={0.2} />
+        <Line points={calcLineCoordinate(120)} stroke="black" strokeWidth={1} opacity={0.2} />
+        <Line points={calcLineCoordinate(150)} stroke="black" strokeWidth={1} opacity={0.2} />
         <Circle stroke="black" strokeWidth={1} fill="white" x={250} y={250} radius={80} opacity={1} />
         {/* 星座 */}
         <Text

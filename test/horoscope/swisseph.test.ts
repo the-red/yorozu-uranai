@@ -1,4 +1,4 @@
-import { julday, eclipticPosition, houses, houseSystemName } from '../../src/horoscope/swisseph'
+import { julday, eclipticPosition, calcHouses, houseSystemName } from '../../src/horoscope/swisseph'
 
 describe('swisseph', () => {
   const funadyBirthday = new Date('1987-09-08T08:53:00+09:00')
@@ -52,7 +52,7 @@ describe('swisseph', () => {
 
   describe('ハウス', () => {
     it('プラシーダス（デフォルト）', async () => {
-      expect(await houses(await julday(funadyBirthday), funadyBirthLat, funadyBirthLon)).toEqual({
+      expect(await calcHouses(await julday(funadyBirthday), funadyBirthLat, funadyBirthLon)).toEqual({
         house: [
           207.908591,
           235.781911,
@@ -79,7 +79,7 @@ describe('swisseph', () => {
     })
 
     it('コッホ', async () => {
-      expect(await houses(await julday(funadyBirthday), funadyBirthLat, funadyBirthLon, 'K')).toEqual({
+      expect(await calcHouses(await julday(funadyBirthday), funadyBirthLat, funadyBirthLon, 'K')).toEqual({
         house: [
           207.908591,
           235.809886,

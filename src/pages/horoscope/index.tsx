@@ -1,46 +1,22 @@
 import useSWR from 'swr'
+import type { Planet as PlanetClass } from '../../horoscope'
 
-type PlanetName = 'sun' | 'moon' | 'mercury' | 'venus' | 'mars' | 'jupiter' | 'saturn' | 'uranus' | 'neptune' | 'pluto'
-type Planet = {
-  name: PlanetName
-  longitude: number
-  degrees: number
-  formattedDegrees: string
-  sign:
-    | '牡羊座'
-    | '牡牛座'
-    | '双子座'
-    | '蟹座'
-    | '獅子座'
-    | '乙女座'
-    | '天秤座'
-    | '蠍座'
-    | '射手座'
-    | '山羊座'
-    | '水瓶座'
-    | '魚座'
-  element: string
-  quality: string
-  polarity: string
-}
+type Planet = ReturnType<PlanetClass['toJSON']>
 type Horoscope = {
-  horoscope: {
-    all: any
-    sun: Planet
-    moon: Planet
-    mercury: Planet
-    venus: Planet
-    mars: Planet
-    jupiter: Planet
-    saturn: Planet
-    uranus: Planet
-    neptune: Planet
-    pluto: Planet
-  }
+  sun: Planet
+  moon: Planet
+  mercury: Planet
+  venus: Planet
+  mars: Planet
+  jupiter: Planet
+  saturn: Planet
+  uranus: Planet
+  neptune: Planet
+  pluto: Planet
 }
 
-function Horoscope() {
-  const { data, error } = useSWR('/api/horoscope', async (url) => {
+function HoroscopePage() {
+  const { data: horoscope, error } = useSWR('/api/horoscope', async (url) => {
     const res = await fetch(url, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -50,16 +26,15 @@ function Horoscope() {
       const { errorMessage } = await res.json()
       throw new Error(errorMessage)
     }
-    const horoscope: Horoscope = await res.json()
-    delete horoscope.horoscope.all
-    return horoscope.horoscope
+    const json: { data: Horoscope } = await res.json()
+    return json.data
   })
 
   if (error) return <div>failed to load: {JSON.stringify(error.message)}</div>
-  if (!data) return <div>loading...</div>
+  if (!horoscope) return <div>loading...</div>
 
-  const planets = Object.entries(data).map(([key, value]) => ({
-    name: key,
+  const planets = Object.values<Planet>(horoscope).map<Planet>((value) => ({
+    name: value.name,
     degrees: value.degrees,
     element: value.element,
     formattedDegrees: value.formattedDegrees,
@@ -167,4 +142,4 @@ function Horoscope() {
   )
 }
 
-export default Horoscope
+export default HoroscopePage

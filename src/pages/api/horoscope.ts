@@ -2,7 +2,7 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
 import { Horoscope } from '../../horoscope/Horoscope'
 
-type Data = { horoscope: Horoscope } | { errorMessage: string }
+type Data = { data: Horoscope } | { errorMessage: string }
 
 export default async (req: NextApiRequest, res: NextApiResponse<Data>) => {
   console.log(req.body.birthday)
@@ -11,5 +11,5 @@ export default async (req: NextApiRequest, res: NextApiResponse<Data>) => {
     return res.status(400).json({ errorMessage: 'Invalid birthday' })
   }
   const horoscope = await Horoscope.getInstance(birthday)
-  res.status(200).json({ horoscope })
+  res.status(200).json({ data: horoscope })
 }

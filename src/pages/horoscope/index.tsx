@@ -6,7 +6,7 @@ import type { Houses } from '../../horoscope'
 import HouseCusp from '../../components/HouseCusp'
 import SignTable from '../../components/SignTable'
 import PlanetPositions from '../../components/PlanetPositions'
-import { HoroscopeForm } from '../../components/HoroscopeForm'
+import { HoroscopeForm, FormValues } from '../../components/HoroscopeForm'
 import dynamic from 'next/dynamic'
 
 const HoroscopeCircle = dynamic(() => import('../../components/HoroscopeCircle'), { ssr: false })
@@ -30,9 +30,9 @@ type Horoscope = {
 
 type HoroscopeSeed = { birthday: Date; lat: number; lon: number; hsys?: string }
 function HoroscopePage() {
-  const [horoscopeSeed, useHoroscopeSeed] = useState<HoroscopeSeed>({
+  const [horoscopeSeed, setHoroscopeSeed] = useState<HoroscopeSeed>({
     birthday: new Date('1987-09-08T08:53:00+09:00'),
-    lat: 43.0666666666666666,
+    lat: 43.066666,
     lon: 141.35,
     // hsys: 'Placidus(default)',
   })
@@ -75,7 +75,16 @@ function HoroscopePage() {
             <HoroscopeCircle horoscope={horoscope}></HoroscopeCircle>
           </div>
           <div style={{ width: '50%' }}>
-            <HoroscopeForm onSubmit={(val) => console.log(val)} />
+            <HoroscopeForm
+              onSubmit={({ dateTime, latitude, longitude }: FormValues) => {
+                setHoroscopeSeed({
+                  birthday: dateTime,
+                  lat: latitude,
+                  lon: longitude,
+                })
+                console.log({ horoscopeSeed })
+              }}
+            />
           </div>
         </div>
         <div style={{ display: 'flex', marginBottom: '20px' }}>

@@ -11,10 +11,6 @@ export default function HoroscopeCircle() {
         <Circle stroke="#352e2b" strokeWidth={1} fill="white" x={250} y={250} radius={180} opacity={1} />
         <Circle stroke="#afb1b1" strokeWidth={1} fill="#e4E7E2" x={250} y={250} radius={100} opacity={1} />
         {/* 線 */}
-        <Line points={[250, 250, 250, 50]} stroke="#afb1b1" strokeWidth={1} />
-        <Line points={[250, 250, 450, 250]} stroke="#afb1b1" strokeWidth={1} />
-        <Line points={[250, 250, 250, 450]} stroke="#afb1b1" strokeWidth={1} />
-        <Line points={[250, 250, 50, 250]} stroke="#afb1b1" strokeWidth={1} />
         <Circle stroke="#afb1b1" strokeWidth={1} fill="white" x={250} y={250} radius={80} opacity={1} />
         {/* 星座 */}
         <Text text="♈" x={200} y={50} fontSize={20} fontFamily={'Calibri'} fill="black" align="left" />

@@ -5,7 +5,9 @@ import type { Houses } from '../../horoscope'
 import HouseCusp from '../../components/HouseCusp'
 import SignTable from '../../components/SignTable'
 import PlanetPositions from '../../components/PlanetPositions'
+import { HoroscopeForm } from '../../components/HoroscopeForm'
 import dynamic from 'next/dynamic'
+
 const HoroscopeCircle = dynamic(() => import('../../components/HoroscopeCircle'), { ssr: false })
 
 type Planet = ReturnType<PlanetClass['toJSON']>
@@ -64,6 +66,7 @@ function HoroscopePage() {
   return (
     <>
       <p>Horoscope</p>
+      <HoroscopeForm onSubmit={(val) => console.log(val)} />
       <PlanetPositions planets={planets}></PlanetPositions>
       <HouseCusp houses={horoscope.houses}></HouseCusp>
       <SignTable planets={planets}></SignTable>

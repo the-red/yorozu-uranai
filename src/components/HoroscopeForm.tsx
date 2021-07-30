@@ -1,6 +1,5 @@
 import { ChangeEventHandler, FormEventHandler, useMemo, useState, VFC } from 'react'
-import { format, getHours, getMinutes } from 'date-fns'
-
+import { DateTime } from 'luxon'
 type HoroscopeFormProps = {
   onSubmit: (formValues: FormValues) => void
 }
@@ -15,25 +14,30 @@ type FormValues = {
 }
 
 export const HoroscopeForm: VFC<HoroscopeFormProps> = ({ onSubmit }) => {
-  const now = useMemo(() => new Date(), [])
+  const now = useMemo(() => DateTime.fromJSDate(new Date()), [])
 
-  const [date, setDate] = useState(format(now, 'yyyy-MM-dd'))
+  const [date, setDate] = useState(now.toFormat('yyyy-MM-dd'))
   const handleChangeDate: ChangeEventHandler<HTMLInputElement> = (e) => setDate(e.target.value)
 
-  const [hours, setHours] = useState(getHours(now))
+  const [hours, setHours] = useState(now.hour)
   const handleChangeHours: ChangeEventHandler<HTMLInputElement> = (e) => setHours(Number(e.target.value))
 
-  const [minutes, setMinutes] = useState(getMinutes(now))
+  const [minutes, setMinutes] = useState(now.minute)
   const handleChangeMinutes: ChangeEventHandler<HTMLInputElement> = (e) => setMinutes(Number(e.target.value))
 
   const [timeUnknown, setTimeUnknown] = useState(false)
   const handleCheckTimeUnknown: ChangeEventHandler<HTMLInputElement> = (e) => setTimeUnknown(e.target.checked)
 
   const [longitude, setLongitude] = useState<number>()
-  const handleChangeLongitude: ChangeEventHandler<HTMLInputElement> = (e) => setLongitude(Number(e.target.value))
+  const handleChangeLongitude: ChangeEventHandler<HTMLInputElement> = (e) => {
+    // TODO: input側で 0 を入力できず、空文字が 0 になる
+    setLongitude(Number(e.target.value))
+  }
 
   const [latitude, setLatitude] = useState<number>()
-  const handleChangeLatitude: ChangeEventHandler<HTMLInputElement> = (e) => setLatitude(Number(e.target.value))
+  const handleChangeLatitude: ChangeEventHandler<HTMLInputElement> = (e) => {
+    setLatitude(Number(e.target.value))
+  }
 
   const handleSubmit: FormEventHandler<HTMLFormElement> = (e) => {
     e.preventDefault()

@@ -6,15 +6,16 @@ export default function HoroscopeCircle() {
     <Stage width={500} height={500}>
       <Layer>
         {/* 文字 */}
-        <Text text={text} x={50} y={50} width={400} fontSize={40} fontFamily={'Calibri'} fill="black" align="left" />
+        {/* <Text text={text} x={50} y={50} width={400} fontSize={40} fontFamily={'Calibri'} fill="black" align="left" /> */}
         {/* 四角 */}
-        <Rect fill="gray" x={100} y={100} width={300} height={200} />
+        {/* <Rect fill="gray" x={100} y={100} width={300} height={200} /> */}
         {/* 円 */}
-        <Circle fill="pink" x={90} y={90} radius={50} opacity={0.8} />
-        {/* 楕円 */}
-        <Ellipse fill="lightBlue" x={250} y={300} radiusX={50} radiusY={90} opacity={0.8} />
+        <Circle stroke="black" strokeWidth={1} fill="white" x={250} y={250} radius={200} opacity={1} />
+        <Circle stroke="black" strokeWidth={1} fill="white" x={250} y={250} radius={180} opacity={1} />
+        <Circle stroke="black" strokeWidth={1} fill="white" x={250} y={250} radius={100} opacity={1} />
+        <Circle stroke="black" strokeWidth={1} fill="white" x={250} y={250} radius={80} opacity={1} />
         {/* 線 */}
-        <Line points={[450, 50, 300, 150, 50]} stroke="blue" strokeWidth={8} />
+        {/* <Line points={[450, 50, 300, 150, 50]} stroke="blue" strokeWidth={8} /> */}
       </Layer>
     </Stage>
   )

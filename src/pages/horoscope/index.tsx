@@ -48,10 +48,13 @@ function HoroscopePage() {
     '/api/horoscope',
     async (url) => {
       console.log('swr', horoscopeSeed.birthday)
+      const bd = document.querySelector('#birthday-text')?.textContent
+      console.log(bd)
       const res = await fetch(url, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(horoscopeSeed),
+        // @ts-ignore
+        body: JSON.stringify({ ...horoscopeSeed, birthday: new Date(bd) }),
       })
       if (!res.ok) {
         const { errorMessage } = await res.json()
@@ -115,6 +118,9 @@ function HoroscopePage() {
           </div>
         </div>
       </div>
+      <p style={{ visibility: 'hidden' }} id="birthday-text">
+        {horoscopeSeed.birthday.toISOString()}
+      </p>
     </div>
   )
 }

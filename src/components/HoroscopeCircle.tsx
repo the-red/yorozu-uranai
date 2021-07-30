@@ -1,6 +1,7 @@
-import { Layer, Rect, Stage, Circle, Ellipse, Line, Text } from 'react-konva'
+import { Layer, Rect, Stage, Circle, Ellipse, Line, Text, Image } from 'react-konva'
 import type { Planet as PlanetClass } from '../horoscope'
 import type { Houses } from '../horoscope'
+import useImage from 'use-image'
 
 type Planet = ReturnType<PlanetClass['toJSON']>
 type Horoscope = {
@@ -20,7 +21,7 @@ type Horoscope = {
 }
 
 const origin = 250
-const singRadius = 200
+const singRadius = 220
 const planetRadius = 150
 const iconSize = 20
 
@@ -36,8 +37,9 @@ const calcLineCoordinate = (longitude: number) => {
 
 const calcSignCoordinate = (longitude: number) => {
   const radian = (longitude - 75) * (Math.PI / 180)
-  const x = origin + Math.sin(radian) * singRadius - singRadius / 15
-  const y = origin + Math.cos(radian) * singRadius - singRadius / 30
+  const a = 195
+  const x = origin + Math.sin(radian) * a - a / 15
+  const y = origin + Math.cos(radian) * a - a / 30
   return { x, y }
 }
 const signCoordinate = {
@@ -56,6 +58,13 @@ const signCoordinate = {
 }
 console.log(signCoordinate)
 
+type SignImageProps = { url: string }
+const SignImage = ({ url }: SignImageProps) => {
+  const [image] = useImage(url)
+  const x = 500
+  return <Image image={image} />
+}
+
 export default function HoroscopeCircle({ horoscope }: { horoscope: Horoscope }) {
   const { planets } = horoscope
   console.log(
@@ -72,13 +81,26 @@ export default function HoroscopeCircle({ horoscope }: { horoscope: Horoscope })
       pluto: planets.pluto.coordinate,
     })
   )
+  const [sign1] = useImage('/images/astro-sign-1.png')
+  const [sign2] = useImage('/images/astro-sign-2.png')
+  const [sign3] = useImage('/images/astro-sign-3.png')
+  const [sign4] = useImage('/images/astro-sign-4.png')
+  const [sign5] = useImage('/images/astro-sign-5.png')
+  const [sign6] = useImage('/images/astro-sign-6.png')
+  const [sign7] = useImage('/images/astro-sign-7.png')
+  const [sign8] = useImage('/images/astro-sign-8.png')
+  const [sign9] = useImage('/images/astro-sign-9.png')
+  const [sign10] = useImage('/images/astro-sign-10.png')
+  const [sign11] = useImage('/images/astro-sign-11.png')
+  const [sign12] = useImage('/images/astro-sign-12.png')
+
   return (
     <Stage width={500} height={500}>
       <Layer>
         {/* 四角 */}
         {/* <Rect fill="gray" x={100} y={100} width={300} height={200} /> */}
         {/* 円 */}
-        <Circle stroke="#352e2b" strokeWidth={1} fill="#e4E7E2" x={250} y={250} radius={200} opacity={1} />
+        <Circle stroke="#352e2b" strokeWidth={1} fill="#e4E7E2" x={250} y={250} radius={220} opacity={1} />
         <Circle stroke="#352e2b" strokeWidth={1} fill="white" x={250} y={250} radius={180} opacity={1} />
         <Circle stroke="#afb1b1" strokeWidth={1} fill="#e4E7E2" x={250} y={250} radius={100} opacity={1} />
         {/* 線 */}
@@ -90,91 +112,90 @@ export default function HoroscopeCircle({ horoscope }: { horoscope: Horoscope })
         <Line points={calcLineCoordinate(150)} stroke="black" strokeWidth={1} opacity={0.2} />
         <Circle stroke="#afb1b1" strokeWidth={1} fill="white" x={250} y={250} radius={80} opacity={1} />
         {/* 星座 */}
-        <Text
-          text={signCoordinate.牡羊座.icon}
+        <Image
+          image={sign1}
           x={signCoordinate.牡羊座.coordinate.x}
           y={signCoordinate.牡羊座.coordinate.y}
-          fontSize={iconSize}
-          fill="black"
+          width={25}
+          height={25}
         />
-        <Text
-          text={signCoordinate.牡牛座.icon}
+        <Image
+          image={sign2}
           x={signCoordinate.牡牛座.coordinate.x}
           y={signCoordinate.牡牛座.coordinate.y}
-          fontSize={iconSize}
-          fill="black"
+          width={25}
+          height={25}
         />
-        <Text
-          text={signCoordinate.双子座.icon}
+        <Image
+          image={sign3}
           x={signCoordinate.双子座.coordinate.x}
           y={signCoordinate.双子座.coordinate.y}
-          fontSize={iconSize}
-          fill="black"
+          width={25}
+          height={25}
         />
-        <Text
-          text={signCoordinate.蟹座.icon}
+        <Image
+          image={sign4}
           x={signCoordinate.蟹座.coordinate.x}
           y={signCoordinate.蟹座.coordinate.y}
-          fontSize={iconSize}
-          fill="black"
+          width={25}
+          height={25}
         />
-        <Text
-          text={signCoordinate.獅子座.icon}
+        <Image
+          image={sign5}
           x={signCoordinate.獅子座.coordinate.x}
           y={signCoordinate.獅子座.coordinate.y}
-          fontSize={iconSize}
-          fill="black"
+          width={25}
+          height={25}
         />
-        <Text
-          text={signCoordinate.乙女座.icon}
+        <Image
+          image={sign6}
           x={signCoordinate.乙女座.coordinate.x}
           y={signCoordinate.乙女座.coordinate.y}
-          fontSize={iconSize}
-          fill="black"
+          width={25}
+          height={25}
         />
-        <Text
-          text={signCoordinate.天秤座.icon}
+        <Image
+          image={sign7}
           x={signCoordinate.天秤座.coordinate.x}
           y={signCoordinate.天秤座.coordinate.y}
-          fontSize={iconSize}
-          fill="black"
+          width={25}
+          height={25}
         />
-        <Text
-          text={signCoordinate.蠍座.icon}
+        <Image
+          image={sign8}
           x={signCoordinate.蠍座.coordinate.x}
           y={signCoordinate.蠍座.coordinate.y}
-          fontSize={iconSize}
-          fill="black"
+          width={25}
+          height={25}
         />
-        <Text
-          text={signCoordinate.射手座.icon}
+        <Image
+          image={sign9}
           x={signCoordinate.射手座.coordinate.x}
           y={signCoordinate.射手座.coordinate.y}
-          fontSize={iconSize}
-          fill="black"
+          width={25}
+          height={25}
         />
-        <Text
-          text={signCoordinate.山羊座.icon}
+        <Image
+          image={sign10}
           x={signCoordinate.山羊座.coordinate.x}
           y={signCoordinate.山羊座.coordinate.y}
-          fontSize={iconSize}
-          fill="black"
+          width={25}
+          height={25}
         />
-        <Text
-          text={signCoordinate.水瓶座.icon}
+        <Image
+          image={sign11}
           x={signCoordinate.水瓶座.coordinate.x}
           y={signCoordinate.水瓶座.coordinate.y}
-          fontSize={iconSize}
-          fill="black"
+          width={25}
+          height={25}
         />
-        <Text
-          text={signCoordinate.魚座.icon}
+        <Image
+          image={sign12}
           x={signCoordinate.魚座.coordinate.x}
           y={signCoordinate.魚座.coordinate.y}
-          fontSize={iconSize}
-          fill="black"
+          width={25}
+          height={25}
         />
-
         {/* 惑星 */}
         <Text
           text="☉"

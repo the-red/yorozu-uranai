@@ -69,6 +69,9 @@ export const HoroscopeForm: VFC<HoroscopeFormProps> = ({ onSubmit }) => {
               style={{ marginRight: '8px' }}
             />
             <span>分</span>
+            <span>（JST）</span>
+          </div>
+          <div>
             <span style={{ marginLeft: '12px' }}>
               <input type="checkbox" checked={timeUnknown} onChange={handleCheckTimeUnknown} />
               <label>時刻不明</label>

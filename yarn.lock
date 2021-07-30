@@ -1804,6 +1804,11 @@ data-urls@^2.0.0:
     whatwg-mimetype "^2.3.0"
     whatwg-url "^8.0.0"
 
+date-fns@^2.23.0:
+  version "2.23.0"
+  resolved "https://registry.yarnpkg.com/date-fns/-/date-fns-2.23.0.tgz#4e886c941659af0cf7b30fafdd1eaa37e88788a9"
+  integrity sha512-5ycpauovVyAk0kXNZz6ZoB9AYMZB4DObse7P3BPWmyEjXNORTI8EJ6X0uaSAq4sCHzM1uajzrkr6HnsLQpxGXA==
+
 debug@2:
   version "2.6.9"
   resolved "https://registry.yarnpkg.com/debug/-/debug-2.6.9.tgz#5d128515df134ff327e90a4c93f4e077a536341f"
@@ -3320,6 +3325,11 @@ kleur@^3.0.3:
   resolved "https://registry.npmjs.org/kleur/-/kleur-3.0.3.tgz#a79c9ecc86ee1ce3fa6206d1216c501f147fc07e"
   integrity sha512-eTIzlVOSUR+JxdDFepEYcBMtZ9Qqdef+rnzWdRZuMbOywu5tO2w2N7rqjoANZ5k9vywhL6Br1VRjUIgTQx4E8w==
 
+konva@^8.1.1:
+  version "8.1.1"
+  resolved "https://registry.npmjs.org/konva/-/konva-8.1.1.tgz#c92c3f81b371947eade7a8f76ee2df34c71b333c"
+  integrity sha512-2jLijU0N2DNJwBoWzwyxHwqx4GLPjTppSD9TU/G49B2MJ8Sf10E7Y0EmuULjYcNDIFsY+3zMt0VFonKNfyz7WA==
+
 leven@^3.1.0:
   version "3.1.0"
   resolved "https://registry.npmjs.org/leven/-/leven-3.1.0.tgz#77891de834064cccba82ae7842bb6b14a13ed7f2"
@@ -4174,6 +4184,23 @@ react-is@^17.0.1:
   version "17.0.1"
   resolved "https://registry.npmjs.org/react-is/-/react-is-17.0.1.tgz#5b3531bd76a645a4c9fb6e693ed36419e3301339"
   integrity sha512-NAnt2iGDXohE5LI7uBnLnqvLQMtzhkiAOLXTmv+qnF9Ky7xAPcX8Up/xWIhxvLVGJvuLiNc4xQLtuqDRzb4fSA==
+
+react-konva@^17.0.2-5:
+  version "17.0.2-5"
+  resolved "https://registry.npmjs.org/react-konva/-/react-konva-17.0.2-5.tgz#e70b0acf323402de0a540f27b300fbe7ed151849"
+  integrity sha512-IyzdfqRDK8r1ulp/jbLPX18AuO+n5yNtL0+4T0QEUsgArRqIl/VRCG1imA5mYJBk0cBNC5+fWDHN+HWEW62ZEQ==
+  dependencies:
+    react-reconciler "~0.26.2"
+    scheduler "^0.20.2"
+
+react-reconciler@~0.26.2:
+  version "0.26.2"
+  resolved "https://registry.npmjs.org/react-reconciler/-/react-reconciler-0.26.2.tgz#bbad0e2d1309423f76cf3c3309ac6c96e05e9d91"
+  integrity sha512-nK6kgY28HwrMNwDnMui3dvm3rCFjZrcGiuwLc5COUipBK5hWHLOxMJhSnSomirqWwjPBJKV1QcbkI0VJr7Gl1Q==
+  dependencies:
+    loose-envify "^1.1.0"
+    object-assign "^4.1.1"
+    scheduler "^0.20.2"
 
 react-refresh@0.8.3:
   version "0.8.3"

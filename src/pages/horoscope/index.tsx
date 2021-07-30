@@ -1,9 +1,12 @@
 import useSWR from 'swr'
 import type { Planet as PlanetClass } from '../../horoscope'
 import type { Houses } from '../../horoscope'
+
 import HouseCusp from '../../components/HouseCusp'
 import SignTable from '../../components/SignTable'
 import PlanetPositions from '../../components/PlanetPositions'
+import dynamic from 'next/dynamic'
+const HoroscopeCircle = dynamic(() => import('../../components/HoroscopeCircle'), { ssr: false })
 
 type Planet = ReturnType<PlanetClass['toJSON']>
 type Horoscope = {

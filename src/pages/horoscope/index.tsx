@@ -55,6 +55,7 @@ function HoroscopePage() {
     polarity: value.polarity,
     quality: value.quality,
     sign: value.sign,
+    coordinate: value.coordinate,
   }))
 
   const makeElementSingleSentence = (type: 'fire' | 'earth' | 'air' | 'water') =>

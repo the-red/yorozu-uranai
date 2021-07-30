@@ -120,6 +120,14 @@ export class Planet {
     }
   }
 
+  get coordinate() {
+    // ホロスコープに描画する際の座標（左端中央が原点）
+    const radian = (this.longitude - 90) * (Math.PI / 180)
+    const x = Math.sin(radian)
+    const y = Math.cos(radian)
+    return { x, y }
+  }
+
   diffLongitude(targetLongitude: number): number {
     return Math.abs(targetLongitude - this.longitude)
   }
@@ -144,6 +152,7 @@ export class Planet {
       element: this.element,
       quality: this.quality,
       polarity: this.polarity,
+      coordinate: this.coordinate,
     }
   }
 }

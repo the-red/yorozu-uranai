@@ -70,10 +70,10 @@ function HoroscopePage() {
       <div style={{ width: '960px', margin: '20px auto' }}>
         <div style={{ fontFamily: 'Farewell Pro Regular', fontSize: '60px', marginBottom: '20px' }}>Horoscope</div>
         <div style={{ display: 'flex', marginBottom: '20px' }}>
-          <div style={{ width: '50%' }}>
+          <div style={{ width: '50%', display: 'flex', justifyContent: 'center' }}>
             <HoroscopeCircle horoscope={horoscope}></HoroscopeCircle>
           </div>
-          <div style={{ width: '50%' }}>
+          <div style={{ width: '50%', display: 'flex', justifyContent: 'center', paddingTop: '50px' }}>
             <HoroscopeForm onSubmit={(val) => console.log(val)} />
           </div>
         </div>

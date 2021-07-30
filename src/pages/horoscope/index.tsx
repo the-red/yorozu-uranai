@@ -1,6 +1,8 @@
 import useSWR from 'swr'
 import type { Planet as PlanetClass } from '../../horoscope'
 import type { Houses } from '../../horoscope'
+import dynamic from 'next/dynamic'
+const HoroscopeCircle = dynamic(() => import('../../components/HoroscopeCircle'), { ssr: false })
 
 type Planet = ReturnType<PlanetClass['toJSON']>
 type Horoscope = {
@@ -70,6 +72,10 @@ function HoroscopePage() {
   return (
     <>
       <p>Horoscope</p>
+      <div>
+        <HoroscopeCircle></HoroscopeCircle>
+      </div>
+
       <div>
         <p>【天体の位置】</p>
         <table>

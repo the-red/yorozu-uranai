@@ -78,9 +78,9 @@ export default function HoroscopeCircle({ horoscope }: { horoscope: Horoscope })
         {/* 四角 */}
         {/* <Rect fill="gray" x={100} y={100} width={300} height={200} /> */}
         {/* 円 */}
-        <Circle stroke="black" strokeWidth={1} fill="white" x={250} y={250} radius={200} opacity={1} />
-        <Circle stroke="black" strokeWidth={1} fill="white" x={250} y={250} radius={180} opacity={1} />
-        <Circle stroke="black" strokeWidth={1} fill="white" x={250} y={250} radius={100} opacity={1} />
+        <Circle stroke="#352e2b" strokeWidth={1} fill="#e4E7E2" x={250} y={250} radius={200} opacity={1} />
+        <Circle stroke="#352e2b" strokeWidth={1} fill="white" x={250} y={250} radius={180} opacity={1} />
+        <Circle stroke="#afb1b1" strokeWidth={1} fill="#e4E7E2" x={250} y={250} radius={100} opacity={1} />
         {/* 線 */}
         <Line points={calcLineCoordinate(0)} stroke="black" strokeWidth={1} opacity={0.2} />
         <Line points={calcLineCoordinate(30)} stroke="black" strokeWidth={1} opacity={0.2} />
@@ -88,7 +88,7 @@ export default function HoroscopeCircle({ horoscope }: { horoscope: Horoscope })
         <Line points={calcLineCoordinate(90)} stroke="black" strokeWidth={1} opacity={0.2} />
         <Line points={calcLineCoordinate(120)} stroke="black" strokeWidth={1} opacity={0.2} />
         <Line points={calcLineCoordinate(150)} stroke="black" strokeWidth={1} opacity={0.2} />
-        <Circle stroke="black" strokeWidth={1} fill="white" x={250} y={250} radius={80} opacity={1} />
+        <Circle stroke="#afb1b1" strokeWidth={1} fill="white" x={250} y={250} radius={80} opacity={1} />
         {/* 星座 */}
         <Text
           text={signCoordinate.牡羊座.icon}

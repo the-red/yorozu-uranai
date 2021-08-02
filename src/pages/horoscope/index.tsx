@@ -91,11 +91,11 @@ function HoroscopePage() {
           </div>
           <div style={{ width: '50%', display: 'flex', justifyContent: 'center', paddingTop: '50px' }}>
             <HoroscopeForm
-              onSubmit={({ birthday: dateTime, lat: latitude, lon: longitude, timeUnknown }: FormValues) => {
+              onSubmit={({ birthday: dateTime, lat, lon, timeUnknown }: FormValues) => {
                 setHoroscopeSeed({
                   birthday: dateTime,
-                  lat: latitude,
-                  lon: longitude,
+                  lat,
+                  lon,
                   timeUnknown,
                 })
                 console.log('submit', horoscopeSeed.birthday)

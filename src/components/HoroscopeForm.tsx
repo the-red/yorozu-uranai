@@ -61,7 +61,7 @@ export const HoroscopeForm: VFC<HoroscopeFormProps> = ({ onSubmit, defaultValues
             <input
               type="number"
               min="0"
-              max="24"
+              max="23"
               value={hours}
               onChange={handleChangeHours}
               style={{ marginRight: '8px' }}
@@ -70,7 +70,7 @@ export const HoroscopeForm: VFC<HoroscopeFormProps> = ({ onSubmit, defaultValues
             <input
               type="number"
               min="0"
-              max="60"
+              max="59"
               value={minutes}
               onChange={handleChangeMinutes}
               style={{ marginRight: '8px' }}

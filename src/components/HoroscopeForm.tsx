@@ -9,6 +9,7 @@ export type FormValues = {
   birthday: Date
   lon: number
   lat: number
+  timeUnknown: boolean
 }
 
 export const HoroscopeForm: VFC<HoroscopeFormProps> = ({ onSubmit, defaultValues }) => {
@@ -24,7 +25,8 @@ export const HoroscopeForm: VFC<HoroscopeFormProps> = ({ onSubmit, defaultValues
   const [minutes, setMinutes] = useState(defaultDateTime.minute)
   const handleChangeMinutes: ChangeEventHandler<HTMLInputElement> = (e) => setMinutes(Number(e.target.value))
 
-  const [timeUnknown, setTimeUnknown] = useState(false)
+  // TODO: 時刻不明なら、時・分フィールドをグレーアウトしたいかも
+  const [timeUnknown, setTimeUnknown] = useState(defaultValues.timeUnknown)
   const handleCheckTimeUnknown: ChangeEventHandler<HTMLInputElement> = (e) => setTimeUnknown(e.target.checked)
 
   const [longitude, setLongitude] = useState<number>(defaultPlace.longitude)
@@ -41,13 +43,12 @@ export const HoroscopeForm: VFC<HoroscopeFormProps> = ({ onSubmit, defaultValues
 
   const handleSubmit: FormEventHandler<HTMLFormElement> = (e) => {
     e.preventDefault()
-    if (timeUnknown) {
-      setHours(12)
-      setMinutes(0)
-    }
-    const isoDate = `${date}T${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}+09:00`
+    const timeZone = '+09:00'
+    const isoDate = timeUnknown
+      ? `${date}T12:00${timeZone}`
+      : `${date}T${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}${timeZone}`
     const dateTime = new Date(isoDate)
-    onSubmit({ birthday: dateTime, lon: longitude, lat: latitude })
+    onSubmit({ birthday: dateTime, lat: latitude, lon: longitude, timeUnknown })
   }
 
   return (

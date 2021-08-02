@@ -28,13 +28,20 @@ type Horoscope = {
   }
 }
 
-type HoroscopeSeed = { birthday: Date; lat: number; lon: number; hsys?: string }
+type HoroscopeSeed = {
+  birthday: Date
+  lat: number
+  lon: number
+  hsys?: string
+  timeUnknown: boolean
+}
 function HoroscopePage() {
-  const defaultValues = {
+  const defaultValues: HoroscopeSeed = {
     birthday: new Date(),
     lat: 35.604839,
     lon: 139.667717,
     // hsys: 'Placidus(default)',
+    timeUnknown: false,
   }
   // {
   //   birthday: new Date('1987-09-08T08:53:00+09:00'),
@@ -84,15 +91,16 @@ function HoroscopePage() {
           </div>
           <div style={{ width: '50%', display: 'flex', justifyContent: 'center', paddingTop: '50px' }}>
             <HoroscopeForm
-              onSubmit={({ birthday: dateTime, lat: latitude, lon: longitude }: FormValues) => {
+              onSubmit={({ birthday: dateTime, lat: latitude, lon: longitude, timeUnknown }: FormValues) => {
                 setHoroscopeSeed({
                   birthday: dateTime,
                   lat: latitude,
                   lon: longitude,
+                  timeUnknown,
                 })
                 console.log('submit', horoscopeSeed.birthday)
               }}
-              defaultValues={defaultValues}
+              defaultValues={horoscopeSeed}
             />
           </div>
         </div>

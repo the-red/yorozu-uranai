@@ -37,7 +37,12 @@ export const getHoroscopeProps = async (
   return { positionsMap, houses }
 }
 
-export const getHoroscopeInstance = async (date: Date, geolat: number, geolon: number, hsys: string = '') => {
+export const getHoroscopeInstance = async (
+  date: Date,
+  geolat: number,
+  geolon: number,
+  hsys: string = ''
+): Promise<Horoscope> => {
   const props = await getHoroscopeProps(date, geolat, geolon, hsys)
   return new Horoscope(props)
 }

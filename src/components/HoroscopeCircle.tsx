@@ -37,8 +37,8 @@ const calcLineCoordinate = (longitude: number) => {
 
 const calcSignCoordinate = (longitude: number) => {
   const radian = (longitude - 75) * (Math.PI / 180)
-  const x = origin + singRadius * Math.sin(radian) * 0.9
-  const y = origin + singRadius * Math.cos(radian) * 0.9
+  const x = origin + Math.sin(radian) * singRadius * 0.9
+  const y = origin + Math.cos(radian) * singRadius * 0.9
   return { x, y }
 }
 const signCoordinate = {

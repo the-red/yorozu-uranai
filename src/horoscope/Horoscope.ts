@@ -14,20 +14,13 @@ export const ALL_PLANETS = [
   'pluto',
 ] as const
 
-type HoroscopeProps = { positionsMap: Record<PlanetName, Planet>; houses: Houses | undefined }
+type PlanetsMap = Record<PlanetName, Planet>
+
+export type HoroscopeProps = { positionsMap: PlanetsMap; houses: Houses | undefined }
 
 // 全惑星の座標
 export class Horoscope {
-  readonly sun: Planet
-  readonly moon: Planet
-  readonly mercury: Planet
-  readonly venus: Planet
-  readonly mars: Planet
-  readonly jupiter: Planet
-  readonly saturn: Planet
-  readonly uranus: Planet
-  readonly neptune: Planet
-  readonly pluto: Planet
+  readonly planets: PlanetsMap
   readonly houses: Houses | undefined
 
   static async getHoroscopeProps(
@@ -58,17 +51,7 @@ export class Horoscope {
   }
 
   constructor({ positionsMap, houses }: HoroscopeProps) {
-    this.sun = positionsMap.sun
-    this.moon = positionsMap.moon
-    this.mercury = positionsMap.mercury
-    this.venus = positionsMap.venus
-    this.mars = positionsMap.mars
-    this.jupiter = positionsMap.jupiter
-    this.saturn = positionsMap.saturn
-    this.uranus = positionsMap.uranus
-    this.neptune = positionsMap.neptune
-    this.pluto = positionsMap.pluto
-
+    this.planets = positionsMap
     this.houses = houses
   }
 }

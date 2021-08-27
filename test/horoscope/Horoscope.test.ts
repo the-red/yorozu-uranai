@@ -1,4 +1,4 @@
-import { Horoscope } from '../../src/horoscope/Horoscope'
+import { getHoroscopeInstance } from '../../src/horoscope/horoscopeFactory'
 
 describe('Horoscope', () => {
   const funadyBirthday = new Date('1987-09-08T08:53:00+09:00')
@@ -7,7 +7,7 @@ describe('Horoscope', () => {
 
   describe('planets', () => {
     it('longitude', async () => {
-      const { planets } = await Horoscope.getInstance(funadyBirthday, funadyBirthLat, funadyBirthLon)
+      const { planets } = await getHoroscopeInstance(funadyBirthday, funadyBirthLat, funadyBirthLon)
       expect(planets.sun.longitude).toEqual(164.817337)
       expect(planets.moon.longitude).toEqual(348.062352)
       expect(planets.mercury.longitude).toEqual(180.67738)
@@ -21,7 +21,7 @@ describe('Horoscope', () => {
     })
 
     it('sign', async () => {
-      const { planets } = await Horoscope.getInstance(funadyBirthday, funadyBirthLat, funadyBirthLon)
+      const { planets } = await getHoroscopeInstance(funadyBirthday, funadyBirthLat, funadyBirthLon)
       expect(planets.sun.sign).toEqual('乙女座')
       expect(planets.moon.sign).toEqual('魚座')
       expect(planets.mercury.sign).toEqual('天秤座')
@@ -35,7 +35,7 @@ describe('Horoscope', () => {
     })
 
     it('formattedDegrees', async () => {
-      const { planets } = await Horoscope.getInstance(funadyBirthday, funadyBirthLat, funadyBirthLon)
+      const { planets } = await getHoroscopeInstance(funadyBirthday, funadyBirthLat, funadyBirthLon)
       expect(planets.sun.formattedDegrees).toEqual('14°49′02″')
       expect(planets.moon.formattedDegrees).toEqual('18°03′44″')
       expect(planets.mercury.formattedDegrees).toEqual(' 0°40′39″')
@@ -49,7 +49,7 @@ describe('Horoscope', () => {
     })
 
     it('coordinate', async () => {
-      const { planets } = await Horoscope.getInstance(funadyBirthday, funadyBirthLat, funadyBirthLon)
+      const { planets } = await getHoroscopeInstance(funadyBirthday, funadyBirthLat, funadyBirthLon)
       expect(planets.sun.coordinate).toEqual({ x: 0.965095785521996, y: 0.26189716448957856 })
       expect(planets.moon.coordinate).toEqual({ x: -0.9783732809057316, y: -0.20684710104266457 })
       expect(planets.mercury.coordinate).toEqual({ x: 0.9999301149274349, y: -0.011822235880189675 })
@@ -65,7 +65,7 @@ describe('Horoscope', () => {
 
   describe('houses', () => {
     it('プラシーダス（デフォルト）', async () => {
-      const { houses } = await Horoscope.getInstance(funadyBirthday, funadyBirthLat, funadyBirthLon)
+      const { houses } = await getHoroscopeInstance(funadyBirthday, funadyBirthLat, funadyBirthLon)
       expect(houses).toEqual({
         house: [
           207.908591, 235.781911, 268.307258, 303.803709, 337.205891, 5.251311, 27.908591, 55.781911, 88.307258,
@@ -82,7 +82,7 @@ describe('Horoscope', () => {
       })
     })
     it('コッホ', async () => {
-      const { houses } = await Horoscope.getInstance(funadyBirthday, funadyBirthLat, funadyBirthLon, 'K')
+      const { houses } = await getHoroscopeInstance(funadyBirthday, funadyBirthLat, funadyBirthLon, 'K')
       expect(houses).toEqual({
         house: [
           207.908591, 235.809886, 265.452867, 303.803709, 331.708461, 359.806556, 27.908591, 55.809886, 85.452867,

@@ -1,14 +1,8 @@
-export type PlanetName =
-  | 'sun'
-  | 'moon'
-  | 'mercury'
-  | 'venus'
-  | 'mars'
-  | 'jupiter'
-  | 'saturn'
-  | 'uranus'
-  | 'neptune'
-  | 'pluto'
+import type { PlanetName, Houses } from './types'
+
+export type PlanetsMap = Record<PlanetName, Planet>
+
+export type HoroscopeProps = { positionsMap: PlanetsMap; houses: Houses }
 
 export const PLANET_ICONS = {
   sun: '☉',

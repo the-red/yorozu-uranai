@@ -1,6 +1,6 @@
 // @ts-ignore
 import swisseph from 'swisseph'
-import type { PlanetName } from './Planet'
+import type { PlanetName, HouseCusps, Houses } from './types'
 
 type EclipticPosition = {
   latitude: number
@@ -11,20 +11,6 @@ type EclipticPosition = {
   distanceSpeed: number
   rflag: number
   isRetrograde: boolean // trueなら逆行
-  error?: any
-}
-
-type HouseCusps = [number, number, number, number, number, number, number, number, number, number, number, number]
-export type Houses = {
-  house: HouseCusps
-  ascendant: number
-  mc: number
-  armc: number
-  vertex: number
-  equatorialAscendant: number
-  kochCoAscendant: number
-  munkaseyCoAscendant: number
-  munkaseyPolarAscendant: number
   error?: any
 }
 

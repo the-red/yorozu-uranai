@@ -1,4 +1,4 @@
-import { Layer, Rect, Stage, Circle, Ellipse, Line, Text, Image } from 'react-konva'
+import { Layer, Stage, Circle, Line, Text, Image } from 'react-konva'
 import type { Planet as PlanetClass } from '../horoscope'
 import type { Houses } from '../horoscope'
 import useImage from 'use-image'

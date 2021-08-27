@@ -48,6 +48,18 @@ const signCoordinates = [
   { name: '魚座', icon: '♓', longitude: 330, url: '/images/astro-sign-12.png' },
 ]
 
+const ScaledCircle = ({ stroke, fill, scale }: { stroke: string; fill: string; scale: number }) => (
+  <Circle
+    stroke={stroke}
+    strokeWidth={1}
+    fill={fill}
+    x={COORDINATE_ORIGIN}
+    y={COORDINATE_ORIGIN}
+    radius={RADIUS * scale}
+    opacity={1}
+  />
+)
+
 const SignImage = ({ signCoordinate }: { signCoordinate: typeof signCoordinates[number] }) => {
   const [image] = useImage(signCoordinate.url)
   const iconSize = RADIUS * 0.12
@@ -86,36 +98,10 @@ export default function HoroscopeCircle({ horoscope }: { horoscope: Horoscope })
   return (
     <Stage width={500} height={500}>
       <Layer>
-        {/* 四角 */}
-        {/* <Rect fill="gray" x={100} y={100} width={300} height={200} /> */}
         {/* 円 */}
-        <Circle
-          stroke="#352e2b"
-          strokeWidth={1}
-          fill="#e4E7E2"
-          x={COORDINATE_ORIGIN}
-          y={COORDINATE_ORIGIN}
-          radius={RADIUS}
-          opacity={1}
-        />
-        <Circle
-          stroke="#352e2b"
-          strokeWidth={1}
-          fill="white"
-          x={COORDINATE_ORIGIN}
-          y={COORDINATE_ORIGIN}
-          radius={RADIUS * 0.8}
-          opacity={1}
-        />
-        <Circle
-          stroke="#afb1b1"
-          strokeWidth={1}
-          fill="#e4E7E2"
-          x={COORDINATE_ORIGIN}
-          y={COORDINATE_ORIGIN}
-          radius={RADIUS * 0.45}
-          opacity={1}
-        />
+        <ScaledCircle stroke="#352e2b" fill="#e4E7E2" scale={1} />
+        <ScaledCircle stroke="#352e2b" fill="white" scale={0.8} />
+        <ScaledCircle stroke="#afb1b1" fill="#e4E7E2" scale={0.45} />
         {/* 線 */}
         <Line points={calcLineCoordinate(0)} stroke="black" strokeWidth={1} opacity={0.2} />
         <Line points={calcLineCoordinate(30)} stroke="black" strokeWidth={1} opacity={0.2} />
@@ -123,15 +109,7 @@ export default function HoroscopeCircle({ horoscope }: { horoscope: Horoscope })
         <Line points={calcLineCoordinate(90)} stroke="black" strokeWidth={1} opacity={0.2} />
         <Line points={calcLineCoordinate(120)} stroke="black" strokeWidth={1} opacity={0.2} />
         <Line points={calcLineCoordinate(150)} stroke="black" strokeWidth={1} opacity={0.2} />
-        <Circle
-          stroke="#afb1b1"
-          strokeWidth={1}
-          fill="white"
-          x={COORDINATE_ORIGIN}
-          y={COORDINATE_ORIGIN}
-          radius={RADIUS * 0.37}
-          opacity={1}
-        />
+        <ScaledCircle stroke="#afb1b1" fill="white" scale={0.37} />
         {/* サイン */}
         {signCoordinates.map((signCoordinate, i) => (
           <SignImage key={i} signCoordinate={signCoordinate} />

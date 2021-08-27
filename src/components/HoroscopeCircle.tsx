@@ -21,25 +21,25 @@ type Horoscope = {
 }
 
 const origin = 250
-const singRadius = 220
+const signRadius = 220
 const planetRadius = 150
 const iconSizeSign = 24
 const iconSizePlanet = 20
 
 const calcLineCoordinate = (longitude: number) => {
   const radian1 = (longitude - 90) * (Math.PI / 180)
-  const x1 = origin + Math.sin(radian1) * singRadius
-  const y1 = origin + Math.cos(radian1) * singRadius
+  const x1 = origin + Math.sin(radian1) * signRadius
+  const y1 = origin + Math.cos(radian1) * signRadius
   const radian2 = (longitude + 90) * (Math.PI / 180)
-  const x2 = origin + Math.sin(radian2) * singRadius
-  const y2 = origin + Math.cos(radian2) * singRadius
+  const x2 = origin + Math.sin(radian2) * signRadius
+  const y2 = origin + Math.cos(radian2) * signRadius
   return [x1, y1, x2, y2]
 }
 
 const calcSignCoordinate = (longitude: number) => {
   const radian = (longitude - 75) * (Math.PI / 180)
-  const x = origin + Math.sin(radian) * singRadius * 0.9
-  const y = origin + Math.cos(radian) * singRadius * 0.9
+  const x = origin + Math.sin(radian) * signRadius * 0.9
+  const y = origin + Math.cos(radian) * signRadius * 0.9
   return { x, y }
 }
 const signCoordinates = [

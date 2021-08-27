@@ -147,19 +147,4 @@ export class Planet {
     const diff = this.diffLongitude(target.longitude)
     return ALL_MINOR_ASPECTS.find((aspect) => Math.abs(diff - aspect.degrees) <= orb)?.name
   }
-
-  toJSON() {
-    return {
-      name: this.name,
-      icon: this.icon,
-      longitude: this.longitude,
-      degrees: this.degrees,
-      formattedDegrees: this.formattedDegrees,
-      sign: this.sign,
-      element: this.element,
-      quality: this.quality,
-      polarity: this.polarity,
-      coordinate: this.coordinate,
-    }
-  }
 }

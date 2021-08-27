@@ -10,6 +10,18 @@ export type PlanetName =
   | 'neptune'
   | 'pluto'
 
+export type EclipticPosition = {
+  latitude: number
+  latitudeSpeed: number
+  longitude: number
+  longitudeSpeed: number
+  distance: number
+  distanceSpeed: number
+  rflag: number
+  isRetrograde: boolean // trueなら逆行
+  error?: any
+}
+
 export type HouseCusps = [
   number,
   number,

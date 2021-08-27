@@ -1,7 +1,6 @@
 import { julday, eclipticPosition, calcHouses } from './swisseph'
-import { Planet } from './Planet'
 import { Horoscope, HoroscopeProps } from './Horoscope'
-import type { PlanetName, Houses } from './types'
+import type { PlanetName, EclipticPosition, Houses } from './types'
 
 const ALL_PLANETS = [
   'sun',
@@ -27,14 +26,12 @@ export const getHoroscopeProps = async (
   const positions = await Promise.all(
     ALL_PLANETS.map(async (planetName) => {
       const position = await eclipticPosition(julday_ut, planetName)
-      const planet = new Planet(position.longitude, planetName)
-      return [planetName, planet] as [PlanetName, Planet]
+      return [planetName, position] as [PlanetName, EclipticPosition]
     })
   )
-  const positionsMap = Object.fromEntries(positions) as Record<PlanetName, Planet>
 
   const houses: Houses = await calcHouses(julday_ut, geolat, geolon, hsys)
-  return { positionsMap, houses }
+  return { positions, houses }
 }
 
 export const getHoroscopeInstance = async (

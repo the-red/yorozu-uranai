@@ -4,6 +4,21 @@ import type { Houses } from '../horoscope'
 import useImage from 'use-image'
 
 type Planet = ReturnType<PlanetClass['toJSON']>
+type Horoscope = {
+  houses: Houses
+  planets: {
+    sun: Planet
+    moon: Planet
+    mercury: Planet
+    venus: Planet
+    mars: Planet
+    jupiter: Planet
+    saturn: Planet
+    uranus: Planet
+    neptune: Planet
+    pluto: Planet
+  }
+}
 
 const signCoordinates = [
   { name: '牡羊座', icon: '♈', longitude: 0, url: '/images/astro-sign-1.png' },
@@ -21,14 +36,16 @@ const signCoordinates = [
 ]
 
 export default function HoroscopeCircle({
-  planets,
+  horoscope,
   coordinateOrigin,
   radius,
 }: {
-  planets: Planet[]
+  horoscope: Horoscope
   coordinateOrigin: number // 原点座標
   radius: number // 外周円の半径
 }) {
+  const { planets, houses } = horoscope
+
   const ScaledCircle = ({ stroke, fill, scale }: { stroke: string; fill: string; scale: number }) => (
     <Circle
       stroke={stroke}

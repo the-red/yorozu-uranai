@@ -16,17 +16,17 @@ export const ALL_PLANETS = [
 
 type PlanetsMap = Record<PlanetName, Planet>
 
-export type HoroscopeProps = { positionsMap: PlanetsMap; houses: Houses | undefined }
+export type HoroscopeProps = { positionsMap: PlanetsMap; houses: Houses }
 
 // 全惑星の座標
 export class Horoscope {
   readonly planets: PlanetsMap
-  readonly houses: Houses | undefined
+  readonly houses: Houses
 
   static async getHoroscopeProps(
     date: Date,
-    geolat?: number,
-    geolon?: number,
+    geolat: number,
+    geolon: number,
     hsys: string = ''
   ): Promise<HoroscopeProps> {
     const julday_ut = await julday(date)
@@ -40,12 +40,12 @@ export class Horoscope {
     )
     const positionsMap = Object.fromEntries(positions) as Record<PlanetName, Planet>
 
-    const houses: Houses | undefined = geolat && geolon ? await calcHouses(julday_ut, geolat, geolon, hsys) : undefined
+    const houses: Houses = await calcHouses(julday_ut, geolat, geolon, hsys)
     return { positionsMap, houses }
   }
 
   // TODO: 省略されたときに良い感じにする
-  static async getInstance(date: Date, geolat?: number, geolon?: number, hsys: string = '') {
+  static async getInstance(date: Date, geolat: number, geolon: number, hsys: string = '') {
     const props = await Horoscope.getHoroscopeProps(date, geolat, geolon, hsys)
     return new Horoscope(props)
   }

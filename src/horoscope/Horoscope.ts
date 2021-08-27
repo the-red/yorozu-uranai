@@ -14,6 +14,8 @@ export const ALL_PLANETS = [
   'pluto',
 ] as const
 
+type HoroscopeProps = { positionsMap: Record<PlanetName, Planet>; houses: Houses | undefined }
+
 // 全惑星の座標
 export class Horoscope {
   readonly sun: Planet
@@ -26,9 +28,14 @@ export class Horoscope {
   readonly uranus: Planet
   readonly neptune: Planet
   readonly pluto: Planet
+  readonly houses: Houses | undefined
 
-  // TODO: 省略されたときに良い感じにする
-  static async getInstance(date: Date, geolat?: number, geolon?: number, hsys: string = '') {
+  static async getHoroscopeProps(
+    date: Date,
+    geolat?: number,
+    geolon?: number,
+    hsys: string = ''
+  ): Promise<HoroscopeProps> {
     const julday_ut = await julday(date)
 
     const positions = await Promise.all(
@@ -41,10 +48,16 @@ export class Horoscope {
     const positionsMap = Object.fromEntries(positions) as Record<PlanetName, Planet>
 
     const houses: Houses | undefined = geolat && geolon ? await calcHouses(julday_ut, geolat, geolon, hsys) : undefined
-    return new Horoscope(positionsMap, houses)
+    return { positionsMap, houses }
   }
 
-  constructor(positionsMap: Record<PlanetName, Planet>, readonly houses: Houses | undefined) {
+  // TODO: 省略されたときに良い感じにする
+  static async getInstance(date: Date, geolat?: number, geolon?: number, hsys: string = '') {
+    const props = await Horoscope.getHoroscopeProps(date, geolat, geolon, hsys)
+    return new Horoscope(props)
+  }
+
+  constructor({ positionsMap, houses }: HoroscopeProps) {
     this.sun = positionsMap.sun
     this.moon = positionsMap.moon
     this.mercury = positionsMap.mercury
@@ -55,5 +68,7 @@ export class Horoscope {
     this.uranus = positionsMap.uranus
     this.neptune = positionsMap.neptune
     this.pluto = positionsMap.pluto
+
+    this.houses = houses
   }
 }

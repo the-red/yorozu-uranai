@@ -1,16 +1,17 @@
 export const ALL_PLANETS = [
-  'sun',
-  'moon',
-  'mercury',
-  'venus',
-  'mars',
-  'jupiter',
-  'saturn',
-  'uranus',
-  'neptune',
-  'pluto',
+  ['sun', '☉'],
+  ['moon', '☽'],
+  ['mercury', '☿'],
+  ['venus', '♀'],
+  ['mars', '♂'],
+  ['jupiter', '♃'],
+  ['saturn', '♄'],
+  ['uranus', '♅'],
+  ['neptune', '♆'],
+  ['pluto', '♇'],
 ] as const
-export type PlanetName = typeof ALL_PLANETS[number]
+export type PlanetName = typeof ALL_PLANETS[number][0]
+export type PlanetIcon = typeof ALL_PLANETS[number][1]
 
 const ALL_SIGNS = [
   '牡羊座',
@@ -54,7 +55,7 @@ export class Planet {
 
   private INTERVAL = 30 as const
 
-  constructor(readonly longitude: number, readonly name: PlanetName) {}
+  constructor(readonly longitude: number, readonly name: PlanetName, readonly icon: PlanetIcon) {}
 
   get degrees() {
     return this.longitude % this.INTERVAL
@@ -145,6 +146,7 @@ export class Planet {
   toJSON() {
     return {
       name: this.name,
+      icon: this.icon,
       longitude: this.longitude,
       degrees: this.degrees,
       formattedDegrees: this.formattedDegrees,

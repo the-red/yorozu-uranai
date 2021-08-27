@@ -208,76 +208,16 @@ export default function HoroscopeCircle({ horoscope }: { horoscope: Horoscope })
           offset={{ x: 12, y: 12 }}
         />
         {/* 惑星 */}
-        <Text
-          text="☉"
-          x={origin + planets.sun.coordinate.x * planetRadius}
-          y={origin + planets.sun.coordinate.y * planetRadius}
-          fontSize={iconSizePlanet}
-          fill="black"
-        />
-        <Text
-          text="☽"
-          x={origin + planets.moon.coordinate.x * planetRadius}
-          y={origin + planets.moon.coordinate.y * planetRadius}
-          fontSize={iconSizePlanet}
-          fill="black"
-        />
-        <Text
-          text="☿"
-          x={origin + planets.mercury.coordinate.x * planetRadius}
-          y={origin + planets.mercury.coordinate.y * planetRadius}
-          fontSize={iconSizePlanet}
-          fill="black"
-        />
-        <Text
-          text="♀"
-          x={origin + planets.venus.coordinate.x * planetRadius}
-          y={origin + planets.venus.coordinate.y * planetRadius}
-          fontSize={iconSizePlanet}
-          fill="black"
-        />
-        <Text
-          text="♂"
-          x={origin + planets.mars.coordinate.x * planetRadius}
-          y={origin + planets.mars.coordinate.y * planetRadius}
-          fontSize={iconSizePlanet}
-          fill="black"
-        />
-        <Text
-          text="♃"
-          x={origin + planets.jupiter.coordinate.x * planetRadius}
-          y={origin + planets.jupiter.coordinate.y * planetRadius}
-          fontSize={iconSizePlanet}
-          fill="black"
-        />
-        <Text
-          text="♄"
-          x={origin + planets.saturn.coordinate.x * planetRadius}
-          y={origin + planets.saturn.coordinate.y * planetRadius}
-          fontSize={iconSizePlanet}
-          fill="black"
-        />
-        <Text
-          text="♅"
-          x={origin + planets.uranus.coordinate.x * planetRadius}
-          y={origin + planets.uranus.coordinate.y * planetRadius}
-          fontSize={iconSizePlanet}
-          fill="black"
-        />
-        <Text
-          text="♆"
-          x={origin + planets.neptune.coordinate.x * planetRadius}
-          y={origin + planets.neptune.coordinate.y * planetRadius}
-          fontSize={iconSizePlanet}
-          fill="black"
-        />
-        <Text
-          text="♇"
-          x={origin + planets.pluto.coordinate.x * planetRadius}
-          y={origin + planets.pluto.coordinate.y * planetRadius}
-          fontSize={iconSizePlanet}
-          fill="black"
-        />
+        {Object.values(planets).map((planet, id) => (
+          <Text
+            key={id}
+            text={planet.icon}
+            x={origin + planet.coordinate.x * planetRadius}
+            y={origin + planet.coordinate.y * planetRadius}
+            fontSize={iconSizePlanet}
+            fill="black"
+          />
+        ))}
       </Layer>
     </Stage>
   )

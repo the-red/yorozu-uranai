@@ -19,9 +19,9 @@ export class Horoscope {
     const julday_ut = await julday(date)
 
     const positions = await Promise.all(
-      ALL_PLANETS.map(async (planetName) => {
+      ALL_PLANETS.map(async ([planetName, planetIcon]) => {
         const position = await eclipticPosition(julday_ut, planetName)
-        const planet = new Planet(position.longitude, planetName)
+        const planet = new Planet(position.longitude, planetName, planetIcon)
         return [planetName, planet] as [PlanetName, Planet]
       })
     )

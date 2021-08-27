@@ -1,3 +1,4 @@
+import { julday, eclipticPosition, calcHouses } from './swisseph'
 import { Planet } from './Planet'
 import { Horoscope, HoroscopeProps } from './Horoscope'
 import type { PlanetName, Houses } from './types'
@@ -21,8 +22,6 @@ export const getHoroscopeProps = async (
   geolon: number,
   hsys: string = ''
 ): Promise<HoroscopeProps> => {
-  const { julday, eclipticPosition, calcHouses } = await import('./swisseph')
-
   const julday_ut = await julday(date)
 
   const positions = await Promise.all(

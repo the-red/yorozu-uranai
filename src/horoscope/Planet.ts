@@ -1,8 +1,4 @@
-import type { PlanetName, Houses } from './types'
-
-export type PlanetsMap = Record<PlanetName, Planet>
-
-export type HoroscopeProps = { positionsMap: PlanetsMap; houses: Houses }
+import type { PlanetName } from './types'
 
 export const PLANET_ICONS = {
   sun: '☉',

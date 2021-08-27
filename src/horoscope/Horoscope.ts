@@ -1,5 +1,8 @@
-import { PlanetsMap, HoroscopeProps } from './Planet'
-import type { Houses } from './types'
+import type { Planet } from './Planet'
+import type { PlanetName, Houses } from './types'
+
+export type PlanetsMap = Record<PlanetName, Planet>
+export type HoroscopeProps = { positionsMap: PlanetsMap; houses: Houses }
 
 // 全惑星の座標
 export class Horoscope {

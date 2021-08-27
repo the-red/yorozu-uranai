@@ -1,5 +1,5 @@
-import { Planet, HoroscopeProps } from './Planet'
-import { Horoscope } from './Horoscope'
+import { Planet } from './Planet'
+import { Horoscope, HoroscopeProps } from './Horoscope'
 import type { PlanetName, Houses } from './types'
 
 const ALL_PLANETS = [

@@ -37,9 +37,8 @@ const calcLineCoordinate = (longitude: number) => {
 
 const calcSignCoordinate = (longitude: number) => {
   const radian = (longitude - 75) * (Math.PI / 180)
-  const a = 195
-  const x = origin + Math.sin(radian) * a - a / 15
-  const y = origin + Math.cos(radian) * a - a / 30
+  const x = origin + singRadius * Math.sin(radian) * 0.9
+  const y = origin + singRadius * Math.cos(radian) * 0.9
   return { x, y }
 }
 const signCoordinate = {
@@ -79,15 +78,29 @@ export default function HoroscopeCircle({ horoscope }: { horoscope: Horoscope })
   const [sign11] = useImage('/images/astro-sign-11.png')
   const [sign12] = useImage('/images/astro-sign-12.png')
 
+  console.log(sign1?.width, sign1?.height)
+  if (!sign1) return <p>error</p>
+  if (!sign2) return <p>error</p>
+  if (!sign3) return <p>error</p>
+  if (!sign4) return <p>error</p>
+  if (!sign5) return <p>error</p>
+  if (!sign6) return <p>error</p>
+  if (!sign7) return <p>error</p>
+  if (!sign8) return <p>error</p>
+  if (!sign9) return <p>error</p>
+  if (!sign10) return <p>error</p>
+  if (!sign11) return <p>error</p>
+  if (!sign12) return <p>error</p>
+
   return (
     <Stage width={500} height={500}>
       <Layer>
         {/* 四角 */}
         {/* <Rect fill="gray" x={100} y={100} width={300} height={200} /> */}
         {/* 円 */}
-        <Circle stroke="#352e2b" strokeWidth={1} fill="#e4E7E2" x={250} y={250} radius={220} opacity={1} />
-        <Circle stroke="#352e2b" strokeWidth={1} fill="white" x={250} y={250} radius={180} opacity={1} />
-        <Circle stroke="#afb1b1" strokeWidth={1} fill="#e4E7E2" x={250} y={250} radius={100} opacity={1} />
+        <Circle stroke="#352e2b" strokeWidth={1} fill="#e4E7E2" x={origin} y={origin} radius={220} opacity={1} />
+        <Circle stroke="#352e2b" strokeWidth={1} fill="white" x={origin} y={origin} radius={180} opacity={1} />
+        <Circle stroke="#afb1b1" strokeWidth={1} fill="#e4E7E2" x={origin} y={origin} radius={100} opacity={1} />
         {/* 線 */}
         <Line points={calcLineCoordinate(0)} stroke="black" strokeWidth={1} opacity={0.2} />
         <Line points={calcLineCoordinate(30)} stroke="black" strokeWidth={1} opacity={0.2} />
@@ -95,91 +108,103 @@ export default function HoroscopeCircle({ horoscope }: { horoscope: Horoscope })
         <Line points={calcLineCoordinate(90)} stroke="black" strokeWidth={1} opacity={0.2} />
         <Line points={calcLineCoordinate(120)} stroke="black" strokeWidth={1} opacity={0.2} />
         <Line points={calcLineCoordinate(150)} stroke="black" strokeWidth={1} opacity={0.2} />
-        <Circle stroke="#afb1b1" strokeWidth={1} fill="white" x={250} y={250} radius={80} opacity={1} />
+        <Circle stroke="#afb1b1" strokeWidth={1} fill="white" x={origin} y={origin} radius={80} opacity={1} />
         {/* 星座 */}
         <Image
           image={sign1}
           x={signCoordinate.牡羊座.coordinate.x}
           y={signCoordinate.牡羊座.coordinate.y}
-          width={25}
-          height={25}
+          width={24}
+          height={24}
+          offset={{ x: 12, y: 12 }}
         />
         <Image
           image={sign2}
           x={signCoordinate.牡牛座.coordinate.x}
           y={signCoordinate.牡牛座.coordinate.y}
-          width={25}
-          height={25}
+          width={24}
+          height={24}
+          offset={{ x: 12, y: 12 }}
         />
         <Image
           image={sign3}
           x={signCoordinate.双子座.coordinate.x}
           y={signCoordinate.双子座.coordinate.y}
-          width={25}
-          height={25}
+          width={24}
+          height={24}
+          offset={{ x: 12, y: 12 }}
         />
         <Image
           image={sign4}
           x={signCoordinate.蟹座.coordinate.x}
           y={signCoordinate.蟹座.coordinate.y}
-          width={25}
-          height={25}
+          width={24}
+          height={24}
+          offset={{ x: 12, y: 12 }}
         />
         <Image
           image={sign5}
           x={signCoordinate.獅子座.coordinate.x}
           y={signCoordinate.獅子座.coordinate.y}
-          width={25}
-          height={25}
+          width={24}
+          height={24}
+          offset={{ x: 12, y: 12 }}
         />
         <Image
           image={sign6}
           x={signCoordinate.乙女座.coordinate.x}
           y={signCoordinate.乙女座.coordinate.y}
-          width={25}
-          height={25}
+          width={24}
+          height={24}
+          offset={{ x: 12, y: 12 }}
         />
         <Image
           image={sign7}
           x={signCoordinate.天秤座.coordinate.x}
           y={signCoordinate.天秤座.coordinate.y}
-          width={25}
-          height={25}
+          width={24}
+          height={24}
+          offset={{ x: 12, y: 12 }}
         />
         <Image
           image={sign8}
           x={signCoordinate.蠍座.coordinate.x}
           y={signCoordinate.蠍座.coordinate.y}
-          width={25}
-          height={25}
+          width={24}
+          height={24}
+          offset={{ x: 12, y: 12 }}
         />
         <Image
           image={sign9}
           x={signCoordinate.射手座.coordinate.x}
           y={signCoordinate.射手座.coordinate.y}
-          width={25}
-          height={25}
+          width={24}
+          height={24}
+          offset={{ x: 12, y: 12 }}
         />
         <Image
           image={sign10}
           x={signCoordinate.山羊座.coordinate.x}
           y={signCoordinate.山羊座.coordinate.y}
-          width={25}
-          height={25}
+          width={24}
+          height={24}
+          offset={{ x: 12, y: 12 }}
         />
         <Image
           image={sign11}
           x={signCoordinate.水瓶座.coordinate.x}
           y={signCoordinate.水瓶座.coordinate.y}
-          width={25}
-          height={25}
+          width={24}
+          height={24}
+          offset={{ x: 12, y: 12 }}
         />
         <Image
           image={sign12}
           x={signCoordinate.魚座.coordinate.x}
           y={signCoordinate.魚座.coordinate.y}
-          width={25}
-          height={25}
+          width={24}
+          height={24}
+          offset={{ x: 12, y: 12 }}
         />
         {/* 惑星 */}
         <Text

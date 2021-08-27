@@ -20,17 +20,16 @@ type Horoscope = {
   }
 }
 
-const origin = 250
-const signRadius = 220
-const planetRadius = signRadius * 0.8
+const COORDINATE_ORIGIN = 250
+const RADIUS = 220
 
 const calcLineCoordinate = (longitude: number) => {
   const radian1 = (longitude - 90) * (Math.PI / 180)
-  const x1 = origin + Math.sin(radian1) * signRadius
-  const y1 = origin + Math.cos(radian1) * signRadius
+  const x1 = COORDINATE_ORIGIN + Math.sin(radian1) * RADIUS
+  const y1 = COORDINATE_ORIGIN + Math.cos(radian1) * RADIUS
   const radian2 = (longitude + 90) * (Math.PI / 180)
-  const x2 = origin + Math.sin(radian2) * signRadius
-  const y2 = origin + Math.cos(radian2) * signRadius
+  const x2 = COORDINATE_ORIGIN + Math.sin(radian2) * RADIUS
+  const y2 = COORDINATE_ORIGIN + Math.cos(radian2) * RADIUS
   return [x1, y1, x2, y2]
 }
 
@@ -51,14 +50,14 @@ const signCoordinates = [
 
 const SignImage = ({ signCoordinate }: { signCoordinate: typeof signCoordinates[number] }) => {
   const [image] = useImage(signCoordinate.url)
-  const iconSize = signRadius * 0.12
+  const iconSize = RADIUS * 0.12
   const radian = (signCoordinate.longitude - 75) * (Math.PI / 180)
 
   return (
     <Image
       image={image}
-      x={origin + Math.sin(radian) * signRadius * 0.9}
-      y={origin + Math.cos(radian) * signRadius * 0.9}
+      x={COORDINATE_ORIGIN + Math.sin(radian) * RADIUS * 0.9}
+      y={COORDINATE_ORIGIN + Math.cos(radian) * RADIUS * 0.9}
       width={iconSize}
       height={iconSize}
       offset={{ x: iconSize / 2, y: iconSize / 2 }}
@@ -67,13 +66,13 @@ const SignImage = ({ signCoordinate }: { signCoordinate: typeof signCoordinates[
 }
 
 const PlanetImage = ({ planet }: { planet: Planet }) => {
-  const radiusScale = planetRadius * 0.85
-  const iconSize = planetRadius * 0.12
+  const radiusScale = RADIUS * 0.65
+  const iconSize = RADIUS * 0.1
   return (
     <Text
       text={planet.icon}
-      x={origin + planet.coordinate.x * radiusScale}
-      y={origin + planet.coordinate.y * radiusScale}
+      x={COORDINATE_ORIGIN + planet.coordinate.x * radiusScale}
+      y={COORDINATE_ORIGIN + planet.coordinate.y * radiusScale}
       fontSize={iconSize}
       offset={{ x: iconSize / 2, y: iconSize / 2 }}
       fill="black"
@@ -90,9 +89,33 @@ export default function HoroscopeCircle({ horoscope }: { horoscope: Horoscope })
         {/* 四角 */}
         {/* <Rect fill="gray" x={100} y={100} width={300} height={200} /> */}
         {/* 円 */}
-        <Circle stroke="#352e2b" strokeWidth={1} fill="#e4E7E2" x={origin} y={origin} radius={signRadius} opacity={1} />
-        <Circle stroke="#352e2b" strokeWidth={1} fill="white" x={origin} y={origin} radius={planetRadius} opacity={1} />
-        <Circle stroke="#afb1b1" strokeWidth={1} fill="#e4E7E2" x={origin} y={origin} radius={100} opacity={1} />
+        <Circle
+          stroke="#352e2b"
+          strokeWidth={1}
+          fill="#e4E7E2"
+          x={COORDINATE_ORIGIN}
+          y={COORDINATE_ORIGIN}
+          radius={RADIUS}
+          opacity={1}
+        />
+        <Circle
+          stroke="#352e2b"
+          strokeWidth={1}
+          fill="white"
+          x={COORDINATE_ORIGIN}
+          y={COORDINATE_ORIGIN}
+          radius={RADIUS * 0.8}
+          opacity={1}
+        />
+        <Circle
+          stroke="#afb1b1"
+          strokeWidth={1}
+          fill="#e4E7E2"
+          x={COORDINATE_ORIGIN}
+          y={COORDINATE_ORIGIN}
+          radius={RADIUS * 0.45}
+          opacity={1}
+        />
         {/* 線 */}
         <Line points={calcLineCoordinate(0)} stroke="black" strokeWidth={1} opacity={0.2} />
         <Line points={calcLineCoordinate(30)} stroke="black" strokeWidth={1} opacity={0.2} />
@@ -100,7 +123,15 @@ export default function HoroscopeCircle({ horoscope }: { horoscope: Horoscope })
         <Line points={calcLineCoordinate(90)} stroke="black" strokeWidth={1} opacity={0.2} />
         <Line points={calcLineCoordinate(120)} stroke="black" strokeWidth={1} opacity={0.2} />
         <Line points={calcLineCoordinate(150)} stroke="black" strokeWidth={1} opacity={0.2} />
-        <Circle stroke="#afb1b1" strokeWidth={1} fill="white" x={origin} y={origin} radius={80} opacity={1} />
+        <Circle
+          stroke="#afb1b1"
+          strokeWidth={1}
+          fill="white"
+          x={COORDINATE_ORIGIN}
+          y={COORDINATE_ORIGIN}
+          radius={RADIUS * 0.37}
+          opacity={1}
+        />
         {/* サイン */}
         {signCoordinates.map((signCoordinate, i) => (
           <SignImage key={i} signCoordinate={signCoordinate} />

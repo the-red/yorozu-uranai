@@ -38,63 +38,63 @@ const signCoordinates = [
   { name: '魚座', icon: '♓', longitude: 330, url: '/images/astro-sign-12.png' },
 ]
 
-const ScaledCircle = ({ stroke, fill, scale }: { stroke: string; fill: string; scale: number }) => (
-  <Circle
-    stroke={stroke}
-    strokeWidth={1}
-    fill={fill}
-    x={COORDINATE_ORIGIN}
-    y={COORDINATE_ORIGIN}
-    radius={RADIUS * scale}
-    opacity={1}
-  />
-)
-
-const ScaledLine = ({ longitude }: { longitude: number }) => {
-  const radian1 = (longitude - 90) * (Math.PI / 180)
-  const x1 = COORDINATE_ORIGIN + Math.sin(radian1) * RADIUS
-  const y1 = COORDINATE_ORIGIN + Math.cos(radian1) * RADIUS
-  const radian2 = (longitude + 90) * (Math.PI / 180)
-  const x2 = COORDINATE_ORIGIN + Math.sin(radian2) * RADIUS
-  const y2 = COORDINATE_ORIGIN + Math.cos(radian2) * RADIUS
-
-  return <Line points={[x1, y1, x2, y2]} stroke="black" strokeWidth={1} opacity={0.2} />
-}
-
-const SignImage = ({ signCoordinate }: { signCoordinate: typeof signCoordinates[number] }) => {
-  const [image] = useImage(signCoordinate.url)
-  const iconSize = RADIUS * 0.12
-  const radian = (signCoordinate.longitude - 75) * (Math.PI / 180)
-
-  return (
-    <Image
-      image={image}
-      x={COORDINATE_ORIGIN + Math.sin(radian) * RADIUS * 0.9}
-      y={COORDINATE_ORIGIN + Math.cos(radian) * RADIUS * 0.9}
-      width={iconSize}
-      height={iconSize}
-      offset={{ x: iconSize / 2, y: iconSize / 2 }}
-    />
-  )
-}
-
-const PlanetImage = ({ planet }: { planet: Planet }) => {
-  const radiusScale = RADIUS * 0.65
-  const iconSize = RADIUS * 0.1
-  return (
-    <Text
-      text={planet.icon}
-      x={COORDINATE_ORIGIN + planet.coordinate.x * radiusScale}
-      y={COORDINATE_ORIGIN + planet.coordinate.y * radiusScale}
-      fontSize={iconSize}
-      offset={{ x: iconSize / 2, y: iconSize / 2 }}
-      fill="black"
-    />
-  )
-}
-
 export default function HoroscopeCircle({ horoscope }: { horoscope: Horoscope }) {
   const { planets } = horoscope
+
+  const ScaledCircle = ({ stroke, fill, scale }: { stroke: string; fill: string; scale: number }) => (
+    <Circle
+      stroke={stroke}
+      strokeWidth={1}
+      fill={fill}
+      x={COORDINATE_ORIGIN}
+      y={COORDINATE_ORIGIN}
+      radius={RADIUS * scale}
+      opacity={1}
+    />
+  )
+
+  const ScaledLine = ({ longitude }: { longitude: number }) => {
+    const radian1 = (longitude - 90) * (Math.PI / 180)
+    const x1 = COORDINATE_ORIGIN + Math.sin(radian1) * RADIUS
+    const y1 = COORDINATE_ORIGIN + Math.cos(radian1) * RADIUS
+    const radian2 = (longitude + 90) * (Math.PI / 180)
+    const x2 = COORDINATE_ORIGIN + Math.sin(radian2) * RADIUS
+    const y2 = COORDINATE_ORIGIN + Math.cos(radian2) * RADIUS
+
+    return <Line points={[x1, y1, x2, y2]} stroke="black" strokeWidth={1} opacity={0.2} />
+  }
+
+  const SignImage = ({ signCoordinate }: { signCoordinate: typeof signCoordinates[number] }) => {
+    const [image] = useImage(signCoordinate.url)
+    const iconSize = RADIUS * 0.12
+    const radian = (signCoordinate.longitude - 75) * (Math.PI / 180)
+
+    return (
+      <Image
+        image={image}
+        x={COORDINATE_ORIGIN + Math.sin(radian) * RADIUS * 0.9}
+        y={COORDINATE_ORIGIN + Math.cos(radian) * RADIUS * 0.9}
+        width={iconSize}
+        height={iconSize}
+        offset={{ x: iconSize / 2, y: iconSize / 2 }}
+      />
+    )
+  }
+
+  const PlanetImage = ({ planet }: { planet: Planet }) => {
+    const radiusScale = RADIUS * 0.65
+    const iconSize = RADIUS * 0.1
+    return (
+      <Text
+        text={planet.icon}
+        x={COORDINATE_ORIGIN + planet.coordinate.x * radiusScale}
+        y={COORDINATE_ORIGIN + planet.coordinate.y * radiusScale}
+        fontSize={iconSize}
+        offset={{ x: iconSize / 2, y: iconSize / 2 }}
+        fill="black"
+      />
+    )
+  }
 
   return (
     <Stage width={500} height={500}>

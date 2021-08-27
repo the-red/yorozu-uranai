@@ -60,7 +60,7 @@ function HoroscopeDetailPage({ horoscopeSeed }: Props) {
     <div>
       <div style={{ display: 'flex', marginBottom: '20px' }}>
         <div style={{ width: '50%', display: 'flex', justifyContent: 'center' }}>
-          <HoroscopeCircle planets={horoscope.planets}></HoroscopeCircle>
+          <HoroscopeCircle planets={horoscope.planets} coordinateOrigin={250} radius={220}></HoroscopeCircle>
         </div>
       </div>
       <div style={{ display: 'flex', marginBottom: '20px' }}>

@@ -5,9 +5,6 @@ import useImage from 'use-image'
 
 type Planet = ReturnType<PlanetClass['toJSON']>
 
-const COORDINATE_ORIGIN = 250
-const RADIUS = 220
-
 const signCoordinates = [
   { name: '牡羊座', icon: '♈', longitude: 0, url: '/images/astro-sign-1.png' },
   { name: '牡牛座', icon: '♉', longitude: 30, url: '/images/astro-sign-2.png' },
@@ -23,40 +20,48 @@ const signCoordinates = [
   { name: '魚座', icon: '♓', longitude: 330, url: '/images/astro-sign-12.png' },
 ]
 
-export default function HoroscopeCircle({ planets }: { planets: Planet[] }) {
+export default function HoroscopeCircle({
+  planets,
+  coordinateOrigin,
+  radius,
+}: {
+  planets: Planet[]
+  coordinateOrigin: number // 原点座標
+  radius: number // 外周円の半径
+}) {
   const ScaledCircle = ({ stroke, fill, scale }: { stroke: string; fill: string; scale: number }) => (
     <Circle
       stroke={stroke}
       strokeWidth={1}
       fill={fill}
-      x={COORDINATE_ORIGIN}
-      y={COORDINATE_ORIGIN}
-      radius={RADIUS * scale}
+      x={coordinateOrigin}
+      y={coordinateOrigin}
+      radius={radius * scale}
       opacity={1}
     />
   )
 
   const ScaledLine = ({ longitude }: { longitude: number }) => {
     const radian1 = (longitude - 90) * (Math.PI / 180)
-    const x1 = COORDINATE_ORIGIN + Math.sin(radian1) * RADIUS
-    const y1 = COORDINATE_ORIGIN + Math.cos(radian1) * RADIUS
+    const x1 = coordinateOrigin + Math.sin(radian1) * radius
+    const y1 = coordinateOrigin + Math.cos(radian1) * radius
     const radian2 = (longitude + 90) * (Math.PI / 180)
-    const x2 = COORDINATE_ORIGIN + Math.sin(radian2) * RADIUS
-    const y2 = COORDINATE_ORIGIN + Math.cos(radian2) * RADIUS
+    const x2 = coordinateOrigin + Math.sin(radian2) * radius
+    const y2 = coordinateOrigin + Math.cos(radian2) * radius
 
     return <Line points={[x1, y1, x2, y2]} stroke="black" strokeWidth={1} opacity={0.2} />
   }
 
   const SignImage = ({ signCoordinate }: { signCoordinate: typeof signCoordinates[number] }) => {
     const [image] = useImage(signCoordinate.url)
-    const iconSize = RADIUS * 0.12
+    const iconSize = radius * 0.12
     const radian = (signCoordinate.longitude - 75) * (Math.PI / 180)
 
     return (
       <Image
         image={image}
-        x={COORDINATE_ORIGIN + Math.sin(radian) * RADIUS * 0.9}
-        y={COORDINATE_ORIGIN + Math.cos(radian) * RADIUS * 0.9}
+        x={coordinateOrigin + Math.sin(radian) * radius * 0.9}
+        y={coordinateOrigin + Math.cos(radian) * radius * 0.9}
         width={iconSize}
         height={iconSize}
         offset={{ x: iconSize / 2, y: iconSize / 2 }}
@@ -65,13 +70,13 @@ export default function HoroscopeCircle({ planets }: { planets: Planet[] }) {
   }
 
   const PlanetImage = ({ planet }: { planet: Planet }) => {
-    const radiusScale = RADIUS * 0.65
-    const iconSize = RADIUS * 0.1
+    const radiusScale = radius * 0.65
+    const iconSize = radius * 0.1
     return (
       <Text
         text={planet.icon}
-        x={COORDINATE_ORIGIN + planet.coordinate.x * radiusScale}
-        y={COORDINATE_ORIGIN + planet.coordinate.y * radiusScale}
+        x={coordinateOrigin + planet.coordinate.x * radiusScale}
+        y={coordinateOrigin + planet.coordinate.y * radiusScale}
         fontSize={iconSize}
         offset={{ x: iconSize / 2, y: iconSize / 2 }}
         fill="black"

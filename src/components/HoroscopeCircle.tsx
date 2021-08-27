@@ -44,6 +44,7 @@ export default function HoroscopeCircle({
   coordinateOrigin: number // 原点座標
   radius: number // 外周円の半径
 }) {
+  // TODO: ハウスを考慮してサインの位置を調整
   const { planets, houses } = horoscope
 
   const ScaledCircle = ({ stroke, fill, scale }: { stroke: string; fill: string; scale: number }) => (

@@ -64,9 +64,9 @@ const SignImage = ({ signCoordinate }: { signCoordinate: typeof signCoordinates[
       image={image}
       x={signCoordinate.coordinate.x}
       y={signCoordinate.coordinate.y}
-      width={24}
-      height={24}
-      offset={{ x: 12, y: 12 }}
+      width={iconSizeSign}
+      height={iconSizeSign}
+      offset={{ x: iconSizeSign / 2, y: iconSizeSign / 2 }}
     />
   )
 }
@@ -77,6 +77,7 @@ const PlanetImage = ({ planet }: { planet: Planet }) => (
     x={origin + planet.coordinate.x * planetRadius}
     y={origin + planet.coordinate.y * planetRadius}
     fontSize={iconSizePlanet}
+    offset={{ x: iconSizePlanet / 2, y: iconSizePlanet / 2 }}
     fill="black"
   />
 )

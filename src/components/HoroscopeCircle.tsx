@@ -57,8 +57,7 @@ const signCoordinates = [
   { name: '魚座', icon: '♓', coordinate: calcSignCoordinate(330), url: '/images/astro-sign-12.png' },
 ]
 
-type SignImageProps = { signCoordinate: typeof signCoordinates[number] }
-const SignImage = ({ signCoordinate }: SignImageProps) => {
+const SignImage = ({ signCoordinate }: { signCoordinate: typeof signCoordinates[number] }) => {
   const [image] = useImage(signCoordinate.url)
   return (
     <Image
@@ -71,6 +70,16 @@ const SignImage = ({ signCoordinate }: SignImageProps) => {
     />
   )
 }
+
+const PlanetImage = ({ planet }: { planet: Planet }) => (
+  <Text
+    text={planet.icon}
+    x={origin + planet.coordinate.x * planetRadius}
+    y={origin + planet.coordinate.y * planetRadius}
+    fontSize={iconSizePlanet}
+    fill="black"
+  />
+)
 
 export default function HoroscopeCircle({ horoscope }: { horoscope: Horoscope }) {
   const { planets } = horoscope
@@ -98,14 +107,7 @@ export default function HoroscopeCircle({ horoscope }: { horoscope: Horoscope })
         ))}
         {/* 惑星 */}
         {Object.values(planets).map((planet, id) => (
-          <Text
-            key={id}
-            text={planet.icon}
-            x={origin + planet.coordinate.x * planetRadius}
-            y={origin + planet.coordinate.y * planetRadius}
-            fontSize={iconSizePlanet}
-            fill="black"
-          />
+          <PlanetImage key={id} planet={planet} />
         ))}
       </Layer>
     </Stage>

@@ -54,17 +54,7 @@ function HoroscopeDetailPage({ horoscopeSeed }: Props) {
   if (error) return <div>failed to load: {JSON.stringify(error.message)}</div>
   if (!horoscope) return <div>loading...</div>
 
-  const planets = Object.values<Planet>(horoscope.planets).map<Planet>((value) => ({
-    name: value.name,
-    degrees: value.degrees,
-    element: value.element,
-    formattedDegrees: value.formattedDegrees,
-    longitude: value.longitude,
-    polarity: value.polarity,
-    quality: value.quality,
-    sign: value.sign,
-    coordinate: value.coordinate,
-  }))
+  const planets = Object.values(horoscope.planets)
 
   return (
     <div>

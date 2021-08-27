@@ -1,16 +1,14 @@
-export const ALL_PLANETS = [
-  'sun',
-  'moon',
-  'mercury',
-  'venus',
-  'mars',
-  'jupiter',
-  'saturn',
-  'uranus',
-  'neptune',
-  'pluto',
-] as const
-export type PlanetName = typeof ALL_PLANETS[number]
+export type PlanetName =
+  | 'sun'
+  | 'moon'
+  | 'mercury'
+  | 'venus'
+  | 'mars'
+  | 'jupiter'
+  | 'saturn'
+  | 'uranus'
+  | 'neptune'
+  | 'pluto'
 
 export const PLANET_ICONS = {
   sun: '☉',

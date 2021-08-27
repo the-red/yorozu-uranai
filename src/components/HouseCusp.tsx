@@ -11,7 +11,7 @@ export default function HouseCusp({ houses }: Props) {
       <table>
         <tbody>
           {houses.house.map((longitude, i) => (
-            <tr>
+            <tr key={i}>
               <td>{i + 1}ハウス</td>
               <td>{longitude}</td>
             </tr>

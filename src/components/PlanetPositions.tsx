@@ -11,8 +11,8 @@ export default function PlanetPositions({ planets }: Props) {
       <div style={{ fontSize: '30px' }}>Planet Positions</div>
       <table>
         <tbody>
-          {planets.map((planet) => (
-            <tr>
+          {planets.map((planet, i) => (
+            <tr key={i}>
               <td>{planet.name}</td>
               <td>{planet.sign}</td>
               <td>{planet.formattedDegrees}</td>

@@ -23,7 +23,8 @@ type Horoscope = {
 const origin = 250
 const singRadius = 220
 const planetRadius = 150
-const iconSize = 20
+const iconSizeSign = 24
+const iconSizePlanet = 20
 
 const calcLineCoordinate = (longitude: number) => {
   const radian1 = (longitude - 90) * (Math.PI / 180)
@@ -211,70 +212,70 @@ export default function HoroscopeCircle({ horoscope }: { horoscope: Horoscope })
           text="☉"
           x={origin + planets.sun.coordinate.x * planetRadius}
           y={origin + planets.sun.coordinate.y * planetRadius}
-          fontSize={iconSize}
+          fontSize={iconSizePlanet}
           fill="black"
         />
         <Text
           text="☽"
           x={origin + planets.moon.coordinate.x * planetRadius}
           y={origin + planets.moon.coordinate.y * planetRadius}
-          fontSize={iconSize}
+          fontSize={iconSizePlanet}
           fill="black"
         />
         <Text
           text="☿"
           x={origin + planets.mercury.coordinate.x * planetRadius}
           y={origin + planets.mercury.coordinate.y * planetRadius}
-          fontSize={iconSize}
+          fontSize={iconSizePlanet}
           fill="black"
         />
         <Text
           text="♀"
           x={origin + planets.venus.coordinate.x * planetRadius}
           y={origin + planets.venus.coordinate.y * planetRadius}
-          fontSize={iconSize}
+          fontSize={iconSizePlanet}
           fill="black"
         />
         <Text
           text="♂"
           x={origin + planets.mars.coordinate.x * planetRadius}
           y={origin + planets.mars.coordinate.y * planetRadius}
-          fontSize={iconSize}
+          fontSize={iconSizePlanet}
           fill="black"
         />
         <Text
           text="♃"
           x={origin + planets.jupiter.coordinate.x * planetRadius}
           y={origin + planets.jupiter.coordinate.y * planetRadius}
-          fontSize={iconSize}
+          fontSize={iconSizePlanet}
           fill="black"
         />
         <Text
           text="♄"
           x={origin + planets.saturn.coordinate.x * planetRadius}
           y={origin + planets.saturn.coordinate.y * planetRadius}
-          fontSize={iconSize}
+          fontSize={iconSizePlanet}
           fill="black"
         />
         <Text
           text="♅"
           x={origin + planets.uranus.coordinate.x * planetRadius}
           y={origin + planets.uranus.coordinate.y * planetRadius}
-          fontSize={iconSize}
+          fontSize={iconSizePlanet}
           fill="black"
         />
         <Text
           text="♆"
           x={origin + planets.neptune.coordinate.x * planetRadius}
           y={origin + planets.neptune.coordinate.y * planetRadius}
-          fontSize={iconSize}
+          fontSize={iconSizePlanet}
           fill="black"
         />
         <Text
           text="♇"
           x={origin + planets.pluto.coordinate.x * planetRadius}
           y={origin + planets.pluto.coordinate.y * planetRadius}
-          fontSize={iconSize}
+          fontSize={iconSizePlanet}
           fill="black"
         />
       </Layer>

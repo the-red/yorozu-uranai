@@ -42,56 +42,38 @@ const calcSignCoordinate = (longitude: number) => {
   const y = origin + Math.cos(radian) * singRadius * 0.9
   return { x, y }
 }
-const signCoordinate = {
-  牡羊座: { icon: '♈', coordinate: calcSignCoordinate(0) },
-  牡牛座: { icon: '♉', coordinate: calcSignCoordinate(30) },
-  双子座: { icon: '♊', coordinate: calcSignCoordinate(60) },
-  蟹座: { icon: '♋', coordinate: calcSignCoordinate(90) },
-  獅子座: { icon: '♌', coordinate: calcSignCoordinate(120) },
-  乙女座: { icon: '♍', coordinate: calcSignCoordinate(150) },
-  天秤座: { icon: '♎', coordinate: calcSignCoordinate(180) },
-  蠍座: { icon: '♏', coordinate: calcSignCoordinate(210) },
-  射手座: { icon: '♐', coordinate: calcSignCoordinate(240) },
-  山羊座: { icon: '♑', coordinate: calcSignCoordinate(270) },
-  水瓶座: { icon: '♒', coordinate: calcSignCoordinate(300) },
-  魚座: { icon: '♓', coordinate: calcSignCoordinate(330) },
-}
+const signCoordinates = [
+  { name: '牡羊座', icon: '♈', coordinate: calcSignCoordinate(0), url: '/images/astro-sign-1.png' },
+  { name: '牡牛座', icon: '♉', coordinate: calcSignCoordinate(30), url: '/images/astro-sign-2.png' },
+  { name: '双子座', icon: '♊', coordinate: calcSignCoordinate(60), url: '/images/astro-sign-3.png' },
+  { name: '蟹座', icon: '♋', coordinate: calcSignCoordinate(90), url: '/images/astro-sign-4.png' },
+  { name: '獅子座', icon: '♌', coordinate: calcSignCoordinate(120), url: '/images/astro-sign-5.png' },
+  { name: '乙女座', icon: '♍', coordinate: calcSignCoordinate(150), url: '/images/astro-sign-6.png' },
+  { name: '天秤座', icon: '♎', coordinate: calcSignCoordinate(180), url: '/images/astro-sign-7.png' },
+  { name: '蠍座', icon: '♏', coordinate: calcSignCoordinate(210), url: '/images/astro-sign-8.png' },
+  { name: '射手座', icon: '♐', coordinate: calcSignCoordinate(240), url: '/images/astro-sign-9.png' },
+  { name: '山羊座', icon: '♑', coordinate: calcSignCoordinate(270), url: '/images/astro-sign-10.png' },
+  { name: '水瓶座', icon: '♒', coordinate: calcSignCoordinate(300), url: '/images/astro-sign-11.png' },
+  { name: '魚座', icon: '♓', coordinate: calcSignCoordinate(330), url: '/images/astro-sign-12.png' },
+]
 
-type SignImageProps = { url: string }
-const SignImage = ({ url }: SignImageProps) => {
-  const [image] = useImage(url)
-  const x = 500
-  return <Image image={image} />
+type SignImageProps = { signCoordinate: typeof signCoordinates[number] }
+const SignImage = ({ signCoordinate }: SignImageProps) => {
+  const [image] = useImage(signCoordinate.url)
+  return (
+    <Image
+      image={image}
+      x={signCoordinate.coordinate.x}
+      y={signCoordinate.coordinate.y}
+      width={24}
+      height={24}
+      offset={{ x: 12, y: 12 }}
+    />
+  )
 }
 
 export default function HoroscopeCircle({ horoscope }: { horoscope: Horoscope }) {
   const { planets } = horoscope
-  const [sign1] = useImage('/images/astro-sign-1.png')
-  const [sign2] = useImage('/images/astro-sign-2.png')
-  const [sign3] = useImage('/images/astro-sign-3.png')
-  const [sign4] = useImage('/images/astro-sign-4.png')
-  const [sign5] = useImage('/images/astro-sign-5.png')
-  const [sign6] = useImage('/images/astro-sign-6.png')
-  const [sign7] = useImage('/images/astro-sign-7.png')
-  const [sign8] = useImage('/images/astro-sign-8.png')
-  const [sign9] = useImage('/images/astro-sign-9.png')
-  const [sign10] = useImage('/images/astro-sign-10.png')
-  const [sign11] = useImage('/images/astro-sign-11.png')
-  const [sign12] = useImage('/images/astro-sign-12.png')
-
-  console.log(sign1?.width, sign1?.height)
-  if (!sign1) return <p>error</p>
-  if (!sign2) return <p>error</p>
-  if (!sign3) return <p>error</p>
-  if (!sign4) return <p>error</p>
-  if (!sign5) return <p>error</p>
-  if (!sign6) return <p>error</p>
-  if (!sign7) return <p>error</p>
-  if (!sign8) return <p>error</p>
-  if (!sign9) return <p>error</p>
-  if (!sign10) return <p>error</p>
-  if (!sign11) return <p>error</p>
-  if (!sign12) return <p>error</p>
 
   return (
     <Stage width={500} height={500}>
@@ -110,103 +92,10 @@ export default function HoroscopeCircle({ horoscope }: { horoscope: Horoscope })
         <Line points={calcLineCoordinate(120)} stroke="black" strokeWidth={1} opacity={0.2} />
         <Line points={calcLineCoordinate(150)} stroke="black" strokeWidth={1} opacity={0.2} />
         <Circle stroke="#afb1b1" strokeWidth={1} fill="white" x={origin} y={origin} radius={80} opacity={1} />
-        {/* 星座 */}
-        <Image
-          image={sign1}
-          x={signCoordinate.牡羊座.coordinate.x}
-          y={signCoordinate.牡羊座.coordinate.y}
-          width={24}
-          height={24}
-          offset={{ x: 12, y: 12 }}
-        />
-        <Image
-          image={sign2}
-          x={signCoordinate.牡牛座.coordinate.x}
-          y={signCoordinate.牡牛座.coordinate.y}
-          width={24}
-          height={24}
-          offset={{ x: 12, y: 12 }}
-        />
-        <Image
-          image={sign3}
-          x={signCoordinate.双子座.coordinate.x}
-          y={signCoordinate.双子座.coordinate.y}
-          width={24}
-          height={24}
-          offset={{ x: 12, y: 12 }}
-        />
-        <Image
-          image={sign4}
-          x={signCoordinate.蟹座.coordinate.x}
-          y={signCoordinate.蟹座.coordinate.y}
-          width={24}
-          height={24}
-          offset={{ x: 12, y: 12 }}
-        />
-        <Image
-          image={sign5}
-          x={signCoordinate.獅子座.coordinate.x}
-          y={signCoordinate.獅子座.coordinate.y}
-          width={24}
-          height={24}
-          offset={{ x: 12, y: 12 }}
-        />
-        <Image
-          image={sign6}
-          x={signCoordinate.乙女座.coordinate.x}
-          y={signCoordinate.乙女座.coordinate.y}
-          width={24}
-          height={24}
-          offset={{ x: 12, y: 12 }}
-        />
-        <Image
-          image={sign7}
-          x={signCoordinate.天秤座.coordinate.x}
-          y={signCoordinate.天秤座.coordinate.y}
-          width={24}
-          height={24}
-          offset={{ x: 12, y: 12 }}
-        />
-        <Image
-          image={sign8}
-          x={signCoordinate.蠍座.coordinate.x}
-          y={signCoordinate.蠍座.coordinate.y}
-          width={24}
-          height={24}
-          offset={{ x: 12, y: 12 }}
-        />
-        <Image
-          image={sign9}
-          x={signCoordinate.射手座.coordinate.x}
-          y={signCoordinate.射手座.coordinate.y}
-          width={24}
-          height={24}
-          offset={{ x: 12, y: 12 }}
-        />
-        <Image
-          image={sign10}
-          x={signCoordinate.山羊座.coordinate.x}
-          y={signCoordinate.山羊座.coordinate.y}
-          width={24}
-          height={24}
-          offset={{ x: 12, y: 12 }}
-        />
-        <Image
-          image={sign11}
-          x={signCoordinate.水瓶座.coordinate.x}
-          y={signCoordinate.水瓶座.coordinate.y}
-          width={24}
-          height={24}
-          offset={{ x: 12, y: 12 }}
-        />
-        <Image
-          image={sign12}
-          x={signCoordinate.魚座.coordinate.x}
-          y={signCoordinate.魚座.coordinate.y}
-          width={24}
-          height={24}
-          offset={{ x: 12, y: 12 }}
-        />
+        {/* サイン */}
+        {signCoordinates.map((signCoordinate, i) => (
+          <SignImage key={i} signCoordinate={signCoordinate} />
+        ))}
         {/* 惑星 */}
         {Object.values(planets).map((planet, id) => (
           <Text

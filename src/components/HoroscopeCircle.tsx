@@ -90,12 +90,9 @@ export default function HoroscopeCircle({
         <ScaledCircle stroke="#352e2b" fill="#e4E7E2" scale={1} />
         <ScaledCircle stroke="#352e2b" fill="white" scale={0.8} />
         <ScaledCircle stroke="#afb1b1" fill="#e4E7E2" scale={0.45} />
-        <ScaledLine longitude={0} />
-        <ScaledLine longitude={30} />
-        <ScaledLine longitude={60} />
-        <ScaledLine longitude={90} />
-        <ScaledLine longitude={120} />
-        <ScaledLine longitude={150} />
+        {[0, 30, 60, 90, 120, 150].map((longitude, i) => (
+          <ScaledLine key={i} longitude={longitude} />
+        ))}
         <ScaledCircle stroke="#afb1b1" fill="white" scale={0.37} />
 
         {/* サイン */}

@@ -28,13 +28,20 @@ type Horoscope = {
   }
 }
 
-type HoroscopeSeed = { birthday: Date; lat: number; lon: number; hsys?: string }
+type HoroscopeSeed = {
+  birthday: Date
+  lat: number
+  lon: number
+  hsys?: string
+  timeUnknown: boolean
+}
 function HoroscopePage() {
-  const defaultValues = {
+  const defaultValues: HoroscopeSeed = {
     birthday: new Date(),
     lat: 35.604839,
     lon: 139.667717,
     // hsys: 'Placidus(default)',
+    timeUnknown: false,
   }
   // {
   //   birthday: new Date('1987-09-08T08:53:00+09:00'),
@@ -44,28 +51,20 @@ function HoroscopePage() {
   // }
 
   const [horoscopeSeed, setHoroscopeSeed] = useState<HoroscopeSeed>(defaultValues)
-  const { data: horoscope, error } = useSWR(
-    '/api/horoscope',
-    async (url) => {
-      console.log('swr', horoscopeSeed.birthday)
-      const bd = document.querySelector('#birthday-text')?.textContent
-      console.log(bd)
-      const res = await fetch(url, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        // @ts-ignore
-        body: JSON.stringify({ ...horoscopeSeed, birthday: new Date(bd) }),
-      })
-      if (!res.ok) {
-        const { errorMessage } = await res.json()
-        throw new Error(errorMessage)
-      }
-      const json = await res.json()
-      const { houses, ...planets } = json.data
-      return { houses, planets } as Horoscope
-    },
-    { onSuccess: (data) => console.log('success!', data.planets.sun), refreshInterval: 1000 }
-  )
+  const { data: horoscope, error } = useSWR(['/api/horoscope', horoscopeSeed], async (url, horoscopeSeed) => {
+    const res = await fetch(url, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(horoscopeSeed),
+    })
+    if (!res.ok) {
+      const { errorMessage } = await res.json()
+      throw new Error(errorMessage)
+    }
+    const json = await res.json()
+    const { houses, ...planets } = json.data
+    return { houses, planets } as Horoscope
+  })
 
   if (error) return <div>failed to load: {JSON.stringify(error.message)}</div>
   if (!horoscope) return <div>loading...</div>
@@ -92,15 +91,16 @@ function HoroscopePage() {
           </div>
           <div style={{ width: '50%', display: 'flex', justifyContent: 'center', paddingTop: '50px' }}>
             <HoroscopeForm
-              onSubmit={({ birthday: dateTime, lat: latitude, lon: longitude }: FormValues) => {
+              onSubmit={({ birthday: dateTime, lat, lon, timeUnknown }: FormValues) => {
                 setHoroscopeSeed({
                   birthday: dateTime,
-                  lat: latitude,
-                  lon: longitude,
+                  lat,
+                  lon,
+                  timeUnknown,
                 })
                 console.log('submit', horoscopeSeed.birthday)
               }}
-              defaultValues={defaultValues}
+              defaultValues={horoscopeSeed}
             />
           </div>
         </div>
@@ -118,9 +118,6 @@ function HoroscopePage() {
           </div>
         </div>
       </div>
-      <p style={{ visibility: 'hidden' }} id="birthday-text">
-        {horoscopeSeed.birthday.toISOString()}
-      </p>
     </div>
   )
 }

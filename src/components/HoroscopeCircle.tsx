@@ -23,16 +23,6 @@ type Horoscope = {
 const COORDINATE_ORIGIN = 250
 const RADIUS = 220
 
-const calcLineCoordinate = (longitude: number) => {
-  const radian1 = (longitude - 90) * (Math.PI / 180)
-  const x1 = COORDINATE_ORIGIN + Math.sin(radian1) * RADIUS
-  const y1 = COORDINATE_ORIGIN + Math.cos(radian1) * RADIUS
-  const radian2 = (longitude + 90) * (Math.PI / 180)
-  const x2 = COORDINATE_ORIGIN + Math.sin(radian2) * RADIUS
-  const y2 = COORDINATE_ORIGIN + Math.cos(radian2) * RADIUS
-  return [x1, y1, x2, y2]
-}
-
 const signCoordinates = [
   { name: '牡羊座', icon: '♈', longitude: 0, url: '/images/astro-sign-1.png' },
   { name: '牡牛座', icon: '♉', longitude: 30, url: '/images/astro-sign-2.png' },
@@ -59,6 +49,17 @@ const ScaledCircle = ({ stroke, fill, scale }: { stroke: string; fill: string; s
     opacity={1}
   />
 )
+
+const ScaledLine = ({ longitude }: { longitude: number }) => {
+  const radian1 = (longitude - 90) * (Math.PI / 180)
+  const x1 = COORDINATE_ORIGIN + Math.sin(radian1) * RADIUS
+  const y1 = COORDINATE_ORIGIN + Math.cos(radian1) * RADIUS
+  const radian2 = (longitude + 90) * (Math.PI / 180)
+  const x2 = COORDINATE_ORIGIN + Math.sin(radian2) * RADIUS
+  const y2 = COORDINATE_ORIGIN + Math.cos(radian2) * RADIUS
+
+  return <Line points={[x1, y1, x2, y2]} stroke="black" strokeWidth={1} opacity={0.2} />
+}
 
 const SignImage = ({ signCoordinate }: { signCoordinate: typeof signCoordinates[number] }) => {
   const [image] = useImage(signCoordinate.url)
@@ -98,22 +99,22 @@ export default function HoroscopeCircle({ horoscope }: { horoscope: Horoscope })
   return (
     <Stage width={500} height={500}>
       <Layer>
-        {/* 円 */}
         <ScaledCircle stroke="#352e2b" fill="#e4E7E2" scale={1} />
         <ScaledCircle stroke="#352e2b" fill="white" scale={0.8} />
         <ScaledCircle stroke="#afb1b1" fill="#e4E7E2" scale={0.45} />
-        {/* 線 */}
-        <Line points={calcLineCoordinate(0)} stroke="black" strokeWidth={1} opacity={0.2} />
-        <Line points={calcLineCoordinate(30)} stroke="black" strokeWidth={1} opacity={0.2} />
-        <Line points={calcLineCoordinate(60)} stroke="black" strokeWidth={1} opacity={0.2} />
-        <Line points={calcLineCoordinate(90)} stroke="black" strokeWidth={1} opacity={0.2} />
-        <Line points={calcLineCoordinate(120)} stroke="black" strokeWidth={1} opacity={0.2} />
-        <Line points={calcLineCoordinate(150)} stroke="black" strokeWidth={1} opacity={0.2} />
+        <ScaledLine longitude={0} />
+        <ScaledLine longitude={30} />
+        <ScaledLine longitude={60} />
+        <ScaledLine longitude={90} />
+        <ScaledLine longitude={120} />
+        <ScaledLine longitude={150} />
         <ScaledCircle stroke="#afb1b1" fill="white" scale={0.37} />
+
         {/* サイン */}
         {signCoordinates.map((signCoordinate, i) => (
           <SignImage key={i} signCoordinate={signCoordinate} />
         ))}
+
         {/* 惑星 */}
         {Object.values(planets).map((planet, id) => (
           <PlanetImage key={id} planet={planet} />

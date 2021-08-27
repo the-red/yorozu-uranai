@@ -1,4 +1,4 @@
-import { Layer, Stage, Circle, Line, Text, Image } from 'react-konva'
+import { Stage, Layer, Circle, Line, Text, Image } from 'react-konva'
 import type { Planet as PlanetClass } from '../horoscope'
 import type { Houses } from '../horoscope'
 import useImage from 'use-image'
@@ -37,35 +37,27 @@ const signCoordinates = [
 
 export default function HoroscopeCircle({
   horoscope,
-  coordinateOrigin,
+  origin,
   radius,
 }: {
   horoscope: Horoscope
-  coordinateOrigin: number // 原点座標
-  radius: number // 外周円の半径
+  origin: { x: number; y: number } // 円の中心座標
+  radius: number // 外周の半径
 }) {
   // TODO: ハウスを考慮してサインの位置を調整
   const { planets, houses } = horoscope
 
   const ScaledCircle = ({ stroke, fill, scale }: { stroke: string; fill: string; scale: number }) => (
-    <Circle
-      stroke={stroke}
-      strokeWidth={1}
-      fill={fill}
-      x={coordinateOrigin}
-      y={coordinateOrigin}
-      radius={radius * scale}
-      opacity={1}
-    />
+    <Circle stroke={stroke} strokeWidth={1} fill={fill} x={origin.x} y={origin.y} radius={radius * scale} opacity={1} />
   )
 
   const ScaledLine = ({ longitude }: { longitude: number }) => {
     const radian1 = (longitude - 90) * (Math.PI / 180)
-    const x1 = coordinateOrigin + Math.sin(radian1) * radius
-    const y1 = coordinateOrigin + Math.cos(radian1) * radius
+    const x1 = origin.x + Math.sin(radian1) * radius
+    const y1 = origin.y + Math.cos(radian1) * radius
     const radian2 = (longitude + 90) * (Math.PI / 180)
-    const x2 = coordinateOrigin + Math.sin(radian2) * radius
-    const y2 = coordinateOrigin + Math.cos(radian2) * radius
+    const x2 = origin.x + Math.sin(radian2) * radius
+    const y2 = origin.y + Math.cos(radian2) * radius
 
     return <Line points={[x1, y1, x2, y2]} stroke="black" strokeWidth={1} opacity={0.2} />
   }
@@ -78,8 +70,8 @@ export default function HoroscopeCircle({
     return (
       <Image
         image={image}
-        x={coordinateOrigin + Math.sin(radian) * radius * 0.9}
-        y={coordinateOrigin + Math.cos(radian) * radius * 0.9}
+        x={origin.x + Math.sin(radian) * radius * 0.9}
+        y={origin.y + Math.cos(radian) * radius * 0.9}
         width={iconSize}
         height={iconSize}
         offset={{ x: iconSize / 2, y: iconSize / 2 }}
@@ -93,8 +85,8 @@ export default function HoroscopeCircle({
     return (
       <Text
         text={planet.icon}
-        x={coordinateOrigin + planet.coordinate.x * radiusScale}
-        y={coordinateOrigin + planet.coordinate.y * radiusScale}
+        x={origin.x + planet.coordinate.x * radiusScale}
+        y={origin.y + planet.coordinate.y * radiusScale}
         fontSize={iconSize}
         offset={{ x: iconSize / 2, y: iconSize / 2 }}
         fill="black"
@@ -103,7 +95,7 @@ export default function HoroscopeCircle({
   }
 
   return (
-    <Stage width={500} height={500}>
+    <Stage width={origin.x + radius} height={origin.y + radius}>
       <Layer>
         <ScaledCircle stroke="#352e2b" fill="#e4E7E2" scale={1} />
         <ScaledCircle stroke="#352e2b" fill="white" scale={0.8} />

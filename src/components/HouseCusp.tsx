@@ -6,9 +6,9 @@ type Props = {
 
 export default function HouseCusp({ houses }: Props) {
   return (
-    <>
+    <div style={{ width: '100%' }}>
       <div style={{ fontSize: '30px' }}>House Cusps</div>
-      <table>
+      <table style={{ width: '100%' }}>
         <tbody>
           {houses.house.map((longitude, i) => (
             <tr key={i}>
@@ -18,6 +18,6 @@ export default function HouseCusp({ houses }: Props) {
           ))}
         </tbody>
       </table>
-    </>
+    </div>
   )
 }

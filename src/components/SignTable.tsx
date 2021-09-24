@@ -19,9 +19,9 @@ export default function SignTable({ planets }: Props) {
   }
 
   return (
-    <>
+    <div style={{ width: '100%' }}>
       <div style={{ fontSize: '30px' }}>Sign Classification</div>
-      <table>
+      <table style={{ width: '100%' }}>
         <tbody>
           {/* ４区分 */}
           <tr>
@@ -66,6 +66,6 @@ export default function SignTable({ planets }: Props) {
           </tr>
         </tbody>
       </table>
-    </>
+    </div>
   )
 }

@@ -7,9 +7,9 @@ type Props = {
 
 export default function PlanetPositions({ planets }: Props) {
   return (
-    <>
+    <div style={{ width: '100%' }}>
       <div style={{ fontSize: '30px' }}>Planet Positions</div>
-      <table>
+      <table style={{ width: '100%' }}>
         <tbody>
           {planets.map((planet, i) => (
             <tr key={i}>
@@ -21,6 +21,6 @@ export default function PlanetPositions({ planets }: Props) {
           ))}
         </tbody>
       </table>
-    </>
+    </div>
   )
 }

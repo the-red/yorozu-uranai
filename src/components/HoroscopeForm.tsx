@@ -52,7 +52,7 @@ export const HoroscopeForm: VFC<HoroscopeFormProps> = ({ onSubmit, defaultValues
   }
 
   return (
-    <form onSubmit={handleSubmit} style={{ width: '360px', padding: '16px 8px' }}>
+    <form onSubmit={handleSubmit} style={{ width: '100%' }}>
       <div style={{ display: 'flex' }}>
         <label style={{ width: '100px' }}>生年月日</label>
         <div>

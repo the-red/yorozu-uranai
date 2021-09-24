@@ -1,16 +1,28 @@
-export const ALL_PLANETS = [
-  'sun',
-  'moon',
-  'mercury',
-  'venus',
-  'mars',
-  'jupiter',
-  'saturn',
-  'uranus',
-  'neptune',
-  'pluto',
-] as const
-export type PlanetName = typeof ALL_PLANETS[number]
+export type PlanetName =
+  | 'sun'
+  | 'moon'
+  | 'mercury'
+  | 'venus'
+  | 'mars'
+  | 'jupiter'
+  | 'saturn'
+  | 'uranus'
+  | 'neptune'
+  | 'pluto'
+
+export const PLANET_ICONS = {
+  sun: '☉',
+  moon: '☽',
+  mercury: '☿',
+  venus: '♀',
+  mars: '♂',
+  jupiter: '♃',
+  saturn: '♄',
+  uranus: '♅',
+  neptune: '♆',
+  pluto: '♇',
+} as const
+export type PlanetIcon = typeof PLANET_ICONS[PlanetName]
 
 const ALL_SIGNS = [
   '牡羊座',
@@ -120,6 +132,18 @@ export class Planet {
     }
   }
 
+  get coordinate() {
+    // ホロスコープに描画する際の座標（左端中央が原点）
+    const radian = (this.longitude - 90) * (Math.PI / 180)
+    const x = Math.sin(radian)
+    const y = Math.cos(radian)
+    return { x, y }
+  }
+
+  get icon() {
+    return PLANET_ICONS[this.name]
+  }
+
   diffLongitude(targetLongitude: number): number {
     return Math.abs(targetLongitude - this.longitude)
   }
@@ -137,6 +161,7 @@ export class Planet {
   toJSON() {
     return {
       name: this.name,
+      icon: this.icon,
       longitude: this.longitude,
       degrees: this.degrees,
       formattedDegrees: this.formattedDegrees,
@@ -144,6 +169,7 @@ export class Planet {
       element: this.element,
       quality: this.quality,
       polarity: this.polarity,
+      coordinate: this.coordinate,
     }
   }
 }

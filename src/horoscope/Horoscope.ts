@@ -1,5 +1,18 @@
 import { julday, eclipticPosition, calcHouses, Houses } from './swisseph'
-import { Planet, ALL_PLANETS, PlanetName } from './Planet'
+import { Planet, PlanetName } from './Planet'
+
+export const ALL_PLANETS = [
+  'sun',
+  'moon',
+  'mercury',
+  'venus',
+  'mars',
+  'jupiter',
+  'saturn',
+  'uranus',
+  'neptune',
+  'pluto',
+] as const
 
 // 全惑星の座標
 export class Horoscope {

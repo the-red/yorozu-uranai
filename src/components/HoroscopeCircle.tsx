@@ -1,24 +1,6 @@
 import { Stage, Layer, Circle, Line, Text, Image } from 'react-konva'
-import type { Planet as PlanetClass } from '../horoscope'
-import type { Houses } from '../horoscope'
+import type { Horoscope, Houses, Planet } from '../horoscope'
 import useImage from 'use-image'
-
-type Planet = ReturnType<PlanetClass['toJSON']>
-type Horoscope = {
-  houses: Houses
-  planets: {
-    sun: Planet
-    moon: Planet
-    mercury: Planet
-    venus: Planet
-    mars: Planet
-    jupiter: Planet
-    saturn: Planet
-    uranus: Planet
-    neptune: Planet
-    pluto: Planet
-  }
-}
 
 const signCoordinates = [
   { name: '牡羊座', icon: '♈', longitude: 0, url: '/images/astro-sign-1.png' },

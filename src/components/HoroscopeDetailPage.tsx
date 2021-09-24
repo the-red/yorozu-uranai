@@ -1,6 +1,5 @@
 import useSWR from 'swr'
-import type { Planet as PlanetClass } from '../horoscope'
-import type { Houses } from '../horoscope'
+import { Horoscope, HoroscopeProps } from '../horoscope'
 
 import HouseCusp from './HouseCusp'
 import SignTable from './SignTable'
@@ -8,23 +7,6 @@ import PlanetPositions from './PlanetPositions'
 import dynamic from 'next/dynamic'
 
 const HoroscopeCircle = dynamic(() => import('./HoroscopeCircle'), { ssr: false })
-
-type Planet = ReturnType<PlanetClass['toJSON']>
-type Horoscope = {
-  houses: Houses
-  planets: {
-    sun: Planet
-    moon: Planet
-    mercury: Planet
-    venus: Planet
-    mars: Planet
-    jupiter: Planet
-    saturn: Planet
-    uranus: Planet
-    neptune: Planet
-    pluto: Planet
-  }
-}
 
 type HoroscopeSeed = {
   birthday: Date
@@ -36,20 +18,23 @@ type HoroscopeSeed = {
 
 type Props = { horoscopeSeed: HoroscopeSeed }
 function HoroscopeDetailPage({ horoscopeSeed }: Props) {
-  const { data: horoscope, error } = useSWR(['/api/horoscope', horoscopeSeed], async (url, horoscopeSeed) => {
-    const res = await fetch(url, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(horoscopeSeed),
-    })
-    if (!res.ok) {
-      const { errorMessage } = await res.json()
-      throw new Error(errorMessage)
+  const { data: horoscope, error } = useSWR<Horoscope>(
+    ['/api/horoscope', horoscopeSeed],
+    async (url, horoscopeSeed) => {
+      const res = await fetch(url, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(horoscopeSeed),
+      })
+      if (!res.ok) {
+        const { errorMessage } = await res.json()
+        throw new Error(errorMessage)
+      }
+      const json = await res.json()
+      const horoscopeProps = json.data as HoroscopeProps
+      return new Horoscope(horoscopeProps)
     }
-    const json = await res.json()
-    const { houses, ...planets } = json.data
-    return { houses, planets } as Horoscope
-  })
+  )
 
   if (error) return <div>failed to load: {JSON.stringify(error.message)}</div>
   if (!horoscope) return <div>loading...</div>

@@ -1,32 +1,6 @@
 // @ts-ignore
 import swisseph from 'swisseph'
-import type { PlanetName } from './Planet'
-
-type EclipticPosition = {
-  latitude: number
-  latitudeSpeed: number
-  longitude: number
-  longitudeSpeed: number
-  distance: number
-  distanceSpeed: number
-  rflag: number
-  isRetrograde: boolean // trueなら逆行
-  error?: any
-}
-
-type HouseCusps = [number, number, number, number, number, number, number, number, number, number, number, number]
-export type Houses = {
-  house: HouseCusps
-  ascendant: number
-  mc: number
-  armc: number
-  vertex: number
-  equatorialAscendant: number
-  kochCoAscendant: number
-  munkaseyCoAscendant: number
-  munkaseyPolarAscendant: number
-  error?: any
-}
+import type { PlanetName, EclipticPosition, HouseCusps, Houses } from './types'
 
 const round6 = (num: number) => Math.trunc(num * 10 ** 6) / 10 ** 6
 

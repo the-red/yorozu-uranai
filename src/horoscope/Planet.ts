@@ -130,6 +130,11 @@ export class Planet {
     return { x, y }
   }
 
+  get house() {
+    // TODO: 惑星別のハウスを計算して返す
+    return 2
+  }
+
   get icon() {
     return PLANET_ICONS[this.name]
   }

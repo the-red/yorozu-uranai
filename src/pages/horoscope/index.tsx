@@ -1,9 +1,10 @@
 import HoroscopeDetailPage from '../../components/HoroscopeDetailPage'
+import styles from './HoroscopePage.module.css'
 
 function HoroscopePage() {
   return (
-    <div style={{ width: '960px', margin: '20px auto' }}>
-      <div style={{ fontFamily: 'Farewell Pro Regular', fontSize: '60px', marginBottom: '20px' }}>Horoscope</div>
+    <div className={styles.container}>
+      <div className={styles.title}>Horoscope</div>
       <HoroscopeDetailPage />
     </div>
   )

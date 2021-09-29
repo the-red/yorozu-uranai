@@ -1,0 +1,10 @@
+.container {
+  width: 960px;
+  margin: 20px auto;
+}
+
+.title {
+  font-family: 'Farewell Pro Regular';
+  font-size: 60px;
+  margin-bottom: 20px;
+}

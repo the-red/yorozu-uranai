@@ -15,7 +15,7 @@ export default function PlanetPositions({ planets }: Props) {
               <td>{planet.name}</td>
               <td>{planet.sign}</td>
               <td>{planet.formattedDegrees}</td>
-              <td>1ハウス</td>
+              <td>{planet.house}ハウス</td>
             </tr>
           ))}
         </tbody>

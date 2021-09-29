@@ -1,5 +1,4 @@
-import type { Planet as PlanetClass } from '../horoscope'
-type Planet = ReturnType<PlanetClass['toJSON']>
+import type { Planet } from '../horoscope'
 
 type Props = {
   planets: Planet[]

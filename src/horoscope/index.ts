@@ -1,3 +1,3 @@
-export { Horoscope } from './Horoscope'
-export { Planet } from './Planet'
-export type { Houses } from './swisseph'
+export * from './Horoscope'
+export * from './Planet'
+export * from './types'

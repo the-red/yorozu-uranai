@@ -1,6 +1,5 @@
 import useSWR from 'swr'
-import type { Planet as PlanetClass } from '../horoscope'
-import type { Houses } from '../horoscope'
+import { Horoscope, HoroscopeProps } from '../horoscope'
 
 import HouseCusp from './HouseCusp'
 import SignTable from './SignTable'
@@ -10,23 +9,6 @@ import dynamic from 'next/dynamic'
 import { useEffect, useMemo, useState } from 'react'
 
 const HoroscopeCircle = dynamic(() => import('./HoroscopeCircle'), { ssr: false })
-
-type Planet = ReturnType<PlanetClass['toJSON']>
-type Horoscope = {
-  houses: Houses
-  planets: {
-    sun: Planet
-    moon: Planet
-    mercury: Planet
-    venus: Planet
-    mars: Planet
-    jupiter: Planet
-    saturn: Planet
-    uranus: Planet
-    neptune: Planet
-    pluto: Planet
-  }
-}
 
 type HoroscopeSeed = {
   birthday: Date
@@ -52,7 +34,7 @@ function HoroscopeDetailPage() {
 
   const [horoscope, setHoroscope] = useState<Horoscope>()
 
-  const { data, error } = useSWR(['/api/horoscope', horoscopeSeed], async (url, horoscopeSeed) => {
+  const { data, error } = useSWR<Horoscope>(['/api/horoscope', horoscopeSeed], async (url, horoscopeSeed) => {
     const res = await fetch(url, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -63,8 +45,8 @@ function HoroscopeDetailPage() {
       throw new Error(errorMessage)
     }
     const json = await res.json()
-    const { houses, ...planets } = json.data
-    return { houses, planets } as Horoscope
+    const horoscopeProps = json.data as HoroscopeProps
+    return new Horoscope(horoscopeProps)
   })
 
   useEffect(() => {

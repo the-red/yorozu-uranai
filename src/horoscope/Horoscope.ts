@@ -11,7 +11,7 @@ export class Horoscope {
 
   constructor({ positions, houses }: HoroscopeProps) {
     this.planets = Object.fromEntries(
-      positions.map(([planetName, position]) => [planetName, new Planet(position.longitude, planetName)])
+      positions.map(([planetName, position]) => [planetName, new Planet(position.longitude, planetName, houses.house)])
     ) as PlanetsMap
     this.houses = houses
   }

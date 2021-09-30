@@ -1,4 +1,4 @@
-import type { PlanetName } from './types'
+import type { PlanetName, Houses } from './types'
 
 export const PLANET_ICONS = {
   sun: '☉',
@@ -56,7 +56,7 @@ export class Planet {
 
   private INTERVAL = 30 as const
 
-  constructor(readonly longitude: number, readonly name: PlanetName) {}
+  constructor(readonly longitude: number, readonly name: PlanetName, private houseCusps: Houses['house']) {}
 
   get degrees() {
     return this.longitude % this.INTERVAL
@@ -131,8 +131,16 @@ export class Planet {
   }
 
   get house() {
-    // TODO: 惑星別のハウスを計算して返す
-    return 2
+    for (let i = 0; i < this.houseCusps.length; i++) {
+      let start = this.houseCusps[i]
+      let end = this.houseCusps[i + 1] || this.houseCusps[0]
+      if (start > end) {
+        end += 360
+      }
+      if (start < this.longitude && this.longitude <= end) {
+        return i + 1
+      }
+    }
   }
 
   get icon() {

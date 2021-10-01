@@ -1,3 +1,4 @@
+import { Position } from './Position'
 import { Planet } from './Planet'
 import type { PlanetName, EclipticPosition, Houses } from './types'
 
@@ -13,13 +14,13 @@ export class Horoscope {
     this.planets = Object.fromEntries(
       positions.map(([planetName, position]) => [
         planetName,
-        new Planet(position.longitude, planetName, position.isRetrograde, houses.house),
+        new Planet(new Position(position.longitude), planetName, position.isRetrograde, houses.house),
       ])
     ) as PlanetsMap
     this.houses = houses
   }
 
   get formattedHouse() {
-    return this.houses.house.map((house) => Planet.formatLongitude(house))
+    return this.houses.house.map((house) => Position.formatLongitude(house))
   }
 }

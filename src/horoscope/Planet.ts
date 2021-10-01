@@ -129,9 +129,9 @@ export class Planet {
 
   get coordinate() {
     // ホロスコープに描画する際の座標（左端中央が原点）
-    const radian = (this.longitude - 90) * (Math.PI / 180)
-    const x = Math.sin(radian)
-    const y = Math.cos(radian)
+    const radian = (this.longitude + 180) * (Math.PI / 180)
+    const x = Math.cos(radian)
+    const y = -Math.sin(radian)
     return { x, y }
   }
 

@@ -34,12 +34,12 @@ export default function HoroscopeCircle({
   )
 
   const ScaledLine = ({ longitude }: { longitude: number }) => {
-    const radian1 = (longitude - 90) * (Math.PI / 180)
-    const x1 = origin.x + Math.sin(radian1) * radius
-    const y1 = origin.y + Math.cos(radian1) * radius
-    const radian2 = (longitude + 90) * (Math.PI / 180)
-    const x2 = origin.x + Math.sin(radian2) * radius
-    const y2 = origin.y + Math.cos(radian2) * radius
+    const radian1 = longitude * (Math.PI / 180)
+    const x1 = origin.x + Math.cos(radian1) * radius
+    const y1 = origin.y - Math.sin(radian1) * radius
+    const radian2 = (longitude + 180) * (Math.PI / 180)
+    const x2 = origin.x + Math.cos(radian2) * radius
+    const y2 = origin.y - Math.sin(radian2) * radius
 
     return <Line points={[x1, y1, x2, y2]} stroke="black" strokeWidth={1} opacity={0.2} />
   }
@@ -47,13 +47,13 @@ export default function HoroscopeCircle({
   const SignImage = ({ signCoordinate }: { signCoordinate: typeof signCoordinates[number] }) => {
     const [image] = useImage(signCoordinate.url)
     const iconSize = radius * 0.12
-    const radian = (signCoordinate.longitude - 75) * (Math.PI / 180)
+    const radian = (signCoordinate.longitude + 180 + 15) * (Math.PI / 180)
 
     return (
       <Image
         image={image}
-        x={origin.x + Math.sin(radian) * radius * 0.9}
-        y={origin.y + Math.cos(radian) * radius * 0.9}
+        x={origin.x + Math.cos(radian) * radius * 0.9}
+        y={origin.y - Math.sin(radian) * radius * 0.9}
         width={iconSize}
         height={iconSize}
         offset={{ x: iconSize / 2, y: iconSize / 2 }}

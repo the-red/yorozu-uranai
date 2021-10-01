@@ -47,20 +47,6 @@ describe('Horoscope', () => {
       expect(planets.neptune.formattedDegrees).toEqual(' 5°15′14″R')
       expect(planets.pluto.formattedDegrees).toEqual(' 7°53′25″')
     })
-
-    it('coordinate', async () => {
-      const { planets } = await getHoroscopeInstance(funadyBirthday, funadyBirthLat, funadyBirthLon)
-      expect(planets.sun.coordinate).toEqual({ x: 0.965095785521996, y: 0.26189716448957856 })
-      expect(planets.moon.coordinate).toEqual({ x: -0.9783732809057316, y: -0.20684710104266457 })
-      expect(planets.mercury.coordinate).toEqual({ x: 0.9999301149274349, y: -0.011822235880189675 })
-      expect(planets.venus.coordinate).toEqual({ x: 0.9820011237165059, y: 0.1888750725202235 })
-      expect(planets.mars.coordinate).toEqual({ x: 0.9414292949764493, y: 0.33721044254314764 })
-      expect(planets.jupiter.coordinate).toEqual({ x: -0.8735540065837044, y: 0.4867272311896646 })
-      expect(planets.saturn.coordinate).toEqual({ x: 0.26142004024630655, y: -0.9652251356847372 })
-      expect(planets.uranus.coordinate).toEqual({ x: 0.12645673202073257, y: -0.991972124067323 })
-      expect(planets.neptune.coordinate).toEqual({ x: -0.09156914004318954, y: -0.9957987209229336 })
-      expect(planets.pluto.coordinate).toEqual({ x: 0.7891872983628521, y: -0.6141525934999728 })
-    })
   })
 
   describe('houses', () => {

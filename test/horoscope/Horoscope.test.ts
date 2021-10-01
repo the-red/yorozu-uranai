@@ -41,10 +41,10 @@ describe('Horoscope', () => {
       expect(planets.mercury.formattedDegrees).toEqual(' 0°40′39″')
       expect(planets.venus.formattedDegrees).toEqual('19°06′46″')
       expect(planets.mars.formattedDegrees).toEqual('10°17′35″')
-      expect(planets.jupiter.formattedDegrees).toEqual('29°07′33″')
+      expect(planets.jupiter.formattedDegrees).toEqual('29°07′33″R')
       expect(planets.saturn.formattedDegrees).toEqual('14°50′44″')
       expect(planets.uranus.formattedDegrees).toEqual('22°44′06″')
-      expect(planets.neptune.formattedDegrees).toEqual(' 5°15′14″')
+      expect(planets.neptune.formattedDegrees).toEqual(' 5°15′14″R')
       expect(planets.pluto.formattedDegrees).toEqual(' 7°53′25″')
     })
 

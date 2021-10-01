@@ -56,7 +56,12 @@ export class Planet {
 
   private INTERVAL = 30 as const
 
-  constructor(readonly longitude: number, readonly name: PlanetName, private houseCusps: Houses['house']) {}
+  constructor(
+    readonly longitude: number,
+    readonly name: PlanetName,
+    readonly isRetrograde: boolean,
+    private houseCusps: Houses['house']
+  ) {}
 
   get degrees() {
     return this.longitude % this.INTERVAL
@@ -75,7 +80,7 @@ export class Planet {
     const degreesSecInt = Math.round(degreesSec)
     const degreesSecStr = `${String(degreesSecInt).padStart(2, '0')}″`
 
-    return degreesStr + degreesMinStr + degreesSecStr
+    return degreesStr + degreesMinStr + degreesSecStr + (this.isRetrograde ? 'R' : '')
   }
 
   get sign() {

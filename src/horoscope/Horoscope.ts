@@ -1,6 +1,5 @@
 import { Planet } from './Planet'
 import type { PlanetName, EclipticPosition, Houses } from './types'
-import { formatDegrees } from './util'
 
 export type PlanetsMap = Record<PlanetName, Planet>
 export type HoroscopeProps = { positions: [PlanetName, EclipticPosition][]; houses: Houses }
@@ -21,6 +20,6 @@ export class Horoscope {
   }
 
   get formattedHouse() {
-    return this.houses.house.map((house) => formatDegrees(house))
+    return this.houses.house.map((house) => Planet.formatLongitude(house))
   }
 }

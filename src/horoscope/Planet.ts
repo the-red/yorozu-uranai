@@ -1,5 +1,4 @@
 import type { PlanetName, Houses } from './types'
-import { formatDegrees } from './util'
 
 export const PLANET_ICONS = {
   sun: '☉',
@@ -55,7 +54,42 @@ export class Planet {
   static ALL_MAJOR_ASPECTS = ALL_MAJOR_ASPECTS
   static ALL_MINOR_ASPECTS = ALL_MINOR_ASPECTS
 
-  private INTERVAL = 30 as const
+  private static INTERVAL = 30 as const
+
+  private static getDegrees(longitude: number) {
+    return longitude % Planet.INTERVAL
+  }
+
+  static getSign(longitude: number) {
+    let index = Math.trunc(longitude / Planet.INTERVAL)
+    if (Planet.getDegrees(longitude) === 0) {
+      index = index > 0 ? index - 1 : ALL_SIGNS.length - 1
+    }
+    return ALL_SIGNS[index]
+  }
+
+  static formatDegrees(degrees: number) {
+    const degreesInt = Math.trunc(degrees)
+    const degreesStr = `${String(degreesInt).padStart(2)}°`
+
+    const MINUTE = 60
+    const degreesMin = (degrees - degreesInt) * MINUTE
+    const degreesMinInt = Math.trunc(degreesMin)
+    const degreesMinStr = `${String(degreesMinInt).padStart(2, '0')}′`
+
+    const degreesSec = (degreesMin - degreesMinInt) * MINUTE
+    const degreesSecInt = Math.round(degreesSec)
+    const degreesSecStr = `${String(degreesSecInt).padStart(2, '0')}″`
+
+    return degreesStr + degreesMinStr + degreesSecStr
+  }
+
+  static formatLongitude(longitude: number) {
+    const sign = Planet.getSign(longitude)
+    const degrees = Planet.getDegrees(longitude)
+    const formattedDegrees = Planet.formatDegrees(degrees)
+    return `${sign} ${formattedDegrees}`
+  }
 
   constructor(
     readonly longitude: number,
@@ -65,19 +99,15 @@ export class Planet {
   ) {}
 
   get degrees() {
-    return this.longitude % this.INTERVAL
+    return Planet.getDegrees(this.longitude)
   }
 
   get formattedDegrees() {
-    return formatDegrees(this.degrees) + (this.isRetrograde ? 'R' : '')
+    return Planet.formatDegrees(this.degrees) + (this.isRetrograde ? 'R' : '')
   }
 
   get sign() {
-    let index = Math.trunc(this.longitude / this.INTERVAL)
-    if (this.degrees === 0) {
-      index = index > 0 ? index - 1 : ALL_SIGNS.length - 1
-    }
-    return ALL_SIGNS[index]
+    return Planet.getSign(this.longitude)
   }
 
   get element() {

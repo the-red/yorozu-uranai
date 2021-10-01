@@ -1,4 +1,5 @@
 import type { PlanetName, Houses } from './types'
+import { formatDegrees } from './util'
 
 export const PLANET_ICONS = {
   sun: '☉',
@@ -68,19 +69,7 @@ export class Planet {
   }
 
   get formattedDegrees() {
-    const degreesInt = Math.trunc(this.degrees)
-    const degreesStr = `${String(degreesInt).padStart(2)}°`
-
-    const MINUTE = 60
-    const degreesMin = (this.degrees - degreesInt) * MINUTE
-    const degreesMinInt = Math.trunc(degreesMin)
-    const degreesMinStr = `${String(degreesMinInt).padStart(2, '0')}′`
-
-    const degreesSec = (degreesMin - degreesMinInt) * MINUTE
-    const degreesSecInt = Math.round(degreesSec)
-    const degreesSecStr = `${String(degreesSecInt).padStart(2, '0')}″`
-
-    return degreesStr + degreesMinStr + degreesSecStr + (this.isRetrograde ? 'R' : '')
+    return formatDegrees(this.degrees) + (this.isRetrograde ? 'R' : '')
   }
 
   get sign() {

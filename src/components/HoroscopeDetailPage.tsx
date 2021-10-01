@@ -93,7 +93,7 @@ function HoroscopeDetailPage() {
         </div>
         <div style={{ width: '50%', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
           <div style={{ width: '360px', padding: '16px 8px' }}>
-            <HouseCusp houses={horoscope.houses} />
+            <HouseCusp house={horoscope.formattedHouse} />
           </div>
         </div>
       </div>

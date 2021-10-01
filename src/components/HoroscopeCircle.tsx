@@ -16,6 +16,7 @@ const signCoordinates = [
   { name: '水瓶座', icon: '♒', longitude: 300, url: '/images/astro-sign-11.png' },
   { name: '魚座', icon: '♓', longitude: 330, url: '/images/astro-sign-12.png' },
 ]
+const iconOffset = (iconSize: number) => ({ x: iconSize / 2, y: iconSize / 2 })
 
 export default function HoroscopeCircle({
   horoscope,
@@ -29,48 +30,65 @@ export default function HoroscopeCircle({
   // TODO: ハウスを考慮してサインの位置を調整
   const { planets, houses } = horoscope
 
+  const degreesToCoordinate = ({ degrees, scale }: { degrees: number; scale: number }) => {
+    const radian = degrees * (Math.PI / 180)
+    return {
+      x: origin.x + Math.cos(radian) * radius * scale,
+      y: origin.y - Math.sin(radian) * radius * scale,
+    }
+  }
+
   const ScaledCircle = ({ stroke, fill, scale }: { stroke: string; fill: string; scale: number }) => (
     <Circle stroke={stroke} strokeWidth={1} fill={fill} x={origin.x} y={origin.y} radius={radius * scale} opacity={1} />
   )
 
   const ScaledLine = ({ longitude }: { longitude: number }) => {
-    const radian1 = longitude * (Math.PI / 180)
-    const x1 = origin.x + Math.cos(radian1) * radius
-    const y1 = origin.y - Math.sin(radian1) * radius
-    const radian2 = (longitude + 180) * (Math.PI / 180)
-    const x2 = origin.x + Math.cos(radian2) * radius
-    const y2 = origin.y - Math.sin(radian2) * radius
+    const start = degreesToCoordinate({
+      degrees: longitude,
+      scale: 1,
+    })
+    const end = degreesToCoordinate({
+      degrees: longitude + 180,
+      scale: 1,
+    })
 
-    return <Line points={[x1, y1, x2, y2]} stroke="black" strokeWidth={1} opacity={0.2} />
+    return <Line points={[start.x, start.y, end.x, end.y]} stroke="black" strokeWidth={1} opacity={0.2} />
   }
 
   const SignImage = ({ signCoordinate }: { signCoordinate: typeof signCoordinates[number] }) => {
     const [image] = useImage(signCoordinate.url)
     const iconSize = radius * 0.12
-    const radian = (signCoordinate.longitude + 180 + 15) * (Math.PI / 180)
+    const coordinate = degreesToCoordinate({
+      degrees: signCoordinate.longitude + 180 + 15,
+      scale: 0.9,
+    })
 
     return (
       <Image
         image={image}
-        x={origin.x + Math.cos(radian) * radius * 0.9}
-        y={origin.y - Math.sin(radian) * radius * 0.9}
+        x={coordinate.x}
+        y={coordinate.y}
         width={iconSize}
         height={iconSize}
-        offset={{ x: iconSize / 2, y: iconSize / 2 }}
+        offset={iconOffset(iconSize)}
       />
     )
   }
 
   const PlanetImage = ({ planet }: { planet: Planet }) => {
-    const radiusScale = radius * 0.65
     const iconSize = radius * 0.1
+    const coordinate = degreesToCoordinate({
+      degrees: planet.longitude + 180,
+      scale: 0.65,
+    })
+
     return (
       <Text
         text={planet.icon}
-        x={origin.x + planet.coordinate.x * radiusScale}
-        y={origin.y + planet.coordinate.y * radiusScale}
+        x={coordinate.x}
+        y={coordinate.y}
         fontSize={iconSize}
-        offset={{ x: iconSize / 2, y: iconSize / 2 }}
+        offset={iconOffset(iconSize)}
         fill="black"
       />
     )

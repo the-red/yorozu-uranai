@@ -30,7 +30,8 @@ export default function HoroscopeCircle({
   // TODO: ハウスを考慮してサインの位置を調整
   const { planets, houses } = horoscope
 
-  const degreesToCoordinate = ({ degrees, scale }: { degrees: number; scale: number }) => {
+  const degreesToCoordinate = ({ degrees, scale }: { degrees: number; scale?: number }) => {
+    scale ||= 1
     const radian = degrees * (Math.PI / 180)
     return {
       x: origin.x + Math.cos(radian) * radius * scale,
@@ -43,14 +44,8 @@ export default function HoroscopeCircle({
   )
 
   const ScaledLine = ({ longitude }: { longitude: number }) => {
-    const start = degreesToCoordinate({
-      degrees: longitude,
-      scale: 1,
-    })
-    const end = degreesToCoordinate({
-      degrees: longitude + 180,
-      scale: 1,
-    })
+    const start = degreesToCoordinate({ degrees: longitude })
+    const end = degreesToCoordinate({ degrees: longitude + 180 })
 
     return <Line points={[start.x, start.y, end.x, end.y]} stroke="black" strokeWidth={1} opacity={0.2} />
   }

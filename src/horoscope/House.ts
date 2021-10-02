@@ -6,8 +6,12 @@ type HouseCusps = Position[]
 export class House {
   constructor(readonly raw: Houses) {}
 
-  get ascendant(): number {
-    return this.raw.ascendant
+  get ascendant(): Position {
+    return new Position(this.raw.ascendant)
+  }
+
+  get mc(): Position {
+    return new Position(this.raw.mc)
   }
 
   get cusps(): HouseCusps {

@@ -1,16 +1,16 @@
-import type { Planet } from '../horoscope'
+import type { Horoscope } from '../horoscope'
 
 type Props = {
-  planets: Planet[]
+  horoscope: Horoscope
 }
 
-export default function PlanetPositions({ planets }: Props) {
+export default function PlanetPositions({ horoscope }: Props) {
   return (
     <div style={{ width: '100%' }}>
       <div style={{ fontSize: '30px' }}>Planet Positions</div>
       <table style={{ width: '100%' }}>
         <tbody>
-          {planets.map((planet, i) => (
+          {Object.values(horoscope.planets).map((planet, i) => (
             <tr key={i}>
               <td>{planet.name}</td>
               <td>{planet.sign}</td>
@@ -18,6 +18,16 @@ export default function PlanetPositions({ planets }: Props) {
               <td>{planet.house}ハウス</td>
             </tr>
           ))}
+          <tr>
+            <td>ASC</td>
+            <td>{horoscope.house.ascendant.sign}</td>
+            <td>{horoscope.house.ascendant.formattedDegrees}</td>
+          </tr>
+          <tr>
+            <td>MC</td>
+            <td>{horoscope.house.mc.sign}</td>
+            <td>{horoscope.house.mc.formattedDegrees}</td>
+          </tr>
         </tbody>
       </table>
     </div>

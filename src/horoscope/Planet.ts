@@ -47,12 +47,8 @@ export class Planet {
     private _house: House
   ) {}
 
-  get longitude(): number {
+  private get longitude(): number {
     return this.position.longitude
-  }
-
-  get degrees() {
-    return this.position.degrees
   }
 
   get formattedDegrees() {

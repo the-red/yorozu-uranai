@@ -20,23 +20,23 @@ describe('Planet', () => {
     it('0.0: 魚座', () => {
       const planet = new Planet(new Position(0), 'sun', false, house)
       expect(planet.sign).toEqual('魚座')
-      expect(planet.degrees).toEqual(0)
+      expect(planet.position.degrees).toEqual(0)
     })
     it('0.5: 牡羊座', () => {
       const planet = new Planet(new Position(0.5), 'sun', false, house)
       expect(planet.sign).toEqual('牡羊座')
-      expect(planet.degrees).toEqual(0.5)
+      expect(planet.position.degrees).toEqual(0.5)
     })
     it('60.0: 牡牛座', () => {
       const planet = new Planet(new Position(60), 'sun', false, house)
       expect(planet.sign).toEqual('牡牛座')
-      expect(planet.degrees).toEqual(0)
+      expect(planet.position.degrees).toEqual(0)
     })
     it('61.89: 双子座', () => {
       const planet = new Planet(new Position(61.89), 'sun', false, house)
-      expect(planet.longitude).toEqual(61.89)
       expect(planet.sign).toEqual('双子座')
-      expect(planet.degrees).toEqual(1.8900000000000006)
+      expect(planet.position.degrees).toEqual(1.8900000000000006)
+      expect(planet.position.longitude).toEqual(61.89)
     })
   })
 

@@ -16,24 +16,18 @@ export class Position {
 
   private INTERVAL = 30 as const
 
-  private getDegrees(longitude: number) {
-    return longitude % this.INTERVAL
+  constructor(readonly longitude: number) {}
+
+  get degrees() {
+    return this.longitude % this.INTERVAL
   }
 
-  private getSign(longitude: number) {
-    let index = Math.trunc(longitude / this.INTERVAL)
-    if (this.getDegrees(longitude) === 0) {
-      index = index > 0 ? index - 1 : Position.ALL_SIGNS.length - 1
-    }
-    return Position.ALL_SIGNS[index]
-  }
-
-  private formatDegrees(degrees: number) {
-    const degreesInt = Math.trunc(degrees)
+  get formattedDegrees() {
+    const degreesInt = Math.trunc(this.degrees)
     const degreesStr = `${String(degreesInt).padStart(2)}°`
 
     const MINUTE = 60
-    const degreesMin = (degrees - degreesInt) * MINUTE
+    const degreesMin = (this.degrees - degreesInt) * MINUTE
     const degreesMinInt = Math.trunc(degreesMin)
     const degreesMinStr = `${String(degreesMinInt).padStart(2, '0')}′`
 
@@ -44,24 +38,15 @@ export class Position {
     return degreesStr + degreesMinStr + degreesSecStr
   }
 
-  private formatLongitude(longitude: number) {
-    const sign = this.getSign(longitude)
-    const degrees = this.getDegrees(longitude)
-    const formattedDegrees = this.formatDegrees(degrees)
-    return `${sign} ${formattedDegrees}`
-  }
-
-  constructor(readonly longitude: number) {}
-
-  get degrees() {
-    return this.getDegrees(this.longitude)
-  }
-
-  get formattedDegrees() {
-    return this.formatDegrees(this.degrees)
-  }
-
   get sign() {
-    return this.getSign(this.longitude)
+    let index = Math.trunc(this.longitude / this.INTERVAL)
+    if (this.degrees === 0) {
+      index = index > 0 ? index - 1 : Position.ALL_SIGNS.length - 1
+    }
+    return Position.ALL_SIGNS[index]
+  }
+
+  get formattedLongitude() {
+    return `${this.sign} ${this.formattedDegrees}`
   }
 }

@@ -10,10 +10,11 @@ export default function HouseCusp({ horoscope }: Props) {
       <div style={{ fontSize: '30px' }}>House Cusps</div>
       <table style={{ width: '100%' }}>
         <tbody>
-          {horoscope.formattedHouse.map((house, i) => (
+          {horoscope.house.cusps.map((cusp, i) => (
             <tr key={i}>
               <td>{i + 1}ハウス</td>
-              <td>{house}</td>
+              <td>{cusp.sign}</td>
+              <td>{cusp.formattedDegrees}</td>
             </tr>
           ))}
         </tbody>

@@ -51,8 +51,8 @@ describe('Horoscope', () => {
 
   describe('houses', () => {
     it('プラシーダス（デフォルト）', async () => {
-      const { houses } = await getHoroscopeInstance(funadyBirthday, funadyBirthLat, funadyBirthLon)
-      expect(houses).toEqual({
+      const horoscope = await getHoroscopeInstance(funadyBirthday, funadyBirthLat, funadyBirthLon)
+      expect(horoscope.house.raw).toEqual({
         house: [
           207.908591, 235.781911, 268.307258, 303.803709, 337.205891, 5.251311, 27.908591, 55.781911, 88.307258,
           123.803709, 157.205891, 185.251311,
@@ -68,8 +68,8 @@ describe('Horoscope', () => {
       })
     })
     it('コッホ', async () => {
-      const { houses } = await getHoroscopeInstance(funadyBirthday, funadyBirthLat, funadyBirthLon, 'K')
-      expect(houses).toEqual({
+      const horoscope = await getHoroscopeInstance(funadyBirthday, funadyBirthLat, funadyBirthLon, 'K')
+      expect(horoscope.house.raw).toEqual({
         house: [
           207.908591, 235.809886, 265.452867, 303.803709, 331.708461, 359.806556, 27.908591, 55.809886, 85.452867,
           123.803709, 151.708461, 179.806556,

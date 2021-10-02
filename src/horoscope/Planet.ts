@@ -1,5 +1,6 @@
-import type { PlanetName, Houses } from './types'
+import type { PlanetName } from './types'
 import { Position } from './Position'
+import { House } from './House'
 
 export const PLANET_ICONS = {
   sun: '☉',
@@ -43,7 +44,7 @@ export class Planet {
     readonly position: Position,
     readonly name: PlanetName,
     readonly isRetrograde: boolean,
-    private houseCusps: Houses['house']
+    private _house: House
   ) {}
 
   get longitude(): number {
@@ -99,16 +100,7 @@ export class Planet {
   }
 
   get house() {
-    for (let i = 0; i < this.houseCusps.length; i++) {
-      let start = this.houseCusps[i]
-      let end = this.houseCusps[i + 1] || this.houseCusps[0]
-      if (start > end) {
-        end += 360
-      }
-      if (start < this.longitude && this.longitude <= end) {
-        return i + 1
-      }
-    }
+    return this._house.where(this.longitude)
   }
 
   get icon() {

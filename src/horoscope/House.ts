@@ -15,7 +15,6 @@ export class House {
   }
 
   get cusps(): HouseCusps {
-    this.raw.house
     return this.raw.house.map((_) => new Position(_))
   }
 

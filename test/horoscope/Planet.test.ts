@@ -34,9 +34,9 @@ describe('Planet', () => {
     })
     it('61.89: 双子座', () => {
       const planet = new Planet(new Position(61.89), 'sun', false, house)
+      expect(planet.longitude).toEqual(61.89)
       expect(planet.sign).toEqual('双子座')
       expect(planet.position.degrees).toEqual(1.8900000000000006)
-      expect(planet.position.longitude).toEqual(61.89)
     })
   })
 

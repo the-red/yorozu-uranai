@@ -47,7 +47,7 @@ export class Planet {
     private _house: House
   ) {}
 
-  private get longitude(): number {
+  get longitude(): number {
     return this.position.longitude
   }
 

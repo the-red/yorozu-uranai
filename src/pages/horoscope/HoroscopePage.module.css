@@ -8,3 +8,33 @@
   font-size: 60px;
   margin-bottom: 20px;
 }
+
+/* aspect chart用のcss */
+.aspect-chart-container {
+  display: flex;
+  flex-direction: column;
+  width: auto;
+}
+.outer-item {
+  display: flex;
+}
+.inner-item {
+  border: 1px solid black;
+  background-color: white;
+  color: black;
+  margin: -1px -1px 0 0;
+  width: 50px;
+  height: 50px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.planet-icon {
+  background-color: #e4e7e2;
+}
+.soft-aspect {
+  color: blue;
+}
+.hard-aspect {
+  color: red;
+}

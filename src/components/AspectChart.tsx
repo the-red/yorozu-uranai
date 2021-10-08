@@ -1,6 +1,21 @@
 import styles from '../pages/horoscope/HoroscopePage.module.css'
 
 export default function AspectChart() {
+  const softAspects = ['60', '120']
+  const hardAspects = ['0', '90', '180']
+  const itemElements = document.querySelectorAll('.inner-item')
+  // TODO:型エラーになるので動くようにする
+  // if (itemElements) {
+  //   for (const itemElement of itemElements) {
+  //     // console.log(itemElement.textContent)
+  //     if (softAspects.includes(itemElement.textContent)) {
+  //       itemElement.classList.add('soft-aspect')
+  //     }
+  //     if (hardAspects.includes(itemElement.textContent)) {
+  //       itemElement.classList.add('hard-aspect')
+  //     }
+  //   }
+  // }
   return (
     <div>
       <div style={{ fontSize: '30px', marginBottom: '10px' }}>Aspect Chart</div>

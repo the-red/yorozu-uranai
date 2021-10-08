@@ -3,7 +3,7 @@ import styles from '../pages/horoscope/HoroscopePage.module.css'
 export default function AspectChart() {
   return (
     <div>
-      <div style={{ fontSize: '30px' }}>Aspect Chart</div>
+      <div style={{ fontSize: '30px', marginBottom: '10px' }}>Aspect Chart</div>
       <div className={styles['aspect-chart-container']}>
         <div className={styles['outer-item']}>
           <div className={`${styles['inner-item']} ${styles['planet-icon']}`}>⦿</div>

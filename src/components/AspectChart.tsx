@@ -1,3 +1,3 @@
 export default function AspectChart() {
-  return <div></div>
+  return <div style={{ fontSize: '30px' }}>Aspect Chart</div>
 }

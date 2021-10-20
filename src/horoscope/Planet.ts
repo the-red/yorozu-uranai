@@ -1,4 +1,6 @@
-import type { PlanetName, Houses } from './types'
+import type { PlanetName } from './types'
+import { Position } from './Position'
+import { House } from './House'
 
 export const PLANET_ICONS = {
   sun: '☉',
@@ -13,22 +15,6 @@ export const PLANET_ICONS = {
   pluto: '♇',
 } as const
 export type PlanetIcon = typeof PLANET_ICONS[PlanetName]
-
-const ALL_SIGNS = [
-  '牡羊座',
-  '牡牛座',
-  '双子座',
-  '蟹座',
-  '獅子座',
-  '乙女座',
-  '天秤座',
-  '蠍座',
-  '射手座',
-  '山羊座',
-  '水瓶座',
-  '魚座',
-] as const
-type Sign = typeof ALL_SIGNS[number]
 
 const ALL_MAJOR_ASPECTS = [
   { degrees: 0, name: 'conjunction' },
@@ -50,64 +36,27 @@ const ALL_MINOR_ASPECTS = [
 type MinorAspect = typeof ALL_MINOR_ASPECTS[number]['name']
 
 export class Planet {
-  static ALL_SIGNS = ALL_SIGNS
+  static ALL_SIGNS = Position.ALL_SIGNS
   static ALL_MAJOR_ASPECTS = ALL_MAJOR_ASPECTS
   static ALL_MINOR_ASPECTS = ALL_MINOR_ASPECTS
 
-  private static INTERVAL = 30 as const
-
-  private static getDegrees(longitude: number) {
-    return longitude % Planet.INTERVAL
-  }
-
-  static getSign(longitude: number) {
-    let index = Math.trunc(longitude / Planet.INTERVAL)
-    if (Planet.getDegrees(longitude) === 0) {
-      index = index > 0 ? index - 1 : ALL_SIGNS.length - 1
-    }
-    return ALL_SIGNS[index]
-  }
-
-  static formatDegrees(degrees: number) {
-    const degreesInt = Math.trunc(degrees)
-    const degreesStr = `${String(degreesInt).padStart(2)}°`
-
-    const MINUTE = 60
-    const degreesMin = (degrees - degreesInt) * MINUTE
-    const degreesMinInt = Math.trunc(degreesMin)
-    const degreesMinStr = `${String(degreesMinInt).padStart(2, '0')}′`
-
-    const degreesSec = (degreesMin - degreesMinInt) * MINUTE
-    const degreesSecInt = Math.round(degreesSec)
-    const degreesSecStr = `${String(degreesSecInt).padStart(2, '0')}″`
-
-    return degreesStr + degreesMinStr + degreesSecStr
-  }
-
-  static formatLongitude(longitude: number) {
-    const sign = Planet.getSign(longitude)
-    const degrees = Planet.getDegrees(longitude)
-    const formattedDegrees = Planet.formatDegrees(degrees)
-    return `${sign} ${formattedDegrees}`
-  }
-
   constructor(
-    readonly longitude: number,
+    readonly position: Position,
     readonly name: PlanetName,
     readonly isRetrograde: boolean,
-    private houseCusps: Houses['house']
+    private _house: House
   ) {}
 
-  get degrees() {
-    return Planet.getDegrees(this.longitude)
+  get longitude(): number {
+    return this.position.longitude
   }
 
   get formattedDegrees() {
-    return Planet.formatDegrees(this.degrees) + (this.isRetrograde ? 'R' : '')
+    return this.position.formattedDegrees + (this.isRetrograde ? 'R' : '')
   }
 
   get sign() {
-    return Planet.getSign(this.longitude)
+    return this.position.sign
   }
 
   get element() {
@@ -147,16 +96,7 @@ export class Planet {
   }
 
   get house() {
-    for (let i = 0; i < this.houseCusps.length; i++) {
-      let start = this.houseCusps[i]
-      let end = this.houseCusps[i + 1] || this.houseCusps[0]
-      if (start > end) {
-        end += 360
-      }
-      if (start < this.longitude && this.longitude <= end) {
-        return i + 1
-      }
-    }
+    return this._house.where(this.longitude)
   }
 
   get icon() {

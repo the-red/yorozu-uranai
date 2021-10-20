@@ -28,7 +28,7 @@ export default function HoroscopeCircle({
   radius: number // 外周の半径
 }) {
   // TODO: ハウスを考慮してサインの位置を調整
-  const { planets, houses } = horoscope
+  const { planets } = horoscope
 
   const degreesToCoordinate = ({ degrees, scale }: { degrees: number; scale?: number }) => {
     scale ||= 1

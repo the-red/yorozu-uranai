@@ -1,3 +1,5 @@
+import type { Position } from './Position'
+
 export type PlanetName =
   | 'sun'
   | 'moon'
@@ -22,20 +24,7 @@ export type EclipticPosition = {
   error?: any
 }
 
-export type HouseCusps = [
-  number,
-  number,
-  number,
-  number,
-  number,
-  number,
-  number,
-  number,
-  number,
-  number,
-  number,
-  number
-]
+export type HouseCusps = number[]
 
 export type Houses = {
   house: HouseCusps

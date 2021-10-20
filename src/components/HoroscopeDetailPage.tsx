@@ -88,7 +88,7 @@ function HoroscopeDetailPage() {
       <div style={{ display: 'flex', marginTop: '40px' }}>
         <div style={{ width: '50%', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
           <div style={{ width: '360px', padding: '16px 8px' }}>
-            <PlanetPositions planets={planets} />
+            <PlanetPositions horoscope={horoscope} />
           </div>
         </div>
         <div style={{ width: '50%', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>

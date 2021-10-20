@@ -1,19 +1,19 @@
-import { Houses } from '../horoscope'
+import type { Horoscope } from '../horoscope'
 
 type Props = {
-  houses: Houses
+  horoscope: Horoscope
 }
 
-export default function HouseCusp({ houses }: Props) {
+export default function HouseCusp({ horoscope }: Props) {
   return (
     <div style={{ width: '100%' }}>
       <div style={{ fontSize: '30px' }}>House Cusps</div>
       <table style={{ width: '100%' }}>
         <tbody>
-          {houses.house.map((longitude, i) => (
+          {horoscope.formattedHouse.map((house, i) => (
             <tr key={i}>
               <td>{i + 1}ハウス</td>
-              <td>{longitude}</td>
+              <td>{house}</td>
             </tr>
           ))}
         </tbody>

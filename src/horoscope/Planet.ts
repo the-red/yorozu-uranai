@@ -1,4 +1,4 @@
-import type { PlanetName } from './types'
+import type { PlanetName, Houses } from './types'
 
 export const PLANET_ICONS = {
   sun: '☉',
@@ -54,20 +54,26 @@ export class Planet {
   static ALL_MAJOR_ASPECTS = ALL_MAJOR_ASPECTS
   static ALL_MINOR_ASPECTS = ALL_MINOR_ASPECTS
 
-  private INTERVAL = 30 as const
+  private static INTERVAL = 30 as const
 
-  constructor(readonly longitude: number, readonly name: PlanetName) {}
-
-  get degrees() {
-    return this.longitude % this.INTERVAL
+  private static getDegrees(longitude: number) {
+    return longitude % Planet.INTERVAL
   }
 
-  get formattedDegrees() {
-    const degreesInt = Math.trunc(this.degrees)
+  static getSign(longitude: number) {
+    let index = Math.trunc(longitude / Planet.INTERVAL)
+    if (Planet.getDegrees(longitude) === 0) {
+      index = index > 0 ? index - 1 : ALL_SIGNS.length - 1
+    }
+    return ALL_SIGNS[index]
+  }
+
+  static formatDegrees(degrees: number) {
+    const degreesInt = Math.trunc(degrees)
     const degreesStr = `${String(degreesInt).padStart(2)}°`
 
     const MINUTE = 60
-    const degreesMin = (this.degrees - degreesInt) * MINUTE
+    const degreesMin = (degrees - degreesInt) * MINUTE
     const degreesMinInt = Math.trunc(degreesMin)
     const degreesMinStr = `${String(degreesMinInt).padStart(2, '0')}′`
 
@@ -78,12 +84,30 @@ export class Planet {
     return degreesStr + degreesMinStr + degreesSecStr
   }
 
+  static formatLongitude(longitude: number) {
+    const sign = Planet.getSign(longitude)
+    const degrees = Planet.getDegrees(longitude)
+    const formattedDegrees = Planet.formatDegrees(degrees)
+    return `${sign} ${formattedDegrees}`
+  }
+
+  constructor(
+    readonly longitude: number,
+    readonly name: PlanetName,
+    readonly isRetrograde: boolean,
+    private houseCusps: Houses['house']
+  ) {}
+
+  get degrees() {
+    return Planet.getDegrees(this.longitude)
+  }
+
+  get formattedDegrees() {
+    return Planet.formatDegrees(this.degrees) + (this.isRetrograde ? 'R' : '')
+  }
+
   get sign() {
-    let index = Math.trunc(this.longitude / this.INTERVAL)
-    if (this.degrees === 0) {
-      index = index > 0 ? index - 1 : ALL_SIGNS.length - 1
-    }
-    return ALL_SIGNS[index]
+    return Planet.getSign(this.longitude)
   }
 
   get element() {
@@ -122,17 +146,17 @@ export class Planet {
     }
   }
 
-  get coordinate() {
-    // ホロスコープに描画する際の座標（左端中央が原点）
-    const radian = (this.longitude - 90) * (Math.PI / 180)
-    const x = Math.sin(radian)
-    const y = Math.cos(radian)
-    return { x, y }
-  }
-
   get house() {
-    // TODO: 惑星別のハウスを計算して返す
-    return 2
+    for (let i = 0; i < this.houseCusps.length; i++) {
+      let start = this.houseCusps[i]
+      let end = this.houseCusps[i + 1] || this.houseCusps[0]
+      if (start > end) {
+        end += 360
+      }
+      if (start < this.longitude && this.longitude <= end) {
+        return i + 1
+      }
+    }
   }
 
   get icon() {

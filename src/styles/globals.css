@@ -10,6 +10,11 @@ body {
   box-sizing: border-box;
 }
 
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
 @font-face {
   font-family: 'Farewell Pro Regular';
   src: url('/fonts/FarewellProRegular-MVZBB.ttf');

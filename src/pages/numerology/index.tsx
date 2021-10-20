@@ -55,7 +55,7 @@ const CoreNumber: FC = ({ children }) => {
 }
 
 type CoreNumbersProps = {
-  numerology: Numerology | undefined
+  numerology: Numerology
 }
 
 const CoreNumbers: VFC<CoreNumbersProps> = ({ numerology }) => {
@@ -65,43 +65,41 @@ const CoreNumbers: VFC<CoreNumbersProps> = ({ numerology }) => {
         コアナンバー
       </div>
 
-      {numerology && (
-        <div style={{ width: 'max-content', margin: '0 auto' }}>
-          <div style={{ display: 'flex' }}>
-            <CoreNumber>
-              <div>{numerology.lifePathNumber}</div>
-              <div>ライフパス</div>
-            </CoreNumber>
+      <div style={{ width: 'max-content', margin: '0 auto' }}>
+        <div style={{ display: 'flex' }}>
+          <CoreNumber>
+            <div>{numerology.lifePathNumber}</div>
+            <div>ライフパス</div>
+          </CoreNumber>
 
-            <CoreNumber>
-              <div>{numerology.destinyNumber}</div>
-              <div>ディスティニー</div>
-            </CoreNumber>
+          <CoreNumber>
+            <div>{numerology.destinyNumber}</div>
+            <div>ディスティニー</div>
+          </CoreNumber>
 
-            <CoreNumber>
-              <div>{numerology.soulNumber}</div>
-              <div>ソウル</div>
-            </CoreNumber>
-          </div>
-
-          <div style={{ display: 'flex' }}>
-            <CoreNumber>
-              <div>{numerology.personalityNumber}</div>
-              <div>パーソナリティー</div>
-            </CoreNumber>
-
-            <CoreNumber>
-              <div>{numerology.maturityNumber}</div>
-              <div>マチュリティー</div>
-            </CoreNumber>
-
-            <CoreNumber>
-              <div>{numerology.birthdayNumber}</div>
-              <div>バースデー</div>
-            </CoreNumber>
-          </div>
+          <CoreNumber>
+            <div>{numerology.soulNumber}</div>
+            <div>ソウル</div>
+          </CoreNumber>
         </div>
-      )}
+
+        <div style={{ display: 'flex' }}>
+          <CoreNumber>
+            <div>{numerology.personalityNumber}</div>
+            <div>パーソナリティー</div>
+          </CoreNumber>
+
+          <CoreNumber>
+            <div>{numerology.maturityNumber}</div>
+            <div>マチュリティー</div>
+          </CoreNumber>
+
+          <CoreNumber>
+            <div>{numerology.birthdayNumber}</div>
+            <div>バースデー</div>
+          </CoreNumber>
+        </div>
+      </div>
     </div>
   )
 }
@@ -110,7 +108,7 @@ const NumerologyPage: NextPage = () => {
   const [numerology, setNumerology] = useState<Numerology>()
 
   const handleSubmit: NumerologyFormProps['onSubmit'] = ({ birthday, name }) => {
-    setNumerology(new Numerology({ birthDate: birthday, fullName: name }))
+    setNumerology(new Numerology({ birthDate: birthday, fullName: name, maxSameNumber: 22 }))
   }
 
   return (
@@ -121,7 +119,7 @@ const NumerologyPage: NextPage = () => {
         <NumerologyForm onSubmit={handleSubmit} />
       </div>
 
-      <CoreNumbers numerology={numerology} />
+      {numerology && <CoreNumbers numerology={numerology} />}
     </div>
   )
 }

@@ -21,6 +21,8 @@ export default function AspectChart({ horoscope }: Props) {
     }
   }
   const planets = horoscope.planets
+  const orb = 6
+
   return (
     <div>
       <div style={{ fontSize: '30px', marginBottom: '10px' }}>Aspect Chart</div>
@@ -29,75 +31,75 @@ export default function AspectChart({ horoscope }: Props) {
           <div className={`${styles['inner-item']} ${styles['planet-icon']}`}>⦿</div>
         </div>
         <div className={styles['outer-item']}>
-          <div className={styles['inner-item']}>{planets.sun.majorAspect(planets.moon, 6)?.degrees}</div>
+          <div className={styles['inner-item']}>{planets.sun.majorAspect(planets.moon, orb)?.degrees}</div>
           <div className={`${styles['inner-item']} ${styles['planet-icon']}`}>☽</div>
         </div>
         <div className={styles['outer-item']}>
-          <div className={styles['inner-item']}>120</div>
-          <div className={styles['inner-item']}>120</div>
+          <div className={styles['inner-item']}>{planets.sun.majorAspect(planets.mercury, orb)?.degrees}</div>
+          <div className={styles['inner-item']}>{planets.moon.majorAspect(planets.mercury, orb)?.degrees}</div>
           <div className={`${styles['inner-item']} ${styles['planet-icon']}`}>☿</div>
         </div>
         <div className={styles['outer-item']}>
-          <div className={styles['inner-item']}>0</div>
-          <div className={styles['inner-item']}>0</div>
-          <div className={styles['inner-item']}>0</div>
+          <div className={styles['inner-item']}>{planets.sun.majorAspect(planets.venus, orb)?.degrees}</div>
+          <div className={styles['inner-item']}>{planets.moon.majorAspect(planets.venus, orb)?.degrees}</div>
+          <div className={styles['inner-item']}>{planets.mercury.majorAspect(planets.venus, orb)?.degrees}</div>
           <div className={`${styles['inner-item']} ${styles['planet-icon']}`}>♀</div>
         </div>
         <div className={styles['outer-item']}>
-          <div className={styles['inner-item']}>90</div>
-          <div className={styles['inner-item']}>90</div>
-          <div className={styles['inner-item']}>90</div>
-          <div className={styles['inner-item']}>90</div>
+          <div className={styles['inner-item']}>{planets.sun.majorAspect(planets.mars, orb)?.degrees}</div>
+          <div className={styles['inner-item']}>{planets.moon.majorAspect(planets.mars, orb)?.degrees}</div>
+          <div className={styles['inner-item']}>{planets.mercury.majorAspect(planets.mars, orb)?.degrees}</div>
+          <div className={styles['inner-item']}>{planets.venus.majorAspect(planets.mars, orb)?.degrees}</div>
           <div className={`${styles['inner-item']} ${styles['planet-icon']}`}>♂</div>
         </div>
         <div className={styles['outer-item']}>
-          <div className={styles['inner-item']}>180</div>
-          <div className={styles['inner-item']}>180</div>
-          <div className={styles['inner-item']}>180</div>
-          <div className={styles['inner-item']}>180</div>
-          <div className={styles['inner-item']}>180</div>
+          <div className={styles['inner-item']}>{planets.sun.majorAspect(planets.jupiter, orb)?.degrees}</div>
+          <div className={styles['inner-item']}>{planets.moon.majorAspect(planets.jupiter, orb)?.degrees}</div>
+          <div className={styles['inner-item']}>{planets.mercury.majorAspect(planets.jupiter, orb)?.degrees}</div>
+          <div className={styles['inner-item']}>{planets.venus.majorAspect(planets.jupiter, orb)?.degrees}</div>
+          <div className={styles['inner-item']}>{planets.mars.majorAspect(planets.jupiter, orb)?.degrees}</div>
           <div className={`${styles['inner-item']} ${styles['planet-icon']}`}>♃</div>
         </div>
         <div className={styles['outer-item']}>
-          <div className={styles['inner-item']}>90</div>
-          <div className={styles['inner-item']}>90</div>
-          <div className={styles['inner-item']}>90</div>
-          <div className={styles['inner-item']}>90</div>
-          <div className={styles['inner-item']}>90</div>
-          <div className={styles['inner-item']}>90</div>
+          <div className={styles['inner-item']}>{planets.sun.majorAspect(planets.saturn, orb)?.degrees}</div>
+          <div className={styles['inner-item']}>{planets.moon.majorAspect(planets.saturn, orb)?.degrees}</div>
+          <div className={styles['inner-item']}>{planets.mercury.majorAspect(planets.saturn, orb)?.degrees}</div>
+          <div className={styles['inner-item']}>{planets.venus.majorAspect(planets.saturn, orb)?.degrees}</div>
+          <div className={styles['inner-item']}>{planets.mars.majorAspect(planets.saturn, orb)?.degrees}</div>
+          <div className={styles['inner-item']}>{planets.jupiter.majorAspect(planets.saturn, orb)?.degrees}</div>
           <div className={`${styles['inner-item']} ${styles['planet-icon']}`}>♄</div>
         </div>
         <div className={styles['outer-item']}>
-          <div className={styles['inner-item']}>90</div>
-          <div className={styles['inner-item']}>90</div>
-          <div className={styles['inner-item']}>90</div>
-          <div className={styles['inner-item']}>90</div>
-          <div className={styles['inner-item']}>90</div>
-          <div className={styles['inner-item']}>90</div>
-          <div className={styles['inner-item']}>90</div>
+          <div className={styles['inner-item']}>{planets.sun.majorAspect(planets.uranus, orb)?.degrees}</div>
+          <div className={styles['inner-item']}>{planets.moon.majorAspect(planets.uranus, orb)?.degrees}</div>
+          <div className={styles['inner-item']}>{planets.mercury.majorAspect(planets.uranus, orb)?.degrees}</div>
+          <div className={styles['inner-item']}>{planets.venus.majorAspect(planets.uranus, orb)?.degrees}</div>
+          <div className={styles['inner-item']}>{planets.mars.majorAspect(planets.uranus, orb)?.degrees}</div>
+          <div className={styles['inner-item']}>{planets.jupiter.majorAspect(planets.uranus, orb)?.degrees}</div>
+          <div className={styles['inner-item']}>{planets.saturn.majorAspect(planets.uranus, orb)?.degrees}</div>
           <div className={`${styles['inner-item']} ${styles['planet-icon']}`}>♅</div>
         </div>
         <div className={styles['outer-item']}>
-          <div className={styles['inner-item']}>90</div>
-          <div className={styles['inner-item']}>90</div>
-          <div className={styles['inner-item']}>90</div>
-          <div className={styles['inner-item']}>90</div>
-          <div className={styles['inner-item']}>90</div>
-          <div className={styles['inner-item']}>90</div>
-          <div className={styles['inner-item']}>90</div>
-          <div className={styles['inner-item']}>90</div>
+          <div className={styles['inner-item']}>{planets.sun.majorAspect(planets.neptune, orb)?.degrees}</div>
+          <div className={styles['inner-item']}>{planets.moon.majorAspect(planets.neptune, orb)?.degrees}</div>
+          <div className={styles['inner-item']}>{planets.mercury.majorAspect(planets.neptune, orb)?.degrees}</div>
+          <div className={styles['inner-item']}>{planets.venus.majorAspect(planets.neptune, orb)?.degrees}</div>
+          <div className={styles['inner-item']}>{planets.mars.majorAspect(planets.neptune, orb)?.degrees}</div>
+          <div className={styles['inner-item']}>{planets.jupiter.majorAspect(planets.neptune, orb)?.degrees}</div>
+          <div className={styles['inner-item']}>{planets.saturn.majorAspect(planets.neptune, orb)?.degrees}</div>
+          <div className={styles['inner-item']}>{planets.uranus.majorAspect(planets.neptune, orb)?.degrees}</div>
           <div className={`${styles['inner-item']} ${styles['planet-icon']}`}>♆</div>
         </div>
         <div className={styles['outer-item']}>
-          <div className={styles['inner-item']}>90</div>
-          <div className={styles['inner-item']}>90</div>
-          <div className={styles['inner-item']}>90</div>
-          <div className={styles['inner-item']}>90</div>
-          <div className={styles['inner-item']}>90</div>
-          <div className={styles['inner-item']}>90</div>
-          <div className={styles['inner-item']}>90</div>
-          <div className={styles['inner-item']}>90</div>
-          <div className={styles['inner-item']}>90</div>
+          <div className={styles['inner-item']}>{planets.sun.majorAspect(planets.pluto, orb)?.degrees}</div>
+          <div className={styles['inner-item']}>{planets.moon.majorAspect(planets.pluto, orb)?.degrees}</div>
+          <div className={styles['inner-item']}>{planets.mercury.majorAspect(planets.pluto, orb)?.degrees}</div>
+          <div className={styles['inner-item']}>{planets.venus.majorAspect(planets.pluto, orb)?.degrees}</div>
+          <div className={styles['inner-item']}>{planets.mars.majorAspect(planets.pluto, orb)?.degrees}</div>
+          <div className={styles['inner-item']}>{planets.jupiter.majorAspect(planets.pluto, orb)?.degrees}</div>
+          <div className={styles['inner-item']}>{planets.saturn.majorAspect(planets.pluto, orb)?.degrees}</div>
+          <div className={styles['inner-item']}>{planets.uranus.majorAspect(planets.pluto, orb)?.degrees}</div>
+          <div className={styles['inner-item']}>{planets.neptune.majorAspect(planets.pluto, orb)?.degrees}</div>
           <div className={`${styles['inner-item']} ${styles['planet-icon']}`}>♇</div>
         </div>
       </div>

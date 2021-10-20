@@ -17,7 +17,7 @@ export class Numerology {
     maxSameNumber?: MaxSameNumber
   }) {
     this.birthDate = birthDate
-    this.fullName = fullName.replace(/\s+/g, '')
+    this.fullName = fullName.replace(/\s+/g, '').toUpperCase()
     this.maxSameNumber = maxSameNumber
   }
 

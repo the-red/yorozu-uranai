@@ -1,10 +1,20 @@
+.horoscope-page {
+  background-image: url('/images/starry-sky.jpeg');
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  background-size: 100%;
+  color: #ffffff;
+}
+
 .container {
   width: 960px;
-  margin: 20px auto;
+  margin: 0 auto;
+  padding: 20px 0;
 }
 
 .title {
   font-family: 'Farewell Pro Regular';
   font-size: 60px;
+  text-align: center;
   margin-bottom: 20px;
 }

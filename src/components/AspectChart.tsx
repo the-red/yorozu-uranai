@@ -3,8 +3,12 @@ import styles from '../pages/horoscope/HoroscopePage.module.css'
 type Props = { horoscope: Horoscope }
 
 export default function AspectChart({ horoscope }: Props) {
-  const softAspects = ALL_MAJOR_ASPECTS.map((aspect) => String(aspect.degrees))
-  const hardAspects = ['0', '90', '180']
+  const softAspects = ALL_MAJOR_ASPECTS.filter((aspect) => aspect.type === 'soft').map((aspect) =>
+    String(aspect.degrees)
+  )
+  const hardAspects = ALL_MAJOR_ASPECTS.filter((aspect) => aspect.type === 'hard').map((aspect) =>
+    String(aspect.degrees)
+  )
   const itemElements = document.querySelectorAll<HTMLDivElement>('.inner-item')
   if (itemElements) {
     for (const itemElement of itemElements) {

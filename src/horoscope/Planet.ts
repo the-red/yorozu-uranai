@@ -17,11 +17,11 @@ export const PLANET_ICONS = {
 export type PlanetIcon = typeof PLANET_ICONS[PlanetName]
 
 export const ALL_MAJOR_ASPECTS = [
-  { degrees: 0, name: 'conjunction' },
-  { degrees: 60, name: 'sextile' },
-  { degrees: 90, name: 'square' },
-  { degrees: 120, name: 'trine' },
-  { degrees: 180, name: 'opposition' },
+  { degrees: 0, name: 'conjunction', type: 'hard' },
+  { degrees: 60, name: 'sextile', type: 'soft' },
+  { degrees: 90, name: 'square', type: 'hard' },
+  { degrees: 120, name: 'trine', type: 'soft' },
+  { degrees: 180, name: 'opposition', type: 'hard' },
 ] as const
 type MajorAspect = typeof ALL_MAJOR_ASPECTS[number]
 

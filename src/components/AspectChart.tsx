@@ -23,7 +23,7 @@ export default function AspectChart({ horoscope }: Props) {
   const planets = horoscope.planets
   const orb = 6
 
-  const hardAspect = (degrees: string) => {
+  const addClassByAspectType = (degrees: string) => {
     return `${hardAspects.includes(degrees) && styles['hard-aspect']}
               ${softAspects.includes(degrees) && styles['soft-aspect']}`
   }
@@ -33,7 +33,7 @@ export default function AspectChart({ horoscope }: Props) {
   }
   const Cell = (props: CellProps) => {
     const degrees = props.degrees
-    return <div className={`${styles['inner-item']} ${hardAspect(String(degrees))}`}>{degrees}</div>
+    return <div className={`${styles['inner-item']} ${addClassByAspectType(String(degrees))}`}>{degrees}</div>
   }
 
   return (

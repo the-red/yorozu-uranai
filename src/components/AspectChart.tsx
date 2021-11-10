@@ -23,6 +23,19 @@ export default function AspectChart({ horoscope }: Props) {
   const planets = horoscope.planets
   const orb = 6
 
+  const hardAspect = (degrees: string) => {
+    return `${hardAspects.includes(degrees) && styles['hard-aspect']}
+              ${softAspects.includes(degrees) && styles['soft-aspect']}`
+  }
+
+  type CellProps = {
+    degrees: number | undefined
+  }
+  const Cell = (props: CellProps) => {
+    const degrees = props.degrees
+    return <div className={`${styles['inner-item']} ${hardAspect(String(degrees))}`}>{degrees}</div>
+  }
+
   return (
     <div>
       <div style={{ fontSize: '30px', marginBottom: '10px' }}>Aspect Chart</div>
@@ -36,13 +49,13 @@ export default function AspectChart({ horoscope }: Props) {
         </div>
         <div className={styles['outer-item']}>
           <div className={styles['inner-item']}>{planets.sun.majorAspect(planets.mercury, orb)?.degrees}</div>
-          <div className={styles['inner-item']}>{planets.moon.majorAspect(planets.mercury, orb)?.degrees}</div>
+          <Cell degrees={planets.moon.majorAspect(planets.mercury, orb)?.degrees}></Cell>
           <div className={`${styles['inner-item']} ${styles['planet-icon']}`}>☿</div>
         </div>
         <div className={styles['outer-item']}>
           <div className={styles['inner-item']}>{planets.sun.majorAspect(planets.venus, orb)?.degrees}</div>
           <div className={styles['inner-item']}>{planets.moon.majorAspect(planets.venus, orb)?.degrees}</div>
-          <div className={styles['inner-item']}>{planets.mercury.majorAspect(planets.venus, orb)?.degrees}</div>
+          <Cell degrees={planets.mercury.majorAspect(planets.venus, orb)?.degrees}></Cell>
           <div className={`${styles['inner-item']} ${styles['planet-icon']}`}>♀</div>
         </div>
         <div className={styles['outer-item']}>

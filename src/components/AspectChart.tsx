@@ -34,7 +34,7 @@ export default function AspectChart({ horoscope }: Props) {
       <div className={styles['aspect-chart-container']}>
         {ALL_PLANETS.map((planet, i) => (
           <div className={styles['outer-item']}>
-            <AspectRow key={i} targetPlanet={planet}></AspectRow>
+            <AspectRow key={i} targetPlanet={planet} />
           </div>
         ))}
       </div>
@@ -47,12 +47,9 @@ export default function AspectChart({ horoscope }: Props) {
   const AspectRow = (props: AspectRowProps) => (
     <>
       {ALL_PLANETS.filter((planet, index) => index < ALL_PLANETS.indexOf(props.targetPlanet)).map((basePlanet, i) => (
-        <AspectCell
-          key={i}
-          degrees={planets[basePlanet].majorAspect(planets[props.targetPlanet], orb)?.degrees}
-        ></AspectCell>
+        <AspectCell key={i} degrees={planets[basePlanet].majorAspect(planets[props.targetPlanet], orb)?.degrees} />
       ))}
-      <PlanetCell planetIcon={PLANET_ICONS[props.targetPlanet]}></PlanetCell>
+      <PlanetCell planetIcon={PLANET_ICONS[props.targetPlanet]} />
     </>
   )
 
@@ -74,7 +71,7 @@ export default function AspectChart({ horoscope }: Props) {
   return (
     <div>
       <div style={{ fontSize: '30px', marginBottom: '10px' }}>Aspect Chart</div>
-      <AspectChart></AspectChart>
+      <AspectChart />
     </div>
   )
 }

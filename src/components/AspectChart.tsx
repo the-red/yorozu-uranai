@@ -9,18 +9,19 @@ export default function AspectChart({ horoscope }: Props) {
   const hardAspects = ALL_MAJOR_ASPECTS.filter((aspect) => aspect.type === 'hard').map((aspect) =>
     String(aspect.degrees)
   )
-  // const itemElements = document.querySelectorAll<HTMLDivElement>('.inner-item')
-  // if (itemElements) {
-  //   for (const itemElement of itemElements) {
-  //     if (itemElement.textContent && softAspects.includes(itemElement.textContent)) {
-  //       itemElement.classList.add('soft-aspect')
-  //     }
-  //     if (itemElement.textContent && hardAspects.includes(itemElement.textContent)) {
-  //       itemElement.classList.add('hard-aspect')
-  //     }
-  //   }
-  // }
   const planets = horoscope.planets
+  const ALL_PLANETS = [
+    'sun',
+    'moon',
+    'mercury',
+    'venus',
+    'mars',
+    'jupiter',
+    'saturn',
+    'uranus',
+    'neptune',
+    'pluto',
+  ] as const
   const orb = 6
 
   const addClassByAspectType = (degrees: string) => {
@@ -37,17 +38,17 @@ export default function AspectChart({ horoscope }: Props) {
   }
 
   type AspectRowProps = {
-    basePlanets: PlanetName[]
     targetPlanet: PlanetName
   }
   const AspectRow = (props: AspectRowProps) => (
     <>
-      {props.basePlanets.map((basePlanet, i) => (
+      {ALL_PLANETS.filter((planet, index) => index < ALL_PLANETS.indexOf(props.targetPlanet)).map((basePlanet, i) => (
         <AspectCell
           key={i}
           degrees={planets[basePlanet].majorAspect(planets[props.targetPlanet], orb)?.degrees}
         ></AspectCell>
       ))}
+      <PlanetCell planetIcon={PLANET_ICONS[props.targetPlanet]}></PlanetCell>
     </>
   )
 
@@ -64,55 +65,34 @@ export default function AspectChart({ horoscope }: Props) {
       <div style={{ fontSize: '30px', marginBottom: '10px' }}>Aspect Chart</div>
       <div className={styles['aspect-chart-container']}>
         <div className={styles['outer-item']}>
-          <PlanetCell planetIcon={PLANET_ICONS.sun}></PlanetCell>
+          <AspectRow targetPlanet={'sun'}></AspectRow>
         </div>
         <div className={styles['outer-item']}>
-          <AspectRow basePlanets={['sun']} targetPlanet={'moon'}></AspectRow>
-          <PlanetCell planetIcon={PLANET_ICONS.moon}></PlanetCell>
+          <AspectRow targetPlanet={'moon'}></AspectRow>
         </div>
         <div className={styles['outer-item']}>
-          <AspectRow basePlanets={['sun', 'moon']} targetPlanet={'mercury'}></AspectRow>
-          <PlanetCell planetIcon={PLANET_ICONS.mercury}></PlanetCell>
+          <AspectRow targetPlanet={'mercury'}></AspectRow>
         </div>
         <div className={styles['outer-item']}>
-          <AspectRow basePlanets={['sun', 'moon', 'mercury']} targetPlanet={'venus'}></AspectRow>
-          <PlanetCell planetIcon={PLANET_ICONS.venus}></PlanetCell>
+          <AspectRow targetPlanet={'venus'}></AspectRow>
         </div>
         <div className={styles['outer-item']}>
-          <AspectRow basePlanets={['sun', 'moon', 'mercury', 'venus']} targetPlanet={'mars'}></AspectRow>
-          <PlanetCell planetIcon={PLANET_ICONS.mars}></PlanetCell>
+          <AspectRow targetPlanet={'mars'}></AspectRow>
         </div>
         <div className={styles['outer-item']}>
-          <AspectRow basePlanets={['sun', 'moon', 'mercury', 'venus', 'mars']} targetPlanet={'jupiter'}></AspectRow>
-          <PlanetCell planetIcon={PLANET_ICONS.jupiter}></PlanetCell>
+          <AspectRow targetPlanet={'jupiter'}></AspectRow>
         </div>
         <div className={styles['outer-item']}>
-          <AspectRow
-            basePlanets={['sun', 'moon', 'mercury', 'venus', 'mars', 'jupiter']}
-            targetPlanet={'saturn'}
-          ></AspectRow>
-          <PlanetCell planetIcon={PLANET_ICONS.saturn}></PlanetCell>
+          <AspectRow targetPlanet={'saturn'}></AspectRow>
         </div>
         <div className={styles['outer-item']}>
-          <AspectRow
-            basePlanets={['sun', 'moon', 'mercury', 'venus', 'mars', 'jupiter', 'saturn']}
-            targetPlanet={'uranus'}
-          ></AspectRow>
-          <PlanetCell planetIcon={PLANET_ICONS.uranus}></PlanetCell>
+          <AspectRow targetPlanet={'uranus'}></AspectRow>
         </div>
         <div className={styles['outer-item']}>
-          <AspectRow
-            basePlanets={['sun', 'moon', 'mercury', 'venus', 'mars', 'jupiter', 'saturn', 'uranus']}
-            targetPlanet={'neptune'}
-          ></AspectRow>
-          <PlanetCell planetIcon={PLANET_ICONS.neptune}></PlanetCell>
+          <AspectRow targetPlanet={'neptune'}></AspectRow>
         </div>
         <div className={styles['outer-item']}>
-          <AspectRow
-            basePlanets={['sun', 'moon', 'mercury', 'venus', 'mars', 'jupiter', 'saturn', 'uranus', 'neptune']}
-            targetPlanet={'pluto'}
-          ></AspectRow>
-          <PlanetCell planetIcon={PLANET_ICONS.pluto}></PlanetCell>
+          <AspectRow targetPlanet={'pluto'}></AspectRow>
         </div>
       </div>
     </div>

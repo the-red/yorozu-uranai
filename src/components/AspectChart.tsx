@@ -29,13 +29,17 @@ export default function AspectChart({ horoscope }: Props) {
               ${softAspects.includes(degrees) && styles['soft-aspect']}`
   }
 
-  type PlanetCellProps = {
-    planetIcon: string
-  }
-  const PlanetCell = (props: PlanetCellProps) => {
-    const planetIcon = props.planetIcon
-    return <div className={`${styles['inner-item']} ${styles['planet-icon']}`}>{planetIcon}</div>
-  }
+  const AspectChart = () => (
+    <>
+      <div className={styles['aspect-chart-container']}>
+        {ALL_PLANETS.map((planet, i) => (
+          <div className={styles['outer-item']}>
+            <AspectRow key={i} targetPlanet={planet}></AspectRow>
+          </div>
+        ))}
+      </div>
+    </>
+  )
 
   type AspectRowProps = {
     targetPlanet: PlanetName
@@ -60,41 +64,17 @@ export default function AspectChart({ horoscope }: Props) {
     return <div className={`${styles['inner-item']} ${addClassByAspectType(String(degrees))}`}>{degrees}</div>
   }
 
+  type PlanetCellProps = {
+    planetIcon: string
+  }
+  const PlanetCell = (props: PlanetCellProps) => (
+    <div className={`${styles['inner-item']} ${styles['planet-icon']}`}>{props.planetIcon}</div>
+  )
+
   return (
     <div>
       <div style={{ fontSize: '30px', marginBottom: '10px' }}>Aspect Chart</div>
-      <div className={styles['aspect-chart-container']}>
-        <div className={styles['outer-item']}>
-          <AspectRow targetPlanet={'sun'}></AspectRow>
-        </div>
-        <div className={styles['outer-item']}>
-          <AspectRow targetPlanet={'moon'}></AspectRow>
-        </div>
-        <div className={styles['outer-item']}>
-          <AspectRow targetPlanet={'mercury'}></AspectRow>
-        </div>
-        <div className={styles['outer-item']}>
-          <AspectRow targetPlanet={'venus'}></AspectRow>
-        </div>
-        <div className={styles['outer-item']}>
-          <AspectRow targetPlanet={'mars'}></AspectRow>
-        </div>
-        <div className={styles['outer-item']}>
-          <AspectRow targetPlanet={'jupiter'}></AspectRow>
-        </div>
-        <div className={styles['outer-item']}>
-          <AspectRow targetPlanet={'saturn'}></AspectRow>
-        </div>
-        <div className={styles['outer-item']}>
-          <AspectRow targetPlanet={'uranus'}></AspectRow>
-        </div>
-        <div className={styles['outer-item']}>
-          <AspectRow targetPlanet={'neptune'}></AspectRow>
-        </div>
-        <div className={styles['outer-item']}>
-          <AspectRow targetPlanet={'pluto'}></AspectRow>
-        </div>
-      </div>
+      <AspectChart></AspectChart>
     </div>
   )
 }

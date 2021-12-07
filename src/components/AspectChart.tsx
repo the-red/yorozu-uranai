@@ -1,4 +1,4 @@
-import { Horoscope, ALL_MAJOR_ASPECTS, ALL_MINOR_ASPECTS } from '../horoscope'
+import { Horoscope, ALL_MAJOR_ASPECTS, ALL_MINOR_ASPECTS, Planet } from '../horoscope'
 import styles from '../pages/horoscope/HoroscopePage.module.css'
 type Props = { horoscope: Horoscope }
 
@@ -28,6 +28,13 @@ export default function AspectChart({ horoscope }: Props) {
               ${softAspects.includes(degrees) && styles['soft-aspect']}`
   }
 
+  type PlanetCellProps = {
+    planetIcon: string
+  }
+  const PlanetCell = (props: PlanetCellProps) => {
+    const planetIcon = props.planetIcon
+    return <div className={`${styles['inner-item']} ${styles['planet-icon']}`}>{planetIcon}</div>
+  }
   type AspectCellProps = {
     degrees: number | undefined
   }
@@ -41,29 +48,29 @@ export default function AspectChart({ horoscope }: Props) {
       <div style={{ fontSize: '30px', marginBottom: '10px' }}>Aspect Chart</div>
       <div className={styles['aspect-chart-container']}>
         <div className={styles['outer-item']}>
-          <div className={`${styles['inner-item']} ${styles['planet-icon']}`}>⦿</div>
+          <PlanetCell planetIcon={'⦿'}></PlanetCell>
         </div>
         <div className={styles['outer-item']}>
           <AspectCell degrees={planets.sun.majorAspect(planets.moon, orb)?.degrees}></AspectCell>
-          <div className={`${styles['inner-item']} ${styles['planet-icon']}`}>☽</div>
+          <PlanetCell planetIcon={'☽'}></PlanetCell>
         </div>
         <div className={styles['outer-item']}>
           <AspectCell degrees={planets.sun.majorAspect(planets.mercury, orb)?.degrees}></AspectCell>
           <AspectCell degrees={planets.moon.majorAspect(planets.mercury, orb)?.degrees}></AspectCell>
-          <div className={`${styles['inner-item']} ${styles['planet-icon']}`}>☿</div>
+          <PlanetCell planetIcon={'☿'}></PlanetCell>
         </div>
         <div className={styles['outer-item']}>
           <AspectCell degrees={planets.sun.majorAspect(planets.venus, orb)?.degrees}></AspectCell>
           <AspectCell degrees={planets.moon.majorAspect(planets.venus, orb)?.degrees}></AspectCell>
           <AspectCell degrees={planets.mercury.majorAspect(planets.venus, orb)?.degrees}></AspectCell>
-          <div className={`${styles['inner-item']} ${styles['planet-icon']}`}>♀</div>
+          <PlanetCell planetIcon={'♀'}></PlanetCell>
         </div>
         <div className={styles['outer-item']}>
           <AspectCell degrees={planets.sun.majorAspect(planets.mars, orb)?.degrees}></AspectCell>
           <AspectCell degrees={planets.moon.majorAspect(planets.mars, orb)?.degrees}></AspectCell>
           <AspectCell degrees={planets.mercury.majorAspect(planets.mars, orb)?.degrees}></AspectCell>
           <AspectCell degrees={planets.venus.majorAspect(planets.mars, orb)?.degrees}></AspectCell>
-          <div className={`${styles['inner-item']} ${styles['planet-icon']}`}>♂</div>
+          <PlanetCell planetIcon={'♂'}></PlanetCell>
         </div>
         <div className={styles['outer-item']}>
           <AspectCell degrees={planets.sun.majorAspect(planets.jupiter, orb)?.degrees}></AspectCell>
@@ -71,7 +78,7 @@ export default function AspectChart({ horoscope }: Props) {
           <AspectCell degrees={planets.mercury.majorAspect(planets.jupiter, orb)?.degrees}></AspectCell>
           <AspectCell degrees={planets.venus.majorAspect(planets.jupiter, orb)?.degrees}></AspectCell>
           <AspectCell degrees={planets.mars.majorAspect(planets.jupiter, orb)?.degrees}></AspectCell>
-          <div className={`${styles['inner-item']} ${styles['planet-icon']}`}>♃</div>
+          <PlanetCell planetIcon={'♃'}></PlanetCell>
         </div>
         <div className={styles['outer-item']}>
           <AspectCell degrees={planets.sun.majorAspect(planets.saturn, orb)?.degrees}></AspectCell>
@@ -80,7 +87,7 @@ export default function AspectChart({ horoscope }: Props) {
           <AspectCell degrees={planets.venus.majorAspect(planets.saturn, orb)?.degrees}></AspectCell>
           <AspectCell degrees={planets.mars.majorAspect(planets.saturn, orb)?.degrees}></AspectCell>
           <AspectCell degrees={planets.jupiter.majorAspect(planets.saturn, orb)?.degrees}></AspectCell>
-          <div className={`${styles['inner-item']} ${styles['planet-icon']}`}>♄</div>
+          <PlanetCell planetIcon={'♄'}></PlanetCell>
         </div>
         <div className={styles['outer-item']}>
           <AspectCell degrees={planets.sun.majorAspect(planets.uranus, orb)?.degrees}></AspectCell>
@@ -90,7 +97,7 @@ export default function AspectChart({ horoscope }: Props) {
           <AspectCell degrees={planets.mars.majorAspect(planets.uranus, orb)?.degrees}></AspectCell>
           <AspectCell degrees={planets.jupiter.majorAspect(planets.uranus, orb)?.degrees}></AspectCell>
           <AspectCell degrees={planets.saturn.majorAspect(planets.uranus, orb)?.degrees}></AspectCell>
-          <div className={`${styles['inner-item']} ${styles['planet-icon']}`}>♅</div>
+          <PlanetCell planetIcon={'♅'}></PlanetCell>
         </div>
         <div className={styles['outer-item']}>
           <AspectCell degrees={planets.sun.majorAspect(planets.neptune, orb)?.degrees}></AspectCell>
@@ -101,7 +108,7 @@ export default function AspectChart({ horoscope }: Props) {
           <AspectCell degrees={planets.jupiter.majorAspect(planets.neptune, orb)?.degrees}></AspectCell>
           <AspectCell degrees={planets.saturn.majorAspect(planets.neptune, orb)?.degrees}></AspectCell>
           <AspectCell degrees={planets.uranus.majorAspect(planets.neptune, orb)?.degrees}></AspectCell>
-          <div className={`${styles['inner-item']} ${styles['planet-icon']}`}>♆</div>
+          <PlanetCell planetIcon={'♆'}></PlanetCell>
         </div>
         <div className={styles['outer-item']}>
           <AspectCell degrees={planets.sun.majorAspect(planets.pluto, orb)?.degrees}></AspectCell>
@@ -113,7 +120,7 @@ export default function AspectChart({ horoscope }: Props) {
           <AspectCell degrees={planets.saturn.majorAspect(planets.pluto, orb)?.degrees}></AspectCell>
           <AspectCell degrees={planets.uranus.majorAspect(planets.pluto, orb)?.degrees}></AspectCell>
           <AspectCell degrees={planets.neptune.majorAspect(planets.pluto, orb)?.degrees}></AspectCell>
-          <div className={`${styles['inner-item']} ${styles['planet-icon']}`}>♇</div>
+          <PlanetCell planetIcon={'♇'}></PlanetCell>
         </div>
       </div>
     </div>

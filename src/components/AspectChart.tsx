@@ -1,4 +1,4 @@
-import { Horoscope, ALL_MAJOR_ASPECTS, PLANET_ICONS, ALL_MINOR_ASPECTS, Planet } from '../horoscope'
+import { Horoscope, ALL_MAJOR_ASPECTS, PLANET_ICONS, PlanetName, ALL_MINOR_ASPECTS, Planet } from '../horoscope'
 import styles from '../pages/horoscope/HoroscopePage.module.css'
 type Props = { horoscope: Horoscope }
 
@@ -35,6 +35,22 @@ export default function AspectChart({ horoscope }: Props) {
     const planetIcon = props.planetIcon
     return <div className={`${styles['inner-item']} ${styles['planet-icon']}`}>{planetIcon}</div>
   }
+
+  type AspectRowProps = {
+    basePlanets: PlanetName[]
+    targetPlanet: PlanetName
+  }
+  const AspectRow = (props: AspectRowProps) => (
+    <>
+      {props.basePlanets.map((basePlanet, i) => (
+        <AspectCell
+          key={i}
+          degrees={planets[basePlanet].majorAspect(planets[props.targetPlanet], orb)?.degrees}
+        ></AspectCell>
+      ))}
+    </>
+  )
+
   type AspectCellProps = {
     degrees: number | undefined
   }
@@ -60,9 +76,7 @@ export default function AspectChart({ horoscope }: Props) {
           <PlanetCell planetIcon={PLANET_ICONS.mercury}></PlanetCell>
         </div>
         <div className={styles['outer-item']}>
-          <AspectCell degrees={planets.sun.majorAspect(planets.venus, orb)?.degrees}></AspectCell>
-          <AspectCell degrees={planets.moon.majorAspect(planets.venus, orb)?.degrees}></AspectCell>
-          <AspectCell degrees={planets.mercury.majorAspect(planets.venus, orb)?.degrees}></AspectCell>
+          <AspectRow basePlanets={['sun', 'moon', 'mercury']} targetPlanet={'venus'}></AspectRow>
           <PlanetCell planetIcon={PLANET_ICONS.venus}></PlanetCell>
         </div>
         <div className={styles['outer-item']}>

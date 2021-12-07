@@ -9,17 +9,17 @@ export default function AspectChart({ horoscope }: Props) {
   const hardAspects = ALL_MAJOR_ASPECTS.filter((aspect) => aspect.type === 'hard').map((aspect) =>
     String(aspect.degrees)
   )
-  const itemElements = document.querySelectorAll<HTMLDivElement>('.inner-item')
-  if (itemElements) {
-    for (const itemElement of itemElements) {
-      if (itemElement.textContent && softAspects.includes(itemElement.textContent)) {
-        itemElement.classList.add('soft-aspect')
-      }
-      if (itemElement.textContent && hardAspects.includes(itemElement.textContent)) {
-        itemElement.classList.add('hard-aspect')
-      }
-    }
-  }
+  // const itemElements = document.querySelectorAll<HTMLDivElement>('.inner-item')
+  // if (itemElements) {
+  //   for (const itemElement of itemElements) {
+  //     if (itemElement.textContent && softAspects.includes(itemElement.textContent)) {
+  //       itemElement.classList.add('soft-aspect')
+  //     }
+  //     if (itemElement.textContent && hardAspects.includes(itemElement.textContent)) {
+  //       itemElement.classList.add('hard-aspect')
+  //     }
+  //   }
+  // }
   const planets = horoscope.planets
   const orb = 6
 

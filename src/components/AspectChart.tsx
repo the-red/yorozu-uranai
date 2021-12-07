@@ -67,12 +67,11 @@ export default function AspectChart({ horoscope }: Props) {
           <PlanetCell planetIcon={PLANET_ICONS.sun}></PlanetCell>
         </div>
         <div className={styles['outer-item']}>
-          <AspectCell degrees={planets.sun.majorAspect(planets.moon, orb)?.degrees}></AspectCell>
+          <AspectRow basePlanets={['sun']} targetPlanet={'moon'}></AspectRow>
           <PlanetCell planetIcon={PLANET_ICONS.moon}></PlanetCell>
         </div>
         <div className={styles['outer-item']}>
-          <AspectCell degrees={planets.sun.majorAspect(planets.mercury, orb)?.degrees}></AspectCell>
-          <AspectCell degrees={planets.moon.majorAspect(planets.mercury, orb)?.degrees}></AspectCell>
+          <AspectRow basePlanets={['sun', 'moon']} targetPlanet={'mercury'}></AspectRow>
           <PlanetCell planetIcon={PLANET_ICONS.mercury}></PlanetCell>
         </div>
         <div className={styles['outer-item']}>
@@ -80,60 +79,39 @@ export default function AspectChart({ horoscope }: Props) {
           <PlanetCell planetIcon={PLANET_ICONS.venus}></PlanetCell>
         </div>
         <div className={styles['outer-item']}>
-          <AspectCell degrees={planets.sun.majorAspect(planets.mars, orb)?.degrees}></AspectCell>
-          <AspectCell degrees={planets.moon.majorAspect(planets.mars, orb)?.degrees}></AspectCell>
-          <AspectCell degrees={planets.mercury.majorAspect(planets.mars, orb)?.degrees}></AspectCell>
-          <AspectCell degrees={planets.venus.majorAspect(planets.mars, orb)?.degrees}></AspectCell>
+          <AspectRow basePlanets={['sun', 'moon', 'mercury', 'venus']} targetPlanet={'mars'}></AspectRow>
           <PlanetCell planetIcon={PLANET_ICONS.mars}></PlanetCell>
         </div>
         <div className={styles['outer-item']}>
-          <AspectCell degrees={planets.sun.majorAspect(planets.jupiter, orb)?.degrees}></AspectCell>
-          <AspectCell degrees={planets.moon.majorAspect(planets.jupiter, orb)?.degrees}></AspectCell>
-          <AspectCell degrees={planets.mercury.majorAspect(planets.jupiter, orb)?.degrees}></AspectCell>
-          <AspectCell degrees={planets.venus.majorAspect(planets.jupiter, orb)?.degrees}></AspectCell>
-          <AspectCell degrees={planets.mars.majorAspect(planets.jupiter, orb)?.degrees}></AspectCell>
+          <AspectRow basePlanets={['sun', 'moon', 'mercury', 'venus', 'mars']} targetPlanet={'jupiter'}></AspectRow>
           <PlanetCell planetIcon={PLANET_ICONS.jupiter}></PlanetCell>
         </div>
         <div className={styles['outer-item']}>
-          <AspectCell degrees={planets.sun.majorAspect(planets.saturn, orb)?.degrees}></AspectCell>
-          <AspectCell degrees={planets.moon.majorAspect(planets.saturn, orb)?.degrees}></AspectCell>
-          <AspectCell degrees={planets.mercury.majorAspect(planets.saturn, orb)?.degrees}></AspectCell>
-          <AspectCell degrees={planets.venus.majorAspect(planets.saturn, orb)?.degrees}></AspectCell>
-          <AspectCell degrees={planets.mars.majorAspect(planets.saturn, orb)?.degrees}></AspectCell>
-          <AspectCell degrees={planets.jupiter.majorAspect(planets.saturn, orb)?.degrees}></AspectCell>
+          <AspectRow
+            basePlanets={['sun', 'moon', 'mercury', 'venus', 'mars', 'jupiter']}
+            targetPlanet={'saturn'}
+          ></AspectRow>
           <PlanetCell planetIcon={PLANET_ICONS.saturn}></PlanetCell>
         </div>
         <div className={styles['outer-item']}>
-          <AspectCell degrees={planets.sun.majorAspect(planets.uranus, orb)?.degrees}></AspectCell>
-          <AspectCell degrees={planets.moon.majorAspect(planets.uranus, orb)?.degrees}></AspectCell>
-          <AspectCell degrees={planets.mercury.majorAspect(planets.uranus, orb)?.degrees}></AspectCell>
-          <AspectCell degrees={planets.venus.majorAspect(planets.uranus, orb)?.degrees}></AspectCell>
-          <AspectCell degrees={planets.mars.majorAspect(planets.uranus, orb)?.degrees}></AspectCell>
-          <AspectCell degrees={planets.jupiter.majorAspect(planets.uranus, orb)?.degrees}></AspectCell>
-          <AspectCell degrees={planets.saturn.majorAspect(planets.uranus, orb)?.degrees}></AspectCell>
+          <AspectRow
+            basePlanets={['sun', 'moon', 'mercury', 'venus', 'mars', 'jupiter', 'saturn']}
+            targetPlanet={'uranus'}
+          ></AspectRow>
           <PlanetCell planetIcon={PLANET_ICONS.uranus}></PlanetCell>
         </div>
         <div className={styles['outer-item']}>
-          <AspectCell degrees={planets.sun.majorAspect(planets.neptune, orb)?.degrees}></AspectCell>
-          <AspectCell degrees={planets.moon.majorAspect(planets.neptune, orb)?.degrees}></AspectCell>
-          <AspectCell degrees={planets.mercury.majorAspect(planets.neptune, orb)?.degrees}></AspectCell>
-          <AspectCell degrees={planets.venus.majorAspect(planets.neptune, orb)?.degrees}></AspectCell>
-          <AspectCell degrees={planets.mars.majorAspect(planets.neptune, orb)?.degrees}></AspectCell>
-          <AspectCell degrees={planets.jupiter.majorAspect(planets.neptune, orb)?.degrees}></AspectCell>
-          <AspectCell degrees={planets.saturn.majorAspect(planets.neptune, orb)?.degrees}></AspectCell>
-          <AspectCell degrees={planets.uranus.majorAspect(planets.neptune, orb)?.degrees}></AspectCell>
+          <AspectRow
+            basePlanets={['sun', 'moon', 'mercury', 'venus', 'mars', 'jupiter', 'saturn', 'uranus']}
+            targetPlanet={'neptune'}
+          ></AspectRow>
           <PlanetCell planetIcon={PLANET_ICONS.neptune}></PlanetCell>
         </div>
         <div className={styles['outer-item']}>
-          <AspectCell degrees={planets.sun.majorAspect(planets.pluto, orb)?.degrees}></AspectCell>
-          <AspectCell degrees={planets.moon.majorAspect(planets.pluto, orb)?.degrees}></AspectCell>
-          <AspectCell degrees={planets.mercury.majorAspect(planets.pluto, orb)?.degrees}></AspectCell>
-          <AspectCell degrees={planets.venus.majorAspect(planets.pluto, orb)?.degrees}></AspectCell>
-          <AspectCell degrees={planets.mars.majorAspect(planets.pluto, orb)?.degrees}></AspectCell>
-          <AspectCell degrees={planets.jupiter.majorAspect(planets.pluto, orb)?.degrees}></AspectCell>
-          <AspectCell degrees={planets.saturn.majorAspect(planets.pluto, orb)?.degrees}></AspectCell>
-          <AspectCell degrees={planets.uranus.majorAspect(planets.pluto, orb)?.degrees}></AspectCell>
-          <AspectCell degrees={planets.neptune.majorAspect(planets.pluto, orb)?.degrees}></AspectCell>
+          <AspectRow
+            basePlanets={['sun', 'moon', 'mercury', 'venus', 'mars', 'jupiter', 'saturn', 'uranus', 'neptune']}
+            targetPlanet={'pluto'}
+          ></AspectRow>
           <PlanetCell planetIcon={PLANET_ICONS.pluto}></PlanetCell>
         </div>
       </div>

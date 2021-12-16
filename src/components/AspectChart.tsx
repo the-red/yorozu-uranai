@@ -23,6 +23,7 @@ export default function AspectChart({ horoscope }: Props) {
     'neptune',
     'pluto',
   ] as const
+  // TODO:固定値ではなく、ユーザーが画面から指定した値を使うようにしたい
   const orb = 6
 
   const addClassByAspectType = (degrees: string) => {

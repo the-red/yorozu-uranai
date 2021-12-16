@@ -1,4 +1,4 @@
-import { Horoscope, ALL_MAJOR_ASPECTS, PLANET_ICONS, PlanetName, ALL_MINOR_ASPECTS, Planet } from '../horoscope'
+import { Horoscope, ALL_MAJOR_ASPECTS, PLANET_ICONS, PlanetName } from '../horoscope'
 import styles from '../pages/horoscope/HoroscopePage.module.css'
 type Props = { horoscope: Horoscope }
 

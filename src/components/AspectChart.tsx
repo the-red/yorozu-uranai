@@ -10,6 +10,7 @@ export default function AspectChart({ horoscope }: Props) {
     String(aspect.degrees)
   )
   const planets = horoscope.planets
+  // TODO:horoscopeFactory.tsにも同じ定義があるので、将来的に定義を1箇所にしたい。
   const ALL_PLANETS = [
     'sun',
     'moon',

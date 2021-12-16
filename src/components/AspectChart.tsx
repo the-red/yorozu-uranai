@@ -31,16 +31,19 @@ export default function AspectChart({ horoscope }: Props) {
               ${softAspects.includes(degrees) && styles['soft-aspect']}`
   }
 
-  const AspectChart = () => (
-    <>
-      <div className={styles['aspect-chart-container']}>
-        {ALL_PLANETS.map((planet, i) => (
-          <div className={styles['outer-item']}>
-            <AspectRow key={i} targetPlanet={planet} />
-          </div>
-        ))}
-      </div>
-    </>
+  type AspectCellProps = {
+    degrees: number | undefined
+  }
+  const AspectCell = (props: AspectCellProps) => {
+    const degrees = props.degrees
+    return <div className={`${styles['inner-item']} ${addClassByAspectType(String(degrees))}`}>{degrees}</div>
+  }
+
+  type PlanetCellProps = {
+    planetIcon: string
+  }
+  const PlanetCell = (props: PlanetCellProps) => (
+    <div className={`${styles['inner-item']} ${styles['planet-icon']}`}>{props.planetIcon}</div>
   )
 
   type AspectRowProps = {
@@ -55,19 +58,16 @@ export default function AspectChart({ horoscope }: Props) {
     </>
   )
 
-  type AspectCellProps = {
-    degrees: number | undefined
-  }
-  const AspectCell = (props: AspectCellProps) => {
-    const degrees = props.degrees
-    return <div className={`${styles['inner-item']} ${addClassByAspectType(String(degrees))}`}>{degrees}</div>
-  }
-
-  type PlanetCellProps = {
-    planetIcon: string
-  }
-  const PlanetCell = (props: PlanetCellProps) => (
-    <div className={`${styles['inner-item']} ${styles['planet-icon']}`}>{props.planetIcon}</div>
+  const AspectChart = () => (
+    <>
+      <div className={styles['aspect-chart-container']}>
+        {ALL_PLANETS.map((planet, i) => (
+          <div className={styles['outer-item']}>
+            <AspectRow key={i} targetPlanet={planet} />
+          </div>
+        ))}
+      </div>
+    </>
   )
 
   return (

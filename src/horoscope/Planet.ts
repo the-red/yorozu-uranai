@@ -16,16 +16,16 @@ export const PLANET_ICONS = {
 } as const
 export type PlanetIcon = typeof PLANET_ICONS[PlanetName]
 
-const ALL_MAJOR_ASPECTS = [
-  { degrees: 0, name: 'conjunction' },
-  { degrees: 60, name: 'sextile' },
-  { degrees: 90, name: 'square' },
-  { degrees: 120, name: 'trine' },
-  { degrees: 180, name: 'opposition' },
+export const ALL_MAJOR_ASPECTS = [
+  { degrees: 0, name: 'conjunction', type: 'hard' },
+  { degrees: 60, name: 'sextile', type: 'soft' },
+  { degrees: 90, name: 'square', type: 'hard' },
+  { degrees: 120, name: 'trine', type: 'soft' },
+  { degrees: 180, name: 'opposition', type: 'hard' },
 ] as const
-type MajorAspect = typeof ALL_MAJOR_ASPECTS[number]['name']
+type MajorAspect = typeof ALL_MAJOR_ASPECTS[number]
 
-const ALL_MINOR_ASPECTS = [
+export const ALL_MINOR_ASPECTS = [
   { degrees: 30, name: 'semi-sextile' },
   { degrees: 45, name: 'semi-square' },
   { degrees: 72, name: 'quintile' },
@@ -33,7 +33,7 @@ const ALL_MINOR_ASPECTS = [
   { degrees: 144, name: 'biquintile' },
   { degrees: 150, name: 'quincunx' },
 ] as const
-type MinorAspect = typeof ALL_MINOR_ASPECTS[number]['name']
+type MinorAspect = typeof ALL_MINOR_ASPECTS[number]
 
 export class Planet {
   static ALL_SIGNS = Position.ALL_SIGNS
@@ -109,11 +109,11 @@ export class Planet {
 
   majorAspect(target: Planet, orb: number): MajorAspect | undefined {
     const diff = this.diffLongitude(target.longitude)
-    return ALL_MAJOR_ASPECTS.find((aspect) => Math.abs(diff - aspect.degrees) <= orb)?.name
+    return ALL_MAJOR_ASPECTS.find((aspect) => Math.abs(diff - aspect.degrees) <= orb)
   }
 
   minorAspect(target: Planet, orb: number): MinorAspect | undefined {
     const diff = this.diffLongitude(target.longitude)
-    return ALL_MINOR_ASPECTS.find((aspect) => Math.abs(diff - aspect.degrees) <= orb)?.name
+    return ALL_MINOR_ASPECTS.find((aspect) => Math.abs(diff - aspect.degrees) <= orb)
   }
 }

@@ -5,6 +5,7 @@ import HouseCusp from './HouseCusp'
 import SignTable from './SignTable'
 import PlanetPositions from './PlanetPositions'
 import { FormValues, HoroscopeForm } from './HoroscopeForm'
+import AspectChart from './AspectChart'
 import dynamic from 'next/dynamic'
 import { useEffect, useMemo, useState } from 'react'
 
@@ -101,6 +102,11 @@ function HoroscopeDetailPage() {
         <div style={{ width: '50%', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
           <div style={{ width: '360px', padding: '16px 8px' }}>
             <SignTable planets={planets} />
+          </div>
+        </div>
+        <div style={{ width: '50%', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+          <div style={{ width: '360px', padding: '16px 8px' }}>
+            <AspectChart horoscope={horoscope} />
           </div>
         </div>
       </div>

@@ -22,26 +22,41 @@ const NumerologyForm: VFC<NumerologyFormProps> = ({ onSubmit }) => {
 
   return (
     <div>
-      <div style={{ fontWeight: 'bold', fontSize: '20px', textAlign: 'center', marginBottom: '32px' }}>情報入力</div>
+      <div style={{ fontWeight: 'bold', fontSize: '20px', textAlign: 'center', marginBottom: '20px' }}>情報入力</div>
 
-      <form onSubmit={handleSubmit}>
-        <div style={{ display: 'flex', marginBottom: '32px' }}>
-          <label style={{ width: '200px' }}>生年月日</label>
-          <input type="date" required style={{ width: '200px' }} onChange={(e) => setBirthday(e.target.value)} />
-        </div>
-
-        <div style={{ display: 'flex', marginBottom: '32px' }}>
-          <label style={{ width: '200px' }}>名前（ローマ字）</label>
-
-          <div style={{ width: '200px' }}>
-            <input type="text" required style={{ width: '100%' }} onChange={(e) => setName(e.target.value)} />
+      <div className="tw-bg-white tw-p-8 tw-rounded-bl-3xl tw-rounded-tr-3xl tw-border-2 tw-border-solid">
+        <form onSubmit={handleSubmit} className="tw-flex tw-flex-col tw-items-center">
+          <div style={{ display: 'flex', marginBottom: '32px' }}>
+            <label style={{ width: '200px' }}>生年月日</label>
+            <input type="date" required style={{ width: '200px' }} onChange={(e) => setBirthday(e.target.value)} />
           </div>
-        </div>
 
-        <button type="submit" style={{ marginLeft: '200px', width: '200px', padding: '8px' }}>
-          計算する
-        </button>
-      </form>
+          <div style={{ display: 'flex', marginBottom: '32px' }}>
+            <label style={{ width: '200px' }}>名前（ローマ字）</label>
+
+            <div style={{ width: '200px' }}>
+              <input type="text" required style={{ width: '100%' }} onChange={(e) => setName(e.target.value)} />
+            </div>
+          </div>
+
+          <div style={{ marginLeft: '200px', width: '200px' }}>
+            <button
+              type="submit"
+              style={{
+                backgroundColor: 'transparent',
+                border: 'solid 2px #BA6F87',
+                cursor: 'pointer',
+                outline: 'none',
+                appearance: 'none',
+                color: '#BA6F87',
+              }}
+              className="tw-px-3 tw-py-2 tw-w-full tw-rounded-md tw-font-bold"
+            >
+              計算する
+            </button>
+          </div>
+        </form>
+      </div>
     </div>
   )
 }
@@ -61,43 +76,44 @@ type CoreNumbersProps = {
 const CoreNumbers: VFC<CoreNumbersProps> = ({ numerology }) => {
   return (
     <div>
-      <div style={{ fontWeight: 'bold', fontSize: '20px', textAlign: 'center', marginBottom: '32px' }}>
+      <div style={{ fontWeight: 'bold', fontSize: '20px', textAlign: 'center', marginBottom: '20px' }}>
         コアナンバー
       </div>
+      <div className="tw-bg-white tw-p-8 tw-rounded-bl-3xl tw-rounded-tr-3xl tw-border-2 tw-border-solid">
+        <div style={{ width: 'max-content', margin: '0 auto' }}>
+          <div style={{ display: 'flex' }}>
+            <CoreNumber>
+              <div>{numerology.lifePathNumber}</div>
+              <div>ライフパス</div>
+            </CoreNumber>
 
-      <div style={{ width: 'max-content', margin: '0 auto' }}>
-        <div style={{ display: 'flex' }}>
-          <CoreNumber>
-            <div>{numerology.lifePathNumber}</div>
-            <div>ライフパス</div>
-          </CoreNumber>
+            <CoreNumber>
+              <div>{numerology.destinyNumber}</div>
+              <div>ディスティニー</div>
+            </CoreNumber>
 
-          <CoreNumber>
-            <div>{numerology.destinyNumber}</div>
-            <div>ディスティニー</div>
-          </CoreNumber>
+            <CoreNumber>
+              <div>{numerology.soulNumber}</div>
+              <div>ソウル</div>
+            </CoreNumber>
+          </div>
 
-          <CoreNumber>
-            <div>{numerology.soulNumber}</div>
-            <div>ソウル</div>
-          </CoreNumber>
-        </div>
+          <div style={{ display: 'flex' }}>
+            <CoreNumber>
+              <div>{numerology.personalityNumber}</div>
+              <div>パーソナリティー</div>
+            </CoreNumber>
 
-        <div style={{ display: 'flex' }}>
-          <CoreNumber>
-            <div>{numerology.personalityNumber}</div>
-            <div>パーソナリティー</div>
-          </CoreNumber>
+            <CoreNumber>
+              <div>{numerology.maturityNumber}</div>
+              <div>マチュリティー</div>
+            </CoreNumber>
 
-          <CoreNumber>
-            <div>{numerology.maturityNumber}</div>
-            <div>マチュリティー</div>
-          </CoreNumber>
-
-          <CoreNumber>
-            <div>{numerology.birthdayNumber}</div>
-            <div>バースデー</div>
-          </CoreNumber>
+            <CoreNumber>
+              <div>{numerology.birthdayNumber}</div>
+              <div>バースデー</div>
+            </CoreNumber>
+          </div>
         </div>
       </div>
     </div>
@@ -112,14 +128,12 @@ const NumerologyPage: NextPage = () => {
   }
 
   return (
-    <div style={{ width: '720px', margin: '0 auto', padding: '20px 0' }}>
-      <div style={{ fontSize: '60px', textAlign: 'center', marginBottom: '20px' }}>Numerology</div>
-
-      <div style={{ width: '480px', margin: '0 auto 80px' }}>
+    <div className="tw-min-h-screen" style={{ backgroundColor: '#EBEBC1' }}>
+      <div className="tw-w-screen-md tw-mx-auto tw-space-y-8">
+        <div style={{ fontSize: '60px', textAlign: 'center' }}>Numerology</div>
         <NumerologyForm onSubmit={handleSubmit} />
+        {numerology && <CoreNumbers numerology={numerology} />}
       </div>
-
-      {numerology && <CoreNumbers numerology={numerology} />}
     </div>
   )
 }

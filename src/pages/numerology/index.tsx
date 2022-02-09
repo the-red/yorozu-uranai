@@ -77,8 +77,38 @@ const NumerologyForm: VFC<NumerologyFormProps> = ({ onSubmit }) => {
 
 const CoreNumber: FC = ({ children }) => {
   return (
-    <div style={{ width: '200px', padding: '16px', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-      {children}
+    <div
+      style={{
+        position: 'relative',
+        width: 'calc(150px * 1.05)',
+        height: '150px',
+        background: '#9A8EB6',
+        clipPath: 'polygon( 50% 0, 100% 38%, 81% 100%, 19% 100%, 0 38%)',
+      }}
+    >
+      <div
+        style={{
+          position: 'absolute',
+          top: '50%',
+          left: '50%',
+          transform: 'translate(-50%, -50%)',
+        }}
+      >
+        <div
+          style={{
+            width: 'calc(144px * 1.05)',
+            height: '144px',
+            background: '#fff',
+            clipPath: 'polygon( 50% 0, 100% 38%, 81% 100%, 19% 100%, 0 38%)',
+          }}
+        />
+      </div>
+
+      <div style={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -35%)' }}>
+        <div className="tw-text-7xl tw-font-extralight" style={{ color: '#9A8EB6' }}>
+          {children}
+        </div>
+      </div>
     </div>
   )
 }
@@ -101,39 +131,39 @@ const CoreNumbers: VFC<CoreNumbersProps> = ({ numerology }) => {
           <Image src={bird2} />
         </div>
 
-        <div style={{ width: 'max-content', margin: '0 auto' }}>
-          <div style={{ display: 'flex' }}>
-            <CoreNumber>
-              <div>{numerology.lifePathNumber}</div>
+        <div className="tw-flex tw-flex-col tw-space-y-6" style={{ width: 'max-content', margin: '0 auto' }}>
+          <div className="tw-flex tw-space-x-12">
+            <div className="tw-flex tw-flex-col tw-items-center tw-space-y-4">
+              <CoreNumber>{numerology.lifePathNumber}</CoreNumber>
               <div>ライフパス</div>
-            </CoreNumber>
+            </div>
 
-            <CoreNumber>
-              <div>{numerology.destinyNumber}</div>
+            <div className="tw-flex tw-flex-col tw-items-center tw-space-y-4">
+              <CoreNumber>{numerology.destinyNumber}</CoreNumber>
               <div>ディスティニー</div>
-            </CoreNumber>
+            </div>
 
-            <CoreNumber>
-              <div>{numerology.soulNumber}</div>
+            <div className="tw-flex tw-flex-col tw-items-center tw-space-y-4">
+              <CoreNumber>{numerology.soulNumber}</CoreNumber>
               <div>ソウル</div>
-            </CoreNumber>
+            </div>
           </div>
 
-          <div style={{ display: 'flex' }}>
-            <CoreNumber>
-              <div>{numerology.personalityNumber}</div>
+          <div className="tw-flex tw-space-x-12">
+            <div className="tw-flex tw-flex-col tw-items-center tw-space-y-4">
+              <CoreNumber>{numerology.personalityNumber}</CoreNumber>
               <div>パーソナリティー</div>
-            </CoreNumber>
+            </div>
 
-            <CoreNumber>
-              <div>{numerology.maturityNumber}</div>
+            <div className="tw-flex tw-flex-col tw-items-center tw-space-y-4">
+              <CoreNumber>{numerology.maturityNumber}</CoreNumber>
               <div>マチュリティー</div>
-            </CoreNumber>
+            </div>
 
-            <CoreNumber>
-              <div>{numerology.birthdayNumber}</div>
+            <div className="tw-flex tw-flex-col tw-items-center tw-space-y-4">
+              <CoreNumber>{numerology.birthdayNumber}</CoreNumber>
               <div>バースデー</div>
-            </CoreNumber>
+            </div>
           </div>
         </div>
       </div>

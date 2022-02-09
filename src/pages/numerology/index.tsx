@@ -3,6 +3,7 @@ import Image from 'next/image'
 import { FC, FormEventHandler, useState, VFC } from 'react'
 import { Numerology } from '../../numerology/Numerology'
 
+import title from '../../../public/images/numerology/title.png'
 import leaf from '../../../public/images/numerology/leaf.png'
 import flower from '../../../public/images/numerology/flower.png'
 import bird1 from '../../../public/images/numerology/bird-1.png'
@@ -93,10 +94,10 @@ const CoreNumbers: VFC<CoreNumbersProps> = ({ numerology }) => {
         コアナンバー
       </div>
       <div className="tw-relative tw-bg-white tw-p-8 tw-rounded-bl-3xl tw-rounded-tr-3xl tw-border-2 tw-border-solid">
-        <div className="tw-absolute tw-top-1 tw-left-2  tw-w-20" style={{ transform: 'rotate(12deg)' }}>
+        <div className="tw-absolute tw-top-1 tw-left-2  tw-w-20">
           <Image src={bird1} />
         </div>
-        <div className="tw-absolute tw-bottom-1 tw-right-2 tw-w-20" style={{ transform: 'rotate(12deg)' }}>
+        <div className="tw-absolute tw-bottom-1 tw-right-2 tw-w-20">
           <Image src={bird2} />
         </div>
 
@@ -148,9 +149,12 @@ const NumerologyPage: NextPage = () => {
   }
 
   return (
-    <div className="tw-min-h-screen" style={{ backgroundColor: '#EBEBC1' }}>
+    <div className="tw-min-h-screen tw-py-8" style={{ backgroundColor: '#EBEBC1' }}>
       <div className="tw-w-screen-md tw-mx-auto tw-space-y-8">
-        <div style={{ fontSize: '60px', textAlign: 'center' }}>Numerology</div>
+        <div className="tw-w-80">
+          <Image src={title} />
+        </div>
+
         <NumerologyForm onSubmit={handleSubmit} />
         {numerology && <CoreNumbers numerology={numerology} />}
       </div>

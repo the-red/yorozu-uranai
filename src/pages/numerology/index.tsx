@@ -1,6 +1,12 @@
 import { NextPage } from 'next'
+import Image from 'next/image'
 import { FC, FormEventHandler, useState, VFC } from 'react'
 import { Numerology } from '../../numerology/Numerology'
+
+import leaf from '../../../public/images/numerology/leaf.png'
+import flower from '../../../public/images/numerology/flower.png'
+import bird1 from '../../../public/images/numerology/bird-1.png'
+import bird2 from '../../../public/images/numerology/bird-2.png'
 
 type FormValues = {
   birthday: Date
@@ -24,7 +30,14 @@ const NumerologyForm: VFC<NumerologyFormProps> = ({ onSubmit }) => {
     <div>
       <div style={{ fontWeight: 'bold', fontSize: '20px', textAlign: 'center', marginBottom: '20px' }}>情報入力</div>
 
-      <div className="tw-bg-white tw-p-8 tw-rounded-bl-3xl tw-rounded-tr-3xl tw-border-2 tw-border-solid">
+      <div className="tw-relative tw-bg-white tw-p-8 tw-rounded-bl-3xl tw-rounded-tr-3xl tw-border-2 tw-border-solid">
+        <div className="tw-absolute tw-top-0 tw-left-0 tw-w-20" style={{ transform: 'rotate(12deg)' }}>
+          <Image src={leaf} />
+        </div>
+        <div className="tw-absolute tw-bottom-0 tw-right-0 tw-w-20" style={{ transform: 'rotate(12deg)' }}>
+          <Image src={flower} />
+        </div>
+
         <form onSubmit={handleSubmit} className="tw-flex tw-flex-col tw-items-center">
           <div style={{ display: 'flex', marginBottom: '32px' }}>
             <label style={{ width: '200px' }}>生年月日</label>
@@ -79,7 +92,14 @@ const CoreNumbers: VFC<CoreNumbersProps> = ({ numerology }) => {
       <div style={{ fontWeight: 'bold', fontSize: '20px', textAlign: 'center', marginBottom: '20px' }}>
         コアナンバー
       </div>
-      <div className="tw-bg-white tw-p-8 tw-rounded-bl-3xl tw-rounded-tr-3xl tw-border-2 tw-border-solid">
+      <div className="tw-relative tw-bg-white tw-p-8 tw-rounded-bl-3xl tw-rounded-tr-3xl tw-border-2 tw-border-solid">
+        <div className="tw-absolute tw-top-1 tw-left-2  tw-w-20" style={{ transform: 'rotate(12deg)' }}>
+          <Image src={bird1} />
+        </div>
+        <div className="tw-absolute tw-bottom-1 tw-right-2 tw-w-20" style={{ transform: 'rotate(12deg)' }}>
+          <Image src={bird2} />
+        </div>
+
         <div style={{ width: 'max-content', margin: '0 auto' }}>
           <div style={{ display: 'flex' }}>
             <CoreNumber>

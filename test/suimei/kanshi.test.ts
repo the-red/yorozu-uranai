@@ -1,6 +1,13 @@
 import { DateTime } from 'luxon'
 import { Kanshi } from '../../src/suimei/Kanshi'
 
+describe('月柱を計算', () => {
+  it('2022-02-24（節入り後）', () => {
+    const kanshi = new Kanshi(DateTime.fromISO('2022-02-24'))
+    expect(kanshi.月柱).toEqual('壬寅')
+  })
+})
+
 describe('日柱を計算', () => {
   it('2022-02-24（基準日より後）', () => {
     const kanshi = new Kanshi(DateTime.fromISO('2022-02-24'))

@@ -69,10 +69,21 @@ export class Kanshi {
 
   constructor(private readonly date: DateTime) {}
 
+  get 月柱(): typeof Kanshi.干支[number] {
+    const diff = this.date.diff(Kanshi.BASE, 'months').months
+
+    // TODO: 節入日を考慮して調整する
+    // 今は節入後のindexで固定しているので、節入前（月の前半）は結果が違う可能性あり
+    const index = (diff % 60) + 1
+
+    // @ts-expect-error
+    return Kanshi.干支.at(index)
+  }
+
   get 日柱(): typeof Kanshi.干支[number] {
     const diff = this.date.diff(Kanshi.BASE, 'days').days
     const index = diff % 60
     // @ts-expect-error
-    return Kanshi.干支.at(index) // atだと配列にマイナスindexを使える！
+    return Kanshi.干支.at(index)
   }
 }

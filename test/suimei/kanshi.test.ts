@@ -69,26 +69,26 @@ describe('六十干支', () => {
 
 describe('年柱を計算', () => {
   it('2022-02-24（立春後）', async () => {
-    const kanshi = await getKanshiInstance(new Date('2022-02-24'))
+    const kanshi = await getKanshiInstance(new Date('2022-02-24T00:00:00+09:00'))
     expect(kanshi.年柱).toEqual('壬寅')
   })
 })
 
 describe('月柱を計算', () => {
   it('2022-02-24（節入り後）', async () => {
-    const kanshi = await getKanshiInstance(new Date('2022-02-24'))
+    const kanshi = await getKanshiInstance(new Date('2022-02-24T00:00:00+09:00'))
     expect(kanshi.月柱).toEqual('壬寅')
   })
 })
 
 describe('日柱を計算', () => {
   it('2022-02-24（基準日より後）', async () => {
-    const kanshi = await getKanshiInstance(new Date('2022-02-24'))
+    const kanshi = await getKanshiInstance(new Date('2022-02-24T00:00:00+09:00'))
     expect(kanshi.日柱).toEqual('戊申')
   })
 
   it('1909-01-03（基準日より前）', async () => {
-    const kanshi = await getKanshiInstance(new Date('1909-01-03'))
+    const kanshi = await getKanshiInstance(new Date('1909-01-03T00:00:00+09:00'))
     expect(kanshi.日柱).toEqual('癸亥')
   })
 })

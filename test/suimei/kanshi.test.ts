@@ -30,10 +30,34 @@ describe('日柱を計算', () => {
 describe('時柱を計算', () => {
   it('1909-01-04T00:00:00+09:00', () => {
     const kanshi = new Kanshi(DateTime.fromISO('1909-01-04T00:00:00+09:00'))
-    expect(kanshi.時柱).toEqual('甲子')
+    expect(kanshi.時柱).toEqual('甲子') // 0
   })
-  it('1909-01-04T00:00:00+09:00', () => {
-    const kanshi = new Kanshi(DateTime.fromISO('1909-01-04T17:28:00+09:00'))
-    expect(kanshi.時柱).toEqual('癸酉')
+  it('1909-01-04T01:00:00+09:00', () => {
+    const kanshi = new Kanshi(DateTime.fromISO('1909-01-04T01:00:00+09:00'))
+    expect(kanshi.時柱).toEqual('乙丑') // 1
+  })
+  it('1909-01-04T02:00:00+09:00', () => {
+    const kanshi = new Kanshi(DateTime.fromISO('1909-01-04T02:00:00+09:00'))
+    expect(kanshi.時柱).toEqual('乙丑') // 1
+  })
+  it('1909-01-04T22:00:00+09:00', () => {
+    const kanshi = new Kanshi(DateTime.fromISO('1909-01-04T22:00:00+09:00'))
+    expect(kanshi.時柱).toEqual('乙亥') // 11
+  })
+  it('1909-01-04T22:59:59+09:00', () => {
+    const kanshi = new Kanshi(DateTime.fromISO('1909-01-04T22:59:59+09:00'))
+    expect(kanshi.時柱).toEqual('乙亥') // 11
+  })
+  it('1909-01-04T23:00:00+09:00', () => {
+    const kanshi = new Kanshi(DateTime.fromISO('1909-01-04T23:00:00+09:00'))
+    expect(kanshi.時柱).toEqual('甲子') // 0
+  })
+  it('1909-01-05T00:00:00+09:00', () => {
+    const kanshi = new Kanshi(DateTime.fromISO('1909-01-05T00:00:00+09:00'))
+    expect(kanshi.時柱).toEqual('丙子') // 12
+  })
+  it('2022-02-24T17:28:00+09:00', () => {
+    const kanshi = new Kanshi(DateTime.fromISO('2022-02-24T17:28:00+09:00'))
+    expect(kanshi.時柱).toEqual('辛酉') // 57
   })
 })

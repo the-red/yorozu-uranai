@@ -105,12 +105,15 @@ export class Kanshi {
     // ホロスコープも同じ調整を入れるべきか？
     const hour = this.date.plus({ hour: 1 }).hour
 
-    // TODO: まだバグあるはずなのでもう少し確認
-    const index = Math.trunc(hour / 2) % 60
-
-    console.log({ hour, index })
+    const index = Math.trunc(hour / 2) + this.日干index * 12
 
     // @ts-expect-error
     return Kanshi.干支.at(index)
+  }
+
+  private get 日干index(): number {
+    const diff = this.date.diff(Kanshi.BASE, 'days').days
+    const index = Math.trunc(diff % 10)
+    return index
   }
 }

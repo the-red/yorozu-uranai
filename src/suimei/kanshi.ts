@@ -1,5 +1,5 @@
 import { DateTime } from 'luxon'
-import { julday, eclipticPosition } from '../horoscope/swisseph'
+import { getLongitude } from '../horoscope/swisseph'
 import { sekki } from './sekki'
 
 const 十干 = ['甲', '乙', '丙', '丁', '戊', '己', '庚', '辛', '壬', '癸'] as const
@@ -18,8 +18,7 @@ const get六十干支 = (): T干支[] => {
 }
 
 export const getKanshiInstance = async (date: Date) => {
-  const julday_ut = await julday(date)
-  const { longitude } = await eclipticPosition(julday_ut, 'sun')
+  const longitude = await getLongitude(date)
   return new Kanshi(DateTime.fromJSDate(date), longitude)
 }
 

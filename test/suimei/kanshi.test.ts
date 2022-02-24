@@ -1,14 +1,14 @@
 import { DateTime } from 'luxon'
-import { 日柱 } from '../../src/suimei/kanshi'
+import { Kanshi } from '../../src/suimei/Kanshi'
 
 describe('日柱を計算', () => {
   it('2022-02-24（基準日より後）', () => {
-    const date = DateTime.fromISO('2022-02-24')
-    expect(日柱(date)).toEqual('戊申')
+    const kanshi = new Kanshi(DateTime.fromISO('2022-02-24'))
+    expect(kanshi.日柱).toEqual('戊申')
   })
 
   it('1909-01-03（基準日より前）', () => {
-    const date = DateTime.fromISO('1909-01-03')
-    expect(日柱(date)).toEqual('癸亥')
+    const kanshi = new Kanshi(DateTime.fromISO('1909-01-03'))
+    expect(kanshi.日柱).toEqual('癸亥')
   })
 })

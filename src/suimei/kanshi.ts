@@ -1,4 +1,5 @@
 import { DateTime } from 'luxon'
+import { julday, eclipticPosition } from '../horoscope/swisseph'
 
 const 十干 = ['甲', '乙', '丙', '丁', '戊', '己', '庚', '辛', '壬', '癸'] as const
 const 十二支 = ['子', '丑', '寅', '卯', '辰', '巳', '午', '未', '申', '酉', '戌', '亥'] as const
@@ -15,6 +16,12 @@ const get六十干支 = (): T干支[] => {
   return 六十干支
 }
 
+export const getKanshiInstance = async (date: Date) => {
+  const julday_ut = await julday(date)
+  const { longitude } = await eclipticPosition(julday_ut, 'sun')
+  return new Kanshi(DateTime.fromJSDate(date), longitude)
+}
+
 export class Kanshi {
   static readonly 六十干支 = get六十干支()
 
@@ -22,7 +29,7 @@ export class Kanshi {
   // TODO: 年柱もセットで3つが甲子になる日を見つけたい
   private static BASE = DateTime.fromISO('1909-01-04')
 
-  constructor(private readonly date: DateTime) {}
+  constructor(private readonly date: DateTime, private readonly longitude: number) {}
 
   get 年柱(): T干支 {
     const year = this.date.year

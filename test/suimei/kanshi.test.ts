@@ -26,3 +26,14 @@ describe('日柱を計算', () => {
     expect(kanshi.日柱).toEqual('癸亥')
   })
 })
+
+describe('時柱を計算', () => {
+  it('1909-01-04T00:00:00+09:00', () => {
+    const kanshi = new Kanshi(DateTime.fromISO('1909-01-04T00:00:00+09:00'))
+    expect(kanshi.時柱).toEqual('甲子')
+  })
+  it('1909-01-04T00:00:00+09:00', () => {
+    const kanshi = new Kanshi(DateTime.fromISO('1909-01-04T17:28:00+09:00'))
+    expect(kanshi.時柱).toEqual('癸酉')
+  })
+})

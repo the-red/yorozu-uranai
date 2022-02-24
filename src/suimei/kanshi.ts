@@ -98,4 +98,19 @@ export class Kanshi {
     // @ts-expect-error
     return Kanshi.干支.at(index)
   }
+
+  get 時柱(): typeof Kanshi.干支[number] {
+    // TODO: 位置情報を考慮して時刻を微調整する
+    // 四柱推命の本P22を参照
+    // ホロスコープも同じ調整を入れるべきか？
+    const hour = this.date.plus({ hour: 1 }).hour
+
+    // TODO: まだバグあるはずなのでもう少し確認
+    const index = Math.trunc(hour / 2) % 60
+
+    console.log({ hour, index })
+
+    // @ts-expect-error
+    return Kanshi.干支.at(index)
+  }
 }

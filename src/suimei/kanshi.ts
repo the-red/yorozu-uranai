@@ -65,9 +65,21 @@ export class Kanshi {
   ] as const
 
   // 月柱・日柱が甲子(index:0)となる基準日
+  // TODO: 年柱もセットで3つが甲子になる日を見つけたい
   private static BASE = DateTime.fromISO('1909-01-04')
 
   constructor(private readonly date: DateTime) {}
+
+  get 年柱(): typeof Kanshi.干支[number] {
+    const year = this.date.year
+
+    // TODO: 立春を考慮して調整する
+    // 今は立春後のindexで固定しているので、立春前（1月と2月頭）は結果が違う可能性あり
+    const index = (year % 60) - 4
+
+    // @ts-expect-error
+    return Kanshi.干支.at(index)
+  }
 
   get 月柱(): typeof Kanshi.干支[number] {
     const diff = this.date.diff(Kanshi.BASE, 'months').months

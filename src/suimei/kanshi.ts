@@ -17,9 +17,19 @@ const get六十干支 = (): T干支[] => {
   return 六十干支
 }
 
+type Sekki = {
+  today: string
+  endOfMonth: string
+  endOfYear: string
+}
 export const getKanshiInstance = async (date: Date) => {
-  const longitude = await getLongitude(date)
-  return new Kanshi(DateTime.fromJSDate(date), longitude)
+  const dateTime = DateTime.fromJSDate(date)
+
+  return new Kanshi(dateTime, {
+    today: sekki(await getLongitude(date)),
+    endOfMonth: sekki(await getLongitude(dateTime.endOf('month').toJSDate())),
+    endOfYear: sekki(await getLongitude(dateTime.endOf('year').toJSDate())),
+  })
 }
 
 export class Kanshi {
@@ -28,14 +38,14 @@ export class Kanshi {
   // 月柱・日柱が甲子(index:0)となる基準日
   private static BASE = DateTime.fromISO('1909-01-04')
 
-  constructor(private readonly date: DateTime, private readonly longitude: number) {}
+  constructor(private readonly date: DateTime, private readonly sekki: Sekki) {}
 
   get 年柱(): T干支 {
     let { year } = this.date
     const { month } = this.date
 
     // 年明け〜立春前までは前年と見なす
-    if (month === 1 || (month === 2 && sekki(this.longitude) !== '立春')) {
+    if (month === 1 || (month === 2 && this.sekki.today !== '立春')) {
       year--
     }
     const index = (year % 60) - 4

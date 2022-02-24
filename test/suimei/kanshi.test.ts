@@ -1,3 +1,4 @@
+import { DateTime } from 'luxon'
 import { Kanshi, getKanshiInstance } from '../../src/suimei/Kanshi'
 
 describe('六十干支', () => {
@@ -71,6 +72,10 @@ describe('年柱を計算', () => {
   it('2022-02-24（立春後）', async () => {
     const kanshi = await getKanshiInstance(new Date('2022-02-24T00:00:00+09:00'))
     expect(kanshi.年柱).toEqual('壬寅')
+  })
+  it('2022-01-01（立春前）', async () => {
+    const kanshi = await getKanshiInstance(new Date('2022-01-01T00:00:00+09:00'))
+    expect(kanshi.年柱).toEqual('辛丑')
   })
 })
 

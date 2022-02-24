@@ -1,5 +1,6 @@
 import { DateTime } from 'luxon'
 import { julday, eclipticPosition } from '../horoscope/swisseph'
+import { sekki } from './sekki'
 
 const 十干 = ['甲', '乙', '丙', '丁', '戊', '己', '庚', '辛', '壬', '癸'] as const
 const 十二支 = ['子', '丑', '寅', '卯', '辰', '巳', '午', '未', '申', '酉', '戌', '亥'] as const
@@ -26,16 +27,18 @@ export class Kanshi {
   static readonly 六十干支 = get六十干支()
 
   // 月柱・日柱が甲子(index:0)となる基準日
-  // TODO: 年柱もセットで3つが甲子になる日を見つけたい
   private static BASE = DateTime.fromISO('1909-01-04')
 
   constructor(private readonly date: DateTime, private readonly longitude: number) {}
 
   get 年柱(): T干支 {
-    const year = this.date.year
+    let { year } = this.date
+    const { month } = this.date
 
-    // TODO: 立春を考慮して調整する
-    // 今は立春後のindexで固定しているので、立春前（1月と2月頭）は結果が違う可能性あり
+    // 年明け〜立春前までは前年と見なす
+    if (month === 1 || (month === 2 && sekki(this.longitude) !== '立春')) {
+      year--
+    }
     const index = (year % 60) - 4
 
     return Kanshi.六十干支.at(index)!

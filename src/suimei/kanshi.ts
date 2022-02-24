@@ -35,9 +35,6 @@ export const getKanshiInstance = async (date: Date) => {
 export class Kanshi {
   static readonly 六十干支 = get六十干支()
 
-  // 月柱・日柱が甲子(index:0)となる基準日
-  private static BASE = DateTime.fromISO('1909-01-04')
-
   constructor(private readonly date: DateTime, private readonly sekki: Sekki) {}
 
   get 年柱(): T干支 {
@@ -48,20 +45,28 @@ export class Kanshi {
     if (month === 1 || (month === 2 && this.sekki.today !== '立春')) {
       year--
     }
-    const index = (year % 60) - 4
+    const index = (year - 4) % 60
 
     return Kanshi.六十干支.at(index)!
   }
 
   get 月柱(): T干支 {
-    const diff = this.date.diff(Kanshi.BASE, 'months').months
+    const BASE = DateTime.fromISO('2019-01-01T00:00:00+09:00') // 月柱が甲子の元旦
+    let monthsDiff = Math.trunc(this.date.diff(BASE, 'months').months)
 
-    // TODO: 節入日を考慮して調整する
-    // 今は節入後のindexで固定しているので、節入前（月の前半）は結果が違う可能性あり
-    const index = (diff % 60) + 1
+    // 節入日の前後によって調整
+    if (this.date > BASE && this.sekki.today === this.sekki.endOfMonth) {
+      monthsDiff++
+    } else if (this.date < BASE && this.sekki.today !== this.sekki.endOfMonth) {
+      monthsDiff--
+    }
+    const index = monthsDiff % 60
 
     return Kanshi.六十干支.at(index)!
   }
+
+  // 日柱が甲子(index:0)となる基準日
+  private static BASE = DateTime.fromISO('1909-01-04')
 
   get 日柱(): T干支 {
     const diff = this.date.diff(Kanshi.BASE, 'days').days

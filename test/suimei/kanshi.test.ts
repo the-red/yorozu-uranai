@@ -1,4 +1,3 @@
-import { DateTime } from 'luxon'
 import { Kanshi, getKanshiInstance } from '../../src/suimei/Kanshi'
 
 describe('六十干支', () => {
@@ -80,8 +79,26 @@ describe('年柱を計算', () => {
 })
 
 describe('月柱を計算', () => {
-  it('2022-02-24（節入り後）', async () => {
-    const kanshi = await getKanshiInstance(new Date('2022-02-24T00:00:00+09:00'))
+  it('2018-12-07 13:25:54（節入り前・基準日前）', async () => {
+    const kanshi = await getKanshiInstance(new Date('2018-12-07T13:25:54+09:00'))
+    expect(kanshi.月柱).toEqual('癸亥')
+  })
+  it('2018-12-07 13:25:55（節入り後・基準日前）', async () => {
+    const kanshi = await getKanshiInstance(new Date('2018-12-07T13:25:55+09:00'))
+    expect(kanshi.月柱).toEqual('甲子')
+  })
+
+  it('2019-01-01 00:00（基準日ちょうど）', async () => {
+    const kanshi = await getKanshiInstance(new Date('2019-01-01T00:00:00+09:00'))
+    expect(kanshi.月柱).toEqual('甲子')
+  })
+
+  it('2022-02-04 05:50（節入り前・基準日後）', async () => {
+    const kanshi = await getKanshiInstance(new Date('2022-02-04T05:50:00+09:00'))
+    expect(kanshi.月柱).toEqual('辛丑')
+  })
+  it('2022-02-04 05:51（節入り後・基準日後）', async () => {
+    const kanshi = await getKanshiInstance(new Date('2022-02-04T05:51:00+09:00'))
     expect(kanshi.月柱).toEqual('壬寅')
   })
 })

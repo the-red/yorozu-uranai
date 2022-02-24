@@ -20,7 +20,6 @@ const get六十干支 = (): T干支[] => {
 type Sekki = {
   today: string
   endOfMonth: string
-  endOfYear: string
 }
 export const getKanshiInstance = async (date: Date) => {
   const dateTime = DateTime.fromJSDate(date)
@@ -28,7 +27,6 @@ export const getKanshiInstance = async (date: Date) => {
   return new Kanshi(dateTime, {
     today: sekki(await getLongitude(date)),
     endOfMonth: sekki(await getLongitude(dateTime.endOf('month').toJSDate())),
-    endOfYear: sekki(await getLongitude(dateTime.endOf('year').toJSDate())),
   })
 }
 

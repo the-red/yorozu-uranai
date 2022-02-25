@@ -47,6 +47,13 @@ export const eclipticPosition = (julday_ut: number, planet: PlanetName): Promise
     )
   )
 
+// 日付から黄経だけを算出
+export const getLongitude = async (date: Date) => {
+  const julday_ut = await julday(date)
+  const { longitude } = await eclipticPosition(julday_ut, 'sun')
+  return longitude
+}
+
 // ハウスの計算
 export const calcHouses = (julday_ut: number, geolat: number, geolon: number, hsys: string = ''): Promise<Houses> =>
   new Promise((resolve, reject) =>

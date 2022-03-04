@@ -1,5 +1,5 @@
 {
-  "name": "fortune-telling",
+  "name": "yorozu-uranai",
   "private": true,
   "scripts": {
     "dev": "run-p dev:*",

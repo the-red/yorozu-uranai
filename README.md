@@ -1,9 +1,9 @@
-# 占いアプリ🔮Fortune Telling
+# よろず占い🔮
 
 環境構築
 ```
-git clone git@github.com:SonicGarden/fortune-telling.git
-cd fortune-telling
+git clone git@github.com:SonicGarden/yorozu-uranai.git
+cd yorozu-uranai
 yarn install
 ```
 

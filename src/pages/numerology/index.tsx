@@ -8,6 +8,8 @@ import flower from '../../../public/images/numerology/flower.png'
 import bird1 from '../../../public/images/numerology/bird-1.png'
 import bird2 from '../../../public/images/numerology/bird-2.png'
 
+// TODO: レスポンシブ対応したけど、display: none; 使ったり強引な気もするので、修正したいかも
+
 type FormValues = {
   birthday: Date
   name: string
@@ -26,9 +28,42 @@ const NumerologyForm: VFC<NumerologyFormProps> = ({ onSubmit }) => {
     onSubmit({ birthday: new Date(birthday), name })
   }
 
+  const birthdayInput = (
+    <div style={{ display: 'flex', marginBottom: '32px' }}>
+      <label style={{ width: '180px' }}>生年月日</label>
+      <input type="date" required style={{ width: '200px' }} onChange={(e) => setBirthday(e.target.value)} />
+    </div>
+  )
+
+  const nameInput = (
+    <div style={{ display: 'flex', marginBottom: '32px' }}>
+      <label style={{ width: '180px' }}>名前（ローマ字）</label>
+      <div style={{ width: '200px' }}>
+        <input type="text" required style={{ width: '100%' }} onChange={(e) => setName(e.target.value)} />
+      </div>
+    </div>
+  )
+
+  const submitButton = (
+    <button
+      type="submit"
+      style={{
+        backgroundColor: 'transparent',
+        border: 'solid 2px #BA6F87',
+        cursor: 'pointer',
+        outline: 'none',
+        appearance: 'none',
+        color: '#BA6F87',
+      }}
+      className="tw-px-3 tw-py-2 tw-w-full tw-rounded-md tw-font-bold"
+    >
+      計算する
+    </button>
+  )
+
   return (
     <div>
-      <div style={{ fontWeight: 'bold', fontSize: '20px', textAlign: 'center', marginBottom: '20px' }}>情報入力</div>
+      <div className="tw-text-center tw-text-lg sm:tw-text-xl tw-mb-2">情報入力</div>
 
       <div className="tw-relative tw-bg-white tw-p-8 tw-rounded-tl-2xl tw-rounded-tr-5xl tw-rounded-br-2xl tw-rounded-bl-5xl tw-border-2 tw-border-solid">
         <div className="tw-absolute tw-top-0 tw-left-0 tw-w-20" style={{ transform: 'rotate(12deg)' }}>
@@ -38,36 +73,16 @@ const NumerologyForm: VFC<NumerologyFormProps> = ({ onSubmit }) => {
           <Image src={flower} />
         </div>
 
-        <form onSubmit={handleSubmit} className="tw-flex tw-flex-col tw-items-center">
-          <div style={{ display: 'flex', marginBottom: '32px' }}>
-            <label style={{ width: '200px' }}>生年月日</label>
-            <input type="date" required style={{ width: '200px' }} onChange={(e) => setBirthday(e.target.value)} />
-          </div>
+        <form onSubmit={handleSubmit} className="<sm:tw-hidden tw-flex tw-flex-col tw-items-center">
+          {birthdayInput}
+          {nameInput}
+          <div style={{ marginLeft: '180px', width: '200px' }}>{submitButton}</div>
+        </form>
 
-          <div style={{ display: 'flex', marginBottom: '32px' }}>
-            <label style={{ width: '200px' }}>名前（ローマ字）</label>
-
-            <div style={{ width: '200px' }}>
-              <input type="text" required style={{ width: '100%' }} onChange={(e) => setName(e.target.value)} />
-            </div>
-          </div>
-
-          <div style={{ marginLeft: '200px', width: '200px' }}>
-            <button
-              type="submit"
-              style={{
-                backgroundColor: 'transparent',
-                border: 'solid 2px #BA6F87',
-                cursor: 'pointer',
-                outline: 'none',
-                appearance: 'none',
-                color: '#BA6F87',
-              }}
-              className="tw-px-3 tw-py-2 tw-w-full tw-rounded-md tw-font-bold"
-            >
-              計算する
-            </button>
-          </div>
+        <form onSubmit={handleSubmit} className="sm:tw-hidden tw-py-16">
+          {birthdayInput}
+          {nameInput}
+          <div className="tw-w-full">{submitButton}</div>
         </form>
       </div>
     </div>
@@ -117,11 +132,37 @@ type CoreNumbersProps = {
 }
 
 const CoreNumbers: VFC<CoreNumbersProps> = ({ numerology }) => {
+  const coreNumberItems = [
+    <div className="tw-flex tw-flex-col tw-items-center tw-space-y-4">
+      <CoreNumber>{numerology.lifePathNumber}</CoreNumber>
+      <div>ライフパス</div>
+    </div>,
+    <div className="tw-flex tw-flex-col tw-items-center tw-space-y-4">
+      <CoreNumber>{numerology.destinyNumber}</CoreNumber>
+      <div>ディスティニー</div>
+    </div>,
+    <div className="tw-flex tw-flex-col tw-items-center tw-space-y-4">
+      <CoreNumber>{numerology.soulNumber}</CoreNumber>
+      <div>ソウル</div>
+    </div>,
+    <div className="tw-flex tw-flex-col tw-items-center tw-space-y-4">
+      <CoreNumber>{numerology.personalityNumber}</CoreNumber>
+      <div>パーソナリティー</div>
+    </div>,
+    <div className="tw-flex tw-flex-col tw-items-center tw-space-y-4">
+      <CoreNumber>{numerology.maturityNumber}</CoreNumber>
+      <div>マチュリティー</div>
+    </div>,
+    <div className="tw-flex tw-flex-col tw-items-center tw-space-y-4">
+      <CoreNumber>{numerology.birthdayNumber}</CoreNumber>
+      <div>バースデー</div>
+    </div>,
+  ]
+
   return (
     <div>
-      <div style={{ fontWeight: 'bold', fontSize: '20px', textAlign: 'center', marginBottom: '20px' }}>
-        コアナンバー
-      </div>
+      <div className="tw-text-center tw-text-lg sm:tw-text-xl tw-mb-2">コアナンバー</div>
+
       <div className="tw-relative tw-bg-white tw-p-8 tw-rounded-tl-2xl tw-rounded-tr-5xl tw-rounded-br-2xl tw-rounded-bl-5xl tw-border-2 tw-border-solid">
         <div className="tw-absolute tw-top-1 tw-left-2  tw-w-20">
           <Image src={bird1} />
@@ -130,39 +171,16 @@ const CoreNumbers: VFC<CoreNumbersProps> = ({ numerology }) => {
           <Image src={bird2} />
         </div>
 
-        <div className="tw-flex tw-flex-col tw-space-y-6" style={{ width: 'max-content', margin: '0 auto' }}>
-          <div className="tw-flex tw-space-x-12">
-            <div className="tw-flex tw-flex-col tw-items-center tw-space-y-4">
-              <CoreNumber>{numerology.lifePathNumber}</CoreNumber>
-              <div>ライフパス</div>
-            </div>
-
-            <div className="tw-flex tw-flex-col tw-items-center tw-space-y-4">
-              <CoreNumber>{numerology.destinyNumber}</CoreNumber>
-              <div>ディスティニー</div>
-            </div>
-
-            <div className="tw-flex tw-flex-col tw-items-center tw-space-y-4">
-              <CoreNumber>{numerology.soulNumber}</CoreNumber>
-              <div>ソウル</div>
-            </div>
+        <div style={{ height: 'max-content', width: 'max-content', margin: '0 auto' }}>
+          <div className="<sm:tw-hidden tw-flex tw-flex-col tw-space-y-8">
+            <div className="tw-flex tw-space-x-10">{coreNumberItems.slice(0, 3)}</div>
+            <div className="tw-flex tw-space-x-10">{coreNumberItems.slice(3, 6)}</div>
           </div>
 
-          <div className="tw-flex tw-space-x-12">
-            <div className="tw-flex tw-flex-col tw-items-center tw-space-y-4">
-              <CoreNumber>{numerology.personalityNumber}</CoreNumber>
-              <div>パーソナリティー</div>
-            </div>
-
-            <div className="tw-flex tw-flex-col tw-items-center tw-space-y-4">
-              <CoreNumber>{numerology.maturityNumber}</CoreNumber>
-              <div>マチュリティー</div>
-            </div>
-
-            <div className="tw-flex tw-flex-col tw-items-center tw-space-y-4">
-              <CoreNumber>{numerology.birthdayNumber}</CoreNumber>
-              <div>バースデー</div>
-            </div>
+          <div className="sm:tw-hidden tw-py-12 tw-flex tw-flex-col tw-space-y-4">
+            <div className="tw-flex tw-space-x-5">{coreNumberItems.slice(0, 2)}</div>
+            <div className="tw-flex tw-space-x-5">{coreNumberItems.slice(2, 4)}</div>
+            <div className="tw-flex tw-space-x-5">{coreNumberItems.slice(4, 6)}</div>
           </div>
         </div>
       </div>
@@ -179,11 +197,11 @@ const NumerologyPage: NextPage = () => {
 
   return (
     <div
-      className="tw-min-h-screen tw-pb-8 tw--mt-6"
+      className="tw-min-h-screen tw-pb-8"
       style={{ backgroundColor: '#EBEBC1', fontFamily: 'Lato Regular, Noto Sans JP Regular' }}
     >
-      <div className="tw-w-screen-md tw-mx-auto tw-space-y-8">
-        <div style={{ fontFamily: 'MTF Wildflower' }} className="tw-text-center tw-text-10xl">
+      <div className="<sm:tw-mx-4 tw-max-w-screen-md tw-mx-auto tw-space-y-8">
+        <div style={{ fontFamily: 'MTF Wildflower' }} className="tw-text-center tw-text-7xl sm:tw-text-10xl">
           numerology
         </div>
 

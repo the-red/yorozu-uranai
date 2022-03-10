@@ -1,4 +1,4 @@
-import { julday, eclipticPosition, calcHouses, houseSystemName } from '../../src/horoscope/swisseph'
+import { julday, eclipticPosition, calcHouses, houseSystemName, localSiderealTime } from '../../src/horoscope/swisseph'
 
 describe('swisseph', () => {
   const funadyBirthday = new Date('1987-09-08T08:53:00+09:00')
@@ -88,6 +88,18 @@ describe('swisseph', () => {
     it('ハウスシステム名', async () => {
       expect(houseSystemName('A')).toEqual('equal')
       expect(houseSystemName()).toEqual('Placidus')
+    })
+  })
+
+  describe('地方恒星時', () => {
+    it('地方恒星時', async () => {
+      const okinaMegumiBirthday = new Date('1979-08-06T14:55:00+09:00')
+      // const okinaMegumiBirthLat = 34.38333333333333 // 34°23′
+      const okinaMegumiBirthLon = 132.45 // 132°27′
+
+      const julday_ut = await julday(okinaMegumiBirthday)
+      const result = await localSiderealTime(julday_ut, okinaMegumiBirthLon)
+      expect(result).toBe(11.691984808056366)
     })
   })
 })

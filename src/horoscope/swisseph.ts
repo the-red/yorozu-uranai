@@ -90,6 +90,15 @@ export const calcHouses = (julday_ut: number, geolat: number, geolon: number, hs
     })
   )
 
+// 地方恒星時
+export const localSiderealTime = (julday_ut: number, geolon: number): Promise<number> =>
+  new Promise((resolve) => {
+    // note: ライブラリ側がtypoしてる(siderial)
+    const { siderialTime: siderealTime } = swisseph.swe_sidtime(julday_ut)
+    const localSiderealTime = geolon / 15 + siderealTime
+    resolve(localSiderealTime)
+  })
+
 // ハウスシステム名を略称から引く
 // swe_house_name()がNode.js版では使えないので↓のをコピって独自実装
 // https://github.com/mivion/swisseph/blob/327e9ff871db2d27062d96ca30f1656d99cd5ec9/deps/swisseph/swehouse.c#L822-L853

@@ -1,4 +1,5 @@
 import { julday, calcHouses } from '../../src/horoscope/swisseph'
+import { SiderealTime } from '../../src/horoscope/SiderealTime'
 
 describe('SiderealTime', () => {
   const okinaMegumiBirthday = new Date('1979-08-06T14:55:00+09:00')
@@ -40,5 +41,12 @@ describe('SiderealTime', () => {
     const { armc } = await calcHouses(julday_ut, okinaMegumiBirthLat, okinaMegumiBirthLon)
     const siderealTime = armc / 15
     expect(siderealTime).toBe(11.6919848)
+  })
+
+  it('地方恒星時（Luxonオブジェクト）', async () => {
+    const julday_ut = await julday(okinaMegumiBirthday)
+    const { armc } = await calcHouses(julday_ut, okinaMegumiBirthLat, okinaMegumiBirthLon)
+    const st = new SiderealTime(julday_ut, armc)
+    expect(st.dateTime.toISO()).toBe('1979-08-06T11:41:31.000+09:00')
   })
 })

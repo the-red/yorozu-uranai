@@ -2,6 +2,18 @@
 import swisseph from 'swisseph'
 import type { PlanetName, EclipticPosition, HouseCusps, Houses } from './types'
 
+type UpperPlanetName =
+  | 'SUN'
+  | 'MOON'
+  | 'MERCURY'
+  | 'VENUS'
+  | 'MARS'
+  | 'JUPITER'
+  | 'SATURN'
+  | 'URANUS'
+  | 'NEPTUNE'
+  | 'PLUTO'
+
 const round6 = (num: number) => Math.trunc(num * 10 ** 6) / 10 ** 6
 
 // ユリウス日の計算
@@ -24,28 +36,29 @@ export const julday = (date: Date): Promise<number> => {
 }
 
 // 黄道座標の計算
-export const eclipticPosition = (julday_ut: number, planet: PlanetName): Promise<EclipticPosition> =>
-  new Promise((resolve, reject) =>
-    swisseph.swe_calc_ut(
-      julday_ut,
-      swisseph[`SE_${planet.toUpperCase()}`],
-      swisseph.SEFLG_SPEED,
-      (result: EclipticPosition) => {
-        if (result.error) reject(result.error)
-
-        // 処理系が変わると少し誤差が出るので丸めておく
-        result.latitude = round6(result.latitude)
-        result.longitude = round6(result.longitude)
-        result.distance = round6(result.distance)
-        result.latitudeSpeed = round6(result.latitudeSpeed)
-        result.longitudeSpeed = round6(result.longitudeSpeed)
-        result.distanceSpeed = round6(result.distanceSpeed)
-
-        result.isRetrograde = result.longitudeSpeed < 0
-        resolve(result)
+export const eclipticPosition = (julday_ut: number, _planet: PlanetName): Promise<EclipticPosition> =>
+  new Promise((resolve, reject) => {
+    const planet = _planet.toUpperCase() as UpperPlanetName
+    return swisseph.swe_calc_ut(julday_ut, swisseph[`SE_${planet}`], swisseph.SEFLG_SPEED, (r) => {
+      if ('error' in r) {
+        return reject(r.error)
       }
-    )
-  )
+
+      const result = r as Omit<EclipticPosition, 'isRetrograde'>
+
+      resolve({
+        // 処理系が変わると少し誤差が出るので丸めておく
+        latitude: round6(result.latitude),
+        longitude: round6(result.longitude),
+        distance: round6(result.distance),
+        latitudeSpeed: round6(result.latitudeSpeed),
+        longitudeSpeed: round6(result.longitudeSpeed),
+        distanceSpeed: round6(result.distanceSpeed),
+        rflag: result.rflag,
+        isRetrograde: result.longitudeSpeed < 0,
+      })
+    })
+  })
 
 // 日付から黄経だけを算出
 export const getLongitude = async (date: Date) => {
@@ -57,21 +70,23 @@ export const getLongitude = async (date: Date) => {
 // ハウスの計算
 export const calcHouses = (julday_ut: number, geolat: number, geolon: number, hsys: string = ''): Promise<Houses> =>
   new Promise((resolve, reject) =>
-    swisseph.swe_houses(julday_ut, geolat, geolon, hsys, (result: Houses) => {
-      if (result.error) reject(result.error)
+    swisseph.swe_houses(julday_ut, geolat, geolon, hsys, (result) => {
+      if ('error' in result) {
+        return reject(result.error)
+      }
 
-      // 処理系が変わると少し誤差が出るので丸めておく
-      result.house = result.house.map(round6) as HouseCusps
-      result.ascendant = round6(result.ascendant)
-      result.mc = round6(result.mc)
-      result.armc = round6(result.armc)
-      result.vertex = round6(result.vertex)
-      result.equatorialAscendant = round6(result.equatorialAscendant)
-      result.kochCoAscendant = round6(result.kochCoAscendant)
-      result.munkaseyCoAscendant = round6(result.munkaseyCoAscendant)
-      result.munkaseyPolarAscendant = round6(result.munkaseyPolarAscendant)
-
-      resolve(result)
+      resolve({
+        // 処理系が変わると少し誤差が出るので丸めておく
+        house: result.house.map(round6),
+        ascendant: round6(result.ascendant),
+        mc: round6(result.mc),
+        armc: round6(result.armc),
+        vertex: round6(result.vertex),
+        equatorialAscendant: round6(result.equatorialAscendant),
+        kochCoAscendant: round6(result.kochCoAscendant),
+        munkaseyCoAscendant: round6(result.munkaseyCoAscendant),
+        munkaseyPolarAscendant: round6(result.munkaseyPolarAscendant),
+      })
     })
   )
 

@@ -1,5 +1,3 @@
-import type { Position } from './Position'
-
 export type PlanetName =
   | 'sun'
   | 'moon'
@@ -21,7 +19,6 @@ export type EclipticPosition = {
   distanceSpeed: number
   rflag: number
   isRetrograde: boolean // trueなら逆行
-  error?: any
 }
 
 export type HouseCusps = number[]
@@ -36,5 +33,4 @@ export type Houses = {
   kochCoAscendant: number
   munkaseyCoAscendant: number
   munkaseyPolarAscendant: number
-  error?: any
 }

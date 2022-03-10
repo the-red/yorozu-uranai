@@ -17,5 +17,10 @@ a {
 
 @font-face {
   font-family: 'Farewell Pro Regular';
-  src: url('/fonts/FarewellProRegular-MVZBB.ttf');
+  src: url('/fonts/Farewell Pro Regular.ttf');
+}
+
+@font-face {
+  font-family: 'MTF Wildflower';
+  src: url("/fonts/MTF Wildflower.ttf");
 }

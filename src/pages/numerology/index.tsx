@@ -181,8 +181,8 @@ const NumerologyPage: NextPage = () => {
   return (
     <div className="tw-min-h-screen tw-py-8" style={{ backgroundColor: '#EBEBC1' }}>
       <div className="tw-w-screen-md tw-mx-auto tw-space-y-8">
-        <div className="tw-w-80">
-          <Image src={title} />
+        <div style={{ fontFamily: 'MTF Wildflower' }} className="tw-text-8xl">
+          numerology
         </div>
 
         <NumerologyForm onSubmit={handleSubmit} />

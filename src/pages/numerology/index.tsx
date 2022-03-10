@@ -3,7 +3,6 @@ import Image from 'next/image'
 import { FC, FormEventHandler, useState, VFC } from 'react'
 import { Numerology } from '../../numerology/Numerology'
 
-import title from '../../../public/images/numerology/title.png'
 import leaf from '../../../public/images/numerology/leaf.png'
 import flower from '../../../public/images/numerology/flower.png'
 import bird1 from '../../../public/images/numerology/bird-1.png'
@@ -179,7 +178,10 @@ const NumerologyPage: NextPage = () => {
   }
 
   return (
-    <div className="tw-min-h-screen tw-py-8" style={{ backgroundColor: '#EBEBC1' }}>
+    <div
+      className="tw-min-h-screen tw-py-8"
+      style={{ backgroundColor: '#EBEBC1', fontFamily: 'Lato Regular, Noto Sans JP Regular' }}
+    >
       <div className="tw-w-screen-md tw-mx-auto tw-space-y-8">
         <div style={{ fontFamily: 'MTF Wildflower' }} className="tw-text-8xl">
           numerology

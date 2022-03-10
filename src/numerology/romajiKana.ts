@@ -5,7 +5,7 @@ type kana2romaji = {
 export const convertHiraganaToRomagi = (target: string): string => toHiragana(target)
 
 const toHiragana = (target: string): string => {
-  const targetArray = target.split('').map((word) => kana2romaji[word])
+  const targetArray = target.split('').map((character) => kana2romaji[character])
   return targetArray.join('')
 }
 

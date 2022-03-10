@@ -6,9 +6,11 @@ export const convertHiraganaToRomagi = (target: string): string => toHiragana(ta
 
 const toHiragana = (target: string): string => {
   const targetArray = target.split('').map((word) => kana2romaji[word])
-  return targetArray.join()
+  return targetArray.join('')
 }
 
+// ここのオブジェクトを転用
+// https://github.com/koozaki/romaji-conv/blob/main/lib/map/romaji2hiragana.js
 const kana2romaji: kana2romaji = {
   ん: 'n',
   お: 'o',

@@ -17,23 +17,22 @@ type UpperPlanetName =
 const round6 = (num: number) => Math.trunc(num * 10 ** 6) / 10 ** 6
 
 // ユリウス日の計算
-export const julday = (date: Date): Promise<number> => {
-  const year = date.getFullYear()
-  const month = date.getMonth() + 1
-  const day = date.getDate()
+export const julday = (date: Date): Promise<number> =>
+  new Promise((resolve) => {
+    const year = date.getFullYear()
+    const month = date.getMonth() + 1
+    const day = date.getDate()
 
-  const hour = date.getHours()
-  const minute = date.getMinutes()
-  const second = date.getSeconds() + date.getMilliseconds() / 1000
-  const offset = date.getTimezoneOffset()
-  const utcHourMinuteSecond = hour + (minute + second / 60 + offset) / 60
+    const hour = date.getHours()
+    const minute = date.getMinutes()
+    const second = date.getSeconds() + date.getMilliseconds() / 1000
+    const offset = date.getTimezoneOffset()
+    const utcHourMinuteSecond = hour + (minute + second / 60 + offset) / 60
 
-  return new Promise((resolve) =>
-    swisseph.swe_julday(year, month, day, utcHourMinuteSecond, swisseph.SE_GREG_CAL, (julday_ut: number) =>
+    return swisseph.swe_julday(year, month, day, utcHourMinuteSecond, swisseph.SE_GREG_CAL, (julday_ut: number) =>
       resolve(julday_ut)
     )
-  )
-}
+  })
 
 // 黄道座標の計算
 export const eclipticPosition = (julday_ut: number, _planet: PlanetName): Promise<EclipticPosition> =>

@@ -30,7 +30,7 @@ const NumerologyForm: VFC<NumerologyFormProps> = ({ onSubmit }) => {
     <div>
       <div style={{ fontWeight: 'bold', fontSize: '20px', textAlign: 'center', marginBottom: '20px' }}>情報入力</div>
 
-      <div className="tw-relative tw-bg-white tw-p-8 tw-rounded-bl-3xl tw-rounded-tr-3xl tw-border-2 tw-border-solid">
+      <div className="tw-relative tw-bg-white tw-p-8 tw-rounded-tl-2xl tw-rounded-tr-5xl tw-rounded-br-2xl tw-rounded-bl-5xl tw-border-2 tw-border-solid">
         <div className="tw-absolute tw-top-0 tw-left-0 tw-w-20" style={{ transform: 'rotate(12deg)' }}>
           <Image src={leaf} />
         </div>
@@ -79,8 +79,8 @@ const CoreNumber: FC = ({ children }) => {
     <div
       style={{
         position: 'relative',
-        width: 'calc(150px * 1.05)',
-        height: '150px',
+        width: 'calc(120px * 1.05)',
+        height: '120px',
         background: '#9A8EB6',
         clipPath: 'polygon( 50% 0, 100% 38%, 81% 100%, 19% 100%, 0 38%)',
       }}
@@ -95,8 +95,8 @@ const CoreNumber: FC = ({ children }) => {
       >
         <div
           style={{
-            width: 'calc(144px * 1.05)',
-            height: '144px',
+            width: 'calc(114px * 1.05)',
+            height: '114px',
             background: '#fff',
             clipPath: 'polygon( 50% 0, 100% 38%, 81% 100%, 19% 100%, 0 38%)',
           }}
@@ -104,7 +104,7 @@ const CoreNumber: FC = ({ children }) => {
       </div>
 
       <div style={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -35%)' }}>
-        <div className="tw-text-7xl tw-font-extralight" style={{ color: '#9A8EB6' }}>
+        <div className="tw-text-5xl tw-font-thin" style={{ color: '#9A8EB6' }}>
           {children}
         </div>
       </div>
@@ -122,7 +122,7 @@ const CoreNumbers: VFC<CoreNumbersProps> = ({ numerology }) => {
       <div style={{ fontWeight: 'bold', fontSize: '20px', textAlign: 'center', marginBottom: '20px' }}>
         コアナンバー
       </div>
-      <div className="tw-relative tw-bg-white tw-p-8 tw-rounded-bl-3xl tw-rounded-tr-3xl tw-border-2 tw-border-solid">
+      <div className="tw-relative tw-bg-white tw-p-8 tw-rounded-tl-2xl tw-rounded-tr-5xl tw-rounded-br-2xl tw-rounded-bl-5xl tw-border-2 tw-border-solid">
         <div className="tw-absolute tw-top-1 tw-left-2  tw-w-20">
           <Image src={bird1} />
         </div>
@@ -179,11 +179,11 @@ const NumerologyPage: NextPage = () => {
 
   return (
     <div
-      className="tw-min-h-screen tw-py-8"
+      className="tw-min-h-screen tw-pb-8 tw--mt-6"
       style={{ backgroundColor: '#EBEBC1', fontFamily: 'Lato Regular, Noto Sans JP Regular' }}
     >
       <div className="tw-w-screen-md tw-mx-auto tw-space-y-8">
-        <div style={{ fontFamily: 'MTF Wildflower' }} className="tw-text-8xl">
+        <div style={{ fontFamily: 'MTF Wildflower' }} className="tw-text-center tw-text-10xl">
           numerology
         </div>
 

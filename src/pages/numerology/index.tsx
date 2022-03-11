@@ -133,27 +133,27 @@ type CoreNumbersProps = {
 
 const CoreNumbers: VFC<CoreNumbersProps> = ({ numerology }) => {
   const coreNumberItems = [
-    <div className="tw-flex tw-flex-col tw-items-center tw-space-y-4">
+    <div key="0" className="tw-flex tw-flex-col tw-items-center tw-space-y-4">
       <CoreNumber>{numerology.lifePathNumber}</CoreNumber>
       <div>ライフパス</div>
     </div>,
-    <div className="tw-flex tw-flex-col tw-items-center tw-space-y-4">
+    <div key="1" className="tw-flex tw-flex-col tw-items-center tw-space-y-4">
       <CoreNumber>{numerology.destinyNumber}</CoreNumber>
       <div>ディスティニー</div>
     </div>,
-    <div className="tw-flex tw-flex-col tw-items-center tw-space-y-4">
+    <div key="2" className="tw-flex tw-flex-col tw-items-center tw-space-y-4">
       <CoreNumber>{numerology.soulNumber}</CoreNumber>
       <div>ソウル</div>
     </div>,
-    <div className="tw-flex tw-flex-col tw-items-center tw-space-y-4">
+    <div key="3" className="tw-flex tw-flex-col tw-items-center tw-space-y-4">
       <CoreNumber>{numerology.personalityNumber}</CoreNumber>
       <div>パーソナリティー</div>
     </div>,
-    <div className="tw-flex tw-flex-col tw-items-center tw-space-y-4">
+    <div key="4" className="tw-flex tw-flex-col tw-items-center tw-space-y-4">
       <CoreNumber>{numerology.maturityNumber}</CoreNumber>
       <div>マチュリティー</div>
     </div>,
-    <div className="tw-flex tw-flex-col tw-items-center tw-space-y-4">
+    <div key="5" className="tw-flex tw-flex-col tw-items-center tw-space-y-4">
       <CoreNumber>{numerology.birthdayNumber}</CoreNumber>
       <div>バースデー</div>
     </div>,

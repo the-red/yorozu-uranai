@@ -1,4 +1,5 @@
-import type { Planet } from '../horoscope'
+// import type { Planet } from '../horoscope'
+import { Planet, PLANET_NAMES_JA } from '../horoscope'
 
 type Props = {
   planets: Planet[]
@@ -13,7 +14,7 @@ export default function SignTable({ planets }: Props) {
   const makeSignSingleSentence = (type: string, key: 'element' | 'quality' | 'polarity') => {
     return planets
       .filter((planet) => planet[key] === type)
-      .map((planet) => planet.name)
+      .map((planet) => PLANET_NAMES_JA[planet.name])
       .join(' ')
   }
 

@@ -28,7 +28,6 @@ export const PLANET_NAMES_JA = {
   neptune: '海王星',
   pluto: '冥王星',
 } as const
-export type PlanetNameJa = typeof PLANET_NAMES_JA[PlanetName]
 
 export const ALL_MAJOR_ASPECTS = [
   { degrees: 0, name: 'conjunction', type: 'hard' },

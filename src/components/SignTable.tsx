@@ -1,4 +1,3 @@
-// import type { Planet } from '../horoscope'
 import { Planet, PLANET_NAMES_JA } from '../horoscope'
 
 type Props = {

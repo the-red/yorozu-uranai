@@ -14,7 +14,7 @@ export default function SignTable({ planets }: Props) {
     return planets
       .filter((planet) => planet[key] === type)
       .map((planet) => PLANET_NAMES_JA[planet.name])
-      .join(' ')
+      .join(' / ')
   }
 
   return (

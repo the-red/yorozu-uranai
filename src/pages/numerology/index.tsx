@@ -127,36 +127,40 @@ const CoreNumber: FC = ({ children }) => {
   )
 }
 
+const CoreNumberItem: FC = ({ children }) => {
+  return <div className="tw-flex tw-flex-col tw-items-center tw-space-y-4">{children}</div>
+}
+
 type CoreNumbersProps = {
   numerology: Numerology
 }
 
 const CoreNumbers: VFC<CoreNumbersProps> = ({ numerology }) => {
   const coreNumberItems = [
-    <div key="0" className="tw-flex tw-flex-col tw-items-center tw-space-y-4">
+    <CoreNumberItem key="0">
       <CoreNumber>{numerology.lifePathNumber}</CoreNumber>
       <div>ライフパス</div>
-    </div>,
-    <div key="1" className="tw-flex tw-flex-col tw-items-center tw-space-y-4">
+    </CoreNumberItem>,
+    <CoreNumberItem key="1">
       <CoreNumber>{numerology.destinyNumber}</CoreNumber>
       <div>ディスティニー</div>
-    </div>,
-    <div key="2" className="tw-flex tw-flex-col tw-items-center tw-space-y-4">
+    </CoreNumberItem>,
+    <CoreNumberItem key="2">
       <CoreNumber>{numerology.soulNumber}</CoreNumber>
       <div>ソウル</div>
-    </div>,
-    <div key="3" className="tw-flex tw-flex-col tw-items-center tw-space-y-4">
+    </CoreNumberItem>,
+    <CoreNumberItem key="3">
       <CoreNumber>{numerology.personalityNumber}</CoreNumber>
       <div>パーソナリティー</div>
-    </div>,
-    <div key="4" className="tw-flex tw-flex-col tw-items-center tw-space-y-4">
+    </CoreNumberItem>,
+    <CoreNumberItem key="4">
       <CoreNumber>{numerology.maturityNumber}</CoreNumber>
       <div>マチュリティー</div>
-    </div>,
-    <div key="5" className="tw-flex tw-flex-col tw-items-center tw-space-y-4">
+    </CoreNumberItem>,
+    <CoreNumberItem key="5">
       <CoreNumber>{numerology.birthdayNumber}</CoreNumber>
       <div>バースデー</div>
-    </div>,
+    </CoreNumberItem>,
   ]
 
   return (
@@ -200,7 +204,7 @@ const NumerologyPage: NextPage = () => {
       className="tw-min-h-screen tw-pb-8"
       style={{ backgroundColor: '#EBEBC1', fontFamily: 'Lato Regular, Noto Sans JP Regular' }}
     >
-      <div className="<sm:tw-mx-4 tw-max-w-screen-md tw-mx-auto tw-space-y-8">
+      <div className="tw-max-w-screen-md tw-px-4 tw-mx-auto tw-space-y-8">
         <div style={{ fontFamily: 'MTF Wildflower' }} className="tw-text-center tw-text-7xl sm:tw-text-10xl">
           numerology
         </div>

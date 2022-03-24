@@ -1,4 +1,4 @@
-import type { Horoscope } from '../horoscope'
+import { Horoscope, PLANET_NAMES_JA } from '../horoscope'
 
 type Props = {
   horoscope: Horoscope
@@ -12,7 +12,7 @@ export default function PlanetPositions({ horoscope }: Props) {
         <tbody>
           {Object.values(horoscope.planets).map((planet, i) => (
             <tr key={i}>
-              <td>{planet.name}</td>
+              <td>{PLANET_NAMES_JA[planet.name]}</td>
               <td>{planet.sign}</td>
               <td>{planet.formattedDegrees}</td>
               <td>{planet.house}ハウス</td>

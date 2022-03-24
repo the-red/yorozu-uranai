@@ -16,6 +16,19 @@ export const PLANET_ICONS = {
 } as const
 export type PlanetIcon = typeof PLANET_ICONS[PlanetName]
 
+export const PLANET_NAMES_JA = {
+  sun: '太陽',
+  moon: '月',
+  mercury: '水星',
+  venus: '金星',
+  mars: '火星',
+  jupiter: '木星',
+  saturn: '土星',
+  uranus: '天王星',
+  neptune: '海王星',
+  pluto: '冥王星',
+} as const
+
 export const ALL_MAJOR_ASPECTS = [
   { degrees: 0, name: 'conjunction', type: 'hard' },
   { degrees: 60, name: 'sextile', type: 'soft' },

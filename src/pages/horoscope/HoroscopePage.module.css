@@ -19,7 +19,15 @@
   margin-bottom: 20px;
 }
 
-/* aspect chart用のcss */
+/* Sign Table用 */
+.sign-table-list-item {
+  width: 20%;
+}
+.sign-table-list-value {
+  width: 80%;
+}
+
+/* aspect chart用 */
 .aspect-chart-container {
   display: flex;
   flex-direction: column;

@@ -1,4 +1,5 @@
 import { Planet, PLANET_NAMES_JA } from '../horoscope'
+import styles from '../pages/horoscope/HoroscopePage.module.css'
 
 type Props = {
   planets: Planet[]
@@ -24,20 +25,20 @@ export default function SignTable({ planets }: Props) {
       <table style={{ width: '100%' }}>
         <tbody>
           <tr>
-            <td>火</td>
-            <td>{makeElementSingleSentence('fire')}</td>
+            <td className={styles['sign-table-list-item']}>火</td>
+            <td className={styles['sign-table-list-value']}>{makeElementSingleSentence('fire')}</td>
           </tr>
           <tr>
-            <td>土</td>
-            <td>{makeElementSingleSentence('earth')}</td>
+            <td className={styles['sign-table-list-item']}>土</td>
+            <td className={styles['sign-table-list-value']}>{makeElementSingleSentence('earth')}</td>
           </tr>
           <tr>
-            <td>風</td>
-            <td>{makeElementSingleSentence('air')}</td>
+            <td className={styles['sign-table-list-item']}>風</td>
+            <td className={styles['sign-table-list-value']}>{makeElementSingleSentence('air')}</td>
           </tr>
           <tr>
-            <td>水</td>
-            <td>{makeElementSingleSentence('water')}</td>
+            <td className={styles['sign-table-list-item']}>水</td>
+            <td className={styles['sign-table-list-value']}>{makeElementSingleSentence('water')}</td>
           </tr>
         </tbody>
       </table>
@@ -45,16 +46,16 @@ export default function SignTable({ planets }: Props) {
       <table style={{ width: '100%' }}>
         <tbody>
           <tr>
-            <td>活動宮</td>
-            <td>{makeQualitySingleSentence('cardinal')}</td>
+            <td className={styles['sign-table-list-item']}>活動宮</td>
+            <td className={styles['sign-table-list-value']}>{makeQualitySingleSentence('cardinal')}</td>
           </tr>
           <tr>
-            <td>不動宮</td>
-            <td>{makeQualitySingleSentence('fixed')}</td>
+            <td className={styles['sign-table-list-item']}>不動宮</td>
+            <td className={styles['sign-table-list-value']}>{makeQualitySingleSentence('fixed')}</td>
           </tr>
           <tr>
-            <td>柔軟宮</td>
-            <td>{makeQualitySingleSentence('mutable')}</td>
+            <td className={styles['sign-table-list-item']}>柔軟宮</td>
+            <td className={styles['sign-table-list-value']}>{makeQualitySingleSentence('mutable')}</td>
           </tr>
         </tbody>
       </table>
@@ -62,12 +63,12 @@ export default function SignTable({ planets }: Props) {
       <table style={{ width: '100%' }}>
         <tbody>
           <tr>
-            <td>男性宮</td>
-            <td>{makePolaritySingleSentence('masculine')}</td>
+            <td className={styles['sign-table-list-item']}>男性宮</td>
+            <td className={styles['sign-table-list-value']}>{makePolaritySingleSentence('masculine')}</td>
           </tr>
           <tr>
-            <td>女性宮</td>
-            <td>{makePolaritySingleSentence('feminine')}</td>
+            <td className={styles['sign-table-list-item']}>女性宮</td>
+            <td className={styles['sign-table-list-value']}>{makePolaritySingleSentence('feminine')}</td>
           </tr>
         </tbody>
       </table>

@@ -20,9 +20,9 @@ export default function SignTable({ planets }: Props) {
   return (
     <div style={{ width: '100%' }}>
       <div style={{ fontSize: '30px' }}>Sign Classification</div>
+      {/* ４区分 */}
       <table style={{ width: '100%' }}>
         <tbody>
-          {/* ４区分 */}
           <tr>
             <td>火　　</td>
             <td>{makeElementSingleSentence('fire')}</td>
@@ -39,8 +39,11 @@ export default function SignTable({ planets }: Props) {
             <td>水　　</td>
             <td>{makeElementSingleSentence('water')}</td>
           </tr>
-
-          {/* ３区分 */}
+        </tbody>
+      </table>
+      {/* ３区分 */}
+      <table style={{ width: '100%' }}>
+        <tbody>
           <tr>
             <td>活動宮</td>
             <td>{makeQualitySingleSentence('cardinal')}</td>
@@ -53,8 +56,11 @@ export default function SignTable({ planets }: Props) {
             <td>柔軟宮</td>
             <td>{makeQualitySingleSentence('mutable')}</td>
           </tr>
-
-          {/* ２区分 */}
+        </tbody>
+      </table>
+      {/* ２区分 */}
+      <table style={{ width: '100%' }}>
+        <tbody>
           <tr>
             <td>男性宮</td>
             <td>{makePolaritySingleSentence('masculine')}</td>

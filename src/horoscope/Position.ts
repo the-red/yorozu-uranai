@@ -31,6 +31,7 @@ export class Position {
     const degreesMinInt = Math.round(degreesMin)
     const degreesMinStr = `${String(degreesMinInt).padStart(2, '0')}′`
 
+    // TODO:確認後、以下コメントは削除する
     // const degreesSec = (degreesMin - degreesMinInt) * MINUTE
     // const degreesSecInt = Math.round(degreesSec)
     // const degreesSecStr = `${String(degreesSecInt).padStart(2, '0')}″`

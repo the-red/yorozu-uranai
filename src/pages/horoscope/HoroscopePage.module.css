@@ -20,10 +20,13 @@
 }
 
 /* Sign Table用 */
-.sign-table-list-item {
+.sign-classification-list {
+  width: 100%;
+}
+.sign-classification-list-item {
   width: 20%;
 }
-.sign-table-list-value {
+.sign-classification-list-value {
   width: 80%;
 }
 

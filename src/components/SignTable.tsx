@@ -22,53 +22,53 @@ export default function SignTable({ planets }: Props) {
     <div style={{ width: '100%' }}>
       <div style={{ fontSize: '30px' }}>Sign Classification</div>
       {/* ４区分 */}
-      <table style={{ width: '100%' }}>
+      <table className={styles['sign-classification-list']}>
         <tbody>
           <tr>
-            <td className={styles['sign-table-list-item']}>火</td>
-            <td className={styles['sign-table-list-value']}>{makeElementSingleSentence('fire')}</td>
+            <td className={styles['sign-classification-list-item']}>火</td>
+            <td className={styles['sign-classification-list-value']}>{makeElementSingleSentence('fire')}</td>
           </tr>
           <tr>
-            <td className={styles['sign-table-list-item']}>土</td>
-            <td className={styles['sign-table-list-value']}>{makeElementSingleSentence('earth')}</td>
+            <td className={styles['sign-classification-list-item']}>土</td>
+            <td className={styles['sign-classification-list-value']}>{makeElementSingleSentence('earth')}</td>
           </tr>
           <tr>
-            <td className={styles['sign-table-list-item']}>風</td>
-            <td className={styles['sign-table-list-value']}>{makeElementSingleSentence('air')}</td>
+            <td className={styles['sign-classification-list-item']}>風</td>
+            <td className={styles['sign-classification-list-value']}>{makeElementSingleSentence('air')}</td>
           </tr>
           <tr>
-            <td className={styles['sign-table-list-item']}>水</td>
-            <td className={styles['sign-table-list-value']}>{makeElementSingleSentence('water')}</td>
+            <td className={styles['sign-classification-list-item']}>水</td>
+            <td className={styles['sign-classification-list-value']}>{makeElementSingleSentence('water')}</td>
           </tr>
         </tbody>
       </table>
       {/* ３区分 */}
-      <table style={{ width: '100%' }}>
+      <table className={styles['sign-classification-list']}>
         <tbody>
           <tr>
-            <td className={styles['sign-table-list-item']}>活動宮</td>
-            <td className={styles['sign-table-list-value']}>{makeQualitySingleSentence('cardinal')}</td>
+            <td className={styles['sign-classification-list-item']}>活動宮</td>
+            <td className={styles['sign-classification-list-value']}>{makeQualitySingleSentence('cardinal')}</td>
           </tr>
           <tr>
-            <td className={styles['sign-table-list-item']}>不動宮</td>
-            <td className={styles['sign-table-list-value']}>{makeQualitySingleSentence('fixed')}</td>
+            <td className={styles['sign-classification-list-item']}>不動宮</td>
+            <td className={styles['sign-classification-list-value']}>{makeQualitySingleSentence('fixed')}</td>
           </tr>
           <tr>
-            <td className={styles['sign-table-list-item']}>柔軟宮</td>
-            <td className={styles['sign-table-list-value']}>{makeQualitySingleSentence('mutable')}</td>
+            <td className={styles['sign-classification-list-item']}>柔軟宮</td>
+            <td className={styles['sign-classification-list-value']}>{makeQualitySingleSentence('mutable')}</td>
           </tr>
         </tbody>
       </table>
       {/* ２区分 */}
-      <table style={{ width: '100%' }}>
+      <table className={styles['sign-classification-list']}>
         <tbody>
           <tr>
-            <td className={styles['sign-table-list-item']}>男性宮</td>
-            <td className={styles['sign-table-list-value']}>{makePolaritySingleSentence('masculine')}</td>
+            <td className={styles['sign-classification-list-item']}>男性宮</td>
+            <td className={styles['sign-classification-list-value']}>{makePolaritySingleSentence('masculine')}</td>
           </tr>
           <tr>
-            <td className={styles['sign-table-list-item']}>女性宮</td>
-            <td className={styles['sign-table-list-value']}>{makePolaritySingleSentence('feminine')}</td>
+            <td className={styles['sign-classification-list-item']}>女性宮</td>
+            <td className={styles['sign-classification-list-value']}>{makePolaritySingleSentence('feminine')}</td>
           </tr>
         </tbody>
       </table>

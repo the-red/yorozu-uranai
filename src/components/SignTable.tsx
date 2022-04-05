@@ -24,19 +24,19 @@ export default function SignTable({ planets }: Props) {
       <table style={{ width: '100%' }}>
         <tbody>
           <tr>
-            <td>火　　</td>
+            <td>火</td>
             <td>{makeElementSingleSentence('fire')}</td>
           </tr>
           <tr>
-            <td>土　　</td>
+            <td>土</td>
             <td>{makeElementSingleSentence('earth')}</td>
           </tr>
           <tr>
-            <td>風　　</td>
+            <td>風</td>
             <td>{makeElementSingleSentence('air')}</td>
           </tr>
           <tr>
-            <td>水　　</td>
+            <td>水</td>
             <td>{makeElementSingleSentence('water')}</td>
           </tr>
         </tbody>

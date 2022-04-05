@@ -22,6 +22,7 @@
 /* Sign Table用 */
 .sign-classification-list {
   width: 100%;
+  margin-bottom: 4px;
 }
 .sign-classification-list-item {
   width: 20%;

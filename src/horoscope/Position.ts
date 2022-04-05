@@ -28,14 +28,14 @@ export class Position {
 
     const MINUTE = 60
     const degreesMin = (this.degrees - degreesInt) * MINUTE
-    const degreesMinInt = Math.trunc(degreesMin)
+    const degreesMinInt = Math.round(degreesMin)
     const degreesMinStr = `${String(degreesMinInt).padStart(2, '0')}′`
 
-    const degreesSec = (degreesMin - degreesMinInt) * MINUTE
-    const degreesSecInt = Math.round(degreesSec)
-    const degreesSecStr = `${String(degreesSecInt).padStart(2, '0')}″`
+    // const degreesSec = (degreesMin - degreesMinInt) * MINUTE
+    // const degreesSecInt = Math.round(degreesSec)
+    // const degreesSecStr = `${String(degreesSecInt).padStart(2, '0')}″`
 
-    return degreesStr + degreesMinStr + degreesSecStr
+    return degreesStr + degreesMinStr
   }
 
   get sign() {

@@ -26,6 +26,7 @@
 
 /* aspect chart用のcss */
 .aspect-chart-container {
+  padding-top: 10px;
   display: flex;
   flex-direction: column;
   width: auto;

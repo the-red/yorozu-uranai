@@ -20,8 +20,7 @@ export default function SignTable({ planets }: Props) {
 
   return (
     <div style={{ width: '100%' }}>
-      <div style={{ fontSize: '30px' }}>Sign Classification</div>
-      {/* ４区分 */}
+      <div className={styles.list}>Sign Classification</div>
       <table className={styles['sign-classification-list']}>
         <tbody>
           <tr>

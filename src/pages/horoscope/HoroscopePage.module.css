@@ -19,6 +19,11 @@
   margin-bottom: 20px;
 }
 
+.list {
+  font-family: 'Khand';
+  font-size: 37px;
+}
+
 /* Sign Table用 */
 .sign-classification-list {
   width: 100%;
@@ -33,6 +38,7 @@
 
 /* aspect chart用 */
 .aspect-chart-container {
+  padding-top: 10px;
   display: flex;
   flex-direction: column;
   width: auto;

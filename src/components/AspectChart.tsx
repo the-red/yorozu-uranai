@@ -72,7 +72,7 @@ export default function AspectChart({ horoscope }: Props) {
 
   return (
     <div>
-      <div style={{ fontSize: '30px', marginBottom: '10px' }}>Aspect Chart</div>
+      <div className={styles.list}>Aspect Chart</div>
       <AspectChart />
     </div>
   )

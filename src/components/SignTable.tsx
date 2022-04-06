@@ -1,4 +1,5 @@
 import { Planet, PLANET_NAMES_JA } from '../horoscope'
+import styles from '../pages/horoscope/HoroscopePage.module.css'
 
 type Props = {
   planets: Planet[]
@@ -19,7 +20,7 @@ export default function SignTable({ planets }: Props) {
 
   return (
     <div style={{ width: '100%' }}>
-      <div style={{ fontSize: '30px' }}>Sign Classification</div>
+      <div className={styles.list}>Sign Classification</div>
       <table style={{ width: '100%' }}>
         <tbody>
           {/* ４区分 */}

@@ -22,15 +22,20 @@ a {
 
 @font-face {
   font-family: 'MTF Wildflower';
-  src: url("/fonts/MTF Wildflower.ttf");
+  src: url('/fonts/MTF Wildflower.ttf');
 }
 
 @font-face {
-  font-family: "Noto Sans JP Regular";
-  src: url("/fonts/Noto Sans JP Regular.otf");
+  font-family: 'Noto Sans JP Regular';
+  src: url('/fonts/Noto Sans JP Regular.otf');
 }
 
 @font-face {
-  font-family: "Lato Regular";
-  src: url("/fonts/Lato Regular.ttf");
+  font-family: 'Lato Regular';
+  src: url('/fonts/Lato Regular.ttf');
+}
+
+@font-face {
+  font-family: 'Khand';
+  src: url('/fonts/Khand-Regular.ttf');
 }

@@ -19,8 +19,14 @@
   margin-bottom: 20px;
 }
 
+.list {
+  font-family: 'Khand';
+  font-size: 37px;
+}
+
 /* aspect chart用のcss */
 .aspect-chart-container {
+  padding-top: 10px;
   display: flex;
   flex-direction: column;
   width: auto;

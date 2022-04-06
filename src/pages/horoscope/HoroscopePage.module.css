@@ -24,7 +24,19 @@
   font-size: 37px;
 }
 
-/* aspect chart用のcss */
+/* Sign Table用 */
+.sign-classification-list {
+  width: 100%;
+  margin-bottom: 4px;
+}
+.sign-classification-list-item {
+  width: 20%;
+}
+.sign-classification-list-value {
+  width: 80%;
+}
+
+/* aspect chart用 */
 .aspect-chart-container {
   padding-top: 10px;
   display: flex;

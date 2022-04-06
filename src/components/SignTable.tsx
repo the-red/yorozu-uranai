@@ -21,48 +21,53 @@ export default function SignTable({ planets }: Props) {
   return (
     <div style={{ width: '100%' }}>
       <div className={styles.list}>Sign Classification</div>
-      <table style={{ width: '100%' }}>
+      <table className={styles['sign-classification-list']}>
         <tbody>
-          {/* ４区分 */}
           <tr>
-            <td>火　　</td>
-            <td>{makeElementSingleSentence('fire')}</td>
+            <td className={styles['sign-classification-list-item']}>火</td>
+            <td className={styles['sign-classification-list-value']}>{makeElementSingleSentence('fire')}</td>
           </tr>
           <tr>
-            <td>土　　</td>
-            <td>{makeElementSingleSentence('earth')}</td>
+            <td className={styles['sign-classification-list-item']}>土</td>
+            <td className={styles['sign-classification-list-value']}>{makeElementSingleSentence('earth')}</td>
           </tr>
           <tr>
-            <td>風　　</td>
-            <td>{makeElementSingleSentence('air')}</td>
+            <td className={styles['sign-classification-list-item']}>風</td>
+            <td className={styles['sign-classification-list-value']}>{makeElementSingleSentence('air')}</td>
           </tr>
           <tr>
-            <td>水　　</td>
-            <td>{makeElementSingleSentence('water')}</td>
+            <td className={styles['sign-classification-list-item']}>水</td>
+            <td className={styles['sign-classification-list-value']}>{makeElementSingleSentence('water')}</td>
           </tr>
-
-          {/* ３区分 */}
+        </tbody>
+      </table>
+      {/* ３区分 */}
+      <table className={styles['sign-classification-list']}>
+        <tbody>
           <tr>
-            <td>活動宮</td>
-            <td>{makeQualitySingleSentence('cardinal')}</td>
-          </tr>
-          <tr>
-            <td>不動宮</td>
-            <td>{makeQualitySingleSentence('fixed')}</td>
-          </tr>
-          <tr>
-            <td>柔軟宮</td>
-            <td>{makeQualitySingleSentence('mutable')}</td>
-          </tr>
-
-          {/* ２区分 */}
-          <tr>
-            <td>男性宮</td>
-            <td>{makePolaritySingleSentence('masculine')}</td>
+            <td className={styles['sign-classification-list-item']}>活動宮</td>
+            <td className={styles['sign-classification-list-value']}>{makeQualitySingleSentence('cardinal')}</td>
           </tr>
           <tr>
-            <td>女性宮</td>
-            <td>{makePolaritySingleSentence('feminine')}</td>
+            <td className={styles['sign-classification-list-item']}>不動宮</td>
+            <td className={styles['sign-classification-list-value']}>{makeQualitySingleSentence('fixed')}</td>
+          </tr>
+          <tr>
+            <td className={styles['sign-classification-list-item']}>柔軟宮</td>
+            <td className={styles['sign-classification-list-value']}>{makeQualitySingleSentence('mutable')}</td>
+          </tr>
+        </tbody>
+      </table>
+      {/* ２区分 */}
+      <table className={styles['sign-classification-list']}>
+        <tbody>
+          <tr>
+            <td className={styles['sign-classification-list-item']}>男性宮</td>
+            <td className={styles['sign-classification-list-value']}>{makePolaritySingleSentence('masculine')}</td>
+          </tr>
+          <tr>
+            <td className={styles['sign-classification-list-item']}>女性宮</td>
+            <td className={styles['sign-classification-list-value']}>{makePolaritySingleSentence('feminine')}</td>
           </tr>
         </tbody>
       </table>

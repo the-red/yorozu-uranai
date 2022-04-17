@@ -2,6 +2,7 @@ import Head from 'next/head'
 import Link from 'next/link'
 import styles from '../styles/Home.module.css'
 import { pagesPath } from '../lib/$path'
+import Footer from '../components/Footer'
 
 export default function Home() {
   return (
@@ -59,11 +60,7 @@ export default function Home() {
         </div>
       </main>
 
-      <footer className={styles.footer}>
-        <a href="https://www.sonicgarden.jp" target="_blank" rel="noopener noreferrer">
-          Copyright © SonicGarden All rights reserved.
-        </a>
-      </footer>
+      <Footer />
     </div>
   )
 }

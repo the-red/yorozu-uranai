@@ -1,12 +1,32 @@
-@media all and (max-width: 767px) {
-  .header {
-    background-color: #efefef;
-  }
-  .title {
-    font-size: 27px;
-    font-family: '001shirokuma-Regular';
-    width: 163px;
-    margin: 0 auto;
-    padding: 14px;
-  }
+.header {
+  background-color: #efefef;
+}
+.title {
+  font-size: 27px;
+  font-family: '001shirokuma-Regular';
+  width: 163px;
+  margin: 0 auto;
+  padding: 14px;
+}
+.main {
+  background-color: #efefef;
+  font-family: 'Noto Sans JP Regular';
+}
+.menu {
+  border: 1px solid black;
+  width: 340px;
+  height: 105px;
+}
+.menu-link {
+  display: flex;
+}
+.menu-title {
+  font-size: 9px;
+}
+.menu-text {
+  font-size: 10px;
+}
+
+/* PC用 */
+@media all and (min-width: 767px) {
 }

@@ -18,29 +18,35 @@ export default function Home() {
       <header className={styles.header}>
         <h1 className={styles.title}>よろず占い</h1>
       </header>
-      <main>
-        <div>
+      <main className={styles.main}>
+        <div className={styles.menu}>
           <Link href={pagesPath.horoscope.$url()}>
-            <a>
-              <h2>西洋占星術</h2>
-              <Image src={horoscopeIcon} />
-              <p>ホロスコープを作成する</p>
+            <a className={styles['menu-link']}>
+              <div></div>
+              <div>
+                <h2 className={styles['menu-title']}>西洋占星術</h2>
+                <Image src={horoscopeIcon} width={40} height={40} alt="西洋占星術アイコン" />
+                <p className={styles['menu-text']}>ホロスコープを作成する</p>
+              </div>
+              <div></div>
             </a>
           </Link>
-
+        </div>
+        <div className={styles.menu}>
           <Link href={pagesPath.numerology.$url()}>
             <a>
-              <h2>数秘術</h2>
-              <Image src={numerologyIcon} />
-              <p>数字を計算する</p>
+              <h2 className={styles['menu-title']}>数秘術</h2>
+              <Image src={numerologyIcon} width={40} height={40} alt="数秘術アイコン" />
+              <p className={styles['menu-text']}>数字を計算する</p>
             </a>
           </Link>
-
+        </div>
+        <div className={styles.menu}>
           <Link href={pagesPath.numerology.$url()}>
             <a>
-              <h2>四柱推命</h2>
-              <Image src={fourPillarsOfDestinyIcon} />
-              <p>命式を計算する</p>
+              <h2 className={styles['menu-title']}>四柱推命</h2>
+              <Image src={fourPillarsOfDestinyIcon} width={46} height={53} alt="西洋占星術アイコン" />
+              <p className={styles['menu-text']}>命式を計算する</p>
             </a>
           </Link>
         </div>

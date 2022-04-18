@@ -9,19 +9,19 @@ import numerologyIcon from '../../public/images/index/numerology.svg'
 
 export default function Home() {
   return (
-    <div className={styles.container}>
+    <div>
       <Head>
         <title>よろず占い</title>
         <meta name="description" content="Fortune Telling" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <header>
-        <h1 className={styles.title}>よろず占い</h1>
+        <h1>よろず占い</h1>
       </header>
-      <main className={styles.main}>
-        <div className={styles.grid}>
+      <main>
+        <div>
           <Link href={pagesPath.horoscope.$url()}>
-            <a className={styles.card}>
+            <a>
               <h2>西洋占星術</h2>
               <Image src={horoscopeIcon} />
               <p>ホロスコープを作成する</p>
@@ -29,7 +29,7 @@ export default function Home() {
           </Link>
 
           <Link href={pagesPath.numerology.$url()}>
-            <a className={styles.card}>
+            <a>
               <h2>数秘術</h2>
               <Image src={numerologyIcon} />
               <p>数字を計算する</p>
@@ -37,7 +37,7 @@ export default function Home() {
           </Link>
 
           <Link href={pagesPath.numerology.$url()}>
-            <a className={styles.card}>
+            <a>
               <h2>四柱推命</h2>
               <Image src={fourPillarsOfDestinyIcon} />
               <p>命式を計算する</p>
@@ -46,7 +46,7 @@ export default function Home() {
         </div>
       </main>
 
-      <footer className={styles.footer}>
+      <footer>
         <a href="https://www.sonicgarden.jp" target="_blank" rel="noopener noreferrer">
           Copyright © SonicGarden All rights reserved.
         </a>

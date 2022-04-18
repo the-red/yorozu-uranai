@@ -7,30 +7,33 @@ export default function Home() {
   return (
     <div className={styles.container}>
       <Head>
-        <title>Fortune Telling</title>
+        <title>よろず占い</title>
         <meta name="description" content="Fortune Telling" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-
+      <header>
+        <h1 className={styles.title}>よろず占い</h1>
+      </header>
       <main className={styles.main}>
-        <h1 className={styles.title}>🔮 Fortune Telling</h1>
-
-        <p className={styles.description}>
-          Get started by editing <code className={styles.code}>pages/index.js</code>
-        </p>
-
         <div className={styles.grid}>
           <Link href={pagesPath.horoscope.$url()}>
             <a className={styles.card}>
-              <h2>Horoscope &rarr;</h2>
-              <p>西洋占星術</p>
+              <h2>西洋占星術</h2>
+              <p>ホロスコープを作成する</p>
             </a>
           </Link>
 
           <Link href={pagesPath.numerology.$url()}>
             <a className={styles.card}>
-              <h2>Numerology &rarr;</h2>
-              <p>数秘術</p>
+              <h2>数秘術</h2>
+              <p>数字を計算する</p>
+            </a>
+          </Link>
+
+          <Link href={pagesPath.numerology.$url()}>
+            <a className={styles.card}>
+              <h2>四柱推命</h2>
+              <p>命式を計算する</p>
             </a>
           </Link>
         </div>

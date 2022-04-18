@@ -1,0 +1,12 @@
+@media all and (max-width: 767px) {
+  .header {
+    background-color: #efefef;
+  }
+  .title {
+    font-size: 27px;
+    font-family: '001shirokuma-Regular';
+    width: 163px;
+    margin: 0 auto;
+    padding: 14px;
+  }
+}

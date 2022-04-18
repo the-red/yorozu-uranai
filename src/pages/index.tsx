@@ -15,8 +15,8 @@ export default function Home() {
         <meta name="description" content="Fortune Telling" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <header>
-        <h1>よろず占い</h1>
+      <header className={styles.header}>
+        <h1 className={styles.title}>よろず占い</h1>
       </header>
       <main>
         <div>

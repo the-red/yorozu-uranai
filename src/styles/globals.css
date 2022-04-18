@@ -39,3 +39,8 @@ a {
   font-family: 'Khand';
   src: url('/fonts/Khand-Regular.ttf');
 }
+
+@font-face {
+  font-family: '001Shirokuma-Regular';
+  src: url('/fonts/001Shirokuma-Regular.otf');
+}

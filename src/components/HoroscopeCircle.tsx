@@ -144,8 +144,8 @@ export default function HoroscopeCircle({
         {signCoordinates.map((signCoordinate, i) => (
           <SignImage key={i} signCoordinate={signCoordinate} scales={{ size: 0.12, coordinate: 0.9 }} />
         ))}
-        {Object.values(planets).map((planet, id) => (
-          <PlanetImage key={id} planet={planet} scales={{ size: 0.1, coordinate: 0.69 }} />
+        {Object.values(planets).map((planet, i) => (
+          <PlanetImage key={i} planet={planet} scales={{ size: 0.1, coordinate: 0.69 }} />
         ))}
       </Layer>
     </Stage>

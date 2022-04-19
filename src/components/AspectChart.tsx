@@ -1,14 +1,8 @@
-import { Horoscope, ALL_MAJOR_ASPECTS, PLANET_ICONS, PlanetName } from '../horoscope'
+import { Horoscope, MajorAspect, PLANET_ICONS, PlanetName } from '../horoscope'
 import styles from '../pages/horoscope/HoroscopePage.module.css'
 type Props = { horoscope: Horoscope }
 
 export default function AspectChart({ horoscope }: Props) {
-  const softAspects = ALL_MAJOR_ASPECTS.filter((aspect) => aspect.type === 'soft').map((aspect) =>
-    String(aspect.degrees)
-  )
-  const hardAspects = ALL_MAJOR_ASPECTS.filter((aspect) => aspect.type === 'hard').map((aspect) =>
-    String(aspect.degrees)
-  )
   const planets = horoscope.planets
   // TODO:horoscopeFactory.tsにも同じ定義があるので、将来的に定義を1箇所にしたい。
   const ALL_PLANETS = [
@@ -26,17 +20,16 @@ export default function AspectChart({ horoscope }: Props) {
   // TODO:固定値ではなく、ユーザーが画面から指定した値を使うようにしたい
   const orb = 6
 
-  const addClassByAspectType = (degrees: string) => {
-    return `${hardAspects.includes(degrees) && styles['hard-aspect']}
-              ${softAspects.includes(degrees) && styles['soft-aspect']}`
+  const addClassByAspectType = (aspect: MajorAspect | undefined) => {
+    return `${aspect?.type === 'hard' && styles['hard-aspect']}
+              ${aspect?.type === 'soft' && styles['soft-aspect']}`
   }
 
   type AspectCellProps = {
-    degrees: number | undefined
+    aspect: MajorAspect | undefined
   }
-  const AspectCell = (props: AspectCellProps) => {
-    const degrees = props.degrees
-    return <div className={`${styles['inner-item']} ${addClassByAspectType(String(degrees))}`}>{degrees}</div>
+  const AspectCell = ({ aspect }: AspectCellProps) => {
+    return <div className={`${styles['inner-item']} ${addClassByAspectType(aspect)}`}>{aspect?.degrees}</div>
   }
 
   type PlanetCellProps = {
@@ -52,7 +45,7 @@ export default function AspectChart({ horoscope }: Props) {
   const AspectRow = (props: AspectRowProps) => (
     <>
       {ALL_PLANETS.filter((planet, index) => index < ALL_PLANETS.indexOf(props.targetPlanet)).map((basePlanet, i) => (
-        <AspectCell key={i} degrees={planets[basePlanet].majorAspect(planets[props.targetPlanet], orb)?.degrees} />
+        <AspectCell key={i} aspect={planets[basePlanet].majorAspect(planets[props.targetPlanet], orb)} />
       ))}
       <PlanetCell planetIcon={PLANET_ICONS[props.targetPlanet]} />
     </>

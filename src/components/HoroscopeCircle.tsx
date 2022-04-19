@@ -50,12 +50,38 @@ export default function HoroscopeCircle({
     return <Line points={[start.x, start.y, end.x, end.y]} stroke="black" strokeWidth={1} opacity={0.2} />
   }
 
-  const SignImage = ({ signCoordinate }: { signCoordinate: typeof signCoordinates[number] }) => {
+  type Scales = { coordinate: number; size: number }
+
+  const HouseNumber = ({ text, longitude, scales }: { text: string; longitude: number; scales: Scales }) => {
+    const iconSize = radius * scales.size
+    const coordinate = degreesToCoordinate({
+      degrees: houseLongitude + longitude + 180 + 5,
+      scale: scales.coordinate,
+    })
+    return (
+      <Text
+        text={text}
+        x={coordinate.x}
+        y={coordinate.y}
+        fontSize={iconSize}
+        offset={iconOffset(iconSize)}
+        fill="black"
+      />
+    )
+  }
+
+  const SignImage = ({
+    signCoordinate,
+    scales,
+  }: {
+    signCoordinate: typeof signCoordinates[number]
+    scales: Scales
+  }) => {
     const [image] = useImage(signCoordinate.url)
-    const iconSize = radius * 0.12
+    const iconSize = radius * scales.size
     const coordinate = degreesToCoordinate({
       degrees: houseLongitude + signCoordinate.longitude + 180 + 15,
-      scale: 0.9,
+      scale: scales.coordinate,
     })
 
     return (
@@ -70,29 +96,11 @@ export default function HoroscopeCircle({
     )
   }
 
-  const HouseNumber = ({ text, longitude }: { text: string; longitude: number }) => {
-    const iconSize = radius * 0.04
-    const coordinate = degreesToCoordinate({
-      degrees: houseLongitude + longitude + 180 + 5,
-      scale: 0.49,
-    })
-    return (
-      <Text
-        text={text}
-        x={coordinate.x}
-        y={coordinate.y}
-        fontSize={iconSize}
-        offset={iconOffset(iconSize)}
-        fill="black"
-      />
-    )
-  }
-
-  const PlanetImage = ({ planet }: { planet: Planet }) => {
-    const iconSize = radius * 0.1
+  const PlanetImage = ({ planet, scales }: { planet: Planet; scales: Scales }) => {
+    const iconSize = radius * scales.size
     const coordinate = degreesToCoordinate({
       degrees: houseLongitude + planet.longitude + 180,
-      scale: 0.69,
+      scale: scales.coordinate,
     })
 
     return (
@@ -126,13 +134,18 @@ export default function HoroscopeCircle({
 
         {/* 文字・アイコン */}
         {house.cusps.map((cusp, i) => (
-          <HouseNumber key={i} text={String(i + 1)} longitude={cusp.longitude} />
+          <HouseNumber
+            key={i}
+            text={String(i + 1)}
+            longitude={cusp.longitude}
+            scales={{ size: 0.04, coordinate: 0.49 }}
+          />
         ))}
         {signCoordinates.map((signCoordinate, i) => (
-          <SignImage key={i} signCoordinate={signCoordinate} />
+          <SignImage key={i} signCoordinate={signCoordinate} scales={{ size: 0.12, coordinate: 0.9 }} />
         ))}
         {Object.values(planets).map((planet, id) => (
-          <PlanetImage key={id} planet={planet} />
+          <PlanetImage key={id} planet={planet} scales={{ size: 0.1, coordinate: 0.69 }} />
         ))}
       </Layer>
     </Stage>

@@ -50,12 +50,12 @@ export default function HoroscopeCircle({
     return <Line points={[start.x, start.y, end.x, end.y]} stroke="black" strokeWidth={1} opacity={0.2} />
   }
 
-  type Scales = { coordinate: number; size: number }
+  type Scales = { coordinate: number; size: number; degrees: number }
 
   const HouseNumber = ({ text, longitude, scales }: { text: string; longitude: number; scales: Scales }) => {
     const iconSize = radius * scales.size
     const coordinate = degreesToCoordinate({
-      degrees: houseLongitude + longitude + 180 + 5,
+      degrees: houseLongitude + longitude + 180 + scales.degrees,
       scale: scales.coordinate,
     })
     return (
@@ -80,7 +80,7 @@ export default function HoroscopeCircle({
     const [image] = useImage(signCoordinate.url)
     const iconSize = radius * scales.size
     const coordinate = degreesToCoordinate({
-      degrees: houseLongitude + signCoordinate.longitude + 180 + 15,
+      degrees: houseLongitude + signCoordinate.longitude + 180 + scales.degrees,
       scale: scales.coordinate,
     })
 
@@ -99,7 +99,7 @@ export default function HoroscopeCircle({
   const PlanetImage = ({ planet, scales }: { planet: Planet; scales: Scales }) => {
     const iconSize = radius * scales.size
     const coordinate = degreesToCoordinate({
-      degrees: houseLongitude + planet.longitude + 180,
+      degrees: houseLongitude + planet.longitude + 180 + scales.degrees,
       scale: scales.coordinate,
     })
 
@@ -138,14 +138,34 @@ export default function HoroscopeCircle({
             key={i}
             text={String(i + 1)}
             longitude={cusp.longitude}
-            scales={{ size: 0.04, coordinate: 0.49 }}
+            scales={{
+              size: 0.04,
+              coordinate: 0.49,
+              degrees: 5,
+            }}
           />
         ))}
         {signCoordinates.map((signCoordinate, i) => (
-          <SignImage key={i} signCoordinate={signCoordinate} scales={{ size: 0.12, coordinate: 0.9 }} />
+          <SignImage
+            key={i}
+            signCoordinate={signCoordinate}
+            scales={{
+              size: 0.12,
+              coordinate: 0.9,
+              degrees: 15,
+            }}
+          />
         ))}
         {Object.values(planets).map((planet, i) => (
-          <PlanetImage key={i} planet={planet} scales={{ size: 0.1, coordinate: 0.69 }} />
+          <PlanetImage
+            key={i}
+            planet={planet}
+            scales={{
+              size: 0.1,
+              coordinate: 0.69,
+              degrees: 0,
+            }}
+          />
         ))}
       </Layer>
     </Stage>

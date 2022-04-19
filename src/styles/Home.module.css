@@ -12,19 +12,42 @@
   background-color: #efefef;
   font-family: 'Noto Sans JP Regular';
 }
+.menu-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
 .menu {
-  border: 1px solid black;
   width: 340px;
   height: 105px;
+  margin-bottom: 28px;
+  border-radius: 10px;
+}
+.menu:last-child {
+  margin-bottom: 0px;
 }
 .menu-link {
   display: flex;
+  justify-content: space-evenly;
 }
+.menu-link-block-1 {
+  text-align: center;
+}
+/* 画面だと9pxじゃなくて10pxになってる・・・ */
 .menu-title {
   font-size: 9px;
 }
 .menu-text {
   font-size: 10px;
+}
+.menu-horoscope {
+  background-color: #6399d6;
+}
+.menu-numerology {
+  background-color: #d3d662;
+}
+.menu-four-pillars-of-destiny {
+  background-color: #d69a62;
 }
 
 /* PC用 */

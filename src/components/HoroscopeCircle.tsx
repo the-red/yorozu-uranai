@@ -90,7 +90,6 @@ export default function HoroscopeCircle({
     )
   }
 
-  console.log(house.cusps.map((cusp, i) => cusp.longitude))
   return (
     <Stage width={origin.x + radius} height={origin.y + radius}>
       <Layer>

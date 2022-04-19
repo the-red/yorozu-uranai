@@ -108,6 +108,7 @@ export default function HoroscopeCircle({
 
         {/* 文字・アイコン */}
         {house.cusps.map((cusp, i) => (
+          // ハウス番号
           <ScaledText
             key={i}
             text={String(i + 1)}
@@ -120,6 +121,7 @@ export default function HoroscopeCircle({
           />
         ))}
         {signCoordinates.map((signCoordinate, i) => (
+          // サイン12宮アイコン
           <ScaledImage
             key={i}
             imageUrl={signCoordinate.url}
@@ -132,6 +134,7 @@ export default function HoroscopeCircle({
           />
         ))}
         {Object.values(planets).map((planet, i) => (
+          // 惑星アイコン
           <ScaledText
             key={i}
             text={planet.icon}

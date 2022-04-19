@@ -1,5 +1,5 @@
 import { Stage, Layer, Circle, Line, Text, Image } from 'react-konva'
-import type { Horoscope, Planet } from '../horoscope'
+import { Horoscope, Position, ALL_PLANETS, MajorAspect, Planet } from '../horoscope'
 import useImage from 'use-image'
 
 const signCoordinates = [
@@ -22,10 +22,12 @@ export default function HoroscopeCircle({
   horoscope,
   origin,
   radius,
+  orb,
 }: {
   horoscope: Horoscope
   origin: { x: number; y: number } // 円の中心座標
   radius: number // 外周の半径
+  orb: number
 }) {
   const { planets, house } = horoscope
   const houseLongitude = -house.ascendant.longitude
@@ -48,6 +50,18 @@ export default function HoroscopeCircle({
     const end = degreesToCoordinate({ degrees: longitude + 180, scale })
 
     return <Line points={[start.x, start.y, end.x, end.y]} stroke="black" strokeWidth={1} opacity={0.2} />
+  }
+  const AspectLine = ({ from, to, color, scale }: { from: Position; to: Position; color: string; scale?: number }) => {
+    const coordinateFrom = degreesToCoordinate({ degrees: houseLongitude + from.longitude + 180, scale })
+    const coordinateTo = degreesToCoordinate({ degrees: houseLongitude + to.longitude + 180, scale })
+    return (
+      <Line
+        points={[coordinateFrom.x, coordinateFrom.y, coordinateTo.x, coordinateTo.y]}
+        stroke={color}
+        strokeWidth={1.5}
+        opacity={0.5}
+      />
+    )
   }
 
   type Scales = { coordinate: number; size: number; degrees: number }
@@ -90,6 +104,41 @@ export default function HoroscopeCircle({
     )
   }
 
+  const AspectLines = ({ scale }: { scale: number }) => {
+    const majorAspects: Record<string, [Planet, Planet, MajorAspect]> = {}
+    ALL_PLANETS.forEach((x) => {
+      const planetX = planets[x]
+      ALL_PLANETS.forEach((y) => {
+        const planetY = planets[y]
+        if (planetX.name === planetY.name) {
+          return
+        }
+
+        // sun,moonとmoon,sunを同一化するキー
+        const key = [planetX.name, planetY.name].sort().join()
+
+        const majorAspect = planetX.majorAspect(planetY, orb)
+        if (majorAspect && !majorAspects[key]) {
+          majorAspects[key] = [planetX, planetY, majorAspect]
+        }
+      })
+    })
+
+    return (
+      <>
+        {Object.values(majorAspects).map(([from, to, aspect], i) => (
+          <AspectLine
+            key={i}
+            from={from.position}
+            to={to.position}
+            color={aspect.type === 'hard' ? 'red' : 'blue'}
+            scale={scale}
+          />
+        ))}
+      </>
+    )
+  }
+
   return (
     <Stage width={origin.x + radius} height={origin.y + radius}>
       <Layer>
@@ -105,7 +154,6 @@ export default function HoroscopeCircle({
         ))}
         <ScaledLine longitude={0} scale={0.8} />
         <ScaledCircle stroke="#afb1b1" fill="white" scale={0.37} />
-
         {/* 文字・アイコン */}
         {house.cusps.map((cusp, i) => (
           // ハウス番号
@@ -146,6 +194,9 @@ export default function HoroscopeCircle({
             }}
           />
         ))}
+
+        {/* アスペクト線 */}
+        <AspectLines scale={0.69} />
       </Layer>
     </Stage>
   )

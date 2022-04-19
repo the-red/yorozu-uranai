@@ -1,24 +1,9 @@
-import { Horoscope, MajorAspect, PLANET_ICONS, PlanetName } from '../horoscope'
+import { Horoscope, MajorAspect, PLANET_ICONS, PlanetName, ALL_PLANETS } from '../horoscope'
 import styles from '../pages/horoscope/HoroscopePage.module.css'
-type Props = { horoscope: Horoscope }
+type Props = { horoscope: Horoscope; orb: number }
 
-export default function AspectChart({ horoscope }: Props) {
+export default function AspectChart({ horoscope, orb }: Props) {
   const planets = horoscope.planets
-  // TODO:horoscopeFactory.tsにも同じ定義があるので、将来的に定義を1箇所にしたい。
-  const ALL_PLANETS = [
-    'sun',
-    'moon',
-    'mercury',
-    'venus',
-    'mars',
-    'jupiter',
-    'saturn',
-    'uranus',
-    'neptune',
-    'pluto',
-  ] as const
-  // TODO:固定値ではなく、ユーザーが画面から指定した値を使うようにしたい
-  const orb = 6
 
   const addClassByAspectType = (aspect: MajorAspect | undefined) => {
     return `${aspect?.type === 'hard' && styles['hard-aspect']}

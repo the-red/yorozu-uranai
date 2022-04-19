@@ -62,6 +62,9 @@ function HoroscopeDetailPage() {
 
   const planets = Object.values(horoscope.planets)
 
+  // TODO:固定値ではなく、ユーザーが画面から指定した値を使うようにしたい
+  const orb = 6
+
   return (
     <div>
       <div style={{ display: 'flex' }}>
@@ -82,7 +85,7 @@ function HoroscopeDetailPage() {
         </div>
         <div style={{ width: '50%', display: 'flex', justifyContent: 'center' }}>
           <div style={{ marginLeft: '0px' }}>
-            <HoroscopeCircle horoscope={horoscope} origin={{ x: 250, y: 250 }} radius={220} />
+            <HoroscopeCircle horoscope={horoscope} origin={{ x: 250, y: 250 }} radius={220} orb={orb} />
           </div>
         </div>
       </div>
@@ -106,7 +109,7 @@ function HoroscopeDetailPage() {
         </div>
         <div style={{ width: '50%', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
           <div style={{ width: '360px', padding: '16px 8px' }}>
-            <AspectChart horoscope={horoscope} />
+            <AspectChart horoscope={horoscope} orb={orb} />
           </div>
         </div>
       </div>

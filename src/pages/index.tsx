@@ -15,9 +15,11 @@ export default function Home() {
         <meta name="description" content="Fortune Telling" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
+
       <header className={styles.header}>
         <h1 className={styles.title}>よろず占い</h1>
       </header>
+
       <main className={styles.main}>
         <div className={styles['menu-container']}>
           <div className={`${styles.menu} ${styles['menu-horoscope']}`}>
@@ -56,10 +58,14 @@ export default function Home() {
         </div>
       </main>
 
-      <footer>
-        <a href="https://www.sonicgarden.jp" target="_blank" rel="noopener noreferrer">
-          Copyright © SonicGarden All rights reserved.
-        </a>
+      <footer className={styles.footer}>
+        <p className={styles.copyright}>
+          <small>
+            <a href="https://www.sonicgarden.jp" target="_blank" rel="noopener noreferrer">
+              Copyright © SonicGarden All rights reserved.
+            </a>
+          </small>
+        </p>
       </footer>
     </div>
   )

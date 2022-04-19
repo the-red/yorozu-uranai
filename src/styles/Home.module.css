@@ -1,5 +1,6 @@
 .header {
   background-color: #efefef;
+  border-bottom: 1px solid #dcdddd;
 }
 .title {
   font-size: 27px;
@@ -23,8 +24,11 @@
   margin-bottom: 28px;
   border-radius: 10px;
 }
+.menu:first-child {
+  margin-top: 28px;
+}
 .menu:last-child {
-  margin-bottom: 0px;
+  margin-bottom: 75px;
 }
 .menu-link {
   display: flex;
@@ -48,6 +52,14 @@
 }
 .menu-four-pillars-of-destiny {
   background-color: #d69a62;
+}
+.footer {
+  background-color: #efefef;
+  font-family: 'Noto Sans JP Regular';
+}
+.copyright {
+  width: fit-content;
+  margin: 0 auto;
 }
 
 /* PC用 */

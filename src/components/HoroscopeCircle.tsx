@@ -32,6 +32,7 @@ export default function HoroscopeCircle({
 }) {
   const { planets, house } = horoscope
   const houseLongitude = -house.ascendant.longitude
+  console.log('cusps', house.cusps)
 
   const degreesToCoordinate = ({ degrees, scale }: { degrees: number; scale?: number }) => {
     scale ||= 1
@@ -46,11 +47,23 @@ export default function HoroscopeCircle({
     <Circle stroke={stroke} strokeWidth={1} fill={fill} x={origin.x} y={origin.y} radius={radius * scale} opacity={1} />
   )
 
-  const ScaledLine = ({ longitude, scale }: { longitude: number; scale?: number }) => {
+  const ScaledLine = ({
+    longitude,
+    color = 'black',
+    width = 1,
+    opacity = 0.2,
+    scale = 1,
+  }: {
+    longitude: number
+    color?: string | undefined
+    width?: number | undefined
+    opacity?: number | undefined
+    scale?: number
+  }) => {
     const start = degreesToCoordinate({ degrees: longitude, scale })
     const end = degreesToCoordinate({ degrees: longitude + 180, scale })
 
-    return <Line points={[start.x, start.y, end.x, end.y]} stroke="black" strokeWidth={1} opacity={0.2} />
+    return <Line points={[start.x, start.y, end.x, end.y]} stroke={color} strokeWidth={width} opacity={opacity} />
   }
 
   const ScaledText = ({ text, longitude, scales }: { text: string; longitude: number; scales: IconScales }) => {
@@ -99,25 +112,41 @@ export default function HoroscopeCircle({
     )
   }
 
-  const SignLine = ({ scale }: { scale: number }) => (
+  const SignLine = () => (
     <>
       {[0, 30, 60, 90, 120, 150].map((longitude, i) => (
-        <ScaledLine key={i} longitude={houseLongitude + longitude} scale={scale} />
+        <ScaledLine key={i} longitude={houseLongitude + longitude} />
       ))}
     </>
   )
   const SignCircle = () => (
     <>
       <ScaledCircle stroke="#352e2b" fill="#e4E7E2" scale={1} />
-      <SignLine scale={1} />
+      <SignLine />
     </>
   )
 
   const HouseLine = ({ scale }: { scale: number }) => (
     <>
-      {house.cusps.map((cusp, i) => (
-        <ScaledLine key={i} longitude={houseLongitude + cusp.longitude} scale={scale} />
-      ))}
+      {house.cusps.map((cusp, i) => {
+        let color, width, opacity
+        if (i % 3 === 0) {
+          // { asc: 0, ic: 3, dsc: 6, mc: 9 }
+          color = 'orange'
+          width = 1.2
+          opacity = 1
+        }
+        return (
+          <ScaledLine
+            key={i}
+            longitude={houseLongitude + cusp.longitude}
+            color={color}
+            width={width}
+            opacity={opacity}
+            scale={scale}
+          />
+        )
+      })}
     </>
   )
   const HouseNumbers = ({ scales }: { scales: IconScales }) => (

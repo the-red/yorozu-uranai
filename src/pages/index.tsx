@@ -9,7 +9,7 @@ import numerologyIcon from '../../public/images/index/numerology.svg'
 
 export default function Home() {
   return (
-    <div>
+    <div style={{ minHeight: '100%', backgroundColor: '#efefef' }}>
       <Head>
         <title>よろず占い</title>
         <meta name="description" content="Fortune Telling" />

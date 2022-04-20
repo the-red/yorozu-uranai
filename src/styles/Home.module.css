@@ -41,7 +41,7 @@
 }
 /* 画面だと9pxじゃなくて10pxになってる・・・ */
 .menu-title {
-  font-size: 9px;
+  font-size: 10px;
 }
 .menu-text {
   font-size: 10px;

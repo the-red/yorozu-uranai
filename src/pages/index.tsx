@@ -1,62 +1,61 @@
 import Head from 'next/head'
 import Link from 'next/link'
+import Image from 'next/image'
 import styles from '../styles/Home.module.css'
 import { pagesPath } from '../lib/$path'
+import fourPillarsOfDestinyIcon from '../../public/images/index/four-pillars-of-destiny.svg'
+import horoscopeIcon from '../../public/images/index/horoscope.svg'
+import numerologyIcon from '../../public/images/index/numerology.svg'
 import Footer from '../components/Footer'
 
 export default function Home() {
   return (
-    <div className={styles.container}>
+    <div style={{ minHeight: '100%', backgroundColor: '#efefef' }}>
       <Head>
-        <title>Fortune Telling</title>
+        <title>よろず占い</title>
         <meta name="description" content="Fortune Telling" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
+      <header className={styles.header}>
+        <h1 className={styles.title}>よろず占い</h1>
+      </header>
+
       <main className={styles.main}>
-        <h1 className={styles.title}>🔮 Fortune Telling</h1>
-
-        <p className={styles.description}>
-          Get started by editing <code className={styles.code}>pages/index.js</code>
-        </p>
-
-        <div className={styles.grid}>
-          <Link href={pagesPath.horoscope.$url()}>
-            <a className={styles.card}>
-              <h2>Horoscope &rarr;</h2>
-              <p>西洋占星術</p>
-            </a>
-          </Link>
-
-          <Link href={pagesPath.numerology.$url()}>
-            <a className={styles.card}>
-              <h2>Numerology &rarr;</h2>
-              <p>数秘術</p>
-            </a>
-          </Link>
-
-          <a href="https://nextjs.org/docs" className={styles.card}>
-            <h2>Documentation &rarr;</h2>
-            <p>Find in-depth information about Next.js features and API.</p>
-          </a>
-
-          <a href="https://nextjs.org/learn" className={styles.card}>
-            <h2>Learn &rarr;</h2>
-            <p>Learn about Next.js in an interactive course with quizzes!</p>
-          </a>
-
-          <a href="https://github.com/vercel/next.js/tree/master/examples" className={styles.card}>
-            <h2>Examples &rarr;</h2>
-            <p>Discover and deploy boilerplate example Next.js projects.</p>
-          </a>
-
-          <a
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-            className={styles.card}
-          >
-            <h2>Deploy &rarr;</h2>
-            <p>Instantly deploy your Next.js site to a public URL with Vercel.</p>
-          </a>
+        <div className={styles['menu-container']}>
+          <div className={`${styles.menu} ${styles['menu-horoscope']}`}>
+            <Link href={pagesPath.horoscope.$url()}>
+              <a className={styles['menu-link']}>
+                <div className={styles['menu-link-block-1']}>
+                  <h2 className={styles['menu-title']}>西洋占星術</h2>
+                  <Image src={horoscopeIcon} width={40} height={40} alt="西洋占星術アイコン" />
+                  <p className={styles['menu-text']}>ホロスコープを作成する</p>
+                </div>
+              </a>
+            </Link>
+          </div>
+          <div className={`${styles.menu} ${styles['menu-numerology']}`}>
+            <Link href={pagesPath.numerology.$url()}>
+              <a className={styles['menu-link']}>
+                <div className={styles['menu-link-block-1']}>
+                  <h2 className={styles['menu-title']}>数秘術</h2>
+                  <Image src={numerologyIcon} width={40} height={40} alt="数秘術アイコン" />
+                  <p className={styles['menu-text']}>数字を計算する</p>
+                </div>
+              </a>
+            </Link>
+          </div>
+          <div className={`${styles.menu} ${styles['menu-four-pillars-of-destiny']}`}>
+            <Link href={pagesPath.numerology.$url()}>
+              <a className={styles['menu-link']}>
+                <div className={styles['menu-link-block-1']}>
+                  <h2 className={styles['menu-title']}>四柱推命</h2>
+                  <Image src={fourPillarsOfDestinyIcon} width={40} height={40} alt="西洋占星術アイコン" />
+                  <p className={styles['menu-text']}>命式を計算する</p>
+                </div>
+              </a>
+            </Link>
+          </div>
         </div>
       </main>
 

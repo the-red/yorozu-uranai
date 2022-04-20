@@ -56,8 +56,12 @@
 .menu-four-pillars-of-destiny {
   background-color: #d69a62;
 }
+
 .footer {
   font-family: 'Noto Sans JP Regular';
+}
+.contact {
+  text-align: center;
 }
 .copyright {
   width: fit-content;

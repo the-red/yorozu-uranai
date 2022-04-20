@@ -10,7 +10,7 @@ import Footer from '../components/Footer'
 
 export default function Home() {
   return (
-    <div style={{ minHeight: '100%', backgroundColor: '#efefef' }}>
+    <div className={styles['header-and-body']}>
       <Head>
         <title>よろず占い</title>
         <meta name="description" content="Fortune Telling" />

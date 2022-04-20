@@ -1,3 +1,7 @@
+.header-and-body {
+  min-height: 100%;
+  background-color: #efefef;
+}
 .header {
   background-color: #efefef;
   border-bottom: 1px solid #dcdddd;

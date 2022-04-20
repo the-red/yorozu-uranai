@@ -12,7 +12,7 @@ export default function Footer() {
       </p>
       <p className={styles.copyright}>
         <small>
-          <a href="https://www.sonicgarden.jp" target="_blank" rel="noopener noreferrecr">
+          <a href="https://www.sonicgarden.jp" target="_blank" rel="noopener noreferrer">
             Copyright © SonicGarden All rights reserved.
           </a>
         </small>

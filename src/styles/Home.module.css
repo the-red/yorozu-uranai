@@ -3,7 +3,6 @@
   background-color: #efefef;
 }
 .header {
-  background-color: #efefef;
   border-bottom: 1px solid #dcdddd;
 }
 .title {
@@ -14,7 +13,6 @@
   padding: 14px;
 }
 .main {
-  background-color: #efefef;
   font-family: 'Noto Sans JP Regular';
 }
 .menu-container {
@@ -59,7 +57,6 @@
   background-color: #d69a62;
 }
 .footer {
-  background-color: #efefef;
   font-family: 'Noto Sans JP Regular';
 }
 .copyright {

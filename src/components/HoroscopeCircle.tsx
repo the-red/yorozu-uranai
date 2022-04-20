@@ -152,8 +152,8 @@ export default function HoroscopeCircle({
         {house.cusps.map((cusp, i) => (
           <ScaledLine key={i} longitude={houseLongitude + cusp.longitude} scale={0.8} />
         ))}
-        <ScaledLine longitude={0} scale={0.8} />
         <ScaledCircle stroke="#afb1b1" fill="white" scale={0.37} />
+
         {/* 文字・アイコン */}
         {house.cusps.map((cusp, i) => (
           // ハウス番号

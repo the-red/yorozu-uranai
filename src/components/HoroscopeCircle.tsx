@@ -49,21 +49,17 @@ export default function HoroscopeCircle({
 
   const ScaledLine = ({
     longitude,
-    color = 'black',
-    width = 1,
     opacity = 0.2,
     scale = 1,
   }: {
     longitude: number
-    color?: string | undefined
-    width?: number | undefined
     opacity?: number | undefined
     scale?: number
   }) => {
     const start = degreesToCoordinate({ degrees: longitude, scale })
     const end = degreesToCoordinate({ degrees: longitude + 180, scale })
 
-    return <Line points={[start.x, start.y, end.x, end.y]} stroke={color} strokeWidth={width} opacity={opacity} />
+    return <Line points={[start.x, start.y, end.x, end.y]} stroke="black" strokeWidth={1} opacity={opacity} />
   }
 
   const ScaledText = ({ text, longitude, scales }: { text: string; longitude: number; scales: IconScales }) => {
@@ -129,23 +125,12 @@ export default function HoroscopeCircle({
   const HouseLine = ({ scale }: { scale: number }) => (
     <>
       {house.cusps.slice(0, 6).map((cusp, i) => {
-        let color, width, opacity
+        let opacity
         if (i % 3 === 0) {
           // { asc: 0, ic: 3, dsc: 6, mc: 9 }
-          color = 'orange'
-          width = 1.2
-          opacity = 1
+          opacity = 0.5
         }
-        return (
-          <ScaledLine
-            key={i}
-            longitude={houseLongitude + cusp.longitude}
-            color={color}
-            width={width}
-            opacity={opacity}
-            scale={scale}
-          />
-        )
+        return <ScaledLine key={i} longitude={houseLongitude + cusp.longitude} opacity={opacity} scale={scale} />
       })}
     </>
   )

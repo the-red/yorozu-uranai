@@ -128,7 +128,7 @@ export default function HoroscopeCircle({
 
   const HouseLine = ({ scale }: { scale: number }) => (
     <>
-      {house.cusps.map((cusp, i) => {
+      {house.cusps.slice(0, 6).map((cusp, i) => {
         let color, width, opacity
         if (i % 3 === 0) {
           // { asc: 0, ic: 3, dsc: 6, mc: 9 }

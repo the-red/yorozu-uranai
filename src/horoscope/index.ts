@@ -1,3 +1,5 @@
 export * from './Horoscope'
 export * from './Planet'
+export * from './Position'
+export * from './ALL_PLANETS'
 export * from './types'

@@ -1,7 +1,8 @@
 import { Stage, Layer, Circle, Line, Text, Image } from 'react-konva'
-import type { Horoscope, Houses, Planet } from '../horoscope'
+import { Horoscope, Position, ALL_PLANETS, MajorAspect, Planet } from '../horoscope'
 import useImage from 'use-image'
 
+type IconScales = { coordinate: number; size: number; degrees: number }
 const signCoordinates = [
   { name: '牡羊座', icon: '♈', longitude: 0, url: '/images/astro-sign-1.png' },
   { name: '牡牛座', icon: '♉', longitude: 30, url: '/images/astro-sign-2.png' },
@@ -22,13 +23,16 @@ export default function HoroscopeCircle({
   horoscope,
   origin,
   radius,
+  orb,
 }: {
   horoscope: Horoscope
   origin: { x: number; y: number } // 円の中心座標
   radius: number // 外周の半径
+  orb: number
 }) {
-  // TODO: ハウスを考慮してサインの位置を調整
-  const { planets } = horoscope
+  const { planets, house } = horoscope
+  const houseLongitude = -house.ascendant.longitude
+  console.log('cusps', house.cusps)
 
   const degreesToCoordinate = ({ degrees, scale }: { degrees: number; scale?: number }) => {
     scale ||= 1
@@ -43,19 +47,53 @@ export default function HoroscopeCircle({
     <Circle stroke={stroke} strokeWidth={1} fill={fill} x={origin.x} y={origin.y} radius={radius * scale} opacity={1} />
   )
 
-  const ScaledLine = ({ longitude }: { longitude: number }) => {
-    const start = degreesToCoordinate({ degrees: longitude })
-    const end = degreesToCoordinate({ degrees: longitude + 180 })
+  const ScaledLine = ({
+    longitude,
+    opacity = 0.2,
+    scale = 1,
+  }: {
+    longitude: number
+    opacity?: number | undefined
+    scale?: number
+  }) => {
+    const start = degreesToCoordinate({ degrees: longitude, scale })
+    const end = degreesToCoordinate({ degrees: longitude + 180, scale })
 
-    return <Line points={[start.x, start.y, end.x, end.y]} stroke="black" strokeWidth={1} opacity={0.2} />
+    return <Line points={[start.x, start.y, end.x, end.y]} stroke="black" strokeWidth={1} opacity={opacity} />
   }
 
-  const SignImage = ({ signCoordinate }: { signCoordinate: typeof signCoordinates[number] }) => {
-    const [image] = useImage(signCoordinate.url)
-    const iconSize = radius * 0.12
+  const ScaledText = ({ text, longitude, scales }: { text: string; longitude: number; scales: IconScales }) => {
+    const iconSize = radius * scales.size
     const coordinate = degreesToCoordinate({
-      degrees: signCoordinate.longitude + 180 + 15,
-      scale: 0.9,
+      degrees: houseLongitude + longitude + 180 + scales.degrees,
+      scale: scales.coordinate,
+    })
+    return (
+      <Text
+        text={text}
+        x={coordinate.x}
+        y={coordinate.y}
+        fontSize={iconSize}
+        offset={iconOffset(iconSize)}
+        fill="black"
+      />
+    )
+  }
+
+  const ScaledImage = ({
+    imageUrl,
+    longitude,
+    scales,
+  }: {
+    imageUrl: string
+    longitude: number
+    scales: IconScales
+  }) => {
+    const [image] = useImage(imageUrl)
+    const iconSize = radius * scales.size
+    const coordinate = degreesToCoordinate({
+      degrees: houseLongitude + longitude + 180 + scales.degrees,
+      scale: scales.coordinate,
     })
 
     return (
@@ -70,45 +108,134 @@ export default function HoroscopeCircle({
     )
   }
 
-  const PlanetImage = ({ planet }: { planet: Planet }) => {
-    const iconSize = radius * 0.1
-    const coordinate = degreesToCoordinate({
-      degrees: planet.longitude + 180,
-      scale: 0.65,
+  const SignLine = () => (
+    <>
+      {[0, 30, 60, 90, 120, 150].map((longitude, i) => (
+        <ScaledLine key={i} longitude={houseLongitude + longitude} />
+      ))}
+    </>
+  )
+  const SignCircle = () => (
+    <>
+      <ScaledCircle stroke="#352e2b" fill="#e4E7E2" scale={1} />
+      <SignLine />
+    </>
+  )
+
+  const HouseLine = ({ scale }: { scale: number }) => (
+    <>
+      {house.cusps.slice(0, 6).map((cusp, i) => {
+        let opacity
+        if (i % 3 === 0) {
+          // { asc: 0, ic: 3, dsc: 6, mc: 9 }
+          opacity = 0.5
+        }
+        return <ScaledLine key={i} longitude={houseLongitude + cusp.longitude} opacity={opacity} scale={scale} />
+      })}
+    </>
+  )
+  const HouseNumbers = ({ scales }: { scales: IconScales }) => (
+    <>
+      {house.cusps.map((cusp, i) => (
+        <ScaledText key={i} text={String(i + 1)} longitude={cusp.longitude} scales={scales} />
+      ))}
+    </>
+  )
+  const HouseCircle = () => (
+    <>
+      <ScaledCircle stroke="#352e2b" fill="white" scale={0.8} />
+      <ScaledCircle stroke="#afb1b1" fill="#e4E7E2" scale={0.45} />
+      <HouseLine scale={0.8} />
+      <ScaledCircle stroke="#afb1b1" fill="white" scale={0.37} />
+      <HouseNumbers scales={{ size: 0.04, coordinate: 0.49, degrees: 5 }} />
+    </>
+  )
+
+  const SignIcons = () => (
+    <>
+      {signCoordinates.map((signCoordinate, i) => (
+        <ScaledImage
+          key={i}
+          imageUrl={signCoordinate.url}
+          longitude={signCoordinate.longitude}
+          scales={{ size: 0.12, coordinate: 0.9, degrees: 15 }}
+        />
+      ))}
+    </>
+  )
+  const PlanetIcons = () => (
+    <>
+      {Object.values(planets).map((planet, i) => (
+        <ScaledText
+          key={i}
+          text={planet.icon}
+          longitude={planet.longitude}
+          scales={{ size: 0.1, coordinate: 0.69, degrees: 0 }}
+        />
+      ))}
+    </>
+  )
+
+  const AspectLine = ({ from, to, color, scale }: { from: Position; to: Position; color: string; scale?: number }) => {
+    const coordinateFrom = degreesToCoordinate({ degrees: houseLongitude + from.longitude + 180, scale })
+    const coordinateTo = degreesToCoordinate({ degrees: houseLongitude + to.longitude + 180, scale })
+    return (
+      <Line
+        points={[coordinateFrom.x, coordinateFrom.y, coordinateTo.x, coordinateTo.y]}
+        stroke={color}
+        strokeWidth={1.5}
+        opacity={0.5}
+      />
+    )
+  }
+  const AspectLines = () => {
+    const majorAspects: Record<string, [Planet, Planet, MajorAspect]> = {}
+    ALL_PLANETS.forEach((x) => {
+      const planetX = planets[x]
+      ALL_PLANETS.forEach((y) => {
+        const planetY = planets[y]
+        if (planetX.name === planetY.name) {
+          return
+        }
+
+        // sun,moonとmoon,sunを同一化するキー
+        const key = [planetX.name, planetY.name].sort().join()
+
+        const majorAspect = planetX.majorAspect(planetY, orb)
+        if (majorAspect && !majorAspects[key]) {
+          majorAspects[key] = [planetX, planetY, majorAspect]
+        }
+      })
     })
 
     return (
-      <Text
-        text={planet.icon}
-        x={coordinate.x}
-        y={coordinate.y}
-        fontSize={iconSize}
-        offset={iconOffset(iconSize)}
-        fill="black"
-      />
+      <>
+        {Object.values(majorAspects).map(([from, to, aspect], i) => (
+          <AspectLine
+            key={i}
+            from={from.position}
+            to={to.position}
+            color={aspect.type === 'hard' ? 'red' : 'blue'}
+            scale={0.69}
+          />
+        ))}
+      </>
     )
   }
 
   return (
     <Stage width={origin.x + radius} height={origin.y + radius}>
       <Layer>
-        <ScaledCircle stroke="#352e2b" fill="#e4E7E2" scale={1} />
-        <ScaledCircle stroke="#352e2b" fill="white" scale={0.8} />
-        <ScaledCircle stroke="#afb1b1" fill="#e4E7E2" scale={0.45} />
-        {[0, 30, 60, 90, 120, 150].map((longitude, i) => (
-          <ScaledLine key={i} longitude={longitude} />
-        ))}
-        <ScaledCircle stroke="#afb1b1" fill="white" scale={0.37} />
-
         {/* サイン */}
-        {signCoordinates.map((signCoordinate, i) => (
-          <SignImage key={i} signCoordinate={signCoordinate} />
-        ))}
+        <SignCircle />
+        <SignIcons />
+
+        {/* ハウス */}
+        <HouseCircle />
 
         {/* 惑星 */}
-        {Object.values(planets).map((planet, id) => (
-          <PlanetImage key={id} planet={planet} />
-        ))}
+        <PlanetIcons />
+        <AspectLines />
       </Layer>
     </Stage>
   )

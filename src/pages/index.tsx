@@ -6,6 +6,7 @@ import { pagesPath } from '../lib/$path'
 import fourPillarsOfDestinyIcon from '../../public/images/index/four-pillars-of-destiny.svg'
 import horoscopeIcon from '../../public/images/index/horoscope.svg'
 import numerologyIcon from '../../public/images/index/numerology.svg'
+import Footer from '../components/Footer'
 
 export default function Home() {
   return (
@@ -58,15 +59,7 @@ export default function Home() {
         </div>
       </main>
 
-      <footer className={styles.footer}>
-        <p className={styles.copyright}>
-          <small>
-            <a href="https://www.sonicgarden.jp" target="_blank" rel="noopener noreferrer">
-              Copyright © SonicGarden All rights reserved.
-            </a>
-          </small>
-        </p>
-      </footer>
+      <Footer />
     </div>
   )
 }

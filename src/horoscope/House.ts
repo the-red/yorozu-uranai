@@ -22,7 +22,6 @@ export class House {
     for (let i = 0; i < this.cusps.length; i++) {
       let start = this.cusps[i].longitude
       let end = this.cusps[i + 1]?.longitude || this.cusps[0].longitude
-      console.log(this.cusps)
       if (start > end) {
         end += 360
       }

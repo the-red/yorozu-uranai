@@ -29,16 +29,16 @@ export const PLANET_NAMES_JA = {
   pluto: '冥王星',
 } as const
 
-export const ALL_MAJOR_ASPECTS = [
+const ALL_MAJOR_ASPECTS = [
   { degrees: 0, name: 'conjunction', type: 'hard' },
   { degrees: 60, name: 'sextile', type: 'soft' },
   { degrees: 90, name: 'square', type: 'hard' },
   { degrees: 120, name: 'trine', type: 'soft' },
   { degrees: 180, name: 'opposition', type: 'hard' },
 ] as const
-type MajorAspect = typeof ALL_MAJOR_ASPECTS[number]
+export type MajorAspect = typeof ALL_MAJOR_ASPECTS[number]
 
-export const ALL_MINOR_ASPECTS = [
+const ALL_MINOR_ASPECTS = [
   { degrees: 30, name: 'semi-sextile' },
   { degrees: 45, name: 'semi-square' },
   { degrees: 72, name: 'quintile' },

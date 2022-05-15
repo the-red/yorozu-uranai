@@ -4,13 +4,15 @@
 }
 .header {
   border-bottom: 1px solid #dcdddd;
+  height: 56px;
+  text-align: center;
 }
+
 .title {
   font-size: 27px;
   font-family: '001shirokuma-Regular';
-  width: 163px;
   margin: 0 auto;
-  padding: 14px;
+  line-height: 56px;
 }
 .main {
   font-family: 'Noto Sans JP Regular';

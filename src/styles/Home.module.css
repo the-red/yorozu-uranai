@@ -74,5 +74,11 @@
 @media all and (min-width: 767px) {
   .header {
     border-bottom: none;
+    height: 48px;
+    text-align: left;
+  }
+  .title {
+    line-height: 48px;
+    width: 980px;
   }
 }

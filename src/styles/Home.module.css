@@ -87,4 +87,9 @@
   .main {
     background-color: #fff;
   }
+  .menu-container {
+    background-color: #efefef;
+    width: 980px;
+    margin: 0 auto;
+  }
 }

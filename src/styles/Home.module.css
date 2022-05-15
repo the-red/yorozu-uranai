@@ -79,7 +79,6 @@
     border-bottom: none;
     height: 48px;
     text-align: left;
-    margin-bottom: 80px;
   }
   .title {
     line-height: 48px;
@@ -87,6 +86,7 @@
   }
   .main {
     background-color: #fff;
+    margin-top: 80px;
   }
   .menu-outer-container {
     background-color: #efefef;
@@ -112,5 +112,8 @@
   .menu-link {
     width: 186px;
     height: 180px;
+  }
+  .footer-spacer {
+    height: 215px;
   }
 }

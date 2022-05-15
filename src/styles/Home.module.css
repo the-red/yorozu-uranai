@@ -88,9 +88,29 @@
   .main {
     background-color: #fff;
   }
-  .menu-container {
+  .menu-outer-container {
     background-color: #efefef;
     width: 980px;
     margin: 0 auto;
+    padding: 69px 0;
+  }
+  .menu-container {
+    width: 676px;
+    margin: 0 152px;
+    flex-direction: row;
+    justify-content: space-between;
+  }
+  .menu {
+    margin-bottom: 0;
+  }
+  .menu:first-child {
+    margin-top: 0;
+  }
+  .menu:last-child {
+    margin-bottom: 0;
+  }
+  .menu-link {
+    width: 186px;
+    height: 180px;
   }
 }

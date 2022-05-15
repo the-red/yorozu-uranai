@@ -70,4 +70,7 @@
 
 /* PC用 */
 @media all and (min-width: 767px) {
+  .header {
+    border-bottom: none;
+  }
 }

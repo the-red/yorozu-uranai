@@ -1,11 +1,12 @@
 .header-and-body {
   min-height: 100%;
-  background-color: #efefef;
+  /* background-color: #efefef; */
 }
 .header {
   border-bottom: 1px solid #dcdddd;
   height: 56px;
   text-align: center;
+  background-color: #efefef;
 }
 
 .title {
@@ -14,8 +15,10 @@
   margin: 0 auto;
   line-height: 56px;
 }
+
 .main {
   font-family: 'Noto Sans JP Regular';
+  background-color: #efefef;
 }
 .menu-container {
   display: flex;
@@ -80,5 +83,8 @@
   .title {
     line-height: 48px;
     width: 980px;
+  }
+  .main {
+    background-color: #fff;
   }
 }

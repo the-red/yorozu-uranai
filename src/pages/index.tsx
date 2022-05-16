@@ -46,7 +46,7 @@ export default function Home() {
                 </a>
               </Link>
             </div>
-            <div className={`${styles.menu} ${styles['menu-four-pillars-of-destiny']}`}>
+            <div className={`${styles.menu} ${styles['menu-four-pillars-of-destiny']} ${styles['coming-soon']}`}>
               <a className={styles['menu-link']}>
                 <div className={styles['menu-link-block-1']}>
                   <h2 className={styles['menu-title']}>四柱推命</h2>

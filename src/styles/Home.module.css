@@ -60,7 +60,16 @@
 }
 .menu-four-pillars-of-destiny {
   background-color: #d69a62;
+}
+.coming-soon {
   opacity: 0.5;
+  position: relative;
+}
+.coming-soon::after {
+  content: 'COMING SOON!';
+  position: absolute;
+  right: 113px;
+  bottom: -32px;
 }
 
 .footer {
@@ -116,5 +125,8 @@
   }
   .footer-spacer {
     height: 215px;
+  }
+  .coming-soon::after {
+    right: 37px;
   }
 }

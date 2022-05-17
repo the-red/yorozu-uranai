@@ -99,5 +99,11 @@
   }
   .content-row {
     display: block;
+    margin-top: 0;
+  }
+  .content {
+    width: 90%;
+    flex-direction: row;
+    margin: 0 5%;
   }
 }

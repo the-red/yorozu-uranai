@@ -76,44 +76,37 @@
 .content-row:first-of-type {
   margin-top: 0px;
 }
+.content {
+  width: 50%;
+  display: flex;
+}
+.content-inner {
+  width: 360px;
+  padding: 16px 8px;
+}
 
-.form-outer-wrapper {
-  width: 50%;
-  display: flex;
+.form {
   justify-content: center;
   align-items: center;
 }
-.form-inner-wrapper {
-  width: 360px;
-  padding: 16px 8px;
-}
-.circle-outer-wrapper {
-  width: 50%;
-  display: flex;
+.circle {
   justify-content: center;
 }
-.circle-inner-wrapper {
-  margin-left: 0px;
-}
-.planet-positions-outer-wrapper {
-  width: 50%;
-  display: flex;
+.planet-positions {
   flex-direction: column;
   align-items: center;
 }
-.planet-positions-inner-wrapper {
-  width: 360px;
-  padding: 16px 8px;
-}
-.house-cusp-outer-wrapper {
-  width: 50%;
-  display: flex;
+.house-cusp {
   flex-direction: column;
   align-items: center;
 }
-.house-cusp-inner-wrapper {
-  width: 360px;
-  padding: 16px 8px;
+.sign-table {
+  flex-direction: column;
+  align-items: center;
+}
+.aspect-chart {
+  flex-direction: column;
+  align-items: center;
 }
 
 /* スマホ用 */

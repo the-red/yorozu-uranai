@@ -69,8 +69,8 @@ function HoroscopeDetailPage() {
   return (
     <div>
       <div className={styles['content-row']}>
-        <div className={styles['form-outer-wrapper']}>
-          <div className={styles['form-inner-wrapper']}>
+        <div className={`${styles.content} ${styles.form}`}>
+          <div className={styles['content-inner']}>
             <HoroscopeForm
               onSubmit={({ birthday: dateTime, lat, lon, timeUnknown }: FormValues) => {
                 setHoroscopeSeed({
@@ -84,32 +84,30 @@ function HoroscopeDetailPage() {
             />
           </div>
         </div>
-        <div className={`${styles.content} ${styles['circle-outer-wrapper']}`}>
-          <div className={styles['circle-inner-wrapper']}>
-            <HoroscopeCircle horoscope={horoscope} origin={{ x: 250, y: 250 }} radius={220} orb={orb} />
-          </div>
+        <div className={`${styles.content} ${styles.circle}`}>
+          <HoroscopeCircle horoscope={horoscope} origin={{ x: 250, y: 250 }} radius={220} orb={orb} />
         </div>
       </div>
       <div className={styles['content-row']}>
-        <div className={`${styles.content} ${styles['planet-positions-outer-wrapper']}`}>
-          <div className={styles['planet-positions-inner-wrapper']}>
+        <div className={`${styles.content} ${styles['planet-positions']}`}>
+          <div className={styles['content-inner']}>
             <PlanetPositions horoscope={horoscope} />
           </div>
         </div>
-        <div className={`${styles.content} ${styles['house-cusp-outer-wrapper']}`}>
-          <div className={styles['house-cusp-inner-wrapper']}>
+        <div className={`${styles.content} ${styles['house-cusp']}`}>
+          <div className={styles['content-inner']}>
             <HouseCusp horoscope={horoscope} />
           </div>
         </div>
       </div>
       <div className={styles['content-row']}>
-        <div style={{ width: '50%', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-          <div style={{ width: '360px', padding: '16px 8px' }}>
+        <div className={`${styles.content} ${styles['sign-table']}`}>
+          <div className={styles['content-inner']}>
             <SignTable planets={planets} />
           </div>
         </div>
-        <div style={{ width: '50%', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-          <div style={{ width: '360px', padding: '16px 8px' }}>
+        <div className={`${styles.content} ${styles['aspect-chart']}`}>
+          <div className={styles['content-inner']}>
             <AspectChart horoscope={horoscope} orb={orb} />
           </div>
         </div>

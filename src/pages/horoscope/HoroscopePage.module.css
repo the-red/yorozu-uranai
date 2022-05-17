@@ -5,11 +5,32 @@
   background-size: 100%;
   color: #ffffff;
 }
-
 .container {
   width: 960px;
   margin: 0 auto;
   padding: 20px 0;
+}
+.content-row {
+  display: flex;
+  margin-top: 40px;
+}
+.content-row:first-of-type {
+  margin-top: 0px;
+}
+.content {
+  width: 50%;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+}
+.form,
+.circle {
+  justify-content: center;
+  flex-direction: row;
+}
+.content-inner {
+  width: 360px;
+  padding: 16px 8px;
 }
 
 .title {
@@ -67,42 +88,6 @@
 }
 .hard-aspect {
   color: red;
-}
-
-.content-row {
-  display: flex;
-  margin-top: 40px;
-}
-.content-row:first-of-type {
-  margin-top: 0px;
-}
-.content {
-  width: 50%;
-  display: flex;
-  align-items: center;
-  flex-direction: column;
-}
-.form,
-.circle {
-  justify-content: center;
-  flex-direction: row;
-}
-.content-inner {
-  width: 360px;
-  padding: 16px 8px;
-}
-
-.planet-positions {
-  flex-direction: column;
-}
-.house-cusp {
-  flex-direction: column;
-}
-.sign-table {
-  flex-direction: column;
-}
-.aspect-chart {
-  flex-direction: column;
 }
 
 /* スマホ用 */

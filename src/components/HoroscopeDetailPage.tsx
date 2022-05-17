@@ -89,24 +89,24 @@ function HoroscopeDetailPage() {
         </div>
       </div>
       <div className={styles['content-row']}>
-        <div className={`${styles.content} ${styles['planet-positions']}`}>
+        <div className={styles.content}>
           <div className={styles['content-inner']}>
             <PlanetPositions horoscope={horoscope} />
           </div>
         </div>
-        <div className={`${styles.content} ${styles['house-cusp']}`}>
+        <div className={styles.content}>
           <div className={styles['content-inner']}>
             <HouseCusp horoscope={horoscope} />
           </div>
         </div>
       </div>
       <div className={styles['content-row']}>
-        <div className={`${styles.content} ${styles['sign-table']}`}>
+        <div className={styles.content}>
           <div className={styles['content-inner']}>
             <SignTable planets={planets} />
           </div>
         </div>
-        <div className={`${styles.content} ${styles['aspect-chart']}`}>
+        <div className={styles.content}>
           <div className={styles['content-inner']}>
             <AspectChart horoscope={horoscope} orb={orb} />
           </div>

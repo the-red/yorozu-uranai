@@ -79,34 +79,30 @@
 .content {
   width: 50%;
   display: flex;
+  align-items: center;
+  flex-direction: column;
+}
+.form,
+.circle {
+  justify-content: center;
+  flex-direction: row;
 }
 .content-inner {
   width: 360px;
   padding: 16px 8px;
 }
 
-.form {
-  justify-content: center;
-  align-items: center;
-}
-.circle {
-  justify-content: center;
-}
 .planet-positions {
   flex-direction: column;
-  align-items: center;
 }
 .house-cusp {
   flex-direction: column;
-  align-items: center;
 }
 .sign-table {
   flex-direction: column;
-  align-items: center;
 }
 .aspect-chart {
   flex-direction: column;
-  align-items: center;
 }
 
 /* スマホ用 */

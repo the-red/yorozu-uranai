@@ -92,6 +92,11 @@
 
 /* スマホ用 */
 @media all and (max-width: 767px) {
+  .container {
+    width: 100%;
+    margin: 0;
+    padding: 0;
+  }
   .content-row {
     display: block;
   }

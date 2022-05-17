@@ -92,4 +92,7 @@
 
 /* スマホ用 */
 @media all and (max-width: 767px) {
+  .content-row {
+    display: block;
+  }
 }

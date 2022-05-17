@@ -68,3 +68,7 @@
 .hard-aspect {
   color: red;
 }
+
+/* スマホ用 */
+@media all and (max-width: 767px) {
+}

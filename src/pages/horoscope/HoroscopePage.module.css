@@ -1,6 +1,6 @@
 .horoscope-page {
   background-image: url('/images/starry-sky.jpeg');
-  background-repeat: no-repeat;
+  background-repeat: repeat-y;
   background-attachment: fixed;
   background-size: 100%;
   color: #ffffff;
@@ -27,6 +27,9 @@
 .circle {
   justify-content: center;
   flex-direction: row;
+}
+.circle {
+  display: none;
 }
 .content-inner {
   width: 360px;
@@ -95,15 +98,24 @@
   .container {
     width: 100%;
     margin: 0;
-    padding: 0;
+    padding: 20px 0;
   }
   .content-row {
     display: block;
     margin-top: 0;
   }
   .content {
-    width: 90%;
+    width: 100%;
     flex-direction: row;
-    margin: 0 5%;
+    justify-content: center;
+  }
+  .sp {
+    display: block;
+  }
+}
+/* PC用 */
+@media all and (min-width: 768px) {
+  .pc {
+    display: block;
   }
 }

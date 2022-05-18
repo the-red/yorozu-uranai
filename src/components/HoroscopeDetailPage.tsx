@@ -84,8 +84,11 @@ function HoroscopeDetailPage() {
             />
           </div>
         </div>
-        <div className={`${styles.content} ${styles.circle}`}>
+        <div className={`${styles.content} ${styles.circle} ${styles.pc}`}>
           <HoroscopeCircle horoscope={horoscope} origin={{ x: 250, y: 250 }} radius={220} orb={orb} />
+        </div>
+        <div className={`${styles.content} ${styles.circle} ${styles.sp}`}>
+          <HoroscopeCircle horoscope={horoscope} origin={{ x: 180, y: 250 }} radius={170} orb={orb} />
         </div>
       </div>
       <div className={styles['content-row']}>

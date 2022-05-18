@@ -46,16 +46,14 @@ export default function Home() {
                 </a>
               </Link>
             </div>
-            <div className={`${styles.menu} ${styles['menu-four-pillars-of-destiny']}`}>
-              <Link href={pagesPath.numerology.$url()}>
-                <a className={styles['menu-link']}>
-                  <div className={styles['menu-link-block-1']}>
-                    <h2 className={styles['menu-title']}>四柱推命</h2>
-                    <Image src={fourPillarsOfDestinyIcon} width={40} height={40} alt="四柱推命アイコン" />
-                    <p className={styles['menu-text']}>命式を計算する</p>
-                  </div>
-                </a>
-              </Link>
+            <div className={`${styles.menu} ${styles['menu-four-pillars-of-destiny']} ${styles['coming-soon']}`}>
+              <a className={styles['menu-link']}>
+                <div className={styles['menu-link-block-1']}>
+                  <h2 className={styles['menu-title']}>四柱推命</h2>
+                  <Image src={fourPillarsOfDestinyIcon} width={40} height={40} alt="四柱推命アイコン" />
+                  <p className={styles['menu-text']}>命式を計算する</p>
+                </div>
+              </a>
             </div>
           </div>
         </div>

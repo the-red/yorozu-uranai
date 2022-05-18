@@ -1,17 +1,24 @@
-.header {
-  background-color: #efefef;
-  border-bottom: 1px solid #dcdddd;
+.header-and-body {
+  min-height: 100%;
+  /* background-color: #efefef; */
 }
+.header {
+  border-bottom: 1px solid #dcdddd;
+  height: 56px;
+  text-align: center;
+  background-color: #efefef;
+}
+
 .title {
   font-size: 27px;
   font-family: '001shirokuma-Regular';
-  width: 163px;
   margin: 0 auto;
-  padding: 14px;
+  line-height: 56px;
 }
+
 .main {
-  background-color: #efefef;
   font-family: 'Noto Sans JP Regular';
+  background-color: #efefef;
 }
 .menu-container {
   display: flex;
@@ -54,9 +61,12 @@
 .menu-four-pillars-of-destiny {
   background-color: #d69a62;
 }
+
 .footer {
-  background-color: #efefef;
   font-family: 'Noto Sans JP Regular';
+}
+.contact {
+  text-align: center;
 }
 .copyright {
   width: fit-content;
@@ -65,4 +75,45 @@
 
 /* PC用 */
 @media all and (min-width: 767px) {
+  .header {
+    border-bottom: none;
+    height: 48px;
+    text-align: left;
+  }
+  .title {
+    line-height: 48px;
+    width: 980px;
+  }
+  .main {
+    background-color: #fff;
+    margin-top: 80px;
+  }
+  .menu-outer-container {
+    background-color: #efefef;
+    width: 980px;
+    margin: 0 auto;
+    padding: 69px 0;
+  }
+  .menu-container {
+    width: 676px;
+    margin: 0 152px;
+    flex-direction: row;
+    justify-content: space-between;
+  }
+  .menu {
+    margin-bottom: 0;
+  }
+  .menu:first-child {
+    margin-top: 0;
+  }
+  .menu:last-child {
+    margin-bottom: 0;
+  }
+  .menu-link {
+    width: 186px;
+    height: 180px;
+  }
+  .footer-spacer {
+    height: 215px;
+  }
 }

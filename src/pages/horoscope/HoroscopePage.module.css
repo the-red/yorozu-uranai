@@ -111,6 +111,9 @@
   }
   .sp {
     display: block;
+    width: max-content;
+    padding: 16px 0;
+    margin: 0 auto;
   }
 }
 /* PC用 */

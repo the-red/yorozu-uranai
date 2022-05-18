@@ -8,6 +8,7 @@ import { FormValues, HoroscopeForm } from './HoroscopeForm'
 import AspectChart from './AspectChart'
 import dynamic from 'next/dynamic'
 import { useEffect, useMemo, useState } from 'react'
+import styles from '../pages/horoscope/HoroscopePage.module.css'
 
 const HoroscopeCircle = dynamic(() => import('./HoroscopeCircle'), { ssr: false })
 
@@ -67,9 +68,9 @@ function HoroscopeDetailPage() {
 
   return (
     <div>
-      <div style={{ display: 'flex' }}>
-        <div style={{ width: '50%', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-          <div style={{ width: '360px', padding: '16px 8px' }}>
+      <div className={styles['content-row']}>
+        <div className={`${styles.content} ${styles.form}`}>
+          <div className={styles['content-inner']}>
             <HoroscopeForm
               onSubmit={({ birthday: dateTime, lat, lon, timeUnknown }: FormValues) => {
                 setHoroscopeSeed({
@@ -83,32 +84,35 @@ function HoroscopeDetailPage() {
             />
           </div>
         </div>
-        <div style={{ width: '50%', display: 'flex', justifyContent: 'center' }}>
-          <div style={{ marginLeft: '0px' }}>
+        <div className={styles['content-row']}>
+          <div className={`${styles.content} ${styles.circle} ${styles.pc}`}>
             <HoroscopeCircle horoscope={horoscope} origin={{ x: 250, y: 250 }} radius={220} orb={orb} />
+          </div>
+          <div className={`${styles.content} ${styles.circle} ${styles.sp}`}>
+            <HoroscopeCircle horoscope={horoscope} origin={{ x: 180, y: 250 }} radius={170} orb={orb} />
           </div>
         </div>
       </div>
-      <div style={{ display: 'flex', marginTop: '40px' }}>
-        <div style={{ width: '50%', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-          <div style={{ width: '360px', padding: '16px 8px' }}>
+      <div className={styles['content-row']}>
+        <div className={styles.content}>
+          <div className={styles['content-inner']}>
             <PlanetPositions horoscope={horoscope} />
           </div>
         </div>
-        <div style={{ width: '50%', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-          <div style={{ width: '360px', padding: '16px 8px' }}>
+        <div className={styles.content}>
+          <div className={styles['content-inner']}>
             <HouseCusp horoscope={horoscope} />
           </div>
         </div>
       </div>
-      <div style={{ display: 'flex', marginTop: '40px' }}>
-        <div style={{ width: '50%', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-          <div style={{ width: '360px', padding: '16px 8px' }}>
+      <div className={styles['content-row']}>
+        <div className={styles.content}>
+          <div className={styles['content-inner']}>
             <SignTable planets={planets} />
           </div>
         </div>
-        <div style={{ width: '50%', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-          <div style={{ width: '360px', padding: '16px 8px' }}>
+        <div className={styles.content}>
+          <div className={styles['content-inner']}>
             <AspectChart horoscope={horoscope} orb={orb} />
           </div>
         </div>

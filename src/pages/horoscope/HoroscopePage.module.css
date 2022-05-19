@@ -94,7 +94,7 @@
 }
 
 /* スマホ用 */
-@media all and (max-width: 767px) {
+@media all and (max-width: 767.98px) {
   .container {
     width: 100%;
     margin: 0;
@@ -111,6 +111,9 @@
   }
   .sp {
     display: block;
+    width: max-content;
+    padding: 16px 0;
+    margin: 0 auto;
   }
 }
 /* PC用 */

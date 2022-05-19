@@ -84,7 +84,7 @@
 }
 
 /* PC用 */
-@media all and (min-width: 767px) {
+@media all and (min-width: 768px) {
   .header {
     border-bottom: none;
     height: 48px;

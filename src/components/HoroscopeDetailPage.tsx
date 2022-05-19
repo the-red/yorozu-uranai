@@ -84,14 +84,14 @@ function HoroscopeDetailPage() {
             />
           </div>
         </div>
-        <div className={styles['content-row']}>
+        <>
           <div className={`${styles.content} ${styles.circle} ${styles.pc}`}>
             <HoroscopeCircle horoscope={horoscope} radius={220} orb={orb} />
           </div>
           <div className={`${styles.content} ${styles.circle} ${styles.sp}`}>
             <HoroscopeCircle horoscope={horoscope} radius={170} orb={orb} />
           </div>
-        </div>
+        </>
       </div>
       <div className={styles['content-row']}>
         <div className={styles.content}>

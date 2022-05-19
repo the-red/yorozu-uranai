@@ -21,12 +21,10 @@ const iconOffset = (iconSize: number) => ({ x: iconSize / 2, y: iconSize / 2 })
 
 export default function HoroscopeCircle({
   horoscope,
-  origin,
   radius,
   orb,
 }: {
   horoscope: Horoscope
-  origin: { x: number; y: number } // 円の中心座標
   radius: number // 外周の半径
   orb: number
 }) {
@@ -38,13 +36,13 @@ export default function HoroscopeCircle({
     scale ||= 1
     const radian = degrees * (Math.PI / 180)
     return {
-      x: origin.x + Math.cos(radian) * radius * scale,
-      y: origin.y - Math.sin(radian) * radius * scale,
+      x: radius + Math.cos(radian) * radius * scale,
+      y: radius - Math.sin(radian) * radius * scale,
     }
   }
 
   const ScaledCircle = ({ stroke, fill, scale }: { stroke: string; fill: string; scale: number }) => (
-    <Circle stroke={stroke} strokeWidth={1} fill={fill} x={origin.x} y={origin.y} radius={radius * scale} opacity={1} />
+    <Circle stroke={stroke} strokeWidth={1} fill={fill} x={radius} y={radius} radius={radius * scale} opacity={1} />
   )
 
   const ScaledLine = ({
@@ -224,7 +222,7 @@ export default function HoroscopeCircle({
   }
 
   return (
-    <Stage width={origin.x + radius} height={origin.y + radius}>
+    <Stage width={radius * 2} height={radius * 2}>
       <Layer>
         {/* サイン */}
         <SignCircle />

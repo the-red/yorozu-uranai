@@ -2,11 +2,13 @@ import { NextPage } from 'next'
 import Image from 'next/image'
 import { FC, FormEventHandler, useState, VFC } from 'react'
 import { Numerology } from '../../numerology/Numerology'
+import styles from './numerologyPage.module.css'
 
 import leaf from '../../../public/images/numerology/leaf.png'
 import flower from '../../../public/images/numerology/flower.png'
 import bird1 from '../../../public/images/numerology/bird-1.png'
 import bird2 from '../../../public/images/numerology/bird-2.png'
+import Footer from '../../components/Footer'
 
 // TODO: レスポンシブ対応したけど、display: none; 使ったり強引な気もするので、修正したいかも
 
@@ -212,6 +214,9 @@ const NumerologyPage: NextPage = () => {
         <NumerologyForm onSubmit={handleSubmit} />
         {numerology && <CoreNumbers numerology={numerology} />}
       </div>
+      {/* TODO:計算後はfooter-spacerは非表示にしたい */}
+      <div className={styles['footer-spacer']}></div>
+      <Footer />
     </div>
   )
 }

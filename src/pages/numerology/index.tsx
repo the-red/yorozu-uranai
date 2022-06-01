@@ -7,6 +7,7 @@ import leaf from '../../../public/images/numerology/leaf.png'
 import flower from '../../../public/images/numerology/flower.png'
 import bird1 from '../../../public/images/numerology/bird-1.png'
 import bird2 from '../../../public/images/numerology/bird-2.png'
+import Footer from '../../components/Footer'
 
 // TODO: レスポンシブ対応したけど、display: none; 使ったり強引な気もするので、修正したいかも
 
@@ -212,8 +213,7 @@ const NumerologyPage: NextPage = () => {
         <NumerologyForm onSubmit={handleSubmit} />
         {numerology && <CoreNumbers numerology={numerology} />}
       </div>
-
-      <div>Footer</div>
+      <Footer />
     </div>
   )
 }

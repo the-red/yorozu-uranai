@@ -201,10 +201,10 @@ const NumerologyPage: NextPage = () => {
 
   return (
     <div
-      className="tw-min-h-screen tw-pb-8"
+      className="tw-min-h-screen tw-pb-8 tw-flex tw-flex-col tw-justify-between tw-items-center"
       style={{ backgroundColor: '#EBEBC1', fontFamily: 'Lato Regular, Noto Sans JP Regular' }}
     >
-      <div className="tw-max-w-screen-md tw-px-4 tw-mx-auto tw-space-y-8">
+      <div className="tw-w-full tw-max-w-screen-md tw-px-4 tw-mx-auto tw-space-y-8">
         <div style={{ fontFamily: 'MTF Wildflower' }} className="tw-text-center tw-text-7xl sm:tw-text-10xl">
           numerology
         </div>
@@ -212,6 +212,8 @@ const NumerologyPage: NextPage = () => {
         <NumerologyForm onSubmit={handleSubmit} />
         {numerology && <CoreNumbers numerology={numerology} />}
       </div>
+
+      <div>Footer</div>
     </div>
   )
 }

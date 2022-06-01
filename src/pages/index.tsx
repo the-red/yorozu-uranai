@@ -58,6 +58,7 @@ export default function Home() {
           </div>
         </div>
       </main>
+      <div className={styles['footer-spacer']}></div>
       <Footer />
     </div>
   )

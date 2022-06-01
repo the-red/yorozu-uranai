@@ -14,7 +14,8 @@ export default function Home() {
       <Head>
         <title>よろず占い</title>
         <meta name="description" content="Fortune Telling" />
-        <link rel="icon" href="/favicon.ico" />
+        {/* TODO:アイコンは別途設定する */}
+        {/* <link rel="icon" href="/favicon.ico" /> */}
       </Head>
 
       <header className={styles.header}>

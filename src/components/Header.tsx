@@ -6,7 +6,11 @@ export default function Header() {
   return (
     <header className={styles.header}>
       <div className={styles.header_wrapper}>
-        <h1>よろず占い</h1>
+        <h1>
+          <Link href={pagesPath.horoscope.$url()}>
+            <a>よろず占い</a>
+          </Link>
+        </h1>
         <nav>
           <ul>
             <li>

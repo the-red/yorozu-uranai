@@ -14,6 +14,7 @@
   font-family: '001shirokuma-Regular';
   margin: 0 auto;
   line-height: 56px;
+  color: #000;
 }
 .header nav {
   display: none;
@@ -23,6 +24,7 @@
   list-style: none;
   margin: 0;
   padding: 0;
+  color: #000;
 }
 
 .main {

@@ -6,6 +6,7 @@ import { pagesPath } from '../lib/$path'
 import fourPillarsOfDestinyIcon from '../../public/images/index/four-pillars-of-destiny.svg'
 import horoscopeIcon from '../../public/images/index/horoscope.svg'
 import numerologyIcon from '../../public/images/index/numerology.svg'
+import Header from '../components/Header'
 import Footer from '../components/Footer'
 
 export default function Home() {
@@ -18,9 +19,7 @@ export default function Home() {
         {/* <link rel="icon" href="/favicon.ico" /> */}
       </Head>
 
-      <header className={styles.header}>
-        <h1 className={styles.title}>よろず占い</h1>
-      </header>
+      <Header />
 
       <main className={styles.main}>
         <div className={styles['menu-outer-container']}>

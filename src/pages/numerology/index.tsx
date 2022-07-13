@@ -7,6 +7,7 @@ import leaf from '../../../public/images/numerology/leaf.png'
 import flower from '../../../public/images/numerology/flower.png'
 import bird1 from '../../../public/images/numerology/bird-1.png'
 import bird2 from '../../../public/images/numerology/bird-2.png'
+import Header from '../../components/Header'
 import Footer from '../../components/Footer'
 
 // TODO: レスポンシブ対応したけど、display: none; 使ったり強引な気もするので、修正したいかも
@@ -202,9 +203,10 @@ const NumerologyPage: NextPage = () => {
 
   return (
     <div
-      className="tw-min-h-screen tw-pb-8 tw-flex tw-flex-col tw-justify-between tw-items-center tw-space-y-4"
+      className="tw-min-h-screen tw-pb-8 tw-flex tw-flex-col tw-justify-between tw-items-center tw-space-y-4 numerology-index-root"
       style={{ backgroundColor: '#EBEBC1', fontFamily: 'Lato Regular, Noto Sans JP Regular' }}
     >
+      <Header />
       <div className="tw-w-full tw-max-w-screen-md tw-px-4 tw-mx-auto tw-space-y-8">
         <div style={{ fontFamily: 'MTF Wildflower' }} className="tw-text-center tw-text-7xl sm:tw-text-10xl">
           numerology

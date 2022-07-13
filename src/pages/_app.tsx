@@ -1,5 +1,7 @@
 import 'windi.css'
 import '../styles/globals.css'
+import '../styles/horoscope.css'
+import '../styles/numerology.css'
 import type { AppProps } from 'next/app'
 import { googleTagManagerId } from '../lib/gtm'
 import GoogleTagManager, { GoogleTagManagerId } from '../components/GoogleTagManager'

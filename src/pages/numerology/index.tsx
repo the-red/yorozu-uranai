@@ -22,13 +22,7 @@ type NumerologyFormProps = {
 }
 
 const NumerologyForm: VFC<NumerologyFormProps> = ({ onSubmit }) => {
-  const [birthday, setBirthday] = useState('')
-  const [name, setName] = useState('')
-
-  const handleSubmit: FormEventHandler = (e) => {
-    e.preventDefault()
-    onSubmit({ birthday: new Date(birthday), name })
-  }
+  const { register, handleSubmit } = useForm<FormValues>()
 
   const birthdayInput = (
     <div style={{ display: 'flex', marginBottom: '32px' }}>
@@ -75,16 +69,13 @@ const NumerologyForm: VFC<NumerologyFormProps> = ({ onSubmit }) => {
           <Image src={flower} />
         </div>
 
-        <form onSubmit={handleSubmit} className="<sm:tw-hidden tw-flex tw-flex-col tw-items-center">
+        <form
+          onSubmit={handleSubmit(onSubmit)}
+          className="tw-py-16 sm:tw-py-0 sm:tw-flex sm:tw-flex-col sm:tw-items-center"
+        >
           {birthdayInput}
           {nameInput}
-          <div style={{ marginLeft: '180px', width: '200px' }}>{submitButton}</div>
-        </form>
-
-        <form onSubmit={handleSubmit} className="sm:tw-hidden tw-py-16">
-          {birthdayInput}
-          {nameInput}
-          <div className="tw-w-full">{submitButton}</div>
+          <div className="">{submitButton}</div>
         </form>
       </div>
     </div>

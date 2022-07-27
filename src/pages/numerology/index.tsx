@@ -1,6 +1,7 @@
 import { NextPage } from 'next'
 import Image from 'next/image'
-import { FC, FormEventHandler, useState, VFC } from 'react'
+import { FC, useState, VFC } from 'react'
+import { useForm } from 'react-hook-form'
 import { Numerology } from '../../numerology/Numerology'
 
 import leaf from '../../../public/images/numerology/leaf.png'
@@ -9,8 +10,6 @@ import bird1 from '../../../public/images/numerology/bird-1.png'
 import bird2 from '../../../public/images/numerology/bird-2.png'
 import Header from '../../components/Header'
 import Footer from '../../components/Footer'
-
-// TODO: レスポンシブ対応したけど、display: none; 使ったり強引な気もするので、修正したいかも
 
 type FormValues = {
   birthday: Date
@@ -22,18 +21,12 @@ type NumerologyFormProps = {
 }
 
 const NumerologyForm: VFC<NumerologyFormProps> = ({ onSubmit }) => {
-  const [birthday, setBirthday] = useState('')
-  const [name, setName] = useState('')
-
-  const handleSubmit: FormEventHandler = (e) => {
-    e.preventDefault()
-    onSubmit({ birthday: new Date(birthday), name })
-  }
+  const { register, handleSubmit } = useForm<FormValues>()
 
   const birthdayInput = (
     <div style={{ display: 'flex', marginBottom: '32px' }}>
       <label style={{ width: '180px' }}>生年月日</label>
-      <input type="date" required style={{ width: '200px' }} onChange={(e) => setBirthday(e.target.value)} />
+      <input type="date" required style={{ width: '200px' }} {...register('birthday', { valueAsDate: true })} />
     </div>
   )
 
@@ -41,7 +34,7 @@ const NumerologyForm: VFC<NumerologyFormProps> = ({ onSubmit }) => {
     <div style={{ display: 'flex', marginBottom: '32px' }}>
       <label style={{ width: '180px' }}>名前（ローマ字）</label>
       <div style={{ width: '200px' }}>
-        <input type="text" required style={{ width: '100%' }} onChange={(e) => setName(e.target.value)} />
+        <input type="text" required style={{ width: '100%' }} {...register('name')} />
       </div>
     </div>
   )
@@ -75,16 +68,13 @@ const NumerologyForm: VFC<NumerologyFormProps> = ({ onSubmit }) => {
           <Image src={flower} />
         </div>
 
-        <form onSubmit={handleSubmit} className="<sm:tw-hidden tw-flex tw-flex-col tw-items-center">
+        <form
+          onSubmit={handleSubmit(onSubmit)}
+          className="tw-py-16 sm:tw-py-0 sm:tw-flex sm:tw-flex-col sm:tw-items-center"
+        >
           {birthdayInput}
           {nameInput}
-          <div style={{ marginLeft: '180px', width: '200px' }}>{submitButton}</div>
-        </form>
-
-        <form onSubmit={handleSubmit} className="sm:tw-hidden tw-py-16">
-          {birthdayInput}
-          {nameInput}
-          <div className="tw-w-full">{submitButton}</div>
+          <div className="">{submitButton}</div>
         </form>
       </div>
     </div>
@@ -138,33 +128,6 @@ type CoreNumbersProps = {
 }
 
 const CoreNumbers: VFC<CoreNumbersProps> = ({ numerology }) => {
-  const coreNumberItems = [
-    <CoreNumberItem key="0">
-      <CoreNumber>{numerology.lifePathNumber}</CoreNumber>
-      <div>ライフパス</div>
-    </CoreNumberItem>,
-    <CoreNumberItem key="1">
-      <CoreNumber>{numerology.destinyNumber}</CoreNumber>
-      <div>ディスティニー</div>
-    </CoreNumberItem>,
-    <CoreNumberItem key="2">
-      <CoreNumber>{numerology.soulNumber}</CoreNumber>
-      <div>ソウル</div>
-    </CoreNumberItem>,
-    <CoreNumberItem key="3">
-      <CoreNumber>{numerology.personalityNumber}</CoreNumber>
-      <div>パーソナリティー</div>
-    </CoreNumberItem>,
-    <CoreNumberItem key="4">
-      <CoreNumber>{numerology.maturityNumber}</CoreNumber>
-      <div>マチュリティー</div>
-    </CoreNumberItem>,
-    <CoreNumberItem key="5">
-      <CoreNumber>{numerology.birthdayNumber}</CoreNumber>
-      <div>バースデー</div>
-    </CoreNumberItem>,
-  ]
-
   return (
     <div>
       <div className="tw-text-center tw-text-lg sm:tw-text-xl tw-mb-2">コアナンバー</div>
@@ -177,17 +140,31 @@ const CoreNumbers: VFC<CoreNumbersProps> = ({ numerology }) => {
           <Image src={bird2} />
         </div>
 
-        <div style={{ height: 'max-content', width: 'max-content', margin: '0 auto' }}>
-          <div className="<sm:tw-hidden tw-flex tw-flex-col tw-space-y-8">
-            <div className="tw-flex tw-space-x-10">{coreNumberItems.slice(0, 3)}</div>
-            <div className="tw-flex tw-space-x-10">{coreNumberItems.slice(3, 6)}</div>
-          </div>
-
-          <div className="sm:tw-hidden tw-py-12 tw-flex tw-flex-col tw-space-y-4">
-            <div className="tw-flex tw-space-x-5">{coreNumberItems.slice(0, 2)}</div>
-            <div className="tw-flex tw-space-x-5">{coreNumberItems.slice(2, 4)}</div>
-            <div className="tw-flex tw-space-x-5">{coreNumberItems.slice(4, 6)}</div>
-          </div>
+        <div className="tw-grid tw-grid-cols-2 sm:tw-grid-cols-3 tw-gap-4 sm:tw-gap-8 sm:tw-w-md tw-py-12 sm:tw-py-0 tw-mx-auto">
+          <CoreNumberItem key="0">
+            <CoreNumber>{numerology.lifePathNumber}</CoreNumber>
+            <div>ライフパス</div>
+          </CoreNumberItem>
+          <CoreNumberItem key="1">
+            <CoreNumber>{numerology.destinyNumber}</CoreNumber>
+            <div>ディスティニー</div>
+          </CoreNumberItem>
+          <CoreNumberItem key="2">
+            <CoreNumber>{numerology.soulNumber}</CoreNumber>
+            <div>ソウル</div>
+          </CoreNumberItem>
+          <CoreNumberItem key="3">
+            <CoreNumber>{numerology.personalityNumber}</CoreNumber>
+            <div>パーソナリティー</div>
+          </CoreNumberItem>
+          <CoreNumberItem key="4">
+            <CoreNumber>{numerology.maturityNumber}</CoreNumber>
+            <div>マチュリティー</div>
+          </CoreNumberItem>
+          <CoreNumberItem key="5">
+            <CoreNumber>{numerology.birthdayNumber}</CoreNumber>
+            <div>バースデー</div>
+          </CoreNumberItem>
         </div>
       </div>
     </div>

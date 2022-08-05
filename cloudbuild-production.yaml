@@ -1,0 +1,6 @@
+steps:
+  - name: 'gcr.io/cloud-builders/docker'
+    args: ['build', '-t', 'gcr.io/yorozu-uranai-production/webapp', '.', '--build-arg', 'NEXT_PUBLIC_ENV=production']
+  - name: 'gcr.io/cloud-builders/docker'
+    args: ['push', 'gcr.io/yorozu-uranai-production/webapp']
+timeout: 3600s

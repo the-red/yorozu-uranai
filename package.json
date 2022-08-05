@@ -6,7 +6,7 @@
     "dev:next": "next dev",
     "dev:path": "pathpida --watch",
     "build": "pathpida && next build",
-    "start": "pathpida && start:next",
+    "start": "pathpida && yarn start:next",
     "start:next": "next start",
     "test": "jest"
   },

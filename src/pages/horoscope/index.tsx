@@ -1,14 +1,13 @@
 import Header from '../../components/Header'
 import Footer from '../../components/Footer'
 import HoroscopeDetailPage from '../../components/HoroscopeDetailPage'
-import styles from './HoroscopePage.module.css'
 
 function HoroscopePage() {
   return (
-    <div className={`${styles['horoscope-page']} horoscope-index-root`}>
+    <div className="horoscope">
       <Header />
-      <div className={styles.container}>
-        <div className={styles.title}>Horoscope</div>
+      <div className="container">
+        <div className="title">Horoscope</div>
         <HoroscopeDetailPage />
       </div>
       <Footer />

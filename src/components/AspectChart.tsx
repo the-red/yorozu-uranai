@@ -1,28 +1,25 @@
 import { Horoscope, MajorAspect, PLANET_ICONS, PlanetName, ALL_PLANETS } from '../horoscope'
-import styles from '../pages/horoscope/HoroscopePage.module.css'
 type Props = { horoscope: Horoscope; orb: number }
 
 export default function AspectChart({ horoscope, orb }: Props) {
   const planets = horoscope.planets
 
   const addClassByAspectType = (aspect: MajorAspect | undefined) => {
-    return `${aspect?.type === 'hard' && styles['hard-aspect']}
-              ${aspect?.type === 'soft' && styles['soft-aspect']}`
+    return `${aspect?.type === 'hard' && 'hard-aspect'}
+              ${aspect?.type === 'soft' && 'soft-aspect'}`
   }
 
   type AspectCellProps = {
     aspect: MajorAspect | undefined
   }
   const AspectCell = ({ aspect }: AspectCellProps) => {
-    return <div className={`${styles['inner-item']} ${addClassByAspectType(aspect)}`}>{aspect?.degrees}</div>
+    return <div className={`inner-item ${addClassByAspectType(aspect)}`}>{aspect?.degrees}</div>
   }
 
   type PlanetCellProps = {
     planetIcon: string
   }
-  const PlanetCell = (props: PlanetCellProps) => (
-    <div className={`${styles['inner-item']} ${styles['planet-icon']}`}>{props.planetIcon}</div>
-  )
+  const PlanetCell = (props: PlanetCellProps) => <div className="inner-item planet-icon">{props.planetIcon}</div>
 
   type AspectRowProps = {
     targetPlanet: PlanetName
@@ -38,9 +35,9 @@ export default function AspectChart({ horoscope, orb }: Props) {
 
   const AspectChart = () => (
     <>
-      <div className={styles['aspect-chart-container']}>
+      <div className="aspect-chart-container">
         {ALL_PLANETS.map((planet, i) => (
-          <div className={styles['outer-item']}>
+          <div className="outer-item">
             <AspectRow key={i} targetPlanet={planet} />
           </div>
         ))}
@@ -50,7 +47,7 @@ export default function AspectChart({ horoscope, orb }: Props) {
 
   return (
     <div>
-      <div className={styles.list}>Aspect Chart</div>
+      <div className="list">Aspect Chart</div>
       <AspectChart />
     </div>
   )

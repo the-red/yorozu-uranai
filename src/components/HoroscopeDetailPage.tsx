@@ -8,7 +8,6 @@ import { FormValues, HoroscopeForm } from './HoroscopeForm'
 import AspectChart from './AspectChart'
 import dynamic from 'next/dynamic'
 import { useEffect, useMemo, useState } from 'react'
-import styles from '../pages/horoscope/HoroscopePage.module.css'
 
 const HoroscopeCircle = dynamic(() => import('./HoroscopeCircle'), { ssr: false })
 
@@ -68,9 +67,9 @@ function HoroscopeDetailPage() {
 
   return (
     <div>
-      <div className={styles['content-row']}>
-        <div className={`${styles.content} ${styles.form}`}>
-          <div className={styles['content-inner']}>
+      <div className="content-row">
+        <div className="content form">
+          <div className="content-inner">
             <HoroscopeForm
               onSubmit={({ birthday: dateTime, lat, lon, timeUnknown }: FormValues) => {
                 setHoroscopeSeed({
@@ -85,34 +84,34 @@ function HoroscopeDetailPage() {
           </div>
         </div>
         <>
-          <div className={`${styles.content} ${styles.circle} ${styles.pc}`}>
+          <div className="content circle pc">
             <HoroscopeCircle horoscope={horoscope} radius={220} orb={orb} />
           </div>
-          <div className={`${styles.content} ${styles.circle} ${styles.sp}`}>
+          <div className="content circle sp">
             <HoroscopeCircle horoscope={horoscope} radius={170} orb={orb} />
           </div>
         </>
       </div>
-      <div className={styles['content-row']}>
-        <div className={styles.content}>
-          <div className={styles['content-inner']}>
+      <div className="content-row">
+        <div className="content">
+          <div className="content-inner">
             <PlanetPositions horoscope={horoscope} />
           </div>
         </div>
-        <div className={styles.content}>
-          <div className={styles['content-inner']}>
+        <div className="content">
+          <div className="content-inner">
             <HouseCusp horoscope={horoscope} />
           </div>
         </div>
       </div>
-      <div className={styles['content-row']}>
-        <div className={styles.content}>
-          <div className={styles['content-inner']}>
+      <div className="content-row">
+        <div className="content">
+          <div className="content-inner">
             <SignTable planets={planets} />
           </div>
         </div>
-        <div className={styles.content}>
-          <div className={styles['content-inner']}>
+        <div className="content">
+          <div className="content-inner">
             <AspectChart horoscope={horoscope} orb={orb} />
           </div>
         </div>

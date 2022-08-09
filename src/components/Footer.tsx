@@ -5,7 +5,7 @@ export default function Footer() {
     <footer className="footer">
       <p className="contact">
         <a href="https://twitter.com/YorozuUranai" target="_blank">
-          <TwitterLogo width={25} height={25} alt="Twitterアイコン" />
+          <TwitterLogo className="twitter-logo" width={25} height={25} alt="Twitterアイコン" />
         </a>
       </p>
       <p className="copyright">

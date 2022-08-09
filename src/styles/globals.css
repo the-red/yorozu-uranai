@@ -147,6 +147,9 @@ header .icon {
   width: fit-content;
   margin: 0 auto;
 }
+.twitter-logo {
+  fill: #1d9bf0;
+}
 
 /* PC用 */
 @media all and (min-width: 768px) {

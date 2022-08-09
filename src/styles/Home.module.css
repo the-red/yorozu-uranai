@@ -2,29 +2,6 @@
   min-height: 100%;
   /* background-color: #efefef; */
 }
-.header {
-  border-bottom: 1px solid #dcdddd;
-  height: 56px;
-  text-align: center;
-  background-color: #efefef;
-  width: 100%;
-}
-
-.header h1 {
-  font-size: 27px;
-  font-family: '001shirokuma-Regular';
-  margin: 0 auto;
-  line-height: 56px;
-}
-.header nav {
-  display: none;
-}
-.header nav ul {
-  font-family: 'Noto Sans JP Regular';
-  list-style: none;
-  margin: 0;
-  padding: 0;
-}
 
 .main {
   font-family: 'Noto Sans JP Regular';
@@ -95,30 +72,6 @@
 
 /* PC用 */
 @media all and (min-width: 768px) {
-  .header {
-    border-bottom: none;
-    height: 48px;
-    text-align: left;
-  }
-  .header_wrapper {
-    width: 980px;
-    margin: 0 auto;
-    display: flex;
-    justify-content: space-between;
-    line-height: 48px;
-  }
-  .header h1 {
-    margin: 0;
-  }
-  .header nav {
-    display: block;
-  }
-  .header nav ul li {
-    font-size: 14px;
-    display: inline-block;
-    width: 2.5rem;
-    text-align: center;
-  }
   .main {
     background-color: #fff;
     margin-top: 80px;

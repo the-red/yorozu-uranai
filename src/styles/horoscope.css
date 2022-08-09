@@ -1,8 +1,8 @@
-.horoscope-index-root header {
+.horoscope-index-root .header {
   color: #fff;
   background-color: transparent;
 }
 
-.horoscope-index-root header .icon {
+.horoscope-index-root .header .icon {
   fill: #fff;
 }

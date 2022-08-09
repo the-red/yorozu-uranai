@@ -76,6 +76,17 @@ a {
   fill: #4b4b4b;
 }
 
+.footer {
+  font-family: 'Noto Sans JP Regular';
+}
+.contact {
+  text-align: center;
+}
+.copyright {
+  width: fit-content;
+  margin: 0 auto;
+}
+
 /* PC用 */
 @media all and (min-width: 768px) {
   .header {

@@ -59,17 +59,6 @@
   bottom: -32px;
 }
 
-.footer {
-  font-family: 'Noto Sans JP Regular';
-}
-.contact {
-  text-align: center;
-}
-.copyright {
-  width: fit-content;
-  margin: 0 auto;
-}
-
 /* PC用 */
 @media all and (min-width: 768px) {
   .main {

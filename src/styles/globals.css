@@ -139,6 +139,7 @@ header .icon {
 
 .footer {
   font-family: 'Noto Sans JP Regular';
+  padding-bottom: 32px;
 }
 .contact {
   text-align: center;

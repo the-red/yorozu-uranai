@@ -2,3 +2,7 @@
   color: #fff;
   background-color: transparent;
 }
+
+.horoscope-index-root header .icon {
+  fill: #fff;
+}

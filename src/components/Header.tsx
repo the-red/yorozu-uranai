@@ -21,14 +21,14 @@ export default function Header() {
               <Link href={pagesPath.horoscope.$url()}>
                 <a>
                   {/* TODO: horoscopeIcon はコンポーネントとして表示すると何故か消えるのでなんとかする */}
-                  <Image src={horoscopeIcon} width={16} height={16} alt="西洋占星術アイコン" />
+                  <Image src={horoscopeIcon} className="icon" width={16} height={16} alt="西洋占星術アイコン" />
                 </a>
               </Link>
             </li>
             <li>
               <Link href={pagesPath.numerology.$url()}>
                 <a>
-                  <NumerologyIcon width={16} height={16} alt="数秘術アイコン" />
+                  <NumerologyIcon className="icon" width={16} height={16} alt="数秘術アイコン" />
                 </a>
               </Link>
             </li>

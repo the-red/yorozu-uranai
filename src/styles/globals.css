@@ -20,6 +20,10 @@ a {
   text-decoration: none;
 }
 
+header .icon {
+  fill: #4b4b4b;
+}
+
 @font-face {
   font-family: 'Farewell Pro Regular';
   src: url('/fonts/Farewell Pro Regular.ttf');

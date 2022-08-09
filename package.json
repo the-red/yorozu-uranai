@@ -12,6 +12,7 @@
   },
   "license": "UNLICENSED",
   "devDependencies": {
+    "@svgr/webpack": "^6.2.1",
     "@types/hepburn": "^1.2.0",
     "@types/jest": "^27.0.3",
     "@types/luxon": "^1.26.0",

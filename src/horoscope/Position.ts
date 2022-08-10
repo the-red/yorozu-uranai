@@ -15,8 +15,11 @@ export class Position {
   ] as const
 
   private INTERVAL = 30 as const
+  readonly longitude: number
 
-  constructor(readonly longitude: number) {}
+  constructor(longitude: number) {
+    this.longitude = longitude % 360
+  }
 
   get degrees() {
     return this.longitude % this.INTERVAL
@@ -42,6 +45,7 @@ export class Position {
   get sign() {
     let index = Math.trunc(this.longitude / this.INTERVAL)
     if (this.degrees === 0) {
+      // 分秒がピッタリ0のときは、前のサインとする（0度は牡羊座じゃなくて魚座）
       index = index > 0 ? index - 1 : Position.ALL_SIGNS.length - 1
     }
     return Position.ALL_SIGNS[index]

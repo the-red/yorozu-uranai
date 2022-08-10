@@ -76,8 +76,13 @@ describe('Planet', () => {
     })
     it('360.5: 牡羊座', () => {
       const planet = new Planet(new Position(360.5), 'sun', false, house)
-      expect(planet.sign).toEqual(undefined)
+      expect(planet.sign).toEqual('牡羊座')
       expect(planet.position.degrees).toEqual(0.5)
+    })
+    it('3600270.0: 射手座', () => {
+      const planet = new Planet(new Position(3600270), 'sun', false, house)
+      expect(planet.sign).toEqual('射手座')
+      expect(planet.position.degrees).toEqual(0)
     })
   })
 

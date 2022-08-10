@@ -20,7 +20,6 @@ describe('Planet', () => {
     it('0.0: 魚座', () => {
       const planet = new Planet(new Position(0), 'sun', false, house)
       expect(planet.sign).toEqual('魚座')
-      expect(planet.position.degrees).toEqual(0)
     })
     it('0.5: 牡羊座', () => {
       const planet = new Planet(new Position(0.5), 'sun', false, house)
@@ -37,6 +36,48 @@ describe('Planet', () => {
       expect(planet.longitude).toEqual(61.89)
       expect(planet.sign).toEqual('双子座')
       expect(planet.position.degrees).toEqual(1.8900000000000006)
+    })
+    it('120.0: 蟹座', () => {
+      const planet = new Planet(new Position(120), 'sun', false, house)
+      expect(planet.sign).toEqual('蟹座')
+    })
+    it('150.0: 獅子座', () => {
+      const planet = new Planet(new Position(150), 'sun', false, house)
+      expect(planet.sign).toEqual('獅子座')
+    })
+    it('180.0: 乙女座', () => {
+      const planet = new Planet(new Position(180), 'sun', false, house)
+      expect(planet.sign).toEqual('乙女座')
+    })
+    it('210.0: 天秤座', () => {
+      const planet = new Planet(new Position(210), 'sun', false, house)
+      expect(planet.sign).toEqual('天秤座')
+    })
+    it('240.0: 蠍座', () => {
+      const planet = new Planet(new Position(240), 'sun', false, house)
+      expect(planet.sign).toEqual('蠍座')
+    })
+    it('270.0: 射手座', () => {
+      const planet = new Planet(new Position(270), 'sun', false, house)
+      expect(planet.sign).toEqual('射手座')
+    })
+    it('300.0: 山羊座', () => {
+      const planet = new Planet(new Position(300), 'sun', false, house)
+      expect(planet.sign).toEqual('山羊座')
+    })
+    it('330.0: 水瓶座', () => {
+      const planet = new Planet(new Position(330), 'sun', false, house)
+      expect(planet.sign).toEqual('水瓶座')
+    })
+    it('360.0: 魚座', () => {
+      const planet = new Planet(new Position(360), 'sun', false, house)
+      expect(planet.sign).toEqual('魚座')
+      expect(planet.position.degrees).toEqual(0)
+    })
+    it('360.5: 牡羊座', () => {
+      const planet = new Planet(new Position(360.5), 'sun', false, house)
+      expect(planet.sign).toEqual(undefined)
+      expect(planet.position.degrees).toEqual(0.5)
     })
   })
 

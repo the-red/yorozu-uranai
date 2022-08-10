@@ -30,7 +30,7 @@ export default function Home() {
                   <div className="menu-link-block-1">
                     <h2 className="menu-title">西洋占星術</h2>
                     {/* TODO: horoscopeIcon はコンポーネントとして表示すると何故か消えるのでなんとかする */}
-                    <Image src={horoscopeIcon} width={40} height={40} alt="西洋占星術アイコン" />
+                    <Image src={horoscopeIcon} width={40} height={40} alt="西洋占星術" />
                     <p className="menu-text">ホロスコープを作成する</p>
                   </div>
                 </a>
@@ -41,7 +41,7 @@ export default function Home() {
                 <a className="menu-link">
                   <div className="menu-link-block-1">
                     <h2 className="menu-title">数秘術</h2>
-                    <NumerologyIcon width={40} height={40} alt="数秘術アイコン" />
+                    <NumerologyIcon width={40} height={40} alt="数秘術" />
                     <p className="menu-text">数字を計算する</p>
                   </div>
                 </a>
@@ -51,7 +51,7 @@ export default function Home() {
               <a className="menu-link">
                 <div className="menu-link-block-1">
                   <h2 className="menu-title">四柱推命</h2>
-                  <FourPillarsOfDestinyIcon width={40} height={40} alt="四柱推命アイコン" />
+                  <FourPillarsOfDestinyIcon width={40} height={40} alt="四柱推命" />
                   <p className="menu-text">命式を計算する</p>
                 </div>
               </a>

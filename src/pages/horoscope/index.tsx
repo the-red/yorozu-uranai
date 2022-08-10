@@ -5,7 +5,7 @@ import HoroscopeDetailPage from '../../components/HoroscopeDetailPage'
 function HoroscopePage() {
   return (
     <div className="horoscope">
-      <Header />
+      <Header whiteIcon={true} />
       <div className="container">
         <div className="title">Horoscope</div>
         <HoroscopeDetailPage />

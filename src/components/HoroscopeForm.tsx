@@ -1,5 +1,7 @@
-import { ChangeEventHandler, FormEventHandler, useMemo, useState, VFC } from 'react'
+import { useMemo, FC } from 'react'
 import { DateTime } from 'luxon'
+import { useForm } from 'react-hook-form'
+
 type HoroscopeFormProps = {
   onSubmit: (formValues: FormValues) => void
   defaultValues: FormValues
@@ -12,58 +14,61 @@ export type FormValues = {
   timeUnknown: boolean
 }
 
-export const HoroscopeForm: VFC<HoroscopeFormProps> = ({ onSubmit, defaultValues }) => {
+type _FormValues = {
+  date: string
+  hours: number
+  minutes: number
+  timeUnknown: boolean
+  lat: number
+  lon: number
+}
+
+export const HoroscopeForm: FC<HoroscopeFormProps> = ({ onSubmit, defaultValues }) => {
   const defaultDateTime = useMemo(() => DateTime.fromJSDate(defaultValues.birthday), [])
-  const defaultPlace = { lat: defaultValues.lat, lon: defaultValues.lon }
 
-  const [date, setDate] = useState(defaultDateTime.toFormat('yyyy-MM-dd'))
-  const handleChangeDate: ChangeEventHandler<HTMLInputElement> = (e) => setDate(e.target.value)
+  const {
+    register,
+    handleSubmit: hookFormHandleSubmit,
+    watch,
+  } = useForm<_FormValues>({
+    defaultValues: {
+      date: defaultDateTime.toFormat('yyyy-MM-dd'),
+      hours: defaultDateTime.hour,
+      minutes: defaultDateTime.minute,
+      timeUnknown: false,
+      lat: defaultValues.lat,
+      lon: defaultValues.lon,
+    },
+  })
 
-  const [hours, setHours] = useState(defaultDateTime.hour)
-  const handleChangeHours: ChangeEventHandler<HTMLInputElement> = (e) => setHours(Number(e.target.value))
+  const isTimeUnknownChecked = watch('timeUnknown')
 
-  const [minutes, setMinutes] = useState(defaultDateTime.minute)
-  const handleChangeMinutes: ChangeEventHandler<HTMLInputElement> = (e) => setMinutes(Number(e.target.value))
-
-  // TODO: 時刻不明なら、時・分フィールドをグレーアウトしたいかも
-  const [timeUnknown, setTimeUnknown] = useState(defaultValues.timeUnknown)
-  const handleCheckTimeUnknown: ChangeEventHandler<HTMLInputElement> = (e) => setTimeUnknown(e.target.checked)
-
-  const [lat, setLat] = useState<number>(defaultPlace.lat)
-  const [lon, setLon] = useState<number>(defaultPlace.lon)
-
-  const handleChangeLat: ChangeEventHandler<HTMLInputElement> = (e) => {
-    setLat(Number(e.target.value))
-  }
-
-  const handleChangeLon: ChangeEventHandler<HTMLInputElement> = (e) => {
-    // TODO: input側で 0 を入力できず、空文字が 0 になる
-    setLon(Number(e.target.value))
-  }
-
-  const handleSubmit: FormEventHandler<HTMLFormElement> = (e) => {
-    e.preventDefault()
+  const handleSubmit = ({ date, hours, minutes, timeUnknown, lat, lon }: _FormValues) => {
     const timeZone = '+09:00'
     const isoDate = timeUnknown
       ? `${date}T12:00${timeZone}`
       : `${date}T${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}${timeZone}`
     const dateTime = new Date(isoDate)
+
+    lat = typeof lat == 'number' && !isNaN(lat) ? lat : 0
+    lon = typeof lon == 'number' && !isNaN(lon) ? lon : 0
+
     onSubmit({ birthday: dateTime, lat, lon, timeUnknown })
   }
 
   return (
-    <form onSubmit={handleSubmit} style={{ width: '100%' }}>
+    <form onSubmit={hookFormHandleSubmit(handleSubmit)} style={{ width: '100%' }}>
       <div style={{ display: 'flex' }}>
         <label style={{ width: '100px' }}>生年月日</label>
         <div>
-          <input type="date" value={date} onChange={handleChangeDate} />
+          <input type="date" {...register('date')} />
           <div>
             <input
               type="number"
               min="0"
               max="23"
-              value={hours}
-              onChange={handleChangeHours}
+              {...register('hours', { valueAsNumber: true })}
+              disabled={isTimeUnknownChecked}
               style={{ marginRight: '8px' }}
             />
             <span style={{ marginRight: '8px' }}>時</span>
@@ -71,8 +76,8 @@ export const HoroscopeForm: VFC<HoroscopeFormProps> = ({ onSubmit, defaultValues
               type="number"
               min="0"
               max="59"
-              value={minutes}
-              onChange={handleChangeMinutes}
+              {...register('minutes', { valueAsNumber: true })}
+              disabled={isTimeUnknownChecked}
               style={{ marginRight: '8px' }}
             />
             <span>分</span>
@@ -80,8 +85,8 @@ export const HoroscopeForm: VFC<HoroscopeFormProps> = ({ onSubmit, defaultValues
           </div>
           <div>
             <span style={{ marginLeft: '12px' }}>
-              <input type="checkbox" checked={timeUnknown} onChange={handleCheckTimeUnknown} />
-              <label>時刻不明</label>
+              <input id="horoscope[time_unknown]" type="checkbox" {...register('timeUnknown')} />
+              <label htmlFor="horoscope[time_unknown]">時刻不明</label>
             </span>
           </div>
         </div>
@@ -99,8 +104,7 @@ export const HoroscopeForm: VFC<HoroscopeFormProps> = ({ onSubmit, defaultValues
               step="0.0000000000000001"
               min="-90"
               max="90"
-              value={lat || ''}
-              onChange={handleChangeLat}
+              {...register('lat', { valueAsNumber: true })}
               style={{
                 width: 80,
               }}
@@ -113,8 +117,7 @@ export const HoroscopeForm: VFC<HoroscopeFormProps> = ({ onSubmit, defaultValues
               step="0.0000000000000001"
               min="-180"
               max="180"
-              value={lon || ''}
-              onChange={handleChangeLon}
+              {...register('lon', { valueAsNumber: true })}
               style={{
                 width: 80,
               }}

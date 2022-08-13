@@ -9,20 +9,19 @@ export type HoroscopeFormProps = {
 
 export type FormValues = {
   birthday: DateTime
+  zone: string
+  timeUnknown: boolean
   lat: number
   lon: number
-  timeUnknown: boolean
-  zone: string
 }
 
 type _FormValues = {
   date: string
-  hours: number
-  minutes: number
+  time: string
+  zone: string
   timeUnknown: boolean
   lat: number
   lon: number
-  zone: string
 }
 
 export const HoroscopeForm: FC<HoroscopeFormProps> = ({ onSubmit, defaultValues }) => {
@@ -35,8 +34,7 @@ export const HoroscopeForm: FC<HoroscopeFormProps> = ({ onSubmit, defaultValues 
   } = useForm<_FormValues>({
     defaultValues: {
       date: defaultDateTime.toFormat('yyyy-MM-dd'),
-      hours: defaultDateTime.hour,
-      minutes: defaultDateTime.minute,
+      time: defaultDateTime.toFormat('hh:mm'),
       timeUnknown: false,
       lat: defaultValues.lat,
       lon: defaultValues.lon,
@@ -46,10 +44,10 @@ export const HoroscopeForm: FC<HoroscopeFormProps> = ({ onSubmit, defaultValues 
 
   const isTimeUnknownChecked = watch('timeUnknown')
 
-  const handleSubmit = ({ date, hours, minutes, timeUnknown, lat, lon, zone }: _FormValues) => {
-    const isoDate = timeUnknown
-      ? `${date}T12:00`
-      : `${date}T${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}`
+  const handleSubmit = ({ date, time, timeUnknown, lat, lon, zone }: _FormValues) => {
+    console.log({ time })
+
+    const isoDate = timeUnknown ? `${date}T12:00` : `${date}T${time}`
     const dateTime = DateTime.fromISO(isoDate)
 
     lat = typeof lat == 'number' && !isNaN(lat) ? lat : 0
@@ -65,24 +63,7 @@ export const HoroscopeForm: FC<HoroscopeFormProps> = ({ onSubmit, defaultValues 
         <div>
           <input type="date" {...register('date')} />
           <div>
-            <input
-              type="number"
-              min="0"
-              max="23"
-              {...register('hours', { valueAsNumber: true })}
-              disabled={isTimeUnknownChecked}
-              style={{ marginRight: '8px' }}
-            />
-            <span style={{ marginRight: '8px' }}>時</span>
-            <input
-              type="number"
-              min="0"
-              max="59"
-              {...register('minutes', { valueAsNumber: true })}
-              disabled={isTimeUnknownChecked}
-              style={{ marginRight: '8px' }}
-            />
-            <span>分</span>
+            <input type="time" {...register('time')} disabled={isTimeUnknownChecked} style={{ marginRight: '8px' }} />
             <span> ({defaultValues.zone})</span>
           </div>
           <div>

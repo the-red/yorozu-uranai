@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { useRouter } from 'next/router'
+import { useRouter, NextRouter } from 'next/router'
 import useSWR from 'swr'
 import { DateTime } from 'luxon'
 
@@ -12,12 +12,24 @@ import HoroscopeDetailPage from '../../horoscope/components/HoroscopeDetailPage'
 
 type HoroscopeSeed = {
   birthday: DateTime
+  zone: string
+  timeUnknown: boolean
   lat: number
   lon: number
   hsys?: string
-  timeUnknown: boolean
-  zone: string
 }
+
+type HoroscopeQuery = {
+  date: string
+  time: string
+  zone: string
+  timeUnknown: boolean
+  lat: number
+  lon: number
+}
+
+const DATE_FORMAT = 'yyyyMMdd' as const
+const TIME_FORMAT = 'hhmm' as const
 
 function HoroscopePage() {
   const router = useRouter()
@@ -28,15 +40,18 @@ function HoroscopePage() {
     const singleValue = (value: string | string[] | undefined) => (Array.isArray(value) ? value[0] : value)
 
     if (router.isReady) {
-      const { query } = router
+      const query = router.query as Record<keyof HoroscopeQuery, string | string[] | undefined>
 
       const zone = singleValue(query.zone)
-      const unixTime = singleValue(query.birthday)
-      const birthday = unixTime ? DateTime.fromSeconds(Number(unixTime), { zone }) : DateTime.local({ zone })
+      const date = singleValue(query.date)
+      const time = singleValue(query.time)
+      const birthday =
+        date && time ? DateTime.fromFormat(date + time, DATE_FORMAT + TIME_FORMAT, { zone }) : DateTime.local({ zone })
+      console.log({ zone, birthday })
 
       const lat = singleValue(query.lat)
       const lon = singleValue(query.lon)
-      const timeUnknown = singleValue(query.tmeUnknown)
+      const timeUnknown = singleValue(query.timeUnknown)
 
       setHoroscopeSeed({
         ...horoscopeSeed,
@@ -79,15 +94,15 @@ function HoroscopePage() {
   const orb = 6
 
   const handleSubmit: HoroscopeFormProps['onSubmit'] = ({ birthday: dateTime, lat, lon, timeUnknown }: FormValues) => {
-    router.push({
-      query: {
-        birthday: dateTime.toSeconds(),
-        lat,
-        lon,
-        timeUnknown,
-        zone: horoscopeSeed.zone,
-      },
-    })
+    const query: HoroscopeQuery = {
+      date: dateTime.toFormat(DATE_FORMAT),
+      time: dateTime.toFormat(TIME_FORMAT),
+      zone: dateTime.zoneName,
+      timeUnknown,
+      lat,
+      lon,
+    }
+    router.push({ query })
   }
 
   return (

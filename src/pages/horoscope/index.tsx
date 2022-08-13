@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { useRouter } from 'next/router'
 import useSWR from 'swr'
+import { DateTime } from 'luxon'
 
 import Header from '../../components/Header'
 import Footer from '../../components/Footer'
@@ -10,11 +11,12 @@ import { FormValues, HoroscopeForm, HoroscopeFormProps } from '../../horoscope/c
 import HoroscopeDetailPage from '../../horoscope/components/HoroscopeDetailPage'
 
 type HoroscopeSeed = {
-  birthday: Date
+  birthday: DateTime
   lat: number
   lon: number
   hsys?: string
   timeUnknown: boolean
+  zone: string
 }
 
 function HoroscopePage() {
@@ -28,18 +30,20 @@ function HoroscopePage() {
     if (router.isReady) {
       const { query } = router
 
-      const birthday = singleValue(query.birthday)
+      const b = singleValue(query.birthday)
+      const birthday = b ? DateTime.fromISO(b) : DateTime.now()
       const lat = singleValue(query.lat)
       const lon = singleValue(query.lon)
       const timeUnknown = singleValue(query.tmeUnknown)
 
       setHoroscopeSeed({
         ...horoscopeSeed,
-        birthday: birthday ? new Date(birthday) : new Date(),
+        birthday,
         lat: lat ? Number(lat) : 35.604839,
         lon: lon ? Number(lon) : 139.667717,
         // hsys: 'Placidus(default)',
         timeUnknown: !timeUnknown || timeUnknown === 'false' ? false : true,
+        zone: birthday.zoneName,
       })
     }
   }, [router])
@@ -73,11 +77,13 @@ function HoroscopePage() {
   const orb = 6
 
   const handleSubmit: HoroscopeFormProps['onSubmit'] = ({ birthday: dateTime, lat, lon, timeUnknown }: FormValues) => {
-    setHoroscopeSeed({
-      birthday: dateTime,
-      lat,
-      lon,
-      timeUnknown,
+    router.push({
+      query: {
+        birthday: dateTime.toISO(),
+        lat,
+        lon,
+        timeUnknown,
+      },
     })
   }
 

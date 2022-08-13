@@ -8,10 +8,11 @@ export type HoroscopeFormProps = {
 }
 
 export type FormValues = {
-  birthday: Date
+  birthday: DateTime
   lat: number
   lon: number
   timeUnknown: boolean
+  zone: string
 }
 
 type _FormValues = {
@@ -21,10 +22,11 @@ type _FormValues = {
   timeUnknown: boolean
   lat: number
   lon: number
+  zone: string
 }
 
 export const HoroscopeForm: FC<HoroscopeFormProps> = ({ onSubmit, defaultValues }) => {
-  const defaultDateTime = useMemo(() => DateTime.fromJSDate(defaultValues.birthday), [])
+  const defaultDateTime = useMemo(() => defaultValues.birthday, [])
 
   const {
     register,
@@ -38,22 +40,22 @@ export const HoroscopeForm: FC<HoroscopeFormProps> = ({ onSubmit, defaultValues 
       timeUnknown: false,
       lat: defaultValues.lat,
       lon: defaultValues.lon,
+      zone: defaultValues.zone,
     },
   })
 
   const isTimeUnknownChecked = watch('timeUnknown')
 
-  const handleSubmit = ({ date, hours, minutes, timeUnknown, lat, lon }: _FormValues) => {
-    const timeZone = '+09:00'
+  const handleSubmit = ({ date, hours, minutes, timeUnknown, lat, lon, zone }: _FormValues) => {
     const isoDate = timeUnknown
-      ? `${date}T12:00${timeZone}`
-      : `${date}T${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}${timeZone}`
-    const dateTime = new Date(isoDate)
+      ? `${date}T12:00`
+      : `${date}T${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}`
+    const dateTime = DateTime.fromISO(isoDate)
 
     lat = typeof lat == 'number' && !isNaN(lat) ? lat : 0
     lon = typeof lon == 'number' && !isNaN(lon) ? lon : 0
 
-    onSubmit({ birthday: dateTime, lat, lon, timeUnknown })
+    onSubmit({ birthday: dateTime, lat, lon, timeUnknown, zone })
   }
 
   return (
@@ -81,7 +83,7 @@ export const HoroscopeForm: FC<HoroscopeFormProps> = ({ onSubmit, defaultValues 
               style={{ marginRight: '8px' }}
             />
             <span>分</span>
-            <span>（JST）</span>
+            <span> ({defaultValues.zone})</span>
           </div>
           <div>
             <span style={{ marginLeft: '12px' }}>

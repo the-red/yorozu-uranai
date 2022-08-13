@@ -1,4 +1,5 @@
-import { useEffect, useMemo, useState } from 'react'
+import { useEffect, useState } from 'react'
+import { useRouter } from 'next/router'
 import useSWR from 'swr'
 
 import Header from '../../components/Header'
@@ -17,20 +18,31 @@ type HoroscopeSeed = {
 }
 
 function HoroscopePage() {
-  const defaultValues: HoroscopeSeed = useMemo(
-    () => ({
-      birthday: new Date(),
-      lat: 35.604839,
-      lon: 139.667717,
-      // hsys: 'Placidus(default)',
-      timeUnknown: false,
-    }),
-    []
-  )
-
-  const [horoscopeSeed, setHoroscopeSeed] = useState<HoroscopeSeed>(defaultValues)
-
+  const router = useRouter()
+  const [horoscopeSeed, setHoroscopeSeed] = useState<HoroscopeSeed>()
   const [horoscope, setHoroscope] = useState<Horoscope>()
+
+  useEffect(() => {
+    const singleValue = (value: string | string[] | undefined) => (Array.isArray(value) ? value[0] : value)
+
+    if (router.isReady) {
+      const { query } = router
+
+      const birthday = singleValue(query.birthday)
+      const lat = singleValue(query.lat)
+      const lon = singleValue(query.lon)
+      const timeUnknown = singleValue(query.tmeUnknown)
+
+      setHoroscopeSeed({
+        ...horoscopeSeed,
+        birthday: birthday ? new Date(birthday) : new Date(),
+        lat: lat ? Number(lat) : 35.604839,
+        lon: lon ? Number(lon) : 139.667717,
+        // hsys: 'Placidus(default)',
+        timeUnknown: !timeUnknown || timeUnknown === 'false' ? false : true,
+      })
+    }
+  }, [router])
 
   const { data, error } = useSWR<Horoscope>(['/api/horoscope', horoscopeSeed], async (url, horoscopeSeed) => {
     const res = await fetch(url, {
@@ -55,7 +67,7 @@ function HoroscopePage() {
   }, [data])
 
   if (error) return <div>failed to load: {JSON.stringify(error.message)}</div>
-  if (!horoscope) return <div>loading...</div>
+  if (!horoscopeSeed || !horoscope) return <div>loading...</div>
 
   // TODO:固定値ではなく、ユーザーが画面から指定した値を使うようにしたい
   const orb = 6

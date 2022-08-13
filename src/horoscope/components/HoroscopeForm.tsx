@@ -2,7 +2,7 @@ import { useMemo, FC } from 'react'
 import { useForm } from 'react-hook-form'
 import { DateTime } from 'luxon'
 
-type HoroscopeFormProps = {
+export type HoroscopeFormProps = {
   onSubmit: (formValues: FormValues) => void
   defaultValues: FormValues
 }

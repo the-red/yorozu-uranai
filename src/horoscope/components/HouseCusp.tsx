@@ -1,4 +1,4 @@
-import type { Horoscope } from '../horoscope'
+import type { Horoscope } from '../'
 
 type Props = {
   horoscope: Horoscope

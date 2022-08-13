@@ -1,4 +1,4 @@
-import { Horoscope, MajorAspect, PLANET_ICONS, PlanetName, ALL_PLANETS } from '../horoscope'
+import { Horoscope, MajorAspect, PLANET_ICONS, PlanetName, ALL_PLANETS } from '../'
 type Props = { horoscope: Horoscope; orb: number }
 
 export default function AspectChart({ horoscope, orb }: Props) {

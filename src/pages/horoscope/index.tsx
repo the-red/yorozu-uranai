@@ -1,6 +1,6 @@
 import Header from '../../components/Header'
 import Footer from '../../components/Footer'
-import HoroscopeDetailPage from '../../components/HoroscopeDetailPage'
+import HoroscopeDetailPage from '../../horoscope/components/HoroscopeDetailPage'
 
 function HoroscopePage() {
   return (

@@ -1,5 +1,5 @@
 import useSWR from 'swr'
-import { Horoscope, HoroscopeProps } from '../horoscope'
+import { Horoscope, HoroscopeProps } from '../'
 
 import HouseCusp from './HouseCusp'
 import SignTable from './SignTable'

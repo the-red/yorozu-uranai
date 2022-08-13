@@ -1,4 +1,4 @@
-import { Horoscope, PLANET_NAMES_JA } from '../horoscope'
+import { Horoscope, PLANET_NAMES_JA } from '../'
 
 type Props = {
   horoscope: Horoscope

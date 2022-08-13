@@ -1,5 +1,5 @@
 import { Stage, Layer, Circle, Line, Text, Image } from 'react-konva'
-import { Horoscope, Position, ALL_PLANETS, MajorAspect, Planet } from '../horoscope'
+import { Horoscope, Position, ALL_PLANETS, MajorAspect, Planet } from '../'
 import useImage from 'use-image'
 
 type IconScales = { coordinate: number; size: number; degrees: number }

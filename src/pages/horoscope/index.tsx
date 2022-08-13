@@ -30,8 +30,9 @@ function HoroscopePage() {
     if (router.isReady) {
       const { query } = router
 
+      const zone = singleValue(query.zone)
       const unixTime = singleValue(query.birthday)
-      const birthday = unixTime ? DateTime.fromSeconds(Number(unixTime)) : DateTime.now()
+      const birthday = unixTime ? DateTime.fromSeconds(Number(unixTime), { zone }) : DateTime.local({ zone })
 
       const lat = singleValue(query.lat)
       const lon = singleValue(query.lon)
@@ -84,6 +85,7 @@ function HoroscopePage() {
         lat,
         lon,
         timeUnknown,
+        zone: horoscopeSeed.zone,
       },
     })
   }

@@ -49,3 +49,168 @@ a {
   font-family: '001Shirokuma-Regular';
   src: url('/fonts/001Shirokuma-Regular.otf');
 }
+
+.header-and-body {
+  min-height: 100%;
+  /* background-color: #efefef; */
+}
+.header {
+  border-bottom: 1px solid #dcdddd;
+  height: 56px;
+  text-align: center;
+  background-color: #efefef;
+  width: 100%;
+}
+
+.header h1 {
+  font-size: 27px;
+  font-family: '001shirokuma-Regular';
+  margin: 0 auto;
+  line-height: 56px;
+}
+.header nav {
+  display: none;
+}
+.header nav ul {
+  font-family: 'Noto Sans JP Regular';
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.header .icon {
+  fill: #4b4b4b;
+}
+
+.main {
+  font-family: 'Noto Sans JP Regular';
+  background-color: #efefef;
+}
+.menu-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.menu {
+  margin-bottom: 28px;
+  border-radius: 10px;
+  box-shadow: 0px 5px rgba(0, 0, 0, 0.2);
+}
+.menu:first-child {
+  margin-top: 28px;
+}
+.menu:last-child {
+  margin-bottom: 75px;
+}
+.menu-link {
+  width: 340px;
+  height: 140px;
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+}
+.menu-link-block-1 {
+  text-align: center;
+}
+.menu-title {
+  font-size: 10px;
+}
+.menu-text {
+  font-size: 10px;
+}
+.menu-horoscope {
+  background-color: #6399d6;
+}
+.menu-numerology {
+  background-color: #d3d662;
+}
+.menu-four-pillars-of-destiny {
+  background-color: #d69a62;
+}
+.coming-soon {
+  opacity: 0.5;
+  position: relative;
+}
+.coming-soon::after {
+  content: 'COMING SOON!';
+  position: absolute;
+  right: 113px;
+  bottom: -32px;
+}
+
+.footer {
+  font-family: 'Noto Sans JP Regular';
+  padding-bottom: 32px;
+}
+.contact {
+  text-align: center;
+}
+.copyright {
+  width: fit-content;
+  margin: 0 auto;
+}
+.twitter-logo {
+  fill: #1d9bf0;
+}
+
+/* PC用 */
+@media all and (min-width: 768px) {
+  .header {
+    border-bottom: none;
+    height: 48px;
+    text-align: left;
+  }
+  .header_wrapper {
+    width: 980px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    line-height: 48px;
+  }
+  .header h1 {
+    margin: 0;
+  }
+  .header nav {
+    display: block;
+  }
+  .header nav ul li {
+    font-size: 14px;
+    display: inline-block;
+    width: 2.5rem;
+    text-align: center;
+  }
+  .main {
+    background-color: #fff;
+    margin-top: 80px;
+  }
+  .menu-outer-container {
+    background-color: #efefef;
+    width: 980px;
+    margin: 0 auto;
+    padding: 69px 0;
+  }
+  .menu-container {
+    width: 676px;
+    margin: 0 152px;
+    flex-direction: row;
+    justify-content: space-between;
+  }
+  .menu {
+    margin-bottom: 0;
+  }
+  .menu:first-child {
+    margin-top: 0;
+  }
+  .menu:last-child {
+    margin-bottom: 0;
+  }
+  .menu-link {
+    width: 186px;
+    height: 180px;
+  }
+  .footer-spacer {
+    height: 215px;
+  }
+  .coming-soon::after {
+    right: 37px;
+  }
+}

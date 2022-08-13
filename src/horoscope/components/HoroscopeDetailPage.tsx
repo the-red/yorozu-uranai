@@ -1,14 +1,14 @@
+import { useEffect, useMemo, useState } from 'react'
+import dynamic from 'next/dynamic'
 import useSWR from 'swr'
+
 import { Horoscope, HoroscopeProps } from '../'
 
+import { FormValues, HoroscopeForm } from './HoroscopeForm'
+import PlanetPositions from './PlanetPositions'
 import HouseCusp from './HouseCusp'
 import SignTable from './SignTable'
-import PlanetPositions from './PlanetPositions'
-import { FormValues, HoroscopeForm } from './HoroscopeForm'
 import AspectChart from './AspectChart'
-import dynamic from 'next/dynamic'
-import { useEffect, useMemo, useState } from 'react'
-
 const HoroscopeCircle = dynamic(() => import('./HoroscopeCircle'), { ssr: false })
 
 type HoroscopeSeed = {

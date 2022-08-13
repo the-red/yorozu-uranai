@@ -30,8 +30,9 @@ function HoroscopePage() {
     if (router.isReady) {
       const { query } = router
 
-      const b = singleValue(query.birthday)
-      const birthday = b ? DateTime.fromISO(b) : DateTime.now()
+      const unixTime = singleValue(query.birthday)
+      const birthday = unixTime ? DateTime.fromSeconds(Number(unixTime)) : DateTime.now()
+
       const lat = singleValue(query.lat)
       const lon = singleValue(query.lon)
       const timeUnknown = singleValue(query.tmeUnknown)
@@ -79,7 +80,7 @@ function HoroscopePage() {
   const handleSubmit: HoroscopeFormProps['onSubmit'] = ({ birthday: dateTime, lat, lon, timeUnknown }: FormValues) => {
     router.push({
       query: {
-        birthday: dateTime.toISO(),
+        birthday: dateTime.toSeconds(),
         lat,
         lon,
         timeUnknown,

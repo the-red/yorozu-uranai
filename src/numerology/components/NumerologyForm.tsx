@@ -1,26 +1,33 @@
 import Image from 'next/image'
-import { VFC } from 'react'
+import { useEffect, VFC } from 'react'
 import { useForm } from 'react-hook-form'
 
 import leaf from '../../../public/images/numerology/leaf.png'
 import flower from '../../../public/images/numerology/flower.png'
 
-type FormValues = {
-  birthday: Date
+export type NumerologyFormValues = {
+  date: string
   name: string
 }
 
 export type NumerologyFormProps = {
-  onSubmit: (v: FormValues) => void
+  onSubmit: (v: NumerologyFormValues) => void
+  defaultValues?: NumerologyFormValues
 }
 
-export const NumerologyForm: VFC<NumerologyFormProps> = ({ onSubmit }) => {
-  const { register, handleSubmit } = useForm<FormValues>()
+export const NumerologyForm: VFC<NumerologyFormProps> = ({ onSubmit, defaultValues }) => {
+  const { register, handleSubmit, reset } = useForm<NumerologyFormValues>()
 
-  const birthdayInput = (
+  // NOTE: クエリパラメータをdefaultValuesにする関係で遅延するので、
+  // useForm({ defaultValues })だと値が入らないため、reset APIを使う
+  useEffect(() => {
+    reset(defaultValues)
+  }, [defaultValues])
+
+  const dateInput = (
     <div style={{ display: 'flex', marginBottom: '32px' }}>
       <label style={{ width: '180px' }}>生年月日</label>
-      <input type="date" required style={{ width: '200px' }} {...register('birthday', { valueAsDate: true })} />
+      <input type="date" required style={{ width: '200px' }} {...register('date')} />
     </div>
   )
 
@@ -66,7 +73,7 @@ export const NumerologyForm: VFC<NumerologyFormProps> = ({ onSubmit }) => {
           onSubmit={handleSubmit(onSubmit)}
           className="tw-py-16 sm:tw-py-0 sm:tw-flex sm:tw-flex-col sm:tw-items-center"
         >
-          {birthdayInput}
+          {dateInput}
           {nameInput}
           <div className="">{submitButton}</div>
         </form>

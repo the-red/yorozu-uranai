@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { useRouter, NextRouter } from 'next/router'
+import { useRouter } from 'next/router'
 import useSWR from 'swr'
 import { DateTime } from 'luxon'
 
@@ -9,6 +9,7 @@ import Footer from '../../components/Footer'
 import { Horoscope, HoroscopeProps } from '../../horoscope'
 import { FormValues, HoroscopeForm, HoroscopeFormProps } from '../../horoscope/components/HoroscopeForm'
 import HoroscopeDetailPage from '../../horoscope/components/HoroscopeDetailPage'
+import params from '../../lib/params'
 
 type HoroscopeSeed = {
   dateTime: DateTime
@@ -16,20 +17,8 @@ type HoroscopeSeed = {
   timeUnknown: boolean
   lat: number
   lon: number
-  hsys?: string
+  // hsys?: string
 }
-
-type HoroscopeQuery = {
-  date: string
-  time: string
-  zone: string
-  timeUnknown: boolean
-  lat: number
-  lon: number
-}
-
-const DATE_FORMAT = 'yyyyMMdd' as const
-const TIME_FORMAT = 'HHmm' as const
 
 function HoroscopePage() {
   const router = useRouter()
@@ -37,29 +26,15 @@ function HoroscopePage() {
   const [horoscope, setHoroscope] = useState<Horoscope>()
 
   useEffect(() => {
-    const singleValue = (value: string | string[] | undefined) => (Array.isArray(value) ? value[0] : value)
-
     if (router.isReady) {
-      const query = router.query as Record<keyof HoroscopeQuery, string | string[] | undefined>
-
-      const date = singleValue(query.date)
-      const _timeUnknown = singleValue(query.timeUnknown)
-      const timeUnknown = !_timeUnknown || _timeUnknown === 'false' ? false : true
-      const time = timeUnknown ? '1200' : singleValue(query.time)
-      const zone = singleValue(query.zone)
-      const dateTime =
-        date && time ? DateTime.fromFormat(date + time, DATE_FORMAT + TIME_FORMAT, { zone }) : DateTime.local({ zone })
-
-      const lat = singleValue(query.lat)
-      const lon = singleValue(query.lon)
-
+      const p = params.fromQuery(router.query)
       setHoroscopeSeed({
         ...horoscopeSeed,
-        dateTime,
-        zone: dateTime.zoneName,
-        timeUnknown,
-        lat: lat ? Number(lat) : 35.604839,
-        lon: lon ? Number(lon) : 139.667717,
+        dateTime: p.dateTime,
+        zone: p.zone,
+        timeUnknown: p.timeUnknown,
+        lat: p.lat,
+        lon: p.lon,
         // hsys: 'Placidus(default)',
       })
     }
@@ -93,16 +68,8 @@ function HoroscopePage() {
   // TODO:固定値ではなく、ユーザーが画面から指定した値を使うようにしたい
   const orb = 6
 
-  const handleSubmit: HoroscopeFormProps['onSubmit'] = ({ dateTime, lat, lon, timeUnknown }: FormValues) => {
-    const query: HoroscopeQuery = {
-      date: dateTime.toFormat(DATE_FORMAT),
-      time: dateTime.toFormat(TIME_FORMAT),
-      zone: dateTime.zoneName,
-      timeUnknown,
-      lat,
-      lon,
-    }
-    router.push({ query })
+  const handleSubmit: HoroscopeFormProps['onSubmit'] = (p: FormValues) => {
+    router.push({ query: params.toQuery(p) })
   }
 
   return (

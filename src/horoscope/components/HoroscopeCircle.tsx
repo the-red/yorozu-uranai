@@ -30,7 +30,6 @@ export default function HoroscopeCircle({
 }) {
   const { planets, house } = horoscope
   const houseLongitude = -house.ascendant.longitude
-  console.log('cusps', house.cusps)
 
   const degreesToCoordinate = ({ degrees, scale }: { degrees: number; scale?: number }) => {
     scale ||= 1

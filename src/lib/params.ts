@@ -6,7 +6,6 @@ type Query = Partial<{
   date: QueryValue
   time: QueryValue
   zone: QueryValue
-  timeUnknown: QueryValue
   lat: QueryValue
   lon: QueryValue
 }>
@@ -22,6 +21,7 @@ type Params = {
 
 const QUERY_DATE_FORMAT = 'yyyyMMdd' as const
 const QUERY_TIME_FORMAT = 'HHmm' as const
+const QUERY_TIME_UNKNOWN = 'unknown' as const
 
 const fromQuery = (q: Query): Params => {
   const singleValue = (value: string | string[] | undefined) => (Array.isArray(value) ? value[0] : value)
@@ -29,13 +29,12 @@ const fromQuery = (q: Query): Params => {
   const name = singleValue(q.name)
 
   const date = singleValue(q.date)
-  const time = singleValue(q.time)
+  const _time = singleValue(q.time)
+  const timeUnknown = _time === QUERY_TIME_UNKNOWN
+  const time = timeUnknown ? '1200' : _time
   const zone = singleValue(q.zone)
   const dateTime =
     date && time ? DateTime.fromFormat(date + time, QUERY_DATE_FORMAT + QUERY_TIME_FORMAT, { zone }) : undefined
-
-  const _timeUnknown = singleValue(q.timeUnknown)
-  const timeUnknown = !_timeUnknown || _timeUnknown === 'false' ? false : true
 
   const lat = singleValue(q.lat)
   const lon = singleValue(q.lon)
@@ -58,7 +57,7 @@ const toQuery = (p: Partial<Params>): Query => {
       time: p.dateTime.toFormat(QUERY_TIME_FORMAT),
       zone: p.dateTime.zoneName,
     }),
-    ...(p.timeUnknown !== undefined && { timeUnknown: p.timeUnknown.toString() }),
+    ...(p.timeUnknown && { time: QUERY_TIME_UNKNOWN }),
     ...(p.lat && { lat: p.lat.toString() }),
     ...(p.lon && { lon: p.lon.toString() }),
   }

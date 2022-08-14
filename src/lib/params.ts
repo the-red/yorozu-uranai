@@ -12,9 +12,9 @@ type Query = Partial<{
 }>
 
 type Params = {
-  name: string
-  dateTime: DateTime
-  zone: string
+  name?: string
+  dateTime?: DateTime
+  zone?: string
   timeUnknown: boolean
   lat: number
   lon: number
@@ -29,22 +29,21 @@ const fromQuery = (q: Query): Params => {
   const name = singleValue(q.name)
 
   const date = singleValue(q.date)
-  const _timeUnknown = singleValue(q.timeUnknown)
-  const timeUnknown = !_timeUnknown || _timeUnknown === 'false' ? false : true
-  const time = timeUnknown ? '1200' : singleValue(q.time)
+  const time = singleValue(q.time)
   const zone = singleValue(q.zone)
   const dateTime =
-    date && time
-      ? DateTime.fromFormat(date + time, QUERY_DATE_FORMAT + QUERY_TIME_FORMAT, { zone })
-      : DateTime.local({ zone })
+    date && time ? DateTime.fromFormat(date + time, QUERY_DATE_FORMAT + QUERY_TIME_FORMAT, { zone }) : undefined
+
+  const _timeUnknown = singleValue(q.timeUnknown)
+  const timeUnknown = !_timeUnknown || _timeUnknown === 'false' ? false : true
 
   const lat = singleValue(q.lat)
   const lon = singleValue(q.lon)
 
   return {
-    name: name ?? '',
-    dateTime: dateTime,
-    zone: dateTime.zoneName,
+    name,
+    dateTime,
+    zone,
     timeUnknown,
     lat: lat ? Number(lat) : 35.604839,
     lon: lon ? Number(lon) : 139.667717,

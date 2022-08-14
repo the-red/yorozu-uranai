@@ -9,7 +9,6 @@ export type HoroscopeFormProps = {
 
 export type FormValues = {
   dateTime: DateTime
-  zone: string
   timeUnknown: boolean
   lat: number
   lon: number
@@ -32,11 +31,12 @@ export const HoroscopeForm: FC<HoroscopeFormProps> = ({ onSubmit, defaultValues 
     handleSubmit: hookFormHandleSubmit,
     watch,
     setValue,
+    getValues,
   } = useForm<_FormValues>({
     defaultValues: {
       date: defaultDateTime.toFormat('yyyy-MM-dd'),
       time: defaultDateTime.toFormat('HH:mm'),
-      zone: defaultValues.zone,
+      zone: defaultDateTime.zoneName,
       timeUnknown: defaultValues.timeUnknown,
       lat: defaultValues.lat,
       lon: defaultValues.lon,
@@ -47,7 +47,8 @@ export const HoroscopeForm: FC<HoroscopeFormProps> = ({ onSubmit, defaultValues 
 
   const handleSubmit = ({ date, time, zone, timeUnknown, lat, lon }: _FormValues) => {
     if (isTimeUnknownChecked) {
-      setValue('time', '12:00')
+      time = '12:00'
+      setValue('time', time)
     }
     const isoDate = `${date}T${time}`
     const dateTime = DateTime.fromISO(isoDate, { zone })
@@ -55,7 +56,7 @@ export const HoroscopeForm: FC<HoroscopeFormProps> = ({ onSubmit, defaultValues 
     lat = typeof lat == 'number' && !isNaN(lat) ? lat : 0
     lon = typeof lon == 'number' && !isNaN(lon) ? lon : 0
 
-    onSubmit({ dateTime, zone, lat, lon, timeUnknown })
+    onSubmit({ dateTime, lat, lon, timeUnknown })
   }
 
   return (
@@ -68,7 +69,7 @@ export const HoroscopeForm: FC<HoroscopeFormProps> = ({ onSubmit, defaultValues 
             <input type="time" {...register('time')} disabled={isTimeUnknownChecked} />
           </div>
           <div>
-            <span> ({defaultValues.zone})</span>
+            <span> ({getValues().zone})</span>
             <span style={{ marginLeft: '12px' }}>
               <input id="horoscope[time_unknown]" type="checkbox" {...register('timeUnknown')} />
               <label htmlFor="horoscope[time_unknown]">時刻不明</label>

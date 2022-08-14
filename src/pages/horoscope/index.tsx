@@ -13,7 +13,6 @@ import params from '../../lib/params'
 
 type HoroscopeSeed = {
   dateTime: DateTime
-  zone: string
   timeUnknown: boolean
   lat: number
   lon: number
@@ -30,8 +29,7 @@ function HoroscopePage() {
       const p = params.fromQuery(router.query)
       setHoroscopeSeed({
         ...horoscopeSeed,
-        dateTime: p.dateTime,
-        zone: p.zone,
+        dateTime: p.dateTime ?? DateTime.local({ zone: p.zone }),
         timeUnknown: p.timeUnknown,
         lat: p.lat,
         lon: p.lon,

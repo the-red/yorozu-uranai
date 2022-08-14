@@ -7,6 +7,9 @@ export const pagesPath = {
   numerology: {
     $url: (url?: { hash?: string }) => ({ pathname: '/numerology' as const, hash: url?.hash })
   },
+  suimei: {
+    $url: (url?: { hash?: string }) => ({ pathname: '/suimei' as const, hash: url?.hash })
+  },
   $url: (url?: { hash?: string }) => ({ pathname: '/' as const, hash: url?.hash })
 }
 

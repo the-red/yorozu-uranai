@@ -29,7 +29,7 @@ function HoroscopePage() {
       const p = params.fromQuery(router.query)
       const { date, timeUnknown, zone } = p
       const time = timeUnknown ? '12:00' : p.time
-      const dateTime = (date && time ? DateTime.fromISO(`${date}T${time}`) : DateTime.now()).setZone(zone)
+      const dateTime = date && time ? DateTime.fromISO(`${date}T${time}`, { zone }) : DateTime.local({ zone })
 
       setHoroscopeSeed({
         dateTime: dateTime,

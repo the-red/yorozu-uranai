@@ -1,9 +1,6 @@
 /* eslint-disable */
 // prettier-ignore
 export const pagesPath = {
-  env_vars: {
-    $url: (url?: { hash?: string }) => ({ pathname: '/env-vars' as const, hash: url?.hash })
-  },
   horoscope: {
     $url: (url?: { hash?: string }) => ({ pathname: '/horoscope' as const, hash: url?.hash })
   },

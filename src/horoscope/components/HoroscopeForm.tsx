@@ -46,7 +46,7 @@ export const HoroscopeForm: FC<HoroscopeFormProps> = ({ onSubmit, defaultValues 
   const isTimeUnknownChecked = watch('timeUnknown')
 
   const handleSubmit = ({ date, time, zone, timeUnknown, lat, lon }: _FormValues) => {
-    if (isTimeUnknownChecked) {
+    if (timeUnknown) {
       time = '12:00'
       setValue('time', time)
     }

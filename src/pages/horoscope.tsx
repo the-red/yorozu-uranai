@@ -3,13 +3,13 @@ import { useRouter } from 'next/router'
 import useSWR from 'swr'
 import { DateTime } from 'luxon'
 
-import Header from '../../components/Header'
-import Footer from '../../components/Footer'
+import Header from '../components/Header'
+import Footer from '../components/Footer'
 
-import { Horoscope, HoroscopeProps } from '../../horoscope'
-import { HoroscopeForm, HoroscopeFormProps } from '../../horoscope/components/HoroscopeForm'
-import HoroscopeDetailPage from '../../horoscope/components/HoroscopeDetailPage'
-import params from '../../lib/params'
+import { Horoscope, HoroscopeProps } from '../horoscope'
+import { HoroscopeForm, HoroscopeFormProps } from '../horoscope/components/HoroscopeForm'
+import HoroscopeDetailPage from '../horoscope/components/HoroscopeDetailPage'
+import params from '../lib/params'
 
 type HoroscopeSeed = {
   dateTime: DateTime
@@ -41,7 +41,7 @@ function HoroscopePage() {
     }
   }, [router])
 
-  const { data, error } = useSWR<Horoscope>(['/api/horoscope', horoscopeSeed], async (url, horoscopeSeed) => {
+  const { data, error } = useSWR<Horoscope>(['/api/horoscope-props', horoscopeSeed], async (url, horoscopeSeed) => {
     const res = await fetch(url, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },

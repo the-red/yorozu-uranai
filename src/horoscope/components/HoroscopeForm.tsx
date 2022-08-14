@@ -1,12 +1,7 @@
 import { FC } from 'react'
 import { useForm } from 'react-hook-form'
 
-export type HoroscopeFormProps = {
-  onSubmit: (formValues: FormValues) => void
-  defaultValues: FormValues
-}
-
-export type FormValues = {
+type HoroscopeFormValues = {
   date: string
   time: string
   zone: string
@@ -15,19 +10,18 @@ export type FormValues = {
   lon: number
 }
 
+export type HoroscopeFormProps = {
+  onSubmit: (formValues: HoroscopeFormValues) => void
+  defaultValues: HoroscopeFormValues
+}
+
 export const HoroscopeForm: FC<HoroscopeFormProps> = ({ onSubmit, defaultValues }) => {
-  const {
-    register,
-    handleSubmit: hookFormHandleSubmit,
-    watch,
-  } = useForm<FormValues>({
-    defaultValues,
-  })
+  const { register, handleSubmit: hookFormHandleSubmit, watch } = useForm<HoroscopeFormValues>({ defaultValues })
 
   const isTimeUnknownChecked = watch('timeUnknown')
   const zone = watch('zone')
 
-  const handleSubmit = ({ date, time, zone, timeUnknown, lat, lon }: FormValues) => {
+  const handleSubmit = ({ date, time, zone, timeUnknown, lat, lon }: HoroscopeFormValues) => {
     lat = typeof lat == 'number' && !isNaN(lat) ? lat : 0
     lon = typeof lon == 'number' && !isNaN(lon) ? lon : 0
 

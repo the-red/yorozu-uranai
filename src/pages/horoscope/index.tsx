@@ -7,7 +7,7 @@ import Header from '../../components/Header'
 import Footer from '../../components/Footer'
 
 import { Horoscope, HoroscopeProps } from '../../horoscope'
-import { FormValues, HoroscopeForm, HoroscopeFormProps } from '../../horoscope/components/HoroscopeForm'
+import { HoroscopeForm, HoroscopeFormProps } from '../../horoscope/components/HoroscopeForm'
 import HoroscopeDetailPage from '../../horoscope/components/HoroscopeDetailPage'
 import params from '../../lib/params'
 
@@ -69,7 +69,7 @@ function HoroscopePage() {
   // TODO:固定値ではなく、ユーザーが画面から指定した値を使うようにしたい
   const orb = 6
 
-  const handleSubmit: HoroscopeFormProps['onSubmit'] = (formValues: FormValues) => {
+  const handleSubmit: HoroscopeFormProps['onSubmit'] = (formValues) => {
     router.push({ query: params.toQuery(formValues) })
   }
 

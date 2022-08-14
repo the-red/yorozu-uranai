@@ -44,6 +44,7 @@ export const HoroscopeForm: FC<HoroscopeFormProps> = ({ onSubmit, defaultValues 
   })
 
   const isTimeUnknownChecked = watch('timeUnknown')
+  const zone = watch('zone')
 
   const handleSubmit = ({ date, time, zone, timeUnknown, lat, lon }: _FormValues) => {
     if (timeUnknown) {
@@ -69,7 +70,7 @@ export const HoroscopeForm: FC<HoroscopeFormProps> = ({ onSubmit, defaultValues 
             <input type="time" {...register('time')} disabled={isTimeUnknownChecked} />
           </div>
           <div>
-            <span> ({getValues().zone})</span>
+            <span>{zone}</span>
             <span style={{ marginLeft: '12px' }}>
               <input id="horoscope[time_unknown]" type="checkbox" {...register('timeUnknown')} />
               <label htmlFor="horoscope[time_unknown]">時刻不明</label>

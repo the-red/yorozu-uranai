@@ -27,10 +27,13 @@ function HoroscopePage() {
   useEffect(() => {
     if (router.isReady) {
       const p = params.fromQuery(router.query)
+      const { date, timeUnknown, zone } = p
+      const time = timeUnknown ? '12:00' : p.time
+      const dateTime = (date && time ? DateTime.fromISO(`${date}T${time}`) : DateTime.now()).setZone(zone)
+
       setHoroscopeSeed({
-        ...horoscopeSeed,
-        dateTime: p.dateTime ?? DateTime.local({ zone: p.zone }),
-        timeUnknown: p.timeUnknown,
+        dateTime: dateTime,
+        timeUnknown,
         lat: p.lat,
         lon: p.lon,
         // hsys: 'Placidus(default)',
@@ -66,8 +69,8 @@ function HoroscopePage() {
   // TODO:固定値ではなく、ユーザーが画面から指定した値を使うようにしたい
   const orb = 6
 
-  const handleSubmit: HoroscopeFormProps['onSubmit'] = (p: FormValues) => {
-    router.push({ query: params.toQuery(p) })
+  const handleSubmit: HoroscopeFormProps['onSubmit'] = (formValues: FormValues) => {
+    router.push({ query: params.toQuery(formValues) })
   }
 
   return (
@@ -76,7 +79,17 @@ function HoroscopePage() {
       <div className="container">
         <div className="title">Horoscope</div>
         <HoroscopeDetailPage horoscope={horoscope} orb={orb}>
-          <HoroscopeForm onSubmit={handleSubmit} defaultValues={horoscopeSeed} />
+          <HoroscopeForm
+            onSubmit={handleSubmit}
+            defaultValues={{
+              date: horoscopeSeed.dateTime.toISODate(),
+              time: horoscopeSeed.dateTime.toFormat('HH:mm'),
+              zone: horoscopeSeed.dateTime.zoneName,
+              timeUnknown: horoscopeSeed.timeUnknown,
+              lat: horoscopeSeed.lat,
+              lon: horoscopeSeed.lon,
+            }}
+          />
         </HoroscopeDetailPage>
       </div>
       <Footer />

@@ -1,6 +1,5 @@
-import { useMemo, FC } from 'react'
+import { FC } from 'react'
 import { useForm } from 'react-hook-form'
-import { DateTime } from 'luxon'
 
 export type HoroscopeFormProps = {
   onSubmit: (formValues: FormValues) => void
@@ -8,13 +7,6 @@ export type HoroscopeFormProps = {
 }
 
 export type FormValues = {
-  dateTime: DateTime
-  timeUnknown: boolean
-  lat: number
-  lon: number
-}
-
-type _FormValues = {
   date: string
   time: string
   zone: string
@@ -24,40 +16,22 @@ type _FormValues = {
 }
 
 export const HoroscopeForm: FC<HoroscopeFormProps> = ({ onSubmit, defaultValues }) => {
-  const defaultDateTime = useMemo(() => defaultValues.dateTime, [])
-
   const {
     register,
     handleSubmit: hookFormHandleSubmit,
     watch,
-    setValue,
-    getValues,
-  } = useForm<_FormValues>({
-    defaultValues: {
-      date: defaultDateTime.toFormat('yyyy-MM-dd'),
-      time: defaultDateTime.toFormat('HH:mm'),
-      zone: defaultDateTime.zoneName,
-      timeUnknown: defaultValues.timeUnknown,
-      lat: defaultValues.lat,
-      lon: defaultValues.lon,
-    },
+  } = useForm<FormValues>({
+    defaultValues,
   })
 
   const isTimeUnknownChecked = watch('timeUnknown')
   const zone = watch('zone')
 
-  const handleSubmit = ({ date, time, zone, timeUnknown, lat, lon }: _FormValues) => {
-    if (timeUnknown) {
-      time = '12:00'
-      setValue('time', time)
-    }
-    const isoDate = `${date}T${time}`
-    const dateTime = DateTime.fromISO(isoDate, { zone })
-
+  const handleSubmit = ({ date, time, zone, timeUnknown, lat, lon }: FormValues) => {
     lat = typeof lat == 'number' && !isNaN(lat) ? lat : 0
     lon = typeof lon == 'number' && !isNaN(lon) ? lon : 0
 
-    onSubmit({ dateTime, lat, lon, timeUnknown })
+    onSubmit({ date, time, zone, timeUnknown, lat, lon })
   }
 
   return (

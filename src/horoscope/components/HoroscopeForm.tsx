@@ -8,7 +8,7 @@ export type HoroscopeFormProps = {
 }
 
 export type FormValues = {
-  birthday: DateTime
+  dateTime: DateTime
   zone: string
   timeUnknown: boolean
   lat: number
@@ -25,35 +25,37 @@ type _FormValues = {
 }
 
 export const HoroscopeForm: FC<HoroscopeFormProps> = ({ onSubmit, defaultValues }) => {
-  const defaultDateTime = useMemo(() => defaultValues.birthday, [])
+  const defaultDateTime = useMemo(() => defaultValues.dateTime, [])
 
   const {
     register,
     handleSubmit: hookFormHandleSubmit,
     watch,
+    setValue,
   } = useForm<_FormValues>({
     defaultValues: {
       date: defaultDateTime.toFormat('yyyy-MM-dd'),
-      time: defaultDateTime.toFormat('hh:mm'),
-      timeUnknown: false,
+      time: defaultDateTime.toFormat('HH:mm'),
+      zone: defaultValues.zone,
+      timeUnknown: defaultValues.timeUnknown,
       lat: defaultValues.lat,
       lon: defaultValues.lon,
-      zone: defaultValues.zone,
     },
   })
 
   const isTimeUnknownChecked = watch('timeUnknown')
 
-  const handleSubmit = ({ date, time, timeUnknown, lat, lon, zone }: _FormValues) => {
-    console.log({ time })
-
-    const isoDate = timeUnknown ? `${date}T12:00` : `${date}T${time}`
-    const dateTime = DateTime.fromISO(isoDate)
+  const handleSubmit = ({ date, time, zone, timeUnknown, lat, lon }: _FormValues) => {
+    if (isTimeUnknownChecked) {
+      setValue('time', '12:00')
+    }
+    const isoDate = `${date}T${time}`
+    const dateTime = DateTime.fromISO(isoDate, { zone })
 
     lat = typeof lat == 'number' && !isNaN(lat) ? lat : 0
     lon = typeof lon == 'number' && !isNaN(lon) ? lon : 0
 
-    onSubmit({ birthday: dateTime, lat, lon, timeUnknown, zone })
+    onSubmit({ dateTime, zone, lat, lon, timeUnknown })
   }
 
   return (
@@ -61,12 +63,12 @@ export const HoroscopeForm: FC<HoroscopeFormProps> = ({ onSubmit, defaultValues 
       <div style={{ display: 'flex' }}>
         <label style={{ width: '100px' }}>生年月日</label>
         <div>
-          <input type="date" {...register('date')} />
           <div>
-            <input type="time" {...register('time')} disabled={isTimeUnknownChecked} style={{ marginRight: '8px' }} />
-            <span> ({defaultValues.zone})</span>
+            <input type="date" {...register('date')} />
+            <input type="time" {...register('time')} disabled={isTimeUnknownChecked} />
           </div>
           <div>
+            <span> ({defaultValues.zone})</span>
             <span style={{ marginLeft: '12px' }}>
               <input id="horoscope[time_unknown]" type="checkbox" {...register('timeUnknown')} />
               <label htmlFor="horoscope[time_unknown]">時刻不明</label>

@@ -11,7 +11,7 @@ import { FormValues, HoroscopeForm, HoroscopeFormProps } from '../../horoscope/c
 import HoroscopeDetailPage from '../../horoscope/components/HoroscopeDetailPage'
 
 type HoroscopeSeed = {
-  birthday: DateTime
+  dateTime: DateTime
   zone: string
   timeUnknown: boolean
   lat: number
@@ -29,7 +29,7 @@ type HoroscopeQuery = {
 }
 
 const DATE_FORMAT = 'yyyyMMdd' as const
-const TIME_FORMAT = 'hhmm' as const
+const TIME_FORMAT = 'HHmm' as const
 
 function HoroscopePage() {
   const router = useRouter()
@@ -42,25 +42,25 @@ function HoroscopePage() {
     if (router.isReady) {
       const query = router.query as Record<keyof HoroscopeQuery, string | string[] | undefined>
 
-      const zone = singleValue(query.zone)
       const date = singleValue(query.date)
-      const time = singleValue(query.time)
-      const birthday =
+      const _timeUnknown = singleValue(query.timeUnknown)
+      const timeUnknown = !_timeUnknown || _timeUnknown === 'false' ? false : true
+      const time = timeUnknown ? '1200' : singleValue(query.time)
+      const zone = singleValue(query.zone)
+      const dateTime =
         date && time ? DateTime.fromFormat(date + time, DATE_FORMAT + TIME_FORMAT, { zone }) : DateTime.local({ zone })
-      console.log({ zone, birthday })
 
       const lat = singleValue(query.lat)
       const lon = singleValue(query.lon)
-      const timeUnknown = singleValue(query.timeUnknown)
 
       setHoroscopeSeed({
         ...horoscopeSeed,
-        birthday,
+        dateTime,
+        zone: dateTime.zoneName,
+        timeUnknown,
         lat: lat ? Number(lat) : 35.604839,
         lon: lon ? Number(lon) : 139.667717,
         // hsys: 'Placidus(default)',
-        timeUnknown: !timeUnknown || timeUnknown === 'false' ? false : true,
-        zone: birthday.zoneName,
       })
     }
   }, [router])
@@ -93,7 +93,7 @@ function HoroscopePage() {
   // TODO:固定値ではなく、ユーザーが画面から指定した値を使うようにしたい
   const orb = 6
 
-  const handleSubmit: HoroscopeFormProps['onSubmit'] = ({ birthday: dateTime, lat, lon, timeUnknown }: FormValues) => {
+  const handleSubmit: HoroscopeFormProps['onSubmit'] = ({ dateTime, lat, lon, timeUnknown }: FormValues) => {
     const query: HoroscopeQuery = {
       date: dateTime.toFormat(DATE_FORMAT),
       time: dateTime.toFormat(TIME_FORMAT),

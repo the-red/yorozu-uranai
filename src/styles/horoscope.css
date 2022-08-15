@@ -1,4 +1,154 @@
-.horoscope-index-root header {
+.horoscope {
+  background-image: url('/images/starry-sky.jpeg');
+  background-repeat: repeat-y;
+  background-attachment: fixed;
+  background-size: 100%;
+  color: #ffffff;
+}
+.horoscope .container {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 20px 0;
+}
+.horoscope .content-row {
+  display: flex;
+  margin-top: 40px;
+}
+.horoscope .content-row:first-of-type {
+  margin-top: 0px;
+}
+.horoscope .content {
+  width: 50%;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+}
+.horoscope .form,
+.horoscope .circle {
+  justify-content: center;
+  flex-direction: row;
+}
+.horoscope .circle {
+  display: none;
+}
+.horoscope .content-inner {
+  width: 360px;
+  padding: 16px 8px;
+}
+
+.horoscope .title {
+  font-family: 'Farewell Pro Regular';
+  font-size: 60px;
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.horoscope .list {
+  font-family: 'Khand';
+  font-size: 37px;
+}
+
+/* Sign Table用 */
+.horoscope .sign-classification-list {
+  width: 100%;
+  margin-bottom: 4px;
+}
+.horoscope .sign-classification-list-item {
+  width: 20%;
+}
+.horoscope .sign-classification-list-value {
+  width: 80%;
+}
+
+/* aspect chart用 */
+.horoscope .aspect-chart-container {
+  padding-top: 10px;
+  display: flex;
+  flex-direction: column;
+  width: auto;
+}
+.horoscope .outer-item {
+  display: flex;
+}
+.horoscope .inner-item {
+  border: 1px solid black;
+  background-color: white;
+  color: black;
+  margin: -1px -1px 0 0;
+  width: 35px;
+  height: 35px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 14px;
+}
+.horoscope .planet-icon {
+  background-color: #e4e7e2;
+  font-size: 18px;
+}
+.horoscope .soft-aspect {
+  color: blue;
+}
+.horoscope .hard-aspect {
+  color: red;
+}
+
+/* スマホ用 */
+@media all and (max-width: 767.98px) {
+  .horoscope .container {
+    width: 100%;
+    margin: 0;
+    padding: 20px 0;
+  }
+  .horoscope .content-row {
+    display: block;
+    margin-top: 0;
+  }
+  .horoscope .content {
+    width: 100%;
+    flex-direction: row;
+    justify-content: center;
+  }
+  .horoscope .sp {
+    display: block;
+    width: max-content;
+    padding: 16px 0;
+    margin: 0 auto;
+  }
+}
+
+/* PC用 */
+@media all and (min-width: 768px) {
+  .horoscope .pc {
+    display: block;
+    width: max-content;
+    margin: 0 auto;
+  }
+}
+
+/* FIXME: IPad用のメディアクエリをどう書けばいいのか分からなかったので、とりあえず期待通りに表示されるようにした */
+/* IPad用 */
+@media all and (max-width: 1024px) {
+  .horoscope .sp {
+    display: block;
+    width: max-content;
+    padding: 16px 0;
+    margin: 0 auto;
+  }
+  .horoscope .pc {
+    display: none !important;
+  }
+}
+
+.horoscope .header {
   color: #fff;
   background-color: transparent;
+}
+
+.horoscope .header .icon {
+  fill: #fff;
+}
+
+.horoscope .twitter-logo {
+  fill: #fff;
 }

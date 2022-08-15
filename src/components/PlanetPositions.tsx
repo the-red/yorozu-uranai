@@ -1,5 +1,4 @@
 import { Horoscope, PLANET_NAMES_JA } from '../horoscope'
-import styles from '../pages/horoscope/HoroscopePage.module.css'
 
 type Props = {
   horoscope: Horoscope
@@ -8,7 +7,7 @@ type Props = {
 export default function PlanetPositions({ horoscope }: Props) {
   return (
     <div style={{ width: '100%' }}>
-      <div className={styles.list}>Planet Positions</div>
+      <div className="list">Planet Positions</div>
       <table style={{ width: '100%' }}>
         <tbody>
           {Object.values(horoscope.planets).map((planet, i) => (

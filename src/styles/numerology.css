@@ -1,3 +1,7 @@
-.numerology-index-root header {
+.numerology .header {
   background-color: transparent;
+}
+
+.numerology .twitter-logo {
+  fill: #4b4b4b;
 }

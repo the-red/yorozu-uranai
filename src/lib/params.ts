@@ -19,7 +19,7 @@ const QUERY_TIME_UNKNOWN = 'unknown' as const
 export const FORM_DATE_FORMAT = 'yyyy-MM-dd' as const
 export const FORM_TIME_FORMAT = 'HH:mm' as const
 
-export const fromQuery = (q: Query): FormValues => {
+export const queryToFormValues = (q: Query): FormValues => {
   const singleValue = (value: string | string[] | undefined) => (Array.isArray(value) ? value[0] : value)
 
   const name = singleValue(q.name)
@@ -53,7 +53,7 @@ export const fromQuery = (q: Query): FormValues => {
   }
 }
 
-export const toQuery = (p: Partial<FormValues>): Query => {
+export const formValuesToQuery = (p: Partial<FormValues>): Query => {
   return {
     ...(p.name && { name: p.name }),
     ...(p.date && { date: DateTime.fromFormat(p.date, FORM_DATE_FORMAT).toFormat(QUERY_DATE_FORMAT) }),

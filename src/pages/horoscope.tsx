@@ -9,7 +9,7 @@ import Footer from '../components/Footer'
 import { Horoscope, HoroscopeProps } from '../horoscope'
 import { HoroscopeForm, HoroscopeFormProps, HoroscopeFormValues } from '../horoscope/components/HoroscopeForm'
 import HoroscopeDetailPage from '../horoscope/components/HoroscopeDetailPage'
-import { FORM_DATE_FORMAT, FORM_TIME_FORMAT, fromQuery, toQuery } from '../lib/params'
+import { FORM_DATE_FORMAT, FORM_TIME_FORMAT, queryToFormValues, formValuesToQuery } from '../lib/params'
 
 const DEFAULT_LAT = 35.604839 as const
 const DEFAULT_LON = 139.667717 as const
@@ -21,7 +21,7 @@ function HoroscopePage() {
 
   useEffect(() => {
     if (router.isReady) {
-      const f = fromQuery(router.query)
+      const f = queryToFormValues(router.query)
       const now = DateTime.local({ zone: f.zone })
       const zone = now.zoneName
 
@@ -106,7 +106,7 @@ function HoroscopePage() {
     router.push({
       query: {
         ...router.query,
-        ...toQuery(formValues),
+        ...formValuesToQuery(formValues),
       },
     })
   }

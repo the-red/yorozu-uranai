@@ -8,7 +8,7 @@ import Footer from '../components/Footer'
 import { NumerologyForm, NumerologyFormProps, NumerologyFormValues } from '../numerology/components/NumerologyForm'
 import { CoreNumbers } from '../numerology/components/CoreNumbers'
 import { Numerology } from '../numerology/Numerology'
-import { fromQuery, toQuery } from '../lib/params'
+import { queryToFormValues, formValuesToQuery } from '../lib/params'
 
 const NumerologyPage: NextPage = () => {
   const router = useRouter()
@@ -17,7 +17,7 @@ const NumerologyPage: NextPage = () => {
 
   useEffect(() => {
     if (router.isReady) {
-      const f = fromQuery(router.query)
+      const f = queryToFormValues(router.query)
 
       if (f.name && f.date) {
         setFormValues({
@@ -41,7 +41,7 @@ const NumerologyPage: NextPage = () => {
     router.push({
       query: {
         ...router.query,
-        ...toQuery(formValues),
+        ...formValuesToQuery(formValues),
       },
     })
   }

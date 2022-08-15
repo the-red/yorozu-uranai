@@ -12,20 +12,15 @@ import { queryToFormValues, formValuesToQuery } from '../lib/params'
 
 const NumerologyPage: NextPage = () => {
   const router = useRouter()
-  const [formValues, setFormValues] = useState<NumerologyFormValues>()
+  const [formValues, setFormValues] = useState<Partial<NumerologyFormValues>>()
   const [numerology, setNumerology] = useState<Numerology>()
 
   useEffect(() => {
     if (router.isReady) {
       const f = queryToFormValues(router.query)
+      setFormValues(f)
 
       if (f.name && f.date) {
-        setFormValues({
-          ...f,
-          name: f.name,
-          date: f.date,
-        })
-
         setNumerology(
           new Numerology({
             birthDate: new Date(f.date),

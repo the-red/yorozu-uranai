@@ -2,7 +2,7 @@ import Head from 'next/head'
 import Link from 'next/link'
 import Image from 'next/image'
 import { pagesPath } from '../lib/$path'
-import FourPillarsOfDestinyIcon from '../../public/images/index/suimei.svg'
+import SuimeiIcon from '../../public/images/index/suimei.svg'
 // @ts-expect-error
 import horoscopeIcon from '../../public/images/index/horoscope.svg?url'
 import NumerologyIcon from '../../public/images/index/numerology.svg'
@@ -51,7 +51,7 @@ export default function Home() {
               <a className="menu-link">
                 <div className="menu-link-block-1">
                   <h2 className="menu-title">四柱推命</h2>
-                  <FourPillarsOfDestinyIcon width={40} height={40} alt="四柱推命" />
+                  <SuimeiIcon width={40} height={40} alt="四柱推命" />
                   <p className="menu-text">命式を計算する</p>
                 </div>
               </a>

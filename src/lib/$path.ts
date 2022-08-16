@@ -29,18 +29,18 @@ export const staticPath = {
   },
   images: {
     horoscope: {
-      astro_sign_1_png: '/images/horoscope/astro-sign-1.png',
+      astro_sign_01_png: '/images/horoscope/astro-sign-01.png',
+      astro_sign_02_png: '/images/horoscope/astro-sign-02.png',
+      astro_sign_03_png: '/images/horoscope/astro-sign-03.png',
+      astro_sign_04_png: '/images/horoscope/astro-sign-04.png',
+      astro_sign_05_png: '/images/horoscope/astro-sign-05.png',
+      astro_sign_06_png: '/images/horoscope/astro-sign-06.png',
+      astro_sign_07_png: '/images/horoscope/astro-sign-07.png',
+      astro_sign_08_png: '/images/horoscope/astro-sign-08.png',
+      astro_sign_09_png: '/images/horoscope/astro-sign-09.png',
       astro_sign_10_png: '/images/horoscope/astro-sign-10.png',
       astro_sign_11_png: '/images/horoscope/astro-sign-11.png',
       astro_sign_12_png: '/images/horoscope/astro-sign-12.png',
-      astro_sign_2_png: '/images/horoscope/astro-sign-2.png',
-      astro_sign_3_png: '/images/horoscope/astro-sign-3.png',
-      astro_sign_4_png: '/images/horoscope/astro-sign-4.png',
-      astro_sign_5_png: '/images/horoscope/astro-sign-5.png',
-      astro_sign_6_png: '/images/horoscope/astro-sign-6.png',
-      astro_sign_7_png: '/images/horoscope/astro-sign-7.png',
-      astro_sign_8_png: '/images/horoscope/astro-sign-8.png',
-      astro_sign_9_png: '/images/horoscope/astro-sign-9.png',
       starry_sky_jpeg: '/images/horoscope/starry-sky.jpeg'
     },
     index: {

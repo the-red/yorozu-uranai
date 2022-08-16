@@ -60,14 +60,14 @@ export const queryToFormValues = (q: Query): FormValues => {
   }
 }
 
-export const formValuesToQuery = (p: Partial<FormValues>): Query => {
+export const formValuesToQuery = (f: Partial<FormValues>): Query => {
   return {
-    ...(p.name && { name: p.name }),
-    ...(p.date && { date: DateTime.fromFormat(p.date, FORM_DATE_FORMAT).toFormat(QUERY_DATE_FORMAT) }),
-    ...(p.time && { time: DateTime.fromFormat(p.time, FORM_TIME_FORMAT).toFormat(QUERY_TIME_FORMAT) }),
-    ...(p.zone && { zone: p.zone }),
-    ...(p.timeUnknown && { time: QUERY_TIME_UNKNOWN }),
-    ...(p.lat && { lat: p.lat.toString() }),
-    ...(p.lon && { lon: p.lon.toString() }),
+    ...(f.name && { name: f.name }),
+    ...(f.date && { date: DateTime.fromFormat(f.date, FORM_DATE_FORMAT).toFormat(QUERY_DATE_FORMAT) }),
+    ...(f.time && { time: DateTime.fromFormat(f.time, FORM_TIME_FORMAT).toFormat(QUERY_TIME_FORMAT) }),
+    ...(f.zone && { zone: f.zone }),
+    ...(f.timeUnknown && { time: QUERY_TIME_UNKNOWN }),
+    ...(f.lat && { lat: f.lat.toString() }),
+    ...(f.lon && { lon: f.lon.toString() }),
   }
 }

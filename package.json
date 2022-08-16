@@ -8,7 +8,7 @@
     "build": "yarn path && next build",
     "start": "next start",
     "path": "pathpida --ignorePath .gitignore  --enableStatic",
-    "lint": "next lint",
+    "lint": "eslint --fix \"src/**/*.{js,ts,jsx,tsx}\"",
     "format": "prettier --write \"src/**/*.{js,ts,jsx,tsx,json}\"",
     "test": "jest"
   },

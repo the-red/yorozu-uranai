@@ -6,7 +6,9 @@ import { DateTime } from 'luxon'
 import Header from '../components/Header'
 import Footer from '../components/Footer'
 
-import { queryToFormValues, formValuesToQuery } from '../lib/params'
+import { Query, queryToFormValues, formValuesToQuery } from '../lib/params'
+
+export type OptionalQuery = Query
 
 const SuimeiPage: NextPage = () => {
   const router = useRouter()

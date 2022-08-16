@@ -11,7 +11,14 @@ export type FormValues = {
 }
 
 type QueryValue = string | string[] | undefined
-type Query = Partial<Record<keyof FormValues, QueryValue>>
+export type Query = Partial<{
+  name: QueryValue
+  date: QueryValue
+  time: QueryValue
+  zone: QueryValue
+  lat: QueryValue
+  lon: QueryValue
+}>
 
 const QUERY_DATE_FORMAT = 'yyyyMMdd' as const
 const QUERY_TIME_FORMAT = 'HHmm' as const

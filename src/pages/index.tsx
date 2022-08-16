@@ -2,12 +2,15 @@ import Head from 'next/head'
 import Link from 'next/link'
 import Image from 'next/image'
 import { pagesPath } from '../lib/$path'
+import { Query } from '../lib/params'
 import SuimeiIcon from '../../public/images/index/suimei.svg'
 // @ts-expect-error
 import horoscopeIcon from '../../public/images/index/horoscope.svg?url'
 import NumerologyIcon from '../../public/images/index/numerology.svg'
 import Header from '../components/Header'
 import Footer from '../components/Footer'
+
+export type OptionalQuery = Query
 
 export default function Home() {
   return (

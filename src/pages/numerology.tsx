@@ -8,7 +8,9 @@ import Footer from '../components/Footer'
 import { NumerologyForm, NumerologyFormProps, NumerologyFormValues } from '../numerology/components/NumerologyForm'
 import { CoreNumbers } from '../numerology/components/CoreNumbers'
 import { Numerology } from '../numerology/Numerology'
-import { queryToFormValues, formValuesToQuery } from '../lib/params'
+import { Query, queryToFormValues, formValuesToQuery } from '../lib/params'
+
+export type OptionalQuery = Query
 
 const NumerologyPage: NextPage = () => {
   const router = useRouter()

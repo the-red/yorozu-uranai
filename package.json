@@ -4,10 +4,10 @@
   "scripts": {
     "dev": "run-p dev:*",
     "dev:next": "next dev",
-    "dev:path": "pathpida --watch",
-    "build": "pathpida && next build",
-    "start": "pathpida && yarn start:next",
-    "start:next": "next start",
+    "dev:path": "yarn path --watch",
+    "build": "yarn path && next build",
+    "start": "next start",
+    "path": "pathpida --ignorePath .gitignore  --enableStatic",
     "lint": "next lint",
     "format": "prettier --write \"src/**/*.{js,ts,jsx,tsx,json}\"",
     "test": "jest"

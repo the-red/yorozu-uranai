@@ -55,34 +55,31 @@ function HoroscopePage() {
     }
   }, [router])
 
-  const { data, error } = useSWR<Horoscope>(
-    ['/api/horoscope-props', formValues],
-    async (url: string, formValues: HoroscopeFormValues) => {
-      const { date, time, zone, lat, lon } = formValues
-      const horoscopeSeed: {
-        dateTime: DateTime
-        lat: number
-        lon: number
-        // hsys?: string
-      } = {
-        dateTime: DateTime.fromISO(`${date}T${time}`, { zone }),
-        lat,
-        lon,
-      }
-      const res = await fetch(url, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(horoscopeSeed),
-      })
-      if (!res.ok) {
-        const { errorMessage } = await res.json()
-        throw new Error(errorMessage)
-      }
-      const json = await res.json()
-      const horoscopeProps = json.data as HoroscopeProps
-      return new Horoscope(horoscopeProps)
+  const { data, error } = useSWR<Horoscope>([formValues], async (formValues: HoroscopeFormValues) => {
+    const { date, time, zone, lat, lon } = formValues
+    const horoscopeSeed: {
+      dateTime: DateTime
+      lat: number
+      lon: number
+      // hsys?: string
+    } = {
+      dateTime: DateTime.fromISO(`${date}T${time}`, { zone }),
+      lat,
+      lon,
     }
-  )
+    const res = await fetch('/api/horoscope-props', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(horoscopeSeed),
+    })
+    if (!res.ok) {
+      const { errorMessage } = await res.json()
+      throw new Error(errorMessage)
+    }
+    const json = await res.json()
+    const horoscopeProps = json.data as HoroscopeProps
+    return new Horoscope(horoscopeProps)
+  })
 
   useEffect(() => {
     // NOTE: refetchのたびにdataにundefが入り、画面がチラつくことを避ける

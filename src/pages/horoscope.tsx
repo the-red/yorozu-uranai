@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { useRouter } from 'next/router'
 import useSWR from 'swr'
 import { DateTime } from 'luxon'
@@ -16,10 +16,9 @@ const DEFAULT_LON = 139.667717 as const
 
 function HoroscopePage() {
   const router = useRouter()
-  const [formValues, setFormValues] = useState<HoroscopeFormValues>()
   const [horoscope, setHoroscope] = useState<Horoscope>()
 
-  useEffect(() => {
+  const formValues = useMemo(() => {
     if (router.isReady) {
       const f = queryToFormValues(router.query)
       const now = DateTime.local({ zone: f.zone })
@@ -44,19 +43,15 @@ function HoroscopePage() {
         time = now.toFormat(FORM_TIME_FORMAT)
       }
 
-      console.log({ date, time, timeUnknown })
-
       if (timeUnknown || !time) {
         timeUnknown = true
         time = '12:00'
       }
 
-      console.log({ date, time, timeUnknown })
-
       const lat = f.lat === undefined ? DEFAULT_LAT : f.lat
       const lon = f.lon === undefined ? DEFAULT_LON : f.lon
 
-      setFormValues({ ...f, date, time, zone, timeUnknown, lat, lon })
+      return { ...f, date, time, zone, timeUnknown, lat, lon }
     }
   }, [router])
 

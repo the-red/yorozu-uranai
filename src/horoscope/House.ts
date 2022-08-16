@@ -20,7 +20,7 @@ export class House {
 
   where(longitude: number): number | undefined {
     for (let i = 0; i < this.cusps.length; i++) {
-      let start = this.cusps[i].longitude
+      const start = this.cusps[i].longitude
       let end = this.cusps[i + 1]?.longitude || this.cusps[0].longitude
       if (start > end) {
         end += 360

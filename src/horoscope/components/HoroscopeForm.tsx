@@ -22,8 +22,8 @@ export const HoroscopeForm: FC<HoroscopeFormProps> = ({ onSubmit, defaultValues 
   const zone = watch('zone')
 
   const handleSubmit = ({ date, time, zone, timeUnknown, lat, lon }: HoroscopeFormValues) => {
-    lat = typeof lat == 'number' && !isNaN(lat) ? lat : 0
-    lon = typeof lon == 'number' && !isNaN(lon) ? lon : 0
+    lat = typeof lat === 'number' && !isNaN(lat) ? lat : 0
+    lon = typeof lon === 'number' && !isNaN(lon) ? lon : 0
 
     onSubmit({ date, time, zone, timeUnknown, lat, lon })
   }

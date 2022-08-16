@@ -1,9 +1,9 @@
 import Image from 'next/image'
 import { useEffect, VFC } from 'react'
 import { useForm } from 'react-hook-form'
+import { staticPath } from '../../lib/$path'
 
-import leaf from '../../../public/images/numerology/leaf.png'
-import flower from '../../../public/images/numerology/flower.png'
+const images = staticPath.images.numerology
 
 export type NumerologyFormValues = {
   name: string
@@ -63,10 +63,10 @@ export const NumerologyForm: VFC<NumerologyFormProps> = ({ onSubmit, defaultValu
 
       <div className="tw-relative tw-bg-white tw-p-8 tw-rounded-tl-2xl tw-rounded-tr-5xl tw-rounded-br-2xl tw-rounded-bl-5xl tw-border-2 tw-border-solid">
         <div className="tw-absolute tw-top-0 tw-left-0 tw-w-20" style={{ transform: 'rotate(12deg)' }}>
-          <Image src={leaf} />
+          <Image src={images.leaf_png} />
         </div>
         <div className="tw-absolute tw-bottom-0 tw-right-0 tw-w-20" style={{ transform: 'rotate(12deg)' }}>
-          <Image src={flower} />
+          <Image src={images.flower_png} />
         </div>
 
         <form

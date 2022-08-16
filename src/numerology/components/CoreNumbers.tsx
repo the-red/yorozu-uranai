@@ -1,9 +1,9 @@
 import Image from 'next/image'
 import { FC, VFC } from 'react'
+import { staticPath } from '../../lib/$path'
 import { Numerology } from '../Numerology'
 
-import bird1 from '../../../public/images/numerology/bird-1.png'
-import bird2 from '../../../public/images/numerology/bird-2.png'
+const images = staticPath.images.numerology
 
 const CoreNumber: FC = ({ children }) => {
   return (
@@ -58,10 +58,10 @@ export const CoreNumbers: VFC<CoreNumbersProps> = ({ numerology }) => {
 
       <div className="tw-relative tw-bg-white tw-p-8 tw-rounded-tl-2xl tw-rounded-tr-5xl tw-rounded-br-2xl tw-rounded-bl-5xl tw-border-2 tw-border-solid">
         <div className="tw-absolute tw-top-1 tw-left-2  tw-w-20">
-          <Image src={bird1} />
+          <Image src={images.bird_1_png} />
         </div>
         <div className="tw-absolute tw-bottom-1 tw-right-2 tw-w-20">
-          <Image src={bird2} />
+          <Image src={images.bird_2_png} />
         </div>
 
         <div className="tw-grid tw-grid-cols-2 sm:tw-grid-cols-3 tw-gap-4 sm:tw-gap-8 sm:tw-w-md tw-py-12 sm:tw-py-0 tw-mx-auto">

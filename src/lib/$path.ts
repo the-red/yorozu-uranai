@@ -5,8 +5,7 @@ import type { OptionalQuery as OptionalQuery3 } from '../pages/suimei'
 
 export const pagesPath = {
   "horoscope": {
-    $url: (url?: { query?: OptionalQuery1, hash?: string }) => ({ pathname: '/horoscope' as const, query: url?.query, hash: url?.hash }),
-
+    $url: (url?: { query?: OptionalQuery1, hash?: string }) => ({ pathname: '/horoscope' as const, query: url?.query, hash: url?.hash })
   },
   "numerology": {
     $url: (url?: { query?: OptionalQuery2, hash?: string }) => ({ pathname: '/numerology' as const, query: url?.query, hash: url?.hash })
@@ -29,18 +28,21 @@ export const staticPath = {
     Noto_Sans_JP_Regular_otf: '/fonts/Noto Sans JP Regular.otf'
   },
   images: {
-    astro_sign_1_png: '/images/astro-sign-1.png',
-    astro_sign_10_png: '/images/astro-sign-10.png',
-    astro_sign_11_png: '/images/astro-sign-11.png',
-    astro_sign_12_png: '/images/astro-sign-12.png',
-    astro_sign_2_png: '/images/astro-sign-2.png',
-    astro_sign_3_png: '/images/astro-sign-3.png',
-    astro_sign_4_png: '/images/astro-sign-4.png',
-    astro_sign_5_png: '/images/astro-sign-5.png',
-    astro_sign_6_png: '/images/astro-sign-6.png',
-    astro_sign_7_png: '/images/astro-sign-7.png',
-    astro_sign_8_png: '/images/astro-sign-8.png',
-    astro_sign_9_png: '/images/astro-sign-9.png',
+    horoscope: {
+      astro_sign_1_png: '/images/horoscope/astro-sign-1.png',
+      astro_sign_10_png: '/images/horoscope/astro-sign-10.png',
+      astro_sign_11_png: '/images/horoscope/astro-sign-11.png',
+      astro_sign_12_png: '/images/horoscope/astro-sign-12.png',
+      astro_sign_2_png: '/images/horoscope/astro-sign-2.png',
+      astro_sign_3_png: '/images/horoscope/astro-sign-3.png',
+      astro_sign_4_png: '/images/horoscope/astro-sign-4.png',
+      astro_sign_5_png: '/images/horoscope/astro-sign-5.png',
+      astro_sign_6_png: '/images/horoscope/astro-sign-6.png',
+      astro_sign_7_png: '/images/horoscope/astro-sign-7.png',
+      astro_sign_8_png: '/images/horoscope/astro-sign-8.png',
+      astro_sign_9_png: '/images/horoscope/astro-sign-9.png',
+      starry_sky_jpeg: '/images/horoscope/starry-sky.jpeg'
+    },
     index: {
       horoscope_white_svg: '/images/index/horoscope-white.svg',
       horoscope_svg: '/images/index/horoscope.svg',
@@ -54,8 +56,7 @@ export const staticPath = {
       flower_png: '/images/numerology/flower.png',
       leaf_png: '/images/numerology/leaf.png',
       title_png: '/images/numerology/title.png'
-    },
-    starry_sky_jpeg: '/images/starry-sky.jpeg'
+    }
   }
 } as const
 

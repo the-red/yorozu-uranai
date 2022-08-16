@@ -3,7 +3,7 @@ import { Stage, Layer, Circle, Line, Text, Image } from 'react-konva'
 import { staticPath } from '../../lib/$path'
 import { Horoscope, Position, ALL_PLANETS, MajorAspect, Planet } from '../'
 
-const { images } = staticPath
+const images = staticPath.images.horoscope
 
 type IconScales = { coordinate: number; size: number; degrees: number }
 const signCoordinates = [

@@ -1,5 +1,7 @@
 import { NextPage } from 'next'
-import { useState } from 'react'
+import { useRouter } from 'next/router'
+import { useEffect, useState } from 'react'
+import { DateTime } from 'luxon'
 
 import Header from '../../components/Header'
 import Footer from '../../components/Footer'
@@ -7,12 +9,43 @@ import Footer from '../../components/Footer'
 import { NumerologyForm, NumerologyFormProps } from '../../numerology/components/NumerologyForm'
 import { CoreNumbers } from '../../numerology/components/CoreNumbers'
 import { Numerology } from '../../numerology/Numerology'
+import params from '../../lib/params'
+
+type NumerologySeed = {
+  name: string
+  date: DateTime
+}
 
 const NumerologyPage: NextPage = () => {
+  const router = useRouter()
+  const [numerologySeed, setNumerologySeed] = useState<NumerologySeed>()
   const [numerology, setNumerology] = useState<Numerology>()
 
-  const handleSubmit: NumerologyFormProps['onSubmit'] = ({ birthday, name }) => {
-    setNumerology(new Numerology({ birthDate: birthday, fullName: name, maxSameNumber: 22 }))
+  useEffect(() => {
+    if (router.isReady) {
+      const p = params.fromQuery(router.query)
+
+      if (p.name && p.date) {
+        const date = DateTime.fromISO(p.date)
+
+        setNumerologySeed({
+          name: p.name,
+          date,
+        })
+
+        setNumerology(
+          new Numerology({
+            birthDate: date.toJSDate(),
+            fullName: p.name,
+            maxSameNumber: 22,
+          })
+        )
+      }
+    }
+  }, [router, router.query])
+
+  const handleSubmit: NumerologyFormProps['onSubmit'] = (formValues) => {
+    router.push({ query: params.toQuery(formValues) })
   }
 
   return (
@@ -26,8 +59,15 @@ const NumerologyPage: NextPage = () => {
           <div style={{ fontFamily: 'MTF Wildflower' }} className="tw-text-center tw-text-7xl sm:tw-text-10xl">
             numerology
           </div>
-
-          <NumerologyForm onSubmit={handleSubmit} />
+          <NumerologyForm
+            onSubmit={handleSubmit}
+            defaultValues={
+              numerologySeed && {
+                name: numerologySeed.name,
+                date: numerologySeed.date.toISODate(),
+              }
+            }
+          />
           {numerology && <CoreNumbers numerology={numerology} />}
         </div>
         <Footer />

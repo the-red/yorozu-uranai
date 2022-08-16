@@ -1,6 +1,6 @@
+import useImage from 'use-image'
 import { Stage, Layer, Circle, Line, Text, Image } from 'react-konva'
 import { Horoscope, Position, ALL_PLANETS, MajorAspect, Planet } from '../'
-import useImage from 'use-image'
 
 type IconScales = { coordinate: number; size: number; degrees: number }
 const signCoordinates = [
@@ -30,7 +30,6 @@ export default function HoroscopeCircle({
 }) {
   const { planets, house } = horoscope
   const houseLongitude = -house.ascendant.longitude
-  console.log('cusps', house.cusps)
 
   const degreesToCoordinate = ({ degrees, scale }: { degrees: number; scale?: number }) => {
     scale ||= 1

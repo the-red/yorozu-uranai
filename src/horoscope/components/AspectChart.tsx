@@ -37,8 +37,8 @@ export default function AspectChart({ horoscope, orb }: Props) {
     <>
       <div className="aspect-chart-container">
         {ALL_PLANETS.map((planet, i) => (
-          <div className="outer-item">
-            <AspectRow key={i} targetPlanet={planet} />
+          <div key={i} className="outer-item">
+            <AspectRow targetPlanet={planet} />
           </div>
         ))}
       </div>

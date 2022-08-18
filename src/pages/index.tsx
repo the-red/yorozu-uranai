@@ -1,13 +1,14 @@
 import Head from 'next/head'
 import Link from 'next/link'
 import Image from 'next/image'
-import { pagesPath } from '../lib/$path'
-import FourPillarsOfDestinyIcon from '../../public/images/index/suimei.svg'
-// @ts-expect-error
-import horoscopeIcon from '../../public/images/index/horoscope.svg?url'
+import { pagesPath, staticPath } from '../lib/$path'
+import { Query } from '../lib/params'
+import SuimeiIcon from '../../public/images/index/suimei.svg'
 import NumerologyIcon from '../../public/images/index/numerology.svg'
 import Header from '../components/Header'
 import Footer from '../components/Footer'
+
+export type OptionalQuery = Query
 
 export default function Home() {
   return (
@@ -30,7 +31,7 @@ export default function Home() {
                   <div className="menu-link-block-1">
                     <h2 className="menu-title">西洋占星術</h2>
                     {/* TODO: horoscopeIcon はコンポーネントとして表示すると何故か消えるのでなんとかする */}
-                    <Image src={horoscopeIcon} width={40} height={40} alt="西洋占星術" />
+                    <Image src={staticPath.images.index.horoscope_svg} width={40} height={40} alt="西洋占星術" />
                     <p className="menu-text">ホロスコープを作成する</p>
                   </div>
                 </a>
@@ -51,7 +52,7 @@ export default function Home() {
               <a className="menu-link">
                 <div className="menu-link-block-1">
                   <h2 className="menu-title">四柱推命</h2>
-                  <FourPillarsOfDestinyIcon width={40} height={40} alt="四柱推命" />
+                  <SuimeiIcon width={40} height={40} alt="四柱推命" />
                   <p className="menu-text">命式を計算する</p>
                 </div>
               </a>

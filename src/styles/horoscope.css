@@ -1,5 +1,5 @@
 .horoscope {
-  background-image: url('/images/starry-sky.jpeg');
+  background-image: url('/images/horoscope/starry-sky.jpeg');
   background-repeat: repeat-y;
   background-attachment: fixed;
   background-size: 100%;

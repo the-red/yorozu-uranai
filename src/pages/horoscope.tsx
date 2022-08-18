@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { useRouter } from 'next/router'
 import useSWR from 'swr'
 import { DateTime } from 'luxon'
@@ -9,17 +9,18 @@ import Footer from '../components/Footer'
 import { Horoscope, HoroscopeProps } from '../horoscope'
 import { HoroscopeForm, HoroscopeFormProps, HoroscopeFormValues } from '../horoscope/components/HoroscopeForm'
 import HoroscopeDetailPage from '../horoscope/components/HoroscopeDetailPage'
-import { FORM_DATE_FORMAT, FORM_TIME_FORMAT, queryToFormValues, formValuesToQuery } from '../lib/params'
+import { Query, FORM_DATE_FORMAT, FORM_TIME_FORMAT, queryToFormValues, formValuesToQuery } from '../lib/params'
+
+export type OptionalQuery = Query
 
 const DEFAULT_LAT = 35.604839 as const
 const DEFAULT_LON = 139.667717 as const
 
 function HoroscopePage() {
   const router = useRouter()
-  const [formValues, setFormValues] = useState<HoroscopeFormValues>()
   const [horoscope, setHoroscope] = useState<Horoscope>()
 
-  useEffect(() => {
+  const formValues = useMemo(() => {
     if (router.isReady) {
       const f = queryToFormValues(router.query)
       const now = DateTime.local({ zone: f.zone })
@@ -44,50 +45,43 @@ function HoroscopePage() {
         time = now.toFormat(FORM_TIME_FORMAT)
       }
 
-      console.log({ date, time, timeUnknown })
-
       if (timeUnknown || !time) {
         timeUnknown = true
         time = '12:00'
       }
 
-      console.log({ date, time, timeUnknown })
-
       const lat = f.lat === undefined ? DEFAULT_LAT : f.lat
       const lon = f.lon === undefined ? DEFAULT_LON : f.lon
 
-      setFormValues({ ...f, date, time, zone, timeUnknown, lat, lon })
+      return { ...f, date, time, zone, timeUnknown, lat, lon }
     }
   }, [router])
 
-  const { data, error } = useSWR<Horoscope>(
-    ['/api/horoscope-props', formValues],
-    async (url: string, formValues: HoroscopeFormValues) => {
-      const { date, time, zone, lat, lon } = formValues
-      const horoscopeSeed: {
-        dateTime: DateTime
-        lat: number
-        lon: number
-        // hsys?: string
-      } = {
-        dateTime: DateTime.fromISO(`${date}T${time}`, { zone }),
-        lat,
-        lon,
-      }
-      const res = await fetch(url, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(horoscopeSeed),
-      })
-      if (!res.ok) {
-        const { errorMessage } = await res.json()
-        throw new Error(errorMessage)
-      }
-      const json = await res.json()
-      const horoscopeProps = json.data as HoroscopeProps
-      return new Horoscope(horoscopeProps)
+  const { data, error } = useSWR<Horoscope>([formValues], async (formValues: HoroscopeFormValues) => {
+    const { date, time, zone, lat, lon } = formValues
+    const horoscopeSeed: {
+      dateTime: DateTime
+      lat: number
+      lon: number
+      // hsys?: string
+    } = {
+      dateTime: DateTime.fromISO(`${date}T${time}`, { zone }),
+      lat,
+      lon,
     }
-  )
+    const res = await fetch('/api/horoscope-props', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(horoscopeSeed),
+    })
+    if (!res.ok) {
+      const { errorMessage } = await res.json()
+      throw new Error(errorMessage)
+    }
+    const json = await res.json()
+    const horoscopeProps = json.data as HoroscopeProps
+    return new Horoscope(horoscopeProps)
+  })
 
   useEffect(() => {
     // NOTE: refetchのたびにdataにundefが入り、画面がチラつくことを避ける

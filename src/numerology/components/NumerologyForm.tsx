@@ -22,7 +22,7 @@ export const NumerologyForm: VFC<NumerologyFormProps> = ({ onSubmit, defaultValu
   // useForm({ defaultValues })だと値が入らないため、reset APIを使う
   useEffect(() => {
     reset(defaultValues)
-  }, [defaultValues])
+  }, [reset, defaultValues])
 
   const dateInput = (
     <div style={{ display: 'flex', marginBottom: '32px' }}>

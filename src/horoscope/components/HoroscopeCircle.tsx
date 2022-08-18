@@ -1,21 +1,24 @@
 import useImage from 'use-image'
 import { Stage, Layer, Circle, Line, Text, Image } from 'react-konva'
+import { staticPath } from '../../lib/$path'
 import { Horoscope, Position, ALL_PLANETS, MajorAspect, Planet } from '../'
+
+const images = staticPath.images.horoscope
 
 type IconScales = { coordinate: number; size: number; degrees: number }
 const signCoordinates = [
-  { name: '牡羊座', icon: '♈', longitude: 0, url: '/images/astro-sign-1.png' },
-  { name: '牡牛座', icon: '♉', longitude: 30, url: '/images/astro-sign-2.png' },
-  { name: '双子座', icon: '♊', longitude: 60, url: '/images/astro-sign-3.png' },
-  { name: '蟹座', icon: '♋', longitude: 90, url: '/images/astro-sign-4.png' },
-  { name: '獅子座', icon: '♌', longitude: 120, url: '/images/astro-sign-5.png' },
-  { name: '乙女座', icon: '♍', longitude: 150, url: '/images/astro-sign-6.png' },
-  { name: '天秤座', icon: '♎', longitude: 180, url: '/images/astro-sign-7.png' },
-  { name: '蠍座', icon: '♏', longitude: 210, url: '/images/astro-sign-8.png' },
-  { name: '射手座', icon: '♐', longitude: 240, url: '/images/astro-sign-9.png' },
-  { name: '山羊座', icon: '♑', longitude: 270, url: '/images/astro-sign-10.png' },
-  { name: '水瓶座', icon: '♒', longitude: 300, url: '/images/astro-sign-11.png' },
-  { name: '魚座', icon: '♓', longitude: 330, url: '/images/astro-sign-12.png' },
+  { name: '牡羊座', icon: '♈', longitude: 0, url: images.astro_sign_01_png },
+  { name: '牡牛座', icon: '♉', longitude: 30, url: images.astro_sign_02_png },
+  { name: '双子座', icon: '♊', longitude: 60, url: images.astro_sign_03_png },
+  { name: '蟹座', icon: '♋', longitude: 90, url: images.astro_sign_04_png },
+  { name: '獅子座', icon: '♌', longitude: 120, url: images.astro_sign_05_png },
+  { name: '乙女座', icon: '♍', longitude: 150, url: images.astro_sign_06_png },
+  { name: '天秤座', icon: '♎', longitude: 180, url: images.astro_sign_07_png },
+  { name: '蠍座', icon: '♏', longitude: 210, url: images.astro_sign_08_png },
+  { name: '射手座', icon: '♐', longitude: 240, url: images.astro_sign_09_png },
+  { name: '山羊座', icon: '♑', longitude: 270, url: images.astro_sign_10_png },
+  { name: '水瓶座', icon: '♒', longitude: 300, url: images.astro_sign_11_png },
+  { name: '魚座', icon: '♓', longitude: 330, url: images.astro_sign_12_png },
 ]
 const iconOffset = (iconSize: number) => ({ x: iconSize / 2, y: iconSize / 2 })
 

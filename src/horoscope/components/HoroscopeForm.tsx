@@ -1,7 +1,7 @@
 import { FC } from 'react'
 import { useForm } from 'react-hook-form'
 
-type HoroscopeFormValues = {
+export type HoroscopeFormValues = {
   date: string
   time: string
   zone: string
@@ -12,7 +12,7 @@ type HoroscopeFormValues = {
 
 export type HoroscopeFormProps = {
   onSubmit: (formValues: HoroscopeFormValues) => void
-  defaultValues: HoroscopeFormValues
+  defaultValues?: Partial<HoroscopeFormValues>
 }
 
 export const HoroscopeForm: FC<HoroscopeFormProps> = ({ onSubmit, defaultValues }) => {

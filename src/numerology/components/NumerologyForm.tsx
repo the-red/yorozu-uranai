@@ -6,13 +6,13 @@ import leaf from '../../../public/images/numerology/leaf.png'
 import flower from '../../../public/images/numerology/flower.png'
 
 export type NumerologyFormValues = {
-  date: string
   name: string
+  date: string
 }
 
 export type NumerologyFormProps = {
   onSubmit: (v: NumerologyFormValues) => void
-  defaultValues?: NumerologyFormValues
+  defaultValues?: Partial<NumerologyFormValues>
 }
 
 export const NumerologyForm: VFC<NumerologyFormProps> = ({ onSubmit, defaultValues }) => {

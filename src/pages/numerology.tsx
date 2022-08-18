@@ -1,51 +1,44 @@
 import { NextPage } from 'next'
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
-import { DateTime } from 'luxon'
 
 import Header from '../components/Header'
 import Footer from '../components/Footer'
 
-import { NumerologyForm, NumerologyFormProps } from '../numerology/components/NumerologyForm'
+import { NumerologyForm, NumerologyFormProps, NumerologyFormValues } from '../numerology/components/NumerologyForm'
 import { CoreNumbers } from '../numerology/components/CoreNumbers'
 import { Numerology } from '../numerology/Numerology'
-import params from '../lib/params'
-
-type NumerologySeed = {
-  name: string
-  date: DateTime
-}
+import { queryToFormValues, formValuesToQuery } from '../lib/params'
 
 const NumerologyPage: NextPage = () => {
   const router = useRouter()
-  const [numerologySeed, setNumerologySeed] = useState<NumerologySeed>()
+  const [formValues, setFormValues] = useState<Partial<NumerologyFormValues>>()
   const [numerology, setNumerology] = useState<Numerology>()
 
   useEffect(() => {
     if (router.isReady) {
-      const p = params.fromQuery(router.query)
+      const f = queryToFormValues(router.query)
+      setFormValues(f)
 
-      if (p.name && p.date) {
-        const date = DateTime.fromISO(p.date)
-
-        setNumerologySeed({
-          name: p.name,
-          date,
-        })
-
+      if (f.name && f.date) {
         setNumerology(
           new Numerology({
-            birthDate: date.toJSDate(),
-            fullName: p.name,
+            birthDate: new Date(f.date),
+            fullName: f.name,
             maxSameNumber: 22,
           })
         )
       }
     }
-  }, [router, router.query])
+  }, [router])
 
   const handleSubmit: NumerologyFormProps['onSubmit'] = (formValues) => {
-    router.push({ query: params.toQuery(formValues) })
+    router.push({
+      query: {
+        ...router.query,
+        ...formValuesToQuery(formValues),
+      },
+    })
   }
 
   return (
@@ -59,15 +52,7 @@ const NumerologyPage: NextPage = () => {
           <div style={{ fontFamily: 'MTF Wildflower' }} className="tw-text-center tw-text-7xl sm:tw-text-10xl">
             numerology
           </div>
-          <NumerologyForm
-            onSubmit={handleSubmit}
-            defaultValues={
-              numerologySeed && {
-                name: numerologySeed.name,
-                date: numerologySeed.date.toISODate(),
-              }
-            }
-          />
+          <NumerologyForm onSubmit={handleSubmit} defaultValues={formValues} />
           {numerology && <CoreNumbers numerology={numerology} />}
         </div>
         <Footer />

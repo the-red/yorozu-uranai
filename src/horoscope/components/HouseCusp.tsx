@@ -1,5 +1,4 @@
-import type { Horoscope } from '../horoscope'
-import styles from '../pages/horoscope/HoroscopePage.module.css'
+import type { Horoscope } from '../'
 
 type Props = {
   horoscope: Horoscope
@@ -8,7 +7,7 @@ type Props = {
 export default function HouseCusp({ horoscope }: Props) {
   return (
     <div style={{ width: '100%' }}>
-      <div className={styles.list}>House Cusps</div>
+      <div className="list">House Cusps</div>
       <table style={{ width: '100%' }}>
         <tbody>
           {horoscope.house.cusps.map((cusp, i) => (

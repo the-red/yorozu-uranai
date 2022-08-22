@@ -20,7 +20,6 @@ describe('Planet', () => {
     it('0.0: 魚座', () => {
       const planet = new Planet(new Position(0), 'sun', false, house)
       expect(planet.sign).toEqual('魚座')
-      expect(planet.position.degrees).toEqual(0)
     })
     it('0.5: 牡羊座', () => {
       const planet = new Planet(new Position(0.5), 'sun', false, house)
@@ -37,6 +36,53 @@ describe('Planet', () => {
       expect(planet.longitude).toEqual(61.89)
       expect(planet.sign).toEqual('双子座')
       expect(planet.position.degrees).toEqual(1.8900000000000006)
+    })
+    it('120.0: 蟹座', () => {
+      const planet = new Planet(new Position(120), 'sun', false, house)
+      expect(planet.sign).toEqual('蟹座')
+    })
+    it('150.0: 獅子座', () => {
+      const planet = new Planet(new Position(150), 'sun', false, house)
+      expect(planet.sign).toEqual('獅子座')
+    })
+    it('180.0: 乙女座', () => {
+      const planet = new Planet(new Position(180), 'sun', false, house)
+      expect(planet.sign).toEqual('乙女座')
+    })
+    it('210.0: 天秤座', () => {
+      const planet = new Planet(new Position(210), 'sun', false, house)
+      expect(planet.sign).toEqual('天秤座')
+    })
+    it('240.0: 蠍座', () => {
+      const planet = new Planet(new Position(240), 'sun', false, house)
+      expect(planet.sign).toEqual('蠍座')
+    })
+    it('270.0: 射手座', () => {
+      const planet = new Planet(new Position(270), 'sun', false, house)
+      expect(planet.sign).toEqual('射手座')
+    })
+    it('300.0: 山羊座', () => {
+      const planet = new Planet(new Position(300), 'sun', false, house)
+      expect(planet.sign).toEqual('山羊座')
+    })
+    it('330.0: 水瓶座', () => {
+      const planet = new Planet(new Position(330), 'sun', false, house)
+      expect(planet.sign).toEqual('水瓶座')
+    })
+    it('360.0: 魚座', () => {
+      const planet = new Planet(new Position(360), 'sun', false, house)
+      expect(planet.sign).toEqual('魚座')
+      expect(planet.position.degrees).toEqual(0)
+    })
+    it('360.5: 牡羊座', () => {
+      const planet = new Planet(new Position(360.5), 'sun', false, house)
+      expect(planet.sign).toEqual('牡羊座')
+      expect(planet.position.degrees).toEqual(0.5)
+    })
+    it('3600270.0: 射手座', () => {
+      const planet = new Planet(new Position(3600270), 'sun', false, house)
+      expect(planet.sign).toEqual('射手座')
+      expect(planet.position.degrees).toEqual(0)
     })
   })
 
@@ -201,43 +247,23 @@ describe('Planet', () => {
         const planet2 = new Planet(new Position(10), 'sun', false, house)
         expect(planet1.majorAspect(planet2, orb)).toEqual({ degrees: 0, name: 'conjunction', type: 'hard' })
       })
-      it('基準値より小さい、許容範囲内1', () => {
-        const planet1 = new Planet(new Position(10), 'sun', false, house)
-        const planet2 = new Planet(new Position(4), 'sun', false, house)
-        expect(planet1.majorAspect(planet2, orb)).toEqual({ degrees: 0, name: 'conjunction', type: 'hard' })
-      })
-      it('基準値より小さい、許容範囲内2', () => {
-        const planet1 = new Planet(new Position(4), 'sun', false, house)
-        const planet2 = new Planet(new Position(10), 'sun', false, house)
-        expect(planet1.majorAspect(planet2, orb)).toEqual({ degrees: 0, name: 'conjunction', type: 'hard' })
-      })
-      it('基準値より小さい、許容範囲外1', () => {
-        const planet1 = new Planet(new Position(10), 'sun', false, house)
-        const planet2 = new Planet(new Position(3), 'sun', false, house)
-        expect(planet1.majorAspect(planet2, orb)).toEqual(undefined)
-      })
-      it('基準値より小さい、許容範囲外2', () => {
-        const planet1 = new Planet(new Position(3), 'sun', false, house)
-        const planet2 = new Planet(new Position(10), 'sun', false, house)
-        expect(planet1.majorAspect(planet2, orb)).toEqual(undefined)
-      })
-      it('基準値より大きい、許容範囲内1', () => {
+      it('基準値より大きい、許容範囲内', () => {
         const planet1 = new Planet(new Position(10), 'sun', false, house)
         const planet2 = new Planet(new Position(16), 'sun', false, house)
         expect(planet1.majorAspect(planet2, orb)).toEqual({ degrees: 0, name: 'conjunction', type: 'hard' })
       })
-      it('基準値より大きい、許容範囲内2', () => {
+      it('基準値より小さい、許容範囲内', () => {
         const planet1 = new Planet(new Position(16), 'sun', false, house)
         const planet2 = new Planet(new Position(10), 'sun', false, house)
         expect(planet1.majorAspect(planet2, orb)).toEqual({ degrees: 0, name: 'conjunction', type: 'hard' })
       })
-      it('基準値より大きい、許容範囲外1', () => {
+      it('基準値より大きい、許容範囲外', () => {
         const planet1 = new Planet(new Position(10), 'sun', false, house)
-        const planet2 = new Planet(new Position(17), 'sun', false, house)
+        const planet2 = new Planet(new Position(16.1), 'sun', false, house)
         expect(planet1.majorAspect(planet2, orb)).toEqual(undefined)
       })
-      it('基準値より大きい、許容範囲外2', () => {
-        const planet1 = new Planet(new Position(17), 'sun', false, house)
+      it('基準値より小さい、許容範囲外', () => {
+        const planet1 = new Planet(new Position(16.1), 'sun', false, house)
         const planet2 = new Planet(new Position(10), 'sun', false, house)
         expect(planet1.majorAspect(planet2, orb)).toEqual(undefined)
       })
@@ -253,201 +279,46 @@ describe('Planet', () => {
         const planet2 = new Planet(new Position(10), 'sun', false, house)
         expect(planet1.majorAspect(planet2, orb)).toEqual({ degrees: 60, name: 'sextile', type: 'soft' })
       })
-      it('基準値より小さい、許容範囲内1', () => {
-        const planet1 = new Planet(new Position(10), 'sun', false, house)
-        const planet2 = new Planet(new Position(64), 'sun', false, house)
-        expect(planet1.majorAspect(planet2, orb)).toEqual({ degrees: 60, name: 'sextile', type: 'soft' })
-      })
-      it('基準値より小さい、許容範囲内2', () => {
-        const planet1 = new Planet(new Position(64), 'sun', false, house)
-        const planet2 = new Planet(new Position(10), 'sun', false, house)
-        expect(planet1.majorAspect(planet2, orb)).toEqual({ degrees: 60, name: 'sextile', type: 'soft' })
-      })
-      it('基準値より小さい、許容範囲外1', () => {
-        const planet1 = new Planet(new Position(10), 'sun', false, house)
-        const planet2 = new Planet(new Position(63), 'sun', false, house)
-        expect(planet1.majorAspect(planet2, orb)).toEqual(undefined)
-      })
-      it('基準値より小さい、許容範囲外2', () => {
-        const planet1 = new Planet(new Position(63), 'sun', false, house)
-        const planet2 = new Planet(new Position(10), 'sun', false, house)
-        expect(planet1.majorAspect(planet2, orb)).toEqual(undefined)
-      })
-      it('基準値より大きい、許容範囲内1', () => {
+      it('基準値より大きい、許容範囲内', () => {
         const planet1 = new Planet(new Position(10), 'sun', false, house)
         const planet2 = new Planet(new Position(76), 'sun', false, house)
         expect(planet1.majorAspect(planet2, orb)).toEqual({ degrees: 60, name: 'sextile', type: 'soft' })
       })
-      it('基準値より大きい、許容範囲内2', () => {
+      it('基準値より小さい、許容範囲内', () => {
         const planet1 = new Planet(new Position(76), 'sun', false, house)
         const planet2 = new Planet(new Position(10), 'sun', false, house)
         expect(planet1.majorAspect(planet2, orb)).toEqual({ degrees: 60, name: 'sextile', type: 'soft' })
       })
-      it('基準値より大きい、許容範囲外1', () => {
+      it('基準値より大きい、許容範囲外', () => {
         const planet1 = new Planet(new Position(10), 'sun', false, house)
         const planet2 = new Planet(new Position(77), 'sun', false, house)
         expect(planet1.majorAspect(planet2, orb)).toEqual(undefined)
       })
-      it('基準値より大きい、許容範囲外2', () => {
+      it('基準値より小さい、許容範囲外', () => {
         const planet1 = new Planet(new Position(77), 'sun', false, house)
         const planet2 = new Planet(new Position(10), 'sun', false, house)
         expect(planet1.majorAspect(planet2, orb)).toEqual(undefined)
       })
     })
     describe('90度：スクエア', () => {
-      it('ちょうど基準値1', () => {
+      it('ちょうど基準値', () => {
         const planet1 = new Planet(new Position(10), 'sun', false, house)
         const planet2 = new Planet(new Position(100), 'sun', false, house)
         expect(planet1.majorAspect(planet2, orb)).toEqual({ degrees: 90, name: 'square', type: 'hard' })
       })
-      it('ちょうど基準値2', () => {
-        const planet1 = new Planet(new Position(100), 'sun', false, house)
-        const planet2 = new Planet(new Position(10), 'sun', false, house)
-        expect(planet1.majorAspect(planet2, orb)).toEqual({ degrees: 90, name: 'square', type: 'hard' })
-      })
-      it('基準値より小さい、許容範囲内1', () => {
-        const planet1 = new Planet(new Position(10), 'sun', false, house)
-        const planet2 = new Planet(new Position(94), 'sun', false, house)
-        expect(planet1.majorAspect(planet2, orb)).toEqual({ degrees: 90, name: 'square', type: 'hard' })
-      })
-      it('基準値より小さい、許容範囲内2', () => {
-        const planet1 = new Planet(new Position(94), 'sun', false, house)
-        const planet2 = new Planet(new Position(10), 'sun', false, house)
-        expect(planet1.majorAspect(planet2, orb)).toEqual({ degrees: 90, name: 'square', type: 'hard' })
-      })
-      it('基準値より小さい、許容範囲外1', () => {
-        const planet1 = new Planet(new Position(10), 'sun', false, house)
-        const planet2 = new Planet(new Position(93), 'sun', false, house)
-        expect(planet1.majorAspect(planet2, orb)).toEqual(undefined)
-      })
-      it('基準値より小さい、許容範囲外2', () => {
-        const planet1 = new Planet(new Position(93), 'sun', false, house)
-        const planet2 = new Planet(new Position(10), 'sun', false, house)
-        expect(planet1.majorAspect(planet2, orb)).toEqual(undefined)
-      })
-      it('基準値より大きい、許容範囲内1', () => {
-        const planet1 = new Planet(new Position(10), 'sun', false, house)
-        const planet2 = new Planet(new Position(106), 'sun', false, house)
-        expect(planet1.majorAspect(planet2, orb)).toEqual({ degrees: 90, name: 'square', type: 'hard' })
-      })
-      it('基準値より大きい、許容範囲内2', () => {
-        const planet1 = new Planet(new Position(106), 'sun', false, house)
-        const planet2 = new Planet(new Position(10), 'sun', false, house)
-        expect(planet1.majorAspect(planet2, orb)).toEqual({ degrees: 90, name: 'square', type: 'hard' })
-      })
-      it('基準値より大きい、許容範囲外1', () => {
-        const planet1 = new Planet(new Position(10), 'sun', false, house)
-        const planet2 = new Planet(new Position(107), 'sun', false, house)
-        expect(planet1.majorAspect(planet2, orb)).toEqual(undefined)
-      })
-      it('基準値より大きい、許容範囲外2', () => {
-        const planet1 = new Planet(new Position(107), 'sun', false, house)
-        const planet2 = new Planet(new Position(10), 'sun', false, house)
-        expect(planet1.majorAspect(planet2, orb)).toEqual(undefined)
-      })
     })
     describe('120度：トライン', () => {
-      it('ちょうど基準値1', () => {
+      it('ちょうど基準値', () => {
         const planet1 = new Planet(new Position(10), 'sun', false, house)
         const planet2 = new Planet(new Position(130), 'sun', false, house)
         expect(planet1.majorAspect(planet2, orb)).toEqual({ degrees: 120, name: 'trine', type: 'soft' })
       })
-      it('ちょうど基準値2', () => {
-        const planet1 = new Planet(new Position(130), 'sun', false, house)
-        const planet2 = new Planet(new Position(10), 'sun', false, house)
-        expect(planet1.majorAspect(planet2, orb)).toEqual({ degrees: 120, name: 'trine', type: 'soft' })
-      })
-      it('基準値より小さい、許容範囲内1', () => {
-        const planet1 = new Planet(new Position(10), 'sun', false, house)
-        const planet2 = new Planet(new Position(124), 'sun', false, house)
-        expect(planet1.majorAspect(planet2, orb)).toEqual({ degrees: 120, name: 'trine', type: 'soft' })
-      })
-      it('基準値より小さい、許容範囲内2', () => {
-        const planet1 = new Planet(new Position(124), 'sun', false, house)
-        const planet2 = new Planet(new Position(10), 'sun', false, house)
-        expect(planet1.majorAspect(planet2, orb)).toEqual({ degrees: 120, name: 'trine', type: 'soft' })
-      })
-      it('基準値より小さい、許容範囲外1', () => {
-        const planet1 = new Planet(new Position(10), 'sun', false, house)
-        const planet2 = new Planet(new Position(123), 'sun', false, house)
-        expect(planet1.majorAspect(planet2, orb)).toEqual(undefined)
-      })
-      it('基準値より小さい、許容範囲外2', () => {
-        const planet1 = new Planet(new Position(123), 'sun', false, house)
-        const planet2 = new Planet(new Position(10), 'sun', false, house)
-        expect(planet1.majorAspect(planet2, orb)).toEqual(undefined)
-      })
-      it('基準値より大きい、許容範囲内1', () => {
-        const planet1 = new Planet(new Position(10), 'sun', false, house)
-        const planet2 = new Planet(new Position(136), 'sun', false, house)
-        expect(planet1.majorAspect(planet2, orb)).toEqual({ degrees: 120, name: 'trine', type: 'soft' })
-      })
-      it('基準値より大きい、許容範囲内2', () => {
-        const planet1 = new Planet(new Position(136), 'sun', false, house)
-        const planet2 = new Planet(new Position(10), 'sun', false, house)
-        expect(planet1.majorAspect(planet2, orb)).toEqual({ degrees: 120, name: 'trine', type: 'soft' })
-      })
-      it('基準値より大きい、許容範囲外1', () => {
-        const planet1 = new Planet(new Position(10), 'sun', false, house)
-        const planet2 = new Planet(new Position(137), 'sun', false, house)
-        expect(planet1.majorAspect(planet2, orb)).toEqual(undefined)
-      })
-      it('基準値より大きい、許容範囲外2', () => {
-        const planet1 = new Planet(new Position(137), 'sun', false, house)
-        const planet2 = new Planet(new Position(10), 'sun', false, house)
-        expect(planet1.majorAspect(planet2, orb)).toEqual(undefined)
-      })
     })
     describe('180度：オポジション', () => {
-      it('ちょうど基準値1', () => {
+      it('ちょうど基準値', () => {
         const planet1 = new Planet(new Position(10), 'sun', false, house)
         const planet2 = new Planet(new Position(190), 'sun', false, house)
         expect(planet1.majorAspect(planet2, orb)).toEqual({ degrees: 180, name: 'opposition', type: 'hard' })
-      })
-      it('ちょうど基準値2', () => {
-        const planet1 = new Planet(new Position(190), 'sun', false, house)
-        const planet2 = new Planet(new Position(10), 'sun', false, house)
-        expect(planet1.majorAspect(planet2, orb)).toEqual({ degrees: 180, name: 'opposition', type: 'hard' })
-      })
-      it('基準値より小さい、許容範囲内1', () => {
-        const planet1 = new Planet(new Position(10), 'sun', false, house)
-        const planet2 = new Planet(new Position(184), 'sun', false, house)
-        expect(planet1.majorAspect(planet2, orb)).toEqual({ degrees: 180, name: 'opposition', type: 'hard' })
-      })
-      it('基準値より小さい、許容範囲内2', () => {
-        const planet1 = new Planet(new Position(184), 'sun', false, house)
-        const planet2 = new Planet(new Position(10), 'sun', false, house)
-        expect(planet1.majorAspect(planet2, orb)).toEqual({ degrees: 180, name: 'opposition', type: 'hard' })
-      })
-      it('基準値より小さい、許容範囲外1', () => {
-        const planet1 = new Planet(new Position(10), 'sun', false, house)
-        const planet2 = new Planet(new Position(183), 'sun', false, house)
-        expect(planet1.majorAspect(planet2, orb)).toEqual(undefined)
-      })
-      it('基準値より小さい、許容範囲外2', () => {
-        const planet1 = new Planet(new Position(183), 'sun', false, house)
-        const planet2 = new Planet(new Position(10), 'sun', false, house)
-        expect(planet1.majorAspect(planet2, orb)).toEqual(undefined)
-      })
-      it('基準値より大きい、許容範囲内1', () => {
-        const planet1 = new Planet(new Position(10), 'sun', false, house)
-        const planet2 = new Planet(new Position(196), 'sun', false, house)
-        expect(planet1.majorAspect(planet2, orb)).toEqual({ degrees: 180, name: 'opposition', type: 'hard' })
-      })
-      it('基準値より大きい、許容範囲内2', () => {
-        const planet1 = new Planet(new Position(196), 'sun', false, house)
-        const planet2 = new Planet(new Position(10), 'sun', false, house)
-        expect(planet1.majorAspect(planet2, orb)).toEqual({ degrees: 180, name: 'opposition', type: 'hard' })
-      })
-      it('基準値より大きい、許容範囲外1', () => {
-        const planet1 = new Planet(new Position(10), 'sun', false, house)
-        const planet2 = new Planet(new Position(197), 'sun', false, house)
-        expect(planet1.majorAspect(planet2, orb)).toEqual(undefined)
-      })
-      it('基準値より大きい、許容範囲外2', () => {
-        const planet1 = new Planet(new Position(197), 'sun', false, house)
-        const planet2 = new Planet(new Position(10), 'sun', false, house)
-        expect(planet1.majorAspect(planet2, orb)).toEqual(undefined)
       })
     })
   })
@@ -455,315 +326,45 @@ describe('Planet', () => {
   describe('マイナーアスペクト', () => {
     const orb = 2
     describe('30度：セミセクスタイル', () => {
-      it('ちょうど基準値1', () => {
+      it('ちょうど基準値', () => {
         const planet1 = new Planet(new Position(10), 'sun', false, house)
         const planet2 = new Planet(new Position(40), 'sun', false, house)
         expect(planet1.minorAspect(planet2, orb)).toEqual({ degrees: 30, name: 'semi-sextile' })
       })
-      it('ちょうど基準値2', () => {
-        const planet1 = new Planet(new Position(40), 'sun', false, house)
-        const planet2 = new Planet(new Position(10), 'sun', false, house)
-        expect(planet1.minorAspect(planet2, orb)).toEqual({ degrees: 30, name: 'semi-sextile' })
-      })
-      it('基準値より小さい、許容範囲内1', () => {
-        const planet1 = new Planet(new Position(10), 'sun', false, house)
-        const planet2 = new Planet(new Position(38), 'sun', false, house)
-        expect(planet1.minorAspect(planet2, orb)).toEqual({ degrees: 30, name: 'semi-sextile' })
-      })
-      it('基準値より小さい、許容範囲内2', () => {
-        const planet1 = new Planet(new Position(38), 'sun', false, house)
-        const planet2 = new Planet(new Position(10), 'sun', false, house)
-        expect(planet1.minorAspect(planet2, orb)).toEqual({ degrees: 30, name: 'semi-sextile' })
-      })
-      it('基準値より小さい、許容範囲外1', () => {
-        const planet1 = new Planet(new Position(10), 'sun', false, house)
-        const planet2 = new Planet(new Position(37), 'sun', false, house)
-        expect(planet1.minorAspect(planet2, orb)).toEqual(undefined)
-      })
-      it('基準値より小さい、許容範囲外2', () => {
-        const planet1 = new Planet(new Position(37), 'sun', false, house)
-        const planet2 = new Planet(new Position(10), 'sun', false, house)
-        expect(planet1.minorAspect(planet2, orb)).toEqual(undefined)
-      })
-      it('基準値より大きい、許容範囲内1', () => {
-        const planet1 = new Planet(new Position(10), 'sun', false, house)
-        const planet2 = new Planet(new Position(42), 'sun', false, house)
-        expect(planet1.minorAspect(planet2, orb)).toEqual({ degrees: 30, name: 'semi-sextile' })
-      })
-      it('基準値より大きい、許容範囲内2', () => {
-        const planet1 = new Planet(new Position(42), 'sun', false, house)
-        const planet2 = new Planet(new Position(10), 'sun', false, house)
-        expect(planet1.minorAspect(planet2, orb)).toEqual({ degrees: 30, name: 'semi-sextile' })
-      })
-      it('基準値より大きい、許容範囲外1', () => {
-        const planet1 = new Planet(new Position(10), 'sun', false, house)
-        const planet2 = new Planet(new Position(43), 'sun', false, house)
-        expect(planet1.minorAspect(planet2, orb)).toEqual(undefined)
-      })
-      it('基準値より大きい、許容範囲外2', () => {
-        const planet1 = new Planet(new Position(43), 'sun', false, house)
-        const planet2 = new Planet(new Position(10), 'sun', false, house)
-        expect(planet1.minorAspect(planet2, orb)).toEqual(undefined)
-      })
     })
     describe('45度：セミスクエア', () => {
-      it('ちょうど基準値1', () => {
+      it('ちょうど基準値', () => {
         const planet1 = new Planet(new Position(10), 'sun', false, house)
         const planet2 = new Planet(new Position(55), 'sun', false, house)
         expect(planet1.minorAspect(planet2, orb)).toEqual({ degrees: 45, name: 'semi-square' })
       })
-      it('ちょうど基準値2', () => {
-        const planet1 = new Planet(new Position(55), 'sun', false, house)
-        const planet2 = new Planet(new Position(10), 'sun', false, house)
-        expect(planet1.minorAspect(planet2, orb)).toEqual({ degrees: 45, name: 'semi-square' })
-      })
-      it('基準値より小さい、許容範囲内1', () => {
-        const planet1 = new Planet(new Position(10), 'sun', false, house)
-        const planet2 = new Planet(new Position(53), 'sun', false, house)
-        expect(planet1.minorAspect(planet2, orb)).toEqual({ degrees: 45, name: 'semi-square' })
-      })
-      it('基準値より小さい、許容範囲内2', () => {
-        const planet1 = new Planet(new Position(53), 'sun', false, house)
-        const planet2 = new Planet(new Position(10), 'sun', false, house)
-        expect(planet1.minorAspect(planet2, orb)).toEqual({ degrees: 45, name: 'semi-square' })
-      })
-      it('基準値より小さい、許容範囲外1', () => {
-        const planet1 = new Planet(new Position(10), 'sun', false, house)
-        const planet2 = new Planet(new Position(52), 'sun', false, house)
-        expect(planet1.minorAspect(planet2, orb)).toEqual(undefined)
-      })
-      it('基準値より小さい、許容範囲外2', () => {
-        const planet1 = new Planet(new Position(52), 'sun', false, house)
-        const planet2 = new Planet(new Position(10), 'sun', false, house)
-        expect(planet1.minorAspect(planet2, orb)).toEqual(undefined)
-      })
-      it('基準値より大きい、許容範囲内1', () => {
-        const planet1 = new Planet(new Position(10), 'sun', false, house)
-        const planet2 = new Planet(new Position(57), 'sun', false, house)
-        expect(planet1.minorAspect(planet2, orb)).toEqual({ degrees: 45, name: 'semi-square' })
-      })
-      it('基準値より大きい、許容範囲内2', () => {
-        const planet1 = new Planet(new Position(57), 'sun', false, house)
-        const planet2 = new Planet(new Position(10), 'sun', false, house)
-        expect(planet1.minorAspect(planet2, orb)).toEqual({ degrees: 45, name: 'semi-square' })
-      })
-      it('基準値より大きい、許容範囲外1', () => {
-        const planet1 = new Planet(new Position(10), 'sun', false, house)
-        const planet2 = new Planet(new Position(58), 'sun', false, house)
-        expect(planet1.minorAspect(planet2, orb)).toEqual(undefined)
-      })
-      it('基準値より大きい、許容範囲外2', () => {
-        const planet1 = new Planet(new Position(58), 'sun', false, house)
-        const planet2 = new Planet(new Position(10), 'sun', false, house)
-        expect(planet1.minorAspect(planet2, orb)).toEqual(undefined)
-      })
     })
     describe('72度：クィンタイル', () => {
-      it('ちょうど基準値1', () => {
+      it('ちょうど基準値', () => {
         const planet1 = new Planet(new Position(10), 'sun', false, house)
         const planet2 = new Planet(new Position(82), 'sun', false, house)
         expect(planet1.minorAspect(planet2, orb)).toEqual({ degrees: 72, name: 'quintile' })
       })
-      it('ちょうど基準値2', () => {
-        const planet1 = new Planet(new Position(82), 'sun', false, house)
-        const planet2 = new Planet(new Position(10), 'sun', false, house)
-        expect(planet1.minorAspect(planet2, orb)).toEqual({ degrees: 72, name: 'quintile' })
-      })
-      it('基準値より小さい、許容範囲内1', () => {
-        const planet1 = new Planet(new Position(10), 'sun', false, house)
-        const planet2 = new Planet(new Position(80), 'sun', false, house)
-        expect(planet1.minorAspect(planet2, orb)).toEqual({ degrees: 72, name: 'quintile' })
-      })
-      it('基準値より小さい、許容範囲内2', () => {
-        const planet1 = new Planet(new Position(80), 'sun', false, house)
-        const planet2 = new Planet(new Position(10), 'sun', false, house)
-        expect(planet1.minorAspect(planet2, orb)).toEqual({ degrees: 72, name: 'quintile' })
-      })
-      it('基準値より小さい、許容範囲外1', () => {
-        const planet1 = new Planet(new Position(10), 'sun', false, house)
-        const planet2 = new Planet(new Position(79), 'sun', false, house)
-        expect(planet1.minorAspect(planet2, orb)).toEqual(undefined)
-      })
-      it('基準値より小さい、許容範囲外2', () => {
-        const planet1 = new Planet(new Position(79), 'sun', false, house)
-        const planet2 = new Planet(new Position(10), 'sun', false, house)
-        expect(planet1.minorAspect(planet2, orb)).toEqual(undefined)
-      })
-      it('基準値より大きい、許容範囲内1', () => {
-        const planet1 = new Planet(new Position(10), 'sun', false, house)
-        const planet2 = new Planet(new Position(84), 'sun', false, house)
-        expect(planet1.minorAspect(planet2, orb)).toEqual({ degrees: 72, name: 'quintile' })
-      })
-      it('基準値より大きい、許容範囲内2', () => {
-        const planet1 = new Planet(new Position(84), 'sun', false, house)
-        const planet2 = new Planet(new Position(10), 'sun', false, house)
-        expect(planet1.minorAspect(planet2, orb)).toEqual({ degrees: 72, name: 'quintile' })
-      })
-      it('基準値より大きい、許容範囲外1', () => {
-        const planet1 = new Planet(new Position(10), 'sun', false, house)
-        const planet2 = new Planet(new Position(85), 'sun', false, house)
-        expect(planet1.minorAspect(planet2, orb)).toEqual(undefined)
-      })
-      it('基準値より大きい、許容範囲外2', () => {
-        const planet1 = new Planet(new Position(85), 'sun', false, house)
-        const planet2 = new Planet(new Position(10), 'sun', false, house)
-        expect(planet1.minorAspect(planet2, orb)).toEqual(undefined)
-      })
     })
     describe('135度：セスキコードレート', () => {
-      it('ちょうど基準値1', () => {
+      it('ちょうど基準値', () => {
         const planet1 = new Planet(new Position(10), 'sun', false, house)
         const planet2 = new Planet(new Position(145), 'sun', false, house)
         expect(planet1.minorAspect(planet2, orb)).toEqual({ degrees: 135, name: 'sesquiquadrate' })
       })
-      it('ちょうど基準値2', () => {
-        const planet1 = new Planet(new Position(145), 'sun', false, house)
-        const planet2 = new Planet(new Position(10), 'sun', false, house)
-        expect(planet1.minorAspect(planet2, orb)).toEqual({ degrees: 135, name: 'sesquiquadrate' })
-      })
-      it('基準値より小さい、許容範囲内1', () => {
-        const planet1 = new Planet(new Position(10), 'sun', false, house)
-        const planet2 = new Planet(new Position(143), 'sun', false, house)
-        expect(planet1.minorAspect(planet2, orb)).toEqual({ degrees: 135, name: 'sesquiquadrate' })
-      })
-      it('基準値より小さい、許容範囲内2', () => {
-        const planet1 = new Planet(new Position(143), 'sun', false, house)
-        const planet2 = new Planet(new Position(10), 'sun', false, house)
-        expect(planet1.minorAspect(planet2, orb)).toEqual({ degrees: 135, name: 'sesquiquadrate' })
-      })
-      it('基準値より小さい、許容範囲外1', () => {
-        const planet1 = new Planet(new Position(10), 'sun', false, house)
-        const planet2 = new Planet(new Position(142), 'sun', false, house)
-        expect(planet1.minorAspect(planet2, orb)).toEqual(undefined)
-      })
-      it('基準値より小さい、許容範囲外2', () => {
-        const planet1 = new Planet(new Position(142), 'sun', false, house)
-        const planet2 = new Planet(new Position(10), 'sun', false, house)
-        expect(planet1.minorAspect(planet2, orb)).toEqual(undefined)
-      })
-      it('基準値より大きい、許容範囲内1', () => {
-        const planet1 = new Planet(new Position(10), 'sun', false, house)
-        const planet2 = new Planet(new Position(147), 'sun', false, house)
-        expect(planet1.minorAspect(planet2, orb)).toEqual({ degrees: 135, name: 'sesquiquadrate' })
-      })
-      it('基準値より大きい、許容範囲内2', () => {
-        const planet1 = new Planet(new Position(147), 'sun', false, house)
-        const planet2 = new Planet(new Position(10), 'sun', false, house)
-        expect(planet1.minorAspect(planet2, orb)).toEqual({ degrees: 135, name: 'sesquiquadrate' })
-      })
-      it('基準値より大きい、許容範囲外1', () => {
-        const planet1 = new Planet(new Position(10), 'sun', false, house)
-        const planet2 = new Planet(new Position(148), 'sun', false, house)
-        expect(planet1.minorAspect(planet2, orb)).toEqual(undefined)
-      })
-      it('基準値より大きい、許容範囲外2', () => {
-        const planet1 = new Planet(new Position(148), 'sun', false, house)
-        const planet2 = new Planet(new Position(10), 'sun', false, house)
-        expect(planet1.minorAspect(planet2, orb)).toEqual(undefined)
-      })
     })
     describe('144度：バイクインタイル', () => {
-      it('ちょうど基準値1', () => {
+      it('ちょうど基準値', () => {
         const planet1 = new Planet(new Position(10), 'sun', false, house)
         const planet2 = new Planet(new Position(154), 'sun', false, house)
         expect(planet1.minorAspect(planet2, orb)).toEqual({ degrees: 144, name: 'biquintile' })
       })
-      it('ちょうど基準値2', () => {
-        const planet1 = new Planet(new Position(154), 'sun', false, house)
-        const planet2 = new Planet(new Position(10), 'sun', false, house)
-        expect(planet1.minorAspect(planet2, orb)).toEqual({ degrees: 144, name: 'biquintile' })
-      })
-      it('基準値より小さい、許容範囲内1', () => {
-        const planet1 = new Planet(new Position(10), 'sun', false, house)
-        const planet2 = new Planet(new Position(152), 'sun', false, house)
-        expect(planet1.minorAspect(planet2, orb)).toEqual({ degrees: 144, name: 'biquintile' })
-      })
-      it('基準値より小さい、許容範囲内2', () => {
-        const planet1 = new Planet(new Position(152), 'sun', false, house)
-        const planet2 = new Planet(new Position(10), 'sun', false, house)
-        expect(planet1.minorAspect(planet2, orb)).toEqual({ degrees: 144, name: 'biquintile' })
-      })
-      it('基準値より小さい、許容範囲外1', () => {
-        const planet1 = new Planet(new Position(10), 'sun', false, house)
-        const planet2 = new Planet(new Position(151), 'sun', false, house)
-        expect(planet1.minorAspect(planet2, orb)).toEqual(undefined)
-      })
-      it('基準値より小さい、許容範囲外2', () => {
-        const planet1 = new Planet(new Position(151), 'sun', false, house)
-        const planet2 = new Planet(new Position(10), 'sun', false, house)
-        expect(planet1.minorAspect(planet2, orb)).toEqual(undefined)
-      })
-      it('基準値より大きい、許容範囲内1', () => {
-        const planet1 = new Planet(new Position(10), 'sun', false, house)
-        const planet2 = new Planet(new Position(156), 'sun', false, house)
-        expect(planet1.minorAspect(planet2, orb)).toEqual({ degrees: 144, name: 'biquintile' })
-      })
-      it('基準値より大きい、許容範囲内2', () => {
-        const planet1 = new Planet(new Position(156), 'sun', false, house)
-        const planet2 = new Planet(new Position(10), 'sun', false, house)
-        expect(planet1.minorAspect(planet2, orb)).toEqual({ degrees: 144, name: 'biquintile' })
-      })
-      it('基準値より大きい、許容範囲外1', () => {
-        const planet1 = new Planet(new Position(10), 'sun', false, house)
-        const planet2 = new Planet(new Position(157), 'sun', false, house)
-        expect(planet1.minorAspect(planet2, orb)).toEqual(undefined)
-      })
-      it('基準値より大きい、許容範囲外2', () => {
-        const planet1 = new Planet(new Position(157), 'sun', false, house)
-        const planet2 = new Planet(new Position(10), 'sun', false, house)
-        expect(planet1.minorAspect(planet2, orb)).toEqual(undefined)
-      })
     })
     describe('150度：クインカンクス', () => {
-      it('ちょうど基準値1', () => {
+      it('ちょうど基準値', () => {
         const planet1 = new Planet(new Position(10), 'sun', false, house)
         const sign150 = new Planet(new Position(160), 'sun', false, house)
         expect(planet1.minorAspect(sign150, orb)).toEqual({ degrees: 150, name: 'quincunx' })
-      })
-      it('ちょうど基準値2', () => {
-        const planet1 = new Planet(new Position(160), 'sun', false, house)
-        const sign150 = new Planet(new Position(10), 'sun', false, house)
-        expect(planet1.minorAspect(sign150, orb)).toEqual({ degrees: 150, name: 'quincunx' })
-      })
-      it('基準値より小さい、許容範囲内1', () => {
-        const planet1 = new Planet(new Position(10), 'sun', false, house)
-        const planet2 = new Planet(new Position(158), 'sun', false, house)
-        expect(planet1.minorAspect(planet2, orb)).toEqual({ degrees: 150, name: 'quincunx' })
-      })
-      it('基準値より小さい、許容範囲内2', () => {
-        const planet1 = new Planet(new Position(158), 'sun', false, house)
-        const planet2 = new Planet(new Position(10), 'sun', false, house)
-        expect(planet1.minorAspect(planet2, orb)).toEqual({ degrees: 150, name: 'quincunx' })
-      })
-      it('基準値より小さい、許容範囲外1', () => {
-        const planet1 = new Planet(new Position(10), 'sun', false, house)
-        const planet2 = new Planet(new Position(157), 'sun', false, house)
-        expect(planet1.minorAspect(planet2, orb)).toEqual(undefined)
-      })
-      it('基準値より小さい、許容範囲外2', () => {
-        const planet1 = new Planet(new Position(157), 'sun', false, house)
-        const planet2 = new Planet(new Position(10), 'sun', false, house)
-        expect(planet1.minorAspect(planet2, orb)).toEqual(undefined)
-      })
-      it('基準値より大きい、許容範囲内1', () => {
-        const planet1 = new Planet(new Position(10), 'sun', false, house)
-        const planet2 = new Planet(new Position(162), 'sun', false, house)
-        expect(planet1.minorAspect(planet2, orb)).toEqual({ degrees: 150, name: 'quincunx' })
-      })
-      it('基準値より大きい、許容範囲内2', () => {
-        const planet1 = new Planet(new Position(162), 'sun', false, house)
-        const planet2 = new Planet(new Position(10), 'sun', false, house)
-        expect(planet1.minorAspect(planet2, orb)).toEqual({ degrees: 150, name: 'quincunx' })
-      })
-      it('基準値より大きい、許容範囲外1', () => {
-        const planet1 = new Planet(new Position(10), 'sun', false, house)
-        const planet2 = new Planet(new Position(163), 'sun', false, house)
-        expect(planet1.minorAspect(planet2, orb)).toEqual(undefined)
-      })
-      it('基準値より大きい、許容範囲外2', () => {
-        const planet1 = new Planet(new Position(163), 'sun', false, house)
-        const planet2 = new Planet(new Position(10), 'sun', false, house)
-        expect(planet1.minorAspect(planet2, orb)).toEqual(undefined)
       })
     })
   })

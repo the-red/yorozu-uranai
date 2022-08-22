@@ -5,8 +5,8 @@ import { getHoroscopeProps } from '../../horoscope/horoscopeFactory'
 
 type Data = { data: HoroscopeProps } | { errorMessage: string }
 
-export default async (req: NextApiRequest, res: NextApiResponse<Data>) => {
-  const birthday = new Date(req.body.birthday as string)
+const horoscopeProps = async (req: NextApiRequest, res: NextApiResponse<Data>) => {
+  const birthday = new Date(req.body.dateTime as string)
   if (birthday.toString() === 'Invalid Date') {
     return res.status(400).json({ errorMessage: 'Invalid birthday' })
   }
@@ -19,3 +19,5 @@ export default async (req: NextApiRequest, res: NextApiResponse<Data>) => {
   const horoscopeProps = await getHoroscopeProps(birthday, lat, lon, hsys)
   res.status(200).json({ data: horoscopeProps })
 }
+
+export default horoscopeProps

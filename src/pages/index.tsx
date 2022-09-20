@@ -16,8 +16,7 @@ export default function Home() {
       <Head>
         <title>よろず占い</title>
         <meta name="description" content="Fortune Telling" />
-        {/* TODO:アイコンは別途設定する */}
-        {/* <link rel="icon" href="/favicon.ico" /> */}
+        <link rel="icon" href={staticPath.images.index.logo_svg} />
       </Head>
 
       <Header />

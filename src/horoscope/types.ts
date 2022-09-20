@@ -1,5 +1,3 @@
-import type { Position } from './Position'
-
 export type PlanetName =
   | 'sun'
   | 'moon'

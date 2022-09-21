@@ -1,5 +1,5 @@
 import { DateTime } from 'luxon'
-import { getLongitude } from '../horoscope/swisseph'
+import { getEclipticLongitude } from '../astronomy'
 import { sekki } from './Sekki'
 
 const 十干 = ['甲', '乙', '丙', '丁', '戊', '己', '庚', '辛', '壬', '癸'] as const
@@ -25,8 +25,8 @@ export const getKanshiInstance = async (date: Date) => {
   const dateTime = DateTime.fromJSDate(date)
 
   return new Kanshi(dateTime, {
-    today: sekki(await getLongitude(date)),
-    endOfMonth: sekki(await getLongitude(dateTime.endOf('month').toJSDate())),
+    today: sekki(await getEclipticLongitude(date)),
+    endOfMonth: sekki(await getEclipticLongitude(dateTime.endOf('month').toJSDate())),
   })
 }
 

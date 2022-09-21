@@ -1,5 +1,5 @@
 import { Position } from './Position'
-import type { Houses } from './types'
+import type { Houses } from '../astronomy/types'
 
 type HouseCusps = Position[]
 

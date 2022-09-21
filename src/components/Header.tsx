@@ -12,7 +12,22 @@ export default function Header({ whiteIcon = false }: { whiteIcon?: boolean }) {
       <div className="header_wrapper">
         <h1>
           <Link href={pagesPath.$url({ query })}>
-            <a>よろず占い</a>
+            <a>
+              <Image
+                src={staticPath.images.index.logo_svg}
+                className="icon"
+                width={24}
+                height={24}
+                alt="よろず占いロゴ"
+              />
+              <span
+                style={{
+                  paddingLeft: '5px',
+                }}
+              >
+                よろず占い
+              </span>
+            </a>
           </Link>
         </h1>
         <nav>

@@ -16,7 +16,7 @@ const get六十干支 = (): 干支[] => {
   return 干支list
 }
 
-export type Sekki = {
+export type SekkiPair = {
   today: 節
   endOfMonth: 節
 }
@@ -24,7 +24,7 @@ export type Sekki = {
 export class Kanshi {
   static readonly 六十干支 = get六十干支()
 
-  constructor(private readonly date: DateTime, private readonly sekki: Sekki) {}
+  constructor(private readonly date: DateTime, private readonly sekki: SekkiPair) {}
 
   get 年柱(): 干支 {
     let { year } = this.date

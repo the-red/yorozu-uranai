@@ -1,18 +1,18 @@
 import { DateTime } from 'luxon'
 import { getEclipticLongitude } from '../astronomy'
 import { sekki, 節 } from './Sekki'
-import { Kanshi } from './Kanshi'
+import { SekkiPair } from './Kanshi'
 
-export const getSekki = async (date: Date): Promise<節> => {
+const getSekki = async (date: Date): Promise<節> => {
   const longitude = await getEclipticLongitude(date)
   return sekki(longitude)
 }
 
-export const getKanshiInstance = async (date: Date) => {
+export const getSekkiPair = async (date: Date): Promise<SekkiPair> => {
   const dateTime = DateTime.fromJSDate(date)
 
-  return new Kanshi(dateTime, {
+  return {
     today: await getSekki(date),
     endOfMonth: await getSekki(dateTime.endOf('month').toJSDate()),
-  })
+  }
 }

@@ -1,6 +1,6 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 import type { NextApiRequest, NextApiResponse } from 'next'
-import { getSekki } from '../../suimei/kanshiFactory'
+import { getSekkiPair } from '../../suimei/kanshiFactory'
 
 type Data = { data: any } | { errorMessage: string }
 
@@ -10,8 +10,8 @@ const suimeiProps = async (req: NextApiRequest, res: NextApiResponse<Data>) => {
     return res.status(400).json({ errorMessage: 'Invalid birthday' })
   }
 
-  const sekki = await getSekki(birthday)
-  res.status(200).json({ data: sekki })
+  const sekkiPair = await getSekkiPair(birthday)
+  res.status(200).json({ data: sekkiPair })
 }
 
 export default suimeiProps

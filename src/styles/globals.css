@@ -52,7 +52,6 @@ a {
 
 .header-and-body {
   min-height: 100%;
-  /* background-color: #efefef; */
 }
 .header {
   border-bottom: 1px solid #dcdddd;
@@ -64,10 +63,13 @@ a {
 }
 
 .header h1 {
-  font-size: 27px;
-  font-family: '001shirokuma-Regular';
   margin: 0 auto;
-  line-height: 56px;
+  height: 56px;
+  padding: 13px 0;
+}
+.header h1 a {
+  height: 30px;
+  display: block;
 }
 .header nav {
   display: none;
@@ -77,9 +79,6 @@ a {
   list-style: none;
   margin: 0;
   padding: 0;
-}
-.header .icon {
-  fill: #4b4b4b;
 }
 
 .main {
@@ -169,6 +168,8 @@ a {
   }
   .header h1 {
     margin: 0;
+    height: 48px;
+    padding: 9px 0;
   }
   .header nav {
     display: block;

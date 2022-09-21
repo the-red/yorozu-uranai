@@ -15,28 +15,21 @@ export default function Header({ whiteIcon = false }: { whiteIcon?: boolean }) {
             <a>
               {whiteIcon ? (
                 <Image
-                  src={staticPath.images.index.logo_white_png}
+                  src={staticPath.images.index.logo_typo_white_svg}
                   className="icon"
-                  width={24}
-                  height={24}
+                  width={154.56}
+                  height={30}
                   alt="よろず占いロゴ"
                 />
               ) : (
                 <Image
-                  src={staticPath.images.index.logo_svg}
+                  src={staticPath.images.index.logo_typo_svg}
                   className="icon"
-                  width={24}
-                  height={24}
+                  width={154.56}
+                  height={30}
                   alt="よろず占いロゴ"
                 />
               )}
-              <span
-                style={{
-                  paddingLeft: '5px',
-                }}
-              >
-                よろず占い
-              </span>
             </a>
           </Link>
         </h1>

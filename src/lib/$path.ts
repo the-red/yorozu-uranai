@@ -48,6 +48,8 @@ export const staticPath = {
       horoscope_svg: '/images/index/horoscope.svg',
       logo_png: '/images/index/logo.png',
       logo_svg: '/images/index/logo.svg',
+      logo_typo_svg: '/images/index/logo_typo.svg',
+      logo_typo_white_svg: '/images/index/logo_typo_white.svg',
       logo_white_png: '/images/index/logo_white.png',
       numerology_svg: '/images/index/numerology.svg',
       suimei_svg: '/images/index/suimei.svg',

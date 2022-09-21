@@ -2,6 +2,7 @@ import { NextPage } from 'next'
 import { useRouter } from 'next/router'
 import { useEffect, useMemo, useState } from 'react'
 import { DateTime } from 'luxon'
+import { Kanshi, Sekki } from '../suimei'
 
 import Header from '../components/Header'
 import Footer from '../components/Footer'
@@ -11,8 +12,7 @@ import useSWR from 'swr'
 
 export type OptionalQuery = Query
 
-class Suimei {}
-type SuimeiProps = any
+type Suimei = any
 type SuimeiFormValues = any
 
 const SuimeiPage: NextPage = () => {
@@ -25,30 +25,26 @@ const SuimeiPage: NextPage = () => {
     }
   }, [router])
 
-  const { data, error } = useSWR<Suimei>([formValues], async (formValues: SuimeiFormValues) => {
-    const { date, time, zone, lat, lon } = formValues
+  const { data, error } = useSWR<Kanshi>([formValues], async (formValues: SuimeiFormValues) => {
+    const { date, time, zone } = formValues
     const suimeiSeed: {
       dateTime: DateTime
-      lat: number
-      lon: number
-      // hsys?: string
     } = {
-      dateTime: DateTime.fromISO(`${date}T${time}`, { zone }),
-      lat,
-      lon,
+      dateTime: DateTime.now(),
+      // dateTime: DateTime.fromISO(`${date}T${time}`, { zone }),
     }
-    // const res = await fetch('/api/suimei-props', {
-    //   method: 'POST',
-    //   headers: { 'Content-Type': 'application/json' },
-    //   body: JSON.stringify(suimeiSeed),
-    // })
-    // if (!res.ok) {
-    //   const { errorMessage } = await res.json()
-    //   throw new Error(errorMessage)
-    // }
-    // const json = await res.json()
-    // const suimeiProps = json.data as SuimeiProps
-    return new Suimei()
+    const res = await fetch('/api/suimei-props', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(suimeiSeed),
+    })
+    if (!res.ok) {
+      const { errorMessage } = await res.json()
+      throw new Error(errorMessage)
+    }
+    const json = await res.json()
+    const sekki = json.data as Sekki
+    return new Kanshi(suimeiSeed.dateTime, sekki)
   })
 
   useEffect(() => {
@@ -60,6 +56,8 @@ const SuimeiPage: NextPage = () => {
 
   if (error) return <div>failed to load: {JSON.stringify(error.message)}</div>
   if (!suimei) return <div>loading...</div>
+
+  console.log(suimei)
 
   return (
     <div className="suimei">

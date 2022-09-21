@@ -3,10 +3,6 @@ const WindiCSSWebpackPlugin = require('windicss-webpack-plugin')
 /** @type {import('next').NextConfig} */
 module.exports = {
   reactStrictMode: true,
-  experimental: {
-    appDir: true,
-    serverComponents: true,
-  },
   webpack(config) {
     config.plugins.push(new WindiCSSWebpackPlugin())
     config.module.rules.push({

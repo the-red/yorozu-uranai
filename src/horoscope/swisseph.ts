@@ -1,4 +1,3 @@
-// @ts-ignore
 import swisseph from 'swisseph'
 import type { PlanetName, EclipticPosition, HouseCusps, Houses } from './types'
 
@@ -28,10 +27,16 @@ export const eclipticPosition = (julday_ut: number, planet: PlanetName): Promise
   new Promise((resolve, reject) =>
     swisseph.swe_calc_ut(
       julday_ut,
+      // @ts-expect-error
       swisseph[`SE_${planet.toUpperCase()}`],
       swisseph.SEFLG_SPEED,
-      (result: EclipticPosition) => {
-        if (result.error) reject(result.error)
+      (result) => {
+        if ('error' in result) {
+          return reject(result.error)
+        }
+        if (!('latitude' in result)) {
+          return reject('ERROR!' + JSON.stringify(result))
+        }
 
         // 処理系が変わると少し誤差が出るので丸めておく
         result.latitude = round6(result.latitude)
@@ -41,8 +46,10 @@ export const eclipticPosition = (julday_ut: number, planet: PlanetName): Promise
         result.longitudeSpeed = round6(result.longitudeSpeed)
         result.distanceSpeed = round6(result.distanceSpeed)
 
-        result.isRetrograde = result.longitudeSpeed < 0
-        resolve(result)
+        resolve({
+          ...result,
+          isRetrograde: result.longitudeSpeed < 0,
+        })
       }
     )
   )
@@ -57,8 +64,10 @@ export const getLongitude = async (date: Date) => {
 // ハウスの計算
 export const calcHouses = (julday_ut: number, geolat: number, geolon: number, hsys: string = ''): Promise<Houses> =>
   new Promise((resolve, reject) =>
-    swisseph.swe_houses(julday_ut, geolat, geolon, hsys, (result: Houses) => {
-      if (result.error) reject(result.error)
+    swisseph.swe_houses(julday_ut, geolat, geolon, hsys, (result) => {
+      if ('error' in result) {
+        return reject(result.error)
+      }
 
       // 処理系が変わると少し誤差が出るので丸めておく
       result.house = result.house.map(round6) as HouseCusps

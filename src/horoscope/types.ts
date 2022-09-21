@@ -1,4 +1,4 @@
-import type { Position } from './Position'
+import type { swe_houses, swe_calc_ut } from 'swisseph'
 
 export type PlanetName =
   | 'sun'
@@ -12,29 +12,10 @@ export type PlanetName =
   | 'neptune'
   | 'pluto'
 
-export type EclipticPosition = {
-  latitude: number
-  latitudeSpeed: number
-  longitude: number
-  longitudeSpeed: number
-  distance: number
-  distanceSpeed: number
-  rflag: number
+export type EclipticPosition = Extract<ReturnType<typeof swe_calc_ut>, { longitude: number }> & {
   isRetrograde: boolean // trueなら逆行
-  error?: any
 }
 
 export type HouseCusps = number[]
 
-export type Houses = {
-  house: HouseCusps
-  ascendant: number
-  mc: number
-  armc: number
-  vertex: number
-  equatorialAscendant: number
-  kochCoAscendant: number
-  munkaseyCoAscendant: number
-  munkaseyPolarAscendant: number
-  error?: any
-}
+export type Houses = Extract<ReturnType<typeof swe_houses>, { house: HouseCusps }>

@@ -12,12 +12,11 @@ import useSWR from 'swr'
 
 export type OptionalQuery = Query
 
-type Suimei = any
 type SuimeiFormValues = any
 
 const SuimeiPage: NextPage = () => {
   const router = useRouter()
-  const [suimei, setSuimei] = useState<Suimei>()
+  const [suimei, setSuimei] = useState<Kanshi>()
 
   const formValues = useMemo(() => {
     if (router.isReady) {
@@ -25,12 +24,15 @@ const SuimeiPage: NextPage = () => {
     }
   }, [router])
 
+  // 暫定的な固定値
+  const NOW = DateTime.now()
+
   const { data, error } = useSWR<Kanshi>([formValues], async (formValues: SuimeiFormValues) => {
     const { date, time, zone } = formValues
     const suimeiSeed: {
       dateTime: DateTime
     } = {
-      dateTime: DateTime.now(),
+      dateTime: NOW,
       // dateTime: DateTime.fromISO(`${date}T${time}`, { zone }),
     }
     const res = await fetch('/api/suimei-props', {
@@ -57,8 +59,6 @@ const SuimeiPage: NextPage = () => {
   if (error) return <div>failed to load: {JSON.stringify(error.message)}</div>
   if (!suimei) return <div>loading...</div>
 
-  console.log(suimei)
-
   return (
     <div className="suimei">
       <div
@@ -68,23 +68,40 @@ const SuimeiPage: NextPage = () => {
         <Header />
         <div className="tw-w-full tw-max-w-screen-md tw-px-4 tw-mx-auto tw-space-y-8">
           <div className="tw-text-center tw-text-7xl sm:tw-text-10xl">四柱推命</div>
+          <p>{NOW.toString()}</p>
           <table>
-            <tr>
-              <th></th>
-              <th>時柱</th>
-              <th>日柱</th>
-              <th>月柱</th>
-              <th>年柱</th>
-            </tr>
-            {['天干', '地支'].map((kanshi, i) => (
-              <tr key={i}>
-                <td>{kanshi}</td>
-                <td>foo</td>
-                <td>bar</td>
-                <td>baz</td>
-                <td>qux</td>
+            <thead>
+              <tr>
+                <th></th>
+                <th>時柱</th>
+                <th>日柱</th>
+                <th>月柱</th>
+                <th>年柱</th>
               </tr>
-            ))}
+            </thead>
+            <tbody>
+              <tr>
+                <th>天干</th>
+                <td>{suimei.年柱[0]}</td>
+                <td>{suimei.日柱[0]}</td>
+                <td>{suimei.月柱[0]}</td>
+                <td>{suimei.時柱[0]}</td>
+              </tr>
+              <tr>
+                <th>地支</th>
+                <td>{suimei.年柱[1]}</td>
+                <td>{suimei.日柱[1]}</td>
+                <td>{suimei.月柱[1]}</td>
+                <td>{suimei.時柱[1]}</td>
+              </tr>
+              <tr>
+                <th>干支</th>
+                <td>{suimei.年柱}</td>
+                <td>{suimei.日柱}</td>
+                <td>{suimei.月柱}</td>
+                <td>{suimei.時柱}</td>
+              </tr>
+            </tbody>
           </table>
         </div>
         <Footer />

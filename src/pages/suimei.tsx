@@ -22,6 +22,24 @@ const SuimeiPage: NextPage = () => {
         <Header />
         <div className="tw-w-full tw-max-w-screen-md tw-px-4 tw-mx-auto tw-space-y-8">
           <div className="tw-text-center tw-text-7xl sm:tw-text-10xl">四柱推命</div>
+          <table>
+            <tr>
+              <th></th>
+              <th>時柱</th>
+              <th>日柱</th>
+              <th>月柱</th>
+              <th>年柱</th>
+            </tr>
+            {['天干', '地支'].map((kanshi, i) => (
+              <tr key={i}>
+                <td>{kanshi}</td>
+                <td>foo</td>
+                <td>bar</td>
+                <td>baz</td>
+                <td>qux</td>
+              </tr>
+            ))}
+          </table>
         </div>
         <Footer />
       </div>

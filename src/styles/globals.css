@@ -189,8 +189,8 @@ a {
     padding: 69px 0;
   }
   .menu-container {
-    width: 676px;
-    margin: 0 152px;
+    width: 680px;
+    margin: 0 auto;
     flex-direction: row;
     justify-content: space-between;
   }

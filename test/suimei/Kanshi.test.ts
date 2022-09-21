@@ -1,4 +1,5 @@
-import { Kanshi, getKanshiInstance } from '../../src/suimei/Kanshi'
+import { Kanshi } from '../../src/suimei/Kanshi'
+import { getKanshiInstance } from '../../src/suimei/kanshiFactory'
 
 describe('六十干支', () => {
   it('六十干支', () => {

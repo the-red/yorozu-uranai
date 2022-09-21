@@ -1,33 +1,24 @@
 import { DateTime } from 'luxon'
-import { getEclipticLongitude } from '../astronomy'
-import { sekki } from './Sekki'
+import type { 節 } from './Sekki'
 
-const 十干 = ['甲', '乙', '丙', '丁', '戊', '己', '庚', '辛', '壬', '癸'] as const
-const 十二支 = ['子', '丑', '寅', '卯', '辰', '巳', '午', '未', '申', '酉', '戌', '亥'] as const
-type T干支 = `${typeof 十干[number]}${typeof 十二支[number]}`
+const 十干list = ['甲', '乙', '丙', '丁', '戊', '己', '庚', '辛', '壬', '癸'] as const
+const 十二支list = ['子', '丑', '寅', '卯', '辰', '巳', '午', '未', '申', '酉', '戌', '亥'] as const
+type 干支 = `${typeof 十干list[number]}${typeof 十二支list[number]}`
 
-const get六十干支 = (): T干支[] => {
-  const 六十干支: T干支[] = []
+const get六十干支 = (): 干支[] => {
+  const 干支list: 干支[] = []
 
   for (let i = 0; i < 60; i++) {
-    const 干 = 十干[i % 10]
-    const 支 = 十二支[i % 12]
-    六十干支.push(`${干}${支}`)
+    const 干 = 十干list[i % 10]
+    const 支 = 十二支list[i % 12]
+    干支list.push(`${干}${支}`)
   }
-  return 六十干支
+  return 干支list
 }
 
-type Sekki = {
-  today: string
-  endOfMonth: string
-}
-export const getKanshiInstance = async (date: Date) => {
-  const dateTime = DateTime.fromJSDate(date)
-
-  return new Kanshi(dateTime, {
-    today: sekki(await getEclipticLongitude(date)),
-    endOfMonth: sekki(await getEclipticLongitude(dateTime.endOf('month').toJSDate())),
-  })
+export type Sekki = {
+  today: 節
+  endOfMonth: 節
 }
 
 export class Kanshi {
@@ -35,7 +26,7 @@ export class Kanshi {
 
   constructor(private readonly date: DateTime, private readonly sekki: Sekki) {}
 
-  get 年柱(): T干支 {
+  get 年柱(): 干支 {
     let { year } = this.date
     const { month } = this.date
 
@@ -48,7 +39,7 @@ export class Kanshi {
     return Kanshi.六十干支.at(index)!
   }
 
-  get 月柱(): T干支 {
+  get 月柱(): 干支 {
     const BASE = DateTime.fromISO('2019-01-01T00:00:00+09:00') // 月柱が甲子の元旦
     let monthsDiff = Math.trunc(this.date.diff(BASE, 'months').months)
 
@@ -66,14 +57,14 @@ export class Kanshi {
   // 日柱が甲子(index:0)となる基準日
   private static BASE = DateTime.fromISO('1909-01-04')
 
-  get 日柱(): T干支 {
+  get 日柱(): 干支 {
     const diff = this.date.diff(Kanshi.BASE, 'days').days
     const index = diff % 60
 
     return Kanshi.六十干支.at(index)!
   }
 
-  get 時柱(): T干支 {
+  get 時柱(): 干支 {
     // TODO: 位置情報を考慮して時刻を微調整する
     // 四柱推命の本P22を参照
     // ホロスコープも同じ調整を入れるべきか？

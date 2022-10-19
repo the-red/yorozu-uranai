@@ -1,4 +1,11 @@
-import { Kanshi, getKanshiInstance } from '../../src/suimei/Kanshi'
+import { DateTime } from 'luxon'
+import { Kanshi } from '../../src/suimei/Kanshi'
+import { getSekkiPair } from '../../src/suimei/kanshiFactory'
+
+const getKanshiInstance = async (date: Date) => {
+  const sekkiPair = await getSekkiPair(date)
+  return new Kanshi(DateTime.fromJSDate(date), sekkiPair)
+}
 
 describe('六十干支', () => {
   it('六十干支', () => {

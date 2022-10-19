@@ -55,7 +55,7 @@ export const eclipticPosition = (julday_ut: number, planet: PlanetName): Promise
   )
 
 // 日付から黄経だけを算出
-export const getLongitude = async (date: Date) => {
+export const getEclipticLongitude = async (date: Date) => {
   const julday_ut = await julday(date)
   const { longitude } = await eclipticPosition(julday_ut, 'sun')
   return longitude

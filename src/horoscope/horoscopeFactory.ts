@@ -1,7 +1,7 @@
-import { julday, eclipticPosition, calcHouses } from './swisseph'
+import { julday, eclipticPosition, calcHouses } from '../astronomy'
 import { Horoscope, HoroscopeProps } from './Horoscope'
 import { ALL_PLANETS } from './ALL_PLANETS'
-import type { PlanetName, EclipticPosition, Houses } from './types'
+import type { PlanetName, EclipticPosition, Houses } from '../astronomy/types'
 
 export const getHoroscopeProps = async (
   date: Date,

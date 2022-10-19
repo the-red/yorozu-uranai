@@ -80,10 +80,10 @@ const SuimeiPage: NextPage = () => {
             <thead>
               <tr>
                 <th></th>
-                <th>時柱</th>
+                <th>年柱</th>
                 <th>月柱</th>
                 <th>日柱</th>
-                <th>年柱</th>
+                <th>時柱</th>
               </tr>
             </thead>
             <tbody>

@@ -1,11 +1,11 @@
 import Image from 'next/image'
-import { FC, VFC } from 'react'
+import { FC, ReactNode } from 'react'
 import { Numerology } from '../Numerology'
 
 import bird1 from '../../../public/images/numerology/bird-1.png'
 import bird2 from '../../../public/images/numerology/bird-2.png'
 
-const CoreNumber: FC = ({ children }) => {
+const CoreNumber: FC<{ children: ReactNode }> = ({ children }) => {
   return (
     <div
       style={{
@@ -43,7 +43,7 @@ const CoreNumber: FC = ({ children }) => {
   )
 }
 
-const CoreNumberItem: FC = ({ children }) => {
+const CoreNumberItem: FC<{ children: ReactNode }> = ({ children }) => {
   return <div className="tw-flex tw-flex-col tw-items-center tw-space-y-4">{children}</div>
 }
 
@@ -51,7 +51,7 @@ type CoreNumbersProps = {
   numerology: Numerology
 }
 
-export const CoreNumbers: VFC<CoreNumbersProps> = ({ numerology }) => {
+export const CoreNumbers: FC<CoreNumbersProps> = ({ numerology }) => {
   return (
     <div>
       <div className="tw-text-center tw-text-lg sm:tw-text-xl tw-mb-2">コアナンバー</div>

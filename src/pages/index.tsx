@@ -27,7 +27,7 @@ export default function Home() {
           {/* TODO: スマホ対応する */}
           <div className="tw-hidden sm:tw-block">
             <div className="tw-flex tw-justify-center tw-mb-20">
-              <TopForm />
+              <TopPageForm />
             </div>
           </div>
 
@@ -73,9 +73,9 @@ export default function Home() {
   )
 }
 
-type TopFormProps = {}
+type TopPageFormProps = {}
 
-const TopForm = (props: TopFormProps) => {
+const TopPageForm = (props: TopPageFormProps) => {
   const handleSubmit: FormEventHandler = (e) => {
     e.preventDefault()
   }

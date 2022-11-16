@@ -13,13 +13,23 @@ export default function Header({ whiteIcon = false }: { whiteIcon?: boolean }) {
         <h1>
           <Link href={pagesPath.$url({ query })}>
             <a>
-              <Image
-                src={staticPath.images.index.logo_svg}
-                className="icon"
-                width={24}
-                height={24}
-                alt="よろず占いロゴ"
-              />
+              {whiteIcon ? (
+                <Image
+                  src={staticPath.images.index.logo_white_png}
+                  className="icon"
+                  width={24}
+                  height={24}
+                  alt="よろず占いロゴ"
+                />
+              ) : (
+                <Image
+                  src={staticPath.images.index.logo_svg}
+                  className="icon"
+                  width={24}
+                  height={24}
+                  alt="よろず占いロゴ"
+                />
+              )}
               <span
                 style={{
                   paddingLeft: '5px',

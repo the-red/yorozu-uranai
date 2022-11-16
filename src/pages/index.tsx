@@ -1,13 +1,14 @@
 import Head from 'next/head'
 import Link from 'next/link'
 import Image from 'next/image'
-import { FormEventHandler, ReactNode } from 'react'
+import { ReactNode } from 'react'
 import { pagesPath, staticPath } from '../lib/$path'
 import { Query } from '../lib/params'
 import SuimeiIcon from '../../public/images/index/suimei.svg'
 import NumerologyIcon from '../../public/images/index/numerology.svg'
 import Header from '../components/Header'
 import Footer from '../components/Footer'
+import { useForm } from 'react-hook-form'
 
 export type OptionalQuery = Query
 
@@ -73,11 +74,23 @@ export default function Home() {
   )
 }
 
+type TopPageFormValues = {
+  date: string
+  hour: string
+  minute: string
+  timeUnknown: boolean
+  lat: number
+  lon: number
+  name: string
+}
+
 type TopPageFormProps = {}
 
 const TopPageForm = (props: TopPageFormProps) => {
-  const handleSubmit: FormEventHandler = (e) => {
-    e.preventDefault()
+  const { register, handleSubmit: hookFormHandleSubmit, reset } = useForm<TopPageFormValues>()
+
+  const handleSubmit = (v: TopPageFormValues) => {
+    console.log(v)
   }
 
   const Label = ({ children }: { children: ReactNode }) => {
@@ -93,7 +106,7 @@ const TopPageForm = (props: TopPageFormProps) => {
   const WrappedSuimeiIcon = () => <SuimeiIcon width="18" height="18" alt="四柱推命" />
 
   return (
-    <form className="tw-space-y-10 tw-w-680px" onSubmit={handleSubmit}>
+    <form className="tw-space-y-10 tw-w-680px" onSubmit={hookFormHandleSubmit(handleSubmit)}>
       <div className="tw-flex">
         <Label>
           <div>生年月日</div>
@@ -105,16 +118,16 @@ const TopPageForm = (props: TopPageFormProps) => {
         </Label>
 
         <div className="tw-space-y-4">
-          <input type="date" />
+          <input type="date" {...register('date')} />
           <div className="tw-flex tw-space-x-2">
-            <input type="number" min="0" max="23" className="tw-w-50px" />
+            <input type="number" min="0" max="23" className="tw-w-50px" {...register('hour')} />
             <div>時</div>
-            <input type="number" min="0" max="59" className="tw-w-50px" />
+            <input type="number" min="0" max="59" className="tw-w-50px" {...register('minute')} />
             <div>分</div>
             <div>(JST)</div>
           </div>
           <div className="tw-flex tw-space-x-2">
-            <input id="time_unknown" type="checkbox" />
+            <input id="time_unknown" type="checkbox" {...register('timeUnknown')} />
             <label htmlFor="time_unknown">時刻不明</label>
           </div>
         </div>
@@ -133,12 +146,26 @@ const TopPageForm = (props: TopPageFormProps) => {
         <div className="tw-self-start tw-flex tw-space-x-4">
           <div className="tw-flex tw-space-x-2">
             <div>緯度</div>
-            <input type="number" min="-90" max="90" step="0.0001" className="tw-w-120px" />
+            <input
+              type="number"
+              min="-90"
+              max="90"
+              step="0.0001"
+              className="tw-w-120px"
+              {...register('lat', { valueAsNumber: true })}
+            />
           </div>
 
           <div className="tw-flex tw-space-x-2">
             <div>経度</div>
-            <input type="number" min="-180" max="180" step="0.0001" className="tw-w-120px" />
+            <input
+              type="number"
+              min="-180"
+              max="180"
+              step="0.0001"
+              className="tw-w-120px"
+              {...register('lon', { valueAsNumber: true })}
+            />
           </div>
         </div>
       </div>
@@ -152,9 +179,9 @@ const TopPageForm = (props: TopPageFormProps) => {
           </div>
         </Label>
 
-        <div>
-          <input type="text" />
-          <div className="tw-text-gray-500 tw-text-sm">*ひらがなかローマ字で入力してください</div>
+        <div className="tw-flex tw-flex-col tw-space-y-1">
+          <input type="text" {...register('name')} />
+          <div className="tw-text-gray-500 tw-text-xs">*ひらがなかローマ字で入力してください</div>
           <div>funadayu</div>
         </div>
       </div>

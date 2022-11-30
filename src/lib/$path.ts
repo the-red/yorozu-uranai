@@ -7,6 +7,9 @@ export const pagesPath = {
   "horoscope": {
     $url: (url?: { query?: OptionalQuery1, hash?: string }) => ({ pathname: '/horoscope' as const, query: url?.query, hash: url?.hash })
   },
+  "map": {
+    $url: (url?: { hash?: string }) => ({ pathname: '/map' as const, hash: url?.hash })
+  },
   "numerology": {
     $url: (url?: { query?: OptionalQuery2, hash?: string }) => ({ pathname: '/numerology' as const, query: url?.query, hash: url?.hash })
   },

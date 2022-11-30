@@ -63,6 +63,11 @@ export const staticPath = {
       leaf_png: '/images/numerology/leaf.png',
       title_png: '/images/numerology/title.png'
     }
+  },
+  map_test: {
+    index_html: '/map-test/index.html',
+    index_js: '/map-test/index.js',
+    style_css: '/map-test/style.css'
   }
 } as const
 

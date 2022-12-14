@@ -114,7 +114,7 @@ function useDeepCompareEffectForMaps(callback: React.EffectCallback, dependencie
 }
 
 const MapPage: NextPage = () => {
-  const [clicks, setClicks] = React.useState<google.maps.LatLng[]>([])
+  const [pinned, setPinned] = React.useState<google.maps.LatLng>()
   const [zoom, setZoom] = React.useState(3) // initial zoom
   const [center, setCenter] = React.useState<google.maps.LatLngLiteral>({
     lat: 0,
@@ -123,7 +123,7 @@ const MapPage: NextPage = () => {
 
   const onClick = (e: google.maps.MapMouseEvent) => {
     // avoid directly mutating state
-    setClicks([...clicks, e.latLng!])
+    setPinned(e.latLng!)
   }
 
   const onIdle = (m: google.maps.Map) => {
@@ -167,11 +167,9 @@ const MapPage: NextPage = () => {
         value={center.lng}
         onChange={(event) => setCenter({ ...center, lng: Number(event.target.value) })}
       />
-      <h3>{clicks.length === 0 ? 'Click on map to add markers' : 'Clicks'}</h3>
-      {clicks.map((latLng, i) => (
-        <pre key={i}>{JSON.stringify(latLng.toJSON(), null, 2)}</pre>
-      ))}
-      <button onClick={() => setClicks([])}>Clear</button>
+      <h3>{!pinned ? 'Click on map to add markers' : 'Pinned'}</h3>
+      {pinned && <pre>{JSON.stringify(pinned.toJSON(), null, 2)}</pre>}
+      <button onClick={() => setPinned(undefined)}>Clear</button>
     </div>
   )
 
@@ -179,9 +177,7 @@ const MapPage: NextPage = () => {
     <div style={{ display: 'flex', height: '100%' }}>
       <Wrapper apiKey={process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY!} render={render}>
         <Map center={center} onClick={onClick} onIdle={onIdle} zoom={zoom} style={{ flexGrow: '1', height: '100%' }}>
-          {clicks.map((latLng, i) => (
-            <Marker key={i} position={latLng} />
-          ))}
+          <Marker position={pinned} />
         </Map>
       </Wrapper>
       {/* Basic form for controlling center and zoom of map. */}

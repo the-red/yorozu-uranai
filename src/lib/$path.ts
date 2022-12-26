@@ -10,6 +10,9 @@ export const pagesPath = {
   "numerology": {
     $url: (url?: { query?: OptionalQuery2, hash?: string }) => ({ pathname: '/numerology' as const, query: url?.query, hash: url?.hash })
   },
+  "suimei_design": {
+    $url: (url?: { hash?: string }) => ({ pathname: '/suimei-design' as const, hash: url?.hash })
+  },
   "suimei": {
     $url: (url?: { query?: OptionalQuery3, hash?: string }) => ({ pathname: '/suimei' as const, query: url?.query, hash: url?.hash })
   },
@@ -59,7 +62,7 @@ export const staticPath = {
       flower_png: '/images/numerology/flower.png',
       leaf_png: '/images/numerology/leaf.png',
       title_png: '/images/numerology/title.png'
-    }
+    },
   }
 } as const
 

@@ -3,6 +3,7 @@ import { useRouter } from 'next/router'
 import { useEffect, useMemo, useState } from 'react'
 import { DateTime } from 'luxon'
 import { Kanshi, SekkiPair } from '../suimei'
+import { SuimeiContent } from '../suimei/components/SuimeiContent'
 
 import Header from '../components/Header'
 import Footer from '../components/Footer'
@@ -72,6 +73,7 @@ const SuimeiPage: NextPage = () => {
         style={{ fontFamily: 'Serif' }}
       >
         <Header />
+        <SuimeiContent />
         <div className="tw-w-full tw-max-w-screen-md tw-px-4 tw-mx-auto tw-space-y-8">
           <div className="tw-text-center tw-text-7xl sm:tw-text-10xl">四柱推命</div>
           <p>{NOW.toString()}</p>

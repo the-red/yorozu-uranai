@@ -6,13 +6,13 @@ export const SuimeiContent: VFC<any> = ({ onSubmit, defaultValues }) => {
   return (
     <div>
       <div className="title_area">
-        <Image src={staticPath.images.suimei.lantern_yellow_svg} width={64} height={64} alt="黄色のランタン"></Image>
-        <Image src={staticPath.images.suimei.lantern_red_svg} width={64} height={64} alt="赤色のランタン"></Image>
+        <Image src={staticPath.images.suimei.lantern_yellow_svg} width={50} height={151} alt="黄色のランタン"></Image>
+        <Image src={staticPath.images.suimei.lantern_red_svg} width={31} height={91} alt="赤色のランタン"></Image>
         <h2>
           <Image src={staticPath.images.suimei.logo_suimei_svg} width={64} height={64} alt="四柱推命"></Image>
         </h2>
-        <Image src={staticPath.images.suimei.lantern_yellow_svg} width={64} height={64} alt="黄色のランタン"></Image>
-        <Image src={staticPath.images.suimei.lantern_red_svg} width={64} height={64} alt="赤色のランタン"></Image>
+        <Image src={staticPath.images.suimei.lantern_red_svg} width={31} height={91} alt="赤色のランタン"></Image>
+        <Image src={staticPath.images.suimei.lantern_yellow_svg} width={50} height={151} alt="黄色のランタン"></Image>
       </div>
       {/* .title_areaの終了タグ */}
       <div className="information_input">

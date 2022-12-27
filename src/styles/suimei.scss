@@ -1,7 +1,60 @@
-.suimei .header {
-  background-color: transparent;
+/* 基本色 */
+$base_white: #f7f7f7;
+$text_black: #191919;
+$main_red: #b53935;
+$accent_yellow: #f2c641;
+/* その他の色 */
+$white: #fff;
+$form_line_gray: #adadad;
+$table_header_gray: #8a8a8a;
+$table_data_gray: #e6e6e6;
+$accent_yellow_light: #f2c641;
+
+/* 共通 */
+@font-face {
+  font-family: 'YujiSyuku-Regular';
+  src: url('/font/YujiSyuku-Regular.ttf');
+}
+@font-face {
+  font-family: 'ZenOldMincho-Regular';
+  src: url('/font/ZenOldMincho-Regular.ttf');
+}
+@font-face {
+  font-family: 'ZenOldMincho-Bold';
+  src: url('/font/ZenOldMincho-Bold.ttf');
 }
 
-.suimei .twitter-logo {
-  fill: #4b4b4b;
+.suimei {
+  img {
+    vertical-align: bottom;
+    max-width: 100%;
+    height: auto;
+  }
+  a {
+    text-decoration: none;
+  }
+  /* iPhoneのSafariで角丸にならないようにする */
+  input[type='button'],
+  input[type='text'],
+  input[type='submit'],
+  input[type='image'],
+  input[type='email'],
+  textarea {
+    -webkit-appearance: none;
+    border-radius: 0;
+  }
+
+  font-size: 16px;
+  color: $text_black;
+  background: $base_white;
+  line-height: 1.5;
+  font-family: 'ZenOldMincho-Regular', serif;
+  letter-spacing: 0.05em;
+
+  .header {
+    background-color: transparent;
+  }
+  .twitter-logo {
+    fill: #4b4b4b;
+  }
 }

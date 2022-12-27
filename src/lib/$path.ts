@@ -28,7 +28,10 @@ export const staticPath = {
     Khand_Regular_ttf: '/fonts/Khand-Regular.ttf',
     Lato_Regular_ttf: '/fonts/Lato Regular.ttf',
     MTF_Wildflower_ttf: '/fonts/MTF Wildflower.ttf',
-    Noto_Sans_JP_Regular_otf: '/fonts/Noto Sans JP Regular.otf'
+    Noto_Sans_JP_Regular_otf: '/fonts/Noto Sans JP Regular.otf',
+    YujiSyuku_Regular_ttf: '/fonts/YujiSyuku-Regular.ttf',
+    ZenOldMincho_Bold_ttf: '/fonts/ZenOldMincho-Bold.ttf',
+    ZenOldMincho_Regular_ttf: '/fonts/ZenOldMincho-Regular.ttf'
   },
   images: {
     horoscope: {

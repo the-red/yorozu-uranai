@@ -63,6 +63,15 @@ export const staticPath = {
       leaf_png: '/images/numerology/leaf.png',
       title_png: '/images/numerology/title.png'
     },
+    suimei: {
+      fun_svg: '/images/suimei/fun.svg',
+      kintoun_svg: '/images/suimei/kintoun.svg',
+      lantern_red_svg: '/images/suimei/lantern_red.svg',
+      lantern_yellow_svg: '/images/suimei/lantern_yellow.svg',
+      logo_suimei_svg: '/images/suimei/logo_suimei.svg',
+      lotus_svg: '/images/suimei/lotus.svg',
+      peach_svg: '/images/suimei/peach.svg'
+    }
   }
 } as const
 

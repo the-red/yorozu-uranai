@@ -152,7 +152,9 @@ export const SuimeiContent: VFC<any> = ({ onSubmit, defaultValues }) => {
                 <td>申</td>
               </tr>
               <tr>
-                <th>天干通変星</th>
+                <th>
+                  天干<br></br>通変星
+                </th>
                 <td>政官</td>
                 <td>政官</td>
                 <td>-</td>
@@ -173,7 +175,9 @@ export const SuimeiContent: VFC<any> = ({ onSubmit, defaultValues }) => {
                 <td>乙</td>
               </tr>
               <tr>
-                <th>蔵干通変星</th>
+                <th>
+                  蔵干<br></br>通変星
+                </th>
                 <td>比肩</td>
                 <td>比肩</td>
                 <td>比肩</td>
@@ -267,18 +271,24 @@ export const SuimeiContent: VFC<any> = ({ onSubmit, defaultValues }) => {
           <table>
             <thead>
               <tr>
-                <th>（空白セル）</th>
+                <th></th>
                 <th>天干</th>
                 <th>地支</th>
-                <th>天干通変星</th>
+                <th>
+                  天干<br></br>通変星
+                </th>
                 <th>十二運</th>
                 <th>蔵干</th>
-                <th>蔵干通変星</th>
+                <th>
+                  蔵干<br></br>通変星
+                </th>
               </tr>
             </thead>
             <tbody>
               <tr>
-                <th>0〜7歳</th>
+                <th>
+                  0〜<br></br>7歳
+                </th>
                 <td>庚</td>
                 <td>辰</td>
                 <td>比肩</td>
@@ -287,7 +297,9 @@ export const SuimeiContent: VFC<any> = ({ onSubmit, defaultValues }) => {
                 <td>偏印</td>
               </tr>
               <tr>
-                <th>8〜17歳</th>
+                <th>
+                  8〜<br></br>17歳
+                </th>
                 <td>庚</td>
                 <td>辰</td>
                 <td>比肩</td>
@@ -296,7 +308,9 @@ export const SuimeiContent: VFC<any> = ({ onSubmit, defaultValues }) => {
                 <td>偏印</td>
               </tr>
               <tr>
-                <th>18〜27歳</th>
+                <th>
+                  18〜<br></br>27歳
+                </th>
                 <td>庚</td>
                 <td>辰</td>
                 <td>比肩</td>
@@ -305,7 +319,9 @@ export const SuimeiContent: VFC<any> = ({ onSubmit, defaultValues }) => {
                 <td>偏印</td>
               </tr>
               <tr>
-                <th>28〜37歳</th>
+                <th>
+                  28〜<br></br>37歳
+                </th>
                 <td>庚</td>
                 <td>辰</td>
                 <td>比肩</td>
@@ -314,7 +330,9 @@ export const SuimeiContent: VFC<any> = ({ onSubmit, defaultValues }) => {
                 <td>偏印</td>
               </tr>
               <tr>
-                <th>38〜47歳</th>
+                <th>
+                  38〜<br></br>47歳
+                </th>
                 <td>庚</td>
                 <td>辰</td>
                 <td>比肩</td>
@@ -323,7 +341,9 @@ export const SuimeiContent: VFC<any> = ({ onSubmit, defaultValues }) => {
                 <td>偏印</td>
               </tr>
               <tr>
-                <th>48〜57歳</th>
+                <th>
+                  48〜<br></br>57歳
+                </th>
                 <td>庚</td>
                 <td>辰</td>
                 <td>比肩</td>
@@ -332,7 +352,9 @@ export const SuimeiContent: VFC<any> = ({ onSubmit, defaultValues }) => {
                 <td>偏印</td>
               </tr>
               <tr>
-                <th>58〜67歳</th>
+                <th>
+                  58〜<br></br>67歳
+                </th>
                 <td>庚</td>
                 <td>辰</td>
                 <td>比肩</td>
@@ -341,7 +363,9 @@ export const SuimeiContent: VFC<any> = ({ onSubmit, defaultValues }) => {
                 <td>偏印</td>
               </tr>
               <tr>
-                <th>68〜77歳</th>
+                <th>
+                  68〜<br></br>77歳
+                </th>
                 <td>庚</td>
                 <td>辰</td>
                 <td>比肩</td>
@@ -373,10 +397,14 @@ export const SuimeiContent: VFC<any> = ({ onSubmit, defaultValues }) => {
                 <th></th>
                 <th>天干</th>
                 <th>地支</th>
-                <th>天干通変星</th>
+                <th>
+                  天干<br></br>通変星
+                </th>
                 <th>十二運</th>
                 <th>蔵干</th>
-                <th>蔵干通変星</th>
+                <th>
+                  蔵干<br></br>通変星
+                </th>
               </tr>
             </thead>
             <tbody>

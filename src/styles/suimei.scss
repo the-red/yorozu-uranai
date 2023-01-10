@@ -149,7 +149,7 @@ $sp_width: 375;
 
   section {
     // セクション共通スタイル
-    padding: 60px 0 80px;
+    padding: 0 0 80px;
     .inner {
       @include width(343);
       margin: 0 auto;
@@ -166,6 +166,7 @@ $sp_width: 375;
     &.information_input {
       background-color: $main_red;
       padding: 40px 0;
+      margin-bottom: 80px;
       .inner {
         background-color: $base_white;
         padding: 40px 0 60px;
@@ -249,6 +250,7 @@ $sp_width: 375;
         }
       }
     }
+    // 計算結果の共通スタイル
     &.result {
       h3 {
         .heading_icon {
@@ -259,14 +261,67 @@ $sp_width: 375;
           @include height(20);
         }
       }
+      table {
+        text-align: center;
+        width: 100%;
+        font-family: $text_bold;
+        thead tr th {
+          padding: 10px 0;
+          background-color: $main_red;
+          color: $white;
+          border-radius: 7px 7px 0 0;
+          &:first-of-type {
+            background-color: transparent;
+          }
+        }
+        tbody tr {
+          th {
+            padding: 16px 0;
+            background-color: $table_header_gray;
+            color: $white;
+          }
+          td {
+            padding: 16px 0;
+            background-color: $table_data_gray;
+          }
+        }
+      }
     }
     &.meisiki {
+      table {
+        font-size: 14px;
+      }
     }
     &.gogyo_balance {
+      table {
+        font-size: 14px;
+        thead tr th:first-of-type {
+          background-color: $main_red;
+        }
+      }
     }
     &.daiun {
+      table {
+        thead tr th {
+          font-size: 10px;
+        }
+        tbody tr {
+          th {
+            font-size: 10px;
+          }
+          td {
+            font-size: 12px;
+            font-family: $text_regular;
+          }
+        }
+      }
     }
     &.saiun {
+      table tbody tr th {
+        span {
+          display: block;
+        }
+      }
     }
   }
 }

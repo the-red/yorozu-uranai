@@ -45,6 +45,13 @@ $sp_width: 375;
   right: ($right_position / $sp_width) * 100vw;
 }
 .suimei {
+  font-size: 16px;
+  color: $text_black;
+  background: $base_white;
+  line-height: 1.5;
+  font-family: $text_regular, serif;
+  letter-spacing: 0.05em;
+
   img {
     vertical-align: bottom;
     max-width: 100%;
@@ -71,13 +78,6 @@ $sp_width: 375;
     border-radius: 0;
   }
 
-  font-size: 16px;
-  color: $text_black;
-  background: $base_white;
-  line-height: 1.5;
-  font-family: $text_regular, serif;
-  letter-spacing: 0.05em;
-
   .header {
     background-color: transparent;
   }
@@ -85,6 +85,7 @@ $sp_width: 375;
     fill: #4b4b4b;
   }
 
+  // タイトル表示エリア
   .title_area {
     position: relative;
     @include height(137);
@@ -133,6 +134,21 @@ $sp_width: 375;
         @include width(163);
         @include height(69);
       }
+    }
+  }
+
+  // セクション共通スタイル
+  section {
+    padding: 60px 0 80px;
+    .inner {
+      @include width(343);
+      margin: 0 auto;
+    }
+    h3 {
+      margin-bottom: 30px;
+      font-family: $heading;
+      font-size: 24px;
+      text-align: center;
     }
   }
 }

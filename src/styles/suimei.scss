@@ -1,16 +1,3 @@
-/* 基本色 */
-$base_white: #f7f7f7;
-$text_black: #191919;
-$main_red: #b53935;
-$accent_yellow: #f2c641;
-/* その他の色 */
-$white: #fff;
-$form_line_gray: #adadad;
-$table_header_gray: #8a8a8a;
-$table_data_gray: #e6e6e6;
-$accent_yellow_light: #f2c641;
-
-/* 共通 */
 @font-face {
   font-family: 'YujiSyuku-Regular';
   src: url('/font/YujiSyuku-Regular.ttf');
@@ -24,6 +11,39 @@ $accent_yellow_light: #f2c641;
   src: url('/font/ZenOldMincho-Bold.ttf');
 }
 
+// フォント
+$heading: 'YujiSyuku-Regular';
+$text_regular: 'ZenOldMincho-Regular';
+$text_bold: 'ZenOldMincho-Bold';
+// 基本の色
+$base_white: #f7f7f7;
+$text_black: #191919;
+$main_red: #b53935;
+$accent_yellow: #f2c641;
+// その他の色
+$white: #fff;
+$form_line_gray: #adadad;
+$table_header_gray: #8a8a8a;
+$table_data_gray: #e6e6e6;
+$accent_yellow_light: #f2c641;
+// 端末の横幅サイズ
+$sp_width: 375;
+
+@mixin width($target_width) {
+  width: ($target_width / $sp_width) * 100vw;
+}
+@mixin height($target_height) {
+  height: ($target_height / $sp_width) * 100vw;
+}
+@mixin top($top_position) {
+  top: ($top_position / $sp_width) * 100vw;
+}
+@mixin left($left_position) {
+  left: ($left_position / $sp_width) * 100vw;
+}
+@mixin right($right_position) {
+  right: ($right_position / $sp_width) * 100vw;
+}
 .suimei {
   img {
     vertical-align: bottom;
@@ -32,6 +52,13 @@ $accent_yellow_light: #f2c641;
   }
   a {
     text-decoration: none;
+  }
+  h1,
+  h2,
+  h3 {
+    margin: 0;
+    padding: 0;
+    font-weight: normal;
   }
   /* iPhoneのSafariで角丸にならないようにする */
   input[type='button'],
@@ -48,7 +75,7 @@ $accent_yellow_light: #f2c641;
   color: $text_black;
   background: $base_white;
   line-height: 1.5;
-  font-family: 'ZenOldMincho-Regular', serif;
+  font-family: $text_regular, serif;
   letter-spacing: 0.05em;
 
   .header {
@@ -56,5 +83,56 @@ $accent_yellow_light: #f2c641;
   }
   .twitter-logo {
     fill: #4b4b4b;
+  }
+
+  .title_area {
+    position: relative;
+    @include height(137);
+    overflow: hidden;
+    .lantern_outer {
+      position: absolute;
+      .lantern_inner {
+        position: relative;
+      }
+      &.yellow {
+        .lantern_inner {
+          @include width(50);
+          @include height(151);
+        }
+        &.left {
+          @include top(-18);
+          @include left(16);
+        }
+        &.right {
+          @include top(-18);
+          @include right(16);
+        }
+      }
+      &.red {
+        .lantern_inner {
+          @include width(31);
+          @include height(91);
+        }
+        &.left {
+          @include top(-11);
+          @include left(59);
+        }
+        &.right {
+          @include top(-11);
+          @include right(59);
+        }
+      }
+    }
+    h2 {
+      position: absolute;
+      @include top(34);
+      left: 50%;
+      transform: translateX(-50%);
+      .title_logo {
+        position: relative;
+        @include width(163);
+        @include height(69);
+      }
+    }
   }
 }

@@ -85,12 +85,6 @@ export const SuimeiContent: VFC<any> = ({ onSubmit, defaultValues }) => {
               <dt>性別</dt>
               <dd className="gender">
                 <ul>
-                  {/* <li>
-                    <label>
-                      <input type="radio" name="gender" value="未選択" checked />
-                      <div>未選択</div>
-                    </label>
-                  </li> */}
                   <li>
                     <label>
                       <input type="radio" name="gender" value="未選択" checked />
@@ -119,9 +113,19 @@ export const SuimeiContent: VFC<any> = ({ onSubmit, defaultValues }) => {
         </div>
       </section>
       {/* .information_inputの終了タグ */}
-      <section className="meisiki">
+      <section className="result meisiki">
         <div className="inner">
-          <h3>命式</h3>
+          <h3>
+            <div className="heading_icon">
+              <Image
+                src={staticPath.images.suimei.fun_svg}
+                layout="fill"
+                objectFit="contain"
+                alt="扇のアイコン"
+              ></Image>
+            </div>
+            <div>命式</div>
+          </h3>
           <table>
             <thead>
               <tr>
@@ -211,9 +215,19 @@ export const SuimeiContent: VFC<any> = ({ onSubmit, defaultValues }) => {
         </div>
       </section>
       {/* .meisikiの終了タグ */}
-      <section className="gogyo_balance">
+      <section className="result gogyo_balance">
         <div className="inner">
-          <h3>五行バランス</h3>
+          <h3>
+            <div className="heading_icon">
+              <Image
+                src={staticPath.images.suimei.lotus_svg}
+                layout="fill"
+                objectFit="contain"
+                alt="蓮のアイコン"
+              ></Image>
+            </div>
+            <div>五行バランス</div>
+          </h3>
           <table>
             <thead>
               <tr>
@@ -237,8 +251,19 @@ export const SuimeiContent: VFC<any> = ({ onSubmit, defaultValues }) => {
         </div>
       </section>
       {/* .gogyo_balanceの終了タグ */}
-      <section className="daiun">
+      <section className="result daiun">
         <div className="inner">
+          <h3>
+            <div className="heading_icon">
+              <Image
+                src={staticPath.images.suimei.kintoun_svg}
+                layout="fill"
+                objectFit="contain"
+                alt="筋斗雲のアイコン"
+              ></Image>
+            </div>
+            <div>大運</div>
+          </h3>
           <table>
             <thead>
               <tr>
@@ -329,8 +354,19 @@ export const SuimeiContent: VFC<any> = ({ onSubmit, defaultValues }) => {
         </div>
       </section>
       {/* .daiunの終了タグ */}
-      <section className="saiun">
+      <section className="result saiun">
         <div className="inner">
+          <h3>
+            <div className="heading_icon">
+              <Image
+                src={staticPath.images.suimei.peach_svg}
+                layout="fill"
+                objectFit="contain"
+                alt="桃のアイコン"
+              ></Image>
+            </div>
+            <div>歳運</div>
+          </h3>
           <table>
             <thead>
               <tr>

@@ -249,5 +249,24 @@ $sp_width: 375;
         }
       }
     }
+    &.result {
+      h3 {
+        .heading_icon {
+          margin: 0 auto;
+          position: relative;
+          margin-bottom: 3px;
+          @include width(40);
+          @include height(20);
+        }
+      }
+    }
+    &.meisiki {
+    }
+    &.gogyo_balance {
+    }
+    &.daiun {
+    }
+    &.saiun {
+    }
   }
 }

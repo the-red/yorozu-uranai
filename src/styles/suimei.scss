@@ -1,14 +1,14 @@
 @font-face {
   font-family: 'YujiSyuku-Regular';
-  src: url('/font/YujiSyuku-Regular.ttf');
+  src: url('/fonts/YujiSyuku-Regular.ttf');
 }
 @font-face {
   font-family: 'ZenOldMincho-Regular';
-  src: url('/font/ZenOldMincho-Regular.ttf');
+  src: url('/fonts/ZenOldMincho-Regular.ttf');
 }
 @font-face {
   font-family: 'ZenOldMincho-Bold';
-  src: url('/font/ZenOldMincho-Bold.ttf');
+  src: url('/fonts/ZenOldMincho-Bold.ttf');
 }
 
 // フォント
@@ -44,6 +44,9 @@ $sp_width: 375;
 @mixin right($right_position) {
   right: ($right_position / $sp_width) * 100vw;
 }
+// @mixin padding($top, $right, $bottom, $left) {
+//   padding: $top * 1px ($right / $sp_width) * 100vw $bottom * 1px ($left / $sp_width) * 100vw;
+// }
 .suimei {
   font-size: 16px;
   color: $text_black;
@@ -59,6 +62,13 @@ $sp_width: 375;
   }
   a {
     text-decoration: none;
+  }
+  ul {
+    margin: 0;
+    padding: 0;
+  }
+  ul li {
+    list-style-type: none;
   }
   h1,
   h2,
@@ -137,8 +147,8 @@ $sp_width: 375;
     }
   }
 
-  // セクション共通スタイル
   section {
+    // セクション共通スタイル
     padding: 60px 0 80px;
     .inner {
       @include width(343);
@@ -149,6 +159,95 @@ $sp_width: 375;
       font-family: $heading;
       font-size: 24px;
       text-align: center;
+      letter-spacing: 0.25em;
+    }
+
+    // 情報入力欄
+    &.information_input {
+      background-color: $main_red;
+      padding: 40px 0;
+      .inner {
+        background-color: $base_white;
+        padding: 40px 0 60px;
+        border-radius: 10px;
+      }
+      form {
+        @include width(315);
+        margin: 0 auto;
+        dl {
+          display: flex;
+          flex-wrap: wrap;
+          dt {
+            width: 100%;
+            margin-bottom: 10px;
+          }
+          dd {
+            margin-inline-start: 0;
+            width: 100%;
+            margin-bottom: 40px;
+            input {
+              font-family: $text_regular;
+              font-size: 14px;
+              &[type='date'],
+              &[type='time'],
+              &[type='text'] {
+                width: 100%;
+                height: 48px;
+                padding: 0 16px 0;
+                border: 1px solid $form_line_gray;
+                border-radius: 3px;
+              }
+            }
+            &.date_time {
+              input:first-of-type {
+                margin-bottom: 5px;
+              }
+            }
+            &.longitude {
+              margin-bottom: 10px;
+            }
+            &.longitude,
+            &.latitude {
+              span {
+                display: block;
+                font-size: 14px;
+                margin-bottom: 5px;
+              }
+            }
+            &.gender {
+              ul {
+                display: flex;
+                flex-wrap: wrap;
+                li label {
+                  width: 100%;
+                  margin-right: 34px;
+                  display: flex;
+                  align-items: center;
+                  font-size: 14px;
+                  input {
+                    width: 14px;
+                    height: 14px;
+                  }
+                }
+              }
+            }
+          }
+        }
+        .create_meisiki_button {
+          text-align: center;
+          button {
+            margin: 0 auto;
+            @include width(189);
+            height: 44px;
+            border-radius: 24px;
+            border: none;
+            background-color: $accent_yellow;
+            font-size: 14px;
+            font-family: 'ZenOldMincho-Bold';
+            letter-spacing: 0.1em;
+          }
+        }
+      }
     }
   }
 }

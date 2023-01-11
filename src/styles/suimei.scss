@@ -47,7 +47,9 @@ $sp_width: 375;
 @mixin table_data_width($table_width, $row_header_width, $data_columns_number) {
   width: (100% - ($row_header_width / $table_width * 100%)) / $data_columns_number;
 }
+
 .suimei {
+  // 全体共通スタイル
   font-size: 16px;
   color: $text_black;
   background: $base_white;
@@ -380,6 +382,52 @@ $sp_width: 375;
               background-color: $accent_yellow_light;
             }
           }
+        }
+      }
+    }
+  }
+
+  // PC用スタイル
+  @media screen and (min-width: 980px) {
+    .title_area {
+      height: 330px;
+      width: 886px;
+      margin: 0 auto;
+      .lantern_outer {
+        &.yellow {
+          .lantern_inner {
+            width: 74px;
+            height: 225px;
+          }
+          &.left {
+            top: -17px;
+            left: 0;
+          }
+          &.right {
+            top: -15px;
+            right: 111px;
+          }
+        }
+        &.red {
+          .lantern_inner {
+            width: 74px;
+            height: 219.8px;
+          }
+          &.left {
+            top: 0;
+            left: 111px;
+          }
+          &.right {
+            top: -33px;
+            right: 0;
+          }
+        }
+      }
+      h2 {
+        top: 75px;
+        .title_logo {
+          width: 414px;
+          height: 180px;
         }
       }
     }

@@ -12,7 +12,6 @@ export const tsuhensei = (nikkan: Jikkan, jikkan: Jikkan) => {
 
   if (isEven(nikkanIndex)) {
     // 日干が偶数
-    // 日干-十干 < 0
     return tsuhenseiIndex < 0 ? tsuhenseiEven[10 + tsuhenseiIndex] : tsuhenseiEven[tsuhenseiIndex]
   } else {
     // 日干が奇数

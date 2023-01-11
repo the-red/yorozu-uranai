@@ -432,4 +432,15 @@ $sp_width: 375;
       }
     }
   }
+  section {
+    // セクション共通スタイル
+    padding-bottom: 120px;
+    .inner {
+      width: 980px;
+    }
+    h3 {
+      margin-bottom: 40px;
+      font-size: 30px;
+    }
+  }
 }

@@ -61,7 +61,6 @@ export const SuimeiContent: VFC<any> = ({ onSubmit, defaultValues }) => {
       <section className="information_input">
         <div className="inner">
           <h3>情報入力</h3>
-          {/* TODO:actionの値設定する */}
           <form action="" method="post" id="">
             <dl>
               <dt>生年月日</dt>

@@ -44,9 +44,9 @@ $sp_width: 375;
 @mixin right($right_position) {
   right: ($right_position / $sp_width) * 100vw;
 }
-// @mixin padding($top, $right, $bottom, $left) {
-//   padding: $top * 1px ($right / $sp_width) * 100vw $bottom * 1px ($left / $sp_width) * 100vw;
-// }
+@mixin table_data_width($table_width, $row_header_width, $data_columns_number) {
+  width: (100% - ($row_header_width / $table_width * 100%)) / $data_columns_number;
+}
 .suimei {
   font-size: 16px;
   color: $text_black;
@@ -257,8 +257,8 @@ $sp_width: 375;
           margin: 0 auto;
           position: relative;
           margin-bottom: 3px;
-          @include width(40);
-          @include height(20);
+          width: 40px;
+          height: 20px;
         }
       }
       table {
@@ -312,6 +312,7 @@ $sp_width: 375;
           td {
             font-size: 12px;
             font-family: $text_regular;
+            @include table_data_width(343, 45, 6);
           }
         }
       }

@@ -250,7 +250,7 @@ $sp_width: 375;
         }
       }
     }
-    // 計算結果の共通スタイル
+    // 計算結果の表の共通スタイル
     &.result {
       h3 {
         .heading_icon {
@@ -266,7 +266,6 @@ $sp_width: 375;
         width: 100%;
         font-family: $text_bold;
         thead tr th {
-          padding: 10px 0;
           background-color: $main_red;
           color: $white;
           border-radius: 7px 7px 0 0;
@@ -276,22 +275,37 @@ $sp_width: 375;
         }
         tbody tr {
           th {
-            padding: 16px 0;
             background-color: $table_header_gray;
             color: $white;
           }
           td {
-            padding: 16px 0;
             background-color: $table_data_gray;
           }
         }
       }
     }
+    // 命式と五行バランスの共通設定
+    &.meisiki,
+    &.gogyo_balance {
+      table {
+        thead tr th {
+          padding: 10px 0;
+        }
+        tbody tr {
+          th,
+          td {
+            padding: 16px 0;
+          }
+        }
+      }
+    }
+    // 命式
     &.meisiki {
       table {
         font-size: 14px;
       }
     }
+    // 五行バランス
     &.gogyo_balance {
       table {
         font-size: 14px;
@@ -300,10 +314,13 @@ $sp_width: 375;
         }
       }
     }
-    &.daiun {
+    // 大運、歳運の共通設定
+    &.daiun,
+    &.saiun {
       table {
         thead tr th {
           font-size: 10px;
+          padding: 6px 0;
         }
         tbody tr {
           th {
@@ -317,10 +334,41 @@ $sp_width: 375;
         }
       }
     }
+    // 大運
+    &.daiun {
+      tbody tr {
+        th,
+        td {
+          padding: 7px 0;
+        }
+      }
+    }
+
+    // 歳運
     &.saiun {
-      table tbody tr th {
-        span {
-          display: block;
+      table {
+        tbody tr {
+          th,
+          td {
+            padding: 4px 0;
+          }
+          th {
+            span {
+              display: block;
+              position: relative;
+              margin-bottom: 6px;
+              &::after {
+                content: '';
+                width: 26px;
+                height: 0.5px;
+                background-color: $white;
+                position: absolute;
+                bottom: -3px;
+                left: 50%;
+                transform: translateX(-50%);
+              }
+            }
+          }
         }
       }
     }

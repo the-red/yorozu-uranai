@@ -462,7 +462,7 @@ export const SuimeiContent: VFC<any> = ({ onSubmit, defaultValues }) => {
                 <td>戊</td>
                 <td>偏印</td>
               </tr>
-              <tr>
+              <tr className="current">
                 <th>
                   <span>35歳</span>2022年
                 </th>

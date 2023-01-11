@@ -25,7 +25,7 @@ $white: #fff;
 $form_line_gray: #adadad;
 $table_header_gray: #8a8a8a;
 $table_data_gray: #e6e6e6;
-$accent_yellow_light: #f2c641;
+$accent_yellow_light: #f8e2a0;
 // 端末の横幅サイズ
 $sp_width: 375;
 
@@ -343,7 +343,6 @@ $sp_width: 375;
         }
       }
     }
-
     // 歳運
     &.saiun {
       table {
@@ -367,6 +366,18 @@ $sp_width: 375;
                 left: 50%;
                 transform: translateX(-50%);
               }
+            }
+          }
+          &.current {
+            th {
+              background-color: $accent_yellow;
+              color: $text_black;
+              span::after {
+                background-color: $text_black;
+              }
+            }
+            td {
+              background-color: $accent_yellow_light;
             }
           }
         }

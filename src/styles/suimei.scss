@@ -208,17 +208,18 @@ $sp_width: 375;
                 margin-bottom: 5px;
               }
             }
-
-            &.longitude,
-            &.latitude {
-              span {
-                display: block;
-                font-size: 14px;
-                margin-bottom: 5px;
+            &.longitude_latitude {
+              .longitude,
+              .latitude {
+                span {
+                  display: block;
+                  font-size: 14px;
+                  margin-bottom: 5px;
+                }
               }
-            }
-            &.longitude {
-              margin-bottom: 10px;
+              .longitude {
+                margin-bottom: 10px;
+              }
             }
             &.gender ul {
               display: flex;
@@ -468,18 +469,20 @@ $sp_width: 375;
                   width: 84px;
                 }
               }
-              &.longitude {
-                margin-bottom: 4px;
-              }
-              &.longitude,
-              &.latitude {
-                span {
-                  display: inline-block;
-                  margin-bottom: 0;
-                  margin-right: 8px;
+              &.longitude_latitude {
+                .longitude,
+                .latitude {
+                  span {
+                    display: inline;
+                    margin-bottom: 0px;
+                    margin-right: 8px;
+                  }
+                  input {
+                    width: 107px;
+                  }
                 }
-                input[type='text'] {
-                  width: 107px;
+                .longitude {
+                  margin-bottom: 4px;
                 }
               }
               &.gender ul {

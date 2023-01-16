@@ -70,18 +70,18 @@ export const SuimeiContent: VFC<any> = ({ onSubmit, defaultValues }) => {
               </dd>
               <dt>出生場所</dt>
               <dd className="longitude_latitude">
-                <dd className="longitude">
+                <div className="longitude">
                   <label>
                     <span>緯度</span>
                     <input type="text" name="longitude" value="35.604839" />
                   </label>
-                </dd>
-                <dd className="latitude">
+                </div>
+                <div className="latitude">
                   <label>
                     <span>経度</span>
                     <input type="text" name="latitude" value="139.667717" />
                   </label>
-                </dd>
+                </div>
               </dd>
               <dt>性別</dt>
               <dd className="gender">

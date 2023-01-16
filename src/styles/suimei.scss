@@ -65,6 +65,7 @@ $sp_width: 375;
   a {
     text-decoration: none;
   }
+  dl,
   ul {
     margin: 0;
     padding: 0;
@@ -180,6 +181,7 @@ $sp_width: 375;
         dl {
           display: flex;
           flex-wrap: wrap;
+          margin-bottom: 40px;
           dt,
           dd {
             width: 100%;
@@ -190,6 +192,9 @@ $sp_width: 375;
           dd {
             margin-inline-start: 0;
             margin-bottom: 40px;
+            &:last-of-type {
+              margin-bottom: 0;
+            }
             input {
               font-family: $text_regular;
               font-size: 14px;
@@ -446,6 +451,7 @@ $sp_width: 375;
         form {
           width: 306px;
           dl {
+            margin-bottom: 50px;
             dt {
               width: 90px;
               margin-bottom: 0;

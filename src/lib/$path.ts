@@ -62,7 +62,7 @@ export const staticPath = {
       flower_png: '/images/numerology/flower.png',
       leaf_png: '/images/numerology/leaf.png',
       title_png: '/images/numerology/title.png'
-    },
+    }
   }
 } as const
 

@@ -154,7 +154,7 @@ export const SuimeiContent: VFC<any> = ({ onSubmit, defaultValues }) => {
               </tr>
               <tr>
                 <th>
-                  天干<br></br>通変星
+                  天干<br className="header_br_sp"></br>通変星
                 </th>
                 <td>政官</td>
                 <td>政官</td>
@@ -177,7 +177,7 @@ export const SuimeiContent: VFC<any> = ({ onSubmit, defaultValues }) => {
               </tr>
               <tr>
                 <th>
-                  蔵干<br></br>通変星
+                  蔵干<br className="header_br_sp"></br>通変星
                 </th>
                 <td>比肩</td>
                 <td>比肩</td>
@@ -276,19 +276,19 @@ export const SuimeiContent: VFC<any> = ({ onSubmit, defaultValues }) => {
                 <th>天干</th>
                 <th>地支</th>
                 <th>
-                  天干<br></br>通変星
+                  天干<br className="header_br_sp"></br>通変星
                 </th>
                 <th>十二運</th>
                 <th>蔵干</th>
                 <th>
-                  蔵干<br></br>通変星
+                  蔵干<br className="header_br_sp"></br>通変星
                 </th>
               </tr>
             </thead>
             <tbody>
               <tr>
                 <th>
-                  0〜<br></br>7歳
+                  0〜<br className="header_br_sp"></br>7歳
                 </th>
                 <td>庚</td>
                 <td>辰</td>
@@ -299,7 +299,7 @@ export const SuimeiContent: VFC<any> = ({ onSubmit, defaultValues }) => {
               </tr>
               <tr>
                 <th>
-                  8〜<br></br>17歳
+                  8〜<br className="header_br_sp"></br>17歳
                 </th>
                 <td>庚</td>
                 <td>辰</td>
@@ -310,7 +310,7 @@ export const SuimeiContent: VFC<any> = ({ onSubmit, defaultValues }) => {
               </tr>
               <tr>
                 <th>
-                  18〜<br></br>27歳
+                  18〜<br className="header_br_sp"></br>27歳
                 </th>
                 <td>庚</td>
                 <td>辰</td>
@@ -321,7 +321,7 @@ export const SuimeiContent: VFC<any> = ({ onSubmit, defaultValues }) => {
               </tr>
               <tr>
                 <th>
-                  28〜<br></br>37歳
+                  28〜<br className="header_br_sp"></br>37歳
                 </th>
                 <td>庚</td>
                 <td>辰</td>
@@ -332,7 +332,7 @@ export const SuimeiContent: VFC<any> = ({ onSubmit, defaultValues }) => {
               </tr>
               <tr>
                 <th>
-                  38〜<br></br>47歳
+                  38〜<br className="header_br_sp"></br>47歳
                 </th>
                 <td>庚</td>
                 <td>辰</td>
@@ -343,7 +343,7 @@ export const SuimeiContent: VFC<any> = ({ onSubmit, defaultValues }) => {
               </tr>
               <tr>
                 <th>
-                  48〜<br></br>57歳
+                  48〜<br className="header_br_sp"></br>57歳
                 </th>
                 <td>庚</td>
                 <td>辰</td>
@@ -354,7 +354,7 @@ export const SuimeiContent: VFC<any> = ({ onSubmit, defaultValues }) => {
               </tr>
               <tr>
                 <th>
-                  58〜<br></br>67歳
+                  58〜<br className="header_br_sp"></br>67歳
                 </th>
                 <td>庚</td>
                 <td>辰</td>
@@ -365,7 +365,7 @@ export const SuimeiContent: VFC<any> = ({ onSubmit, defaultValues }) => {
               </tr>
               <tr>
                 <th>
-                  68〜<br></br>77歳
+                  68〜<br className="header_br_sp"></br>77歳
                 </th>
                 <td>庚</td>
                 <td>辰</td>

@@ -339,51 +339,43 @@ $sp_width: 375;
       }
     }
     // 大運
-    &.daiun {
-      tbody tr {
-        th,
-        td {
-          padding: 7px 0;
-        }
+    &.daiun tbody tr {
+      th,
+      td {
+        padding: 7px 0;
       }
     }
     // 歳運
-    &.saiun {
-      table {
-        tbody tr {
-          th,
-          td {
-            padding: 4px 0;
+    &.saiun table tbody tr {
+      th,
+      td {
+        padding: 4px 0;
+      }
+      th span {
+        display: block;
+        position: relative;
+        margin-bottom: 6px;
+        &::after {
+          content: '';
+          width: 26px;
+          height: 0.5px;
+          background-color: $white;
+          position: absolute;
+          bottom: -3px;
+          left: 50%;
+          transform: translateX(-50%);
+        }
+      }
+      &.current {
+        th {
+          background-color: $accent_yellow;
+          color: $text_black;
+          span::after {
+            background-color: $text_black;
           }
-          th {
-            span {
-              display: block;
-              position: relative;
-              margin-bottom: 6px;
-              &::after {
-                content: '';
-                width: 26px;
-                height: 0.5px;
-                background-color: $white;
-                position: absolute;
-                bottom: -3px;
-                left: 50%;
-                transform: translateX(-50%);
-              }
-            }
-          }
-          &.current {
-            th {
-              background-color: $accent_yellow;
-              color: $text_black;
-              span::after {
-                background-color: $text_black;
-              }
-            }
-            td {
-              background-color: $accent_yellow_light;
-            }
-          }
+        }
+        td {
+          background-color: $accent_yellow_light;
         }
       }
     }
@@ -504,6 +496,97 @@ $sp_width: 375;
           }
           .create_meisiki_button button {
             width: 185px;
+          }
+        }
+      }
+
+      // 見出しの共通スタイル
+      &.result {
+        h3 {
+          .heading_icon {
+            margin-bottom: 6px;
+            width: 39.78px;
+            height: 24px;
+          }
+        }
+        .header_br_sp {
+          display: none;
+        }
+      }
+
+      // 命式
+      &.meisiki {
+        table {
+          font-size: 16px;
+          tbody tr td {
+            font-size: 20px;
+            @include table_data_width(980, 143, 4);
+          }
+        }
+      }
+
+      // 五行バランス
+      &.gogyo_balance {
+        table {
+          width: 646px;
+          margin: 0 auto;
+          thead tr th {
+            font-size: 16px;
+            &:first-of-type {
+              background-color: $main_red;
+            }
+          }
+          tbody tr td {
+            font-size: 20px;
+            padding: 10px 0;
+          }
+        }
+      }
+
+      // 大運、歳運の共通設定
+      &.daiun,
+      &.saiun {
+        table {
+          thead tr th {
+            font-size: 16px;
+            padding: 10px 0;
+          }
+          tbody tr {
+            th {
+              font-size: 14px;
+            }
+            td {
+              font-size: 14px;
+              width: 139.5px;
+            }
+          }
+        }
+      }
+      // 大運
+      &.daiun tbody tr {
+        th,
+        td {
+          padding: 8px 0;
+        }
+      }
+      // 歳運
+      &.saiun table tbody tr {
+        th,
+        td {
+          padding: 8px 0;
+        }
+        th span {
+          display: inline;
+          margin-bottom: 0;
+          margin-right: 16px;
+          &::after {
+            width: 1px;
+            height: 19px;
+            bottom: auto;
+            left: auto;
+            right: -8px;
+            top: 0;
+            transform: none;
           }
         }
       }

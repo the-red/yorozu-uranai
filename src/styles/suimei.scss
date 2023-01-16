@@ -150,7 +150,7 @@ $sp_width: 375;
   }
 
   section {
-    // セクション共通スタイル
+    // セクション共通設定
     padding: 0 0 80px;
     .inner {
       @include width(343);
@@ -247,14 +247,14 @@ $sp_width: 375;
             border: none;
             background-color: $accent_yellow;
             font-size: 14px;
-            font-family: 'ZenOldMincho-Bold';
+            font-family: $text_bold;
             letter-spacing: 0.1em;
           }
         }
       }
     }
 
-    // 計算結果の表の共通スタイル
+    // 計算結果の表の共通設定
     &.result {
       h3 {
         .heading_icon {
@@ -426,7 +426,7 @@ $sp_width: 375;
       }
     }
     section {
-      // セクション共通スタイル
+      // セクション共通設定
       padding-bottom: 120px;
       .inner {
         width: 980px;

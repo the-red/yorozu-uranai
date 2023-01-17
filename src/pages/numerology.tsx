@@ -47,7 +47,7 @@ const NumerologyPage: NextPage = () => {
   return (
     <div className="numerology">
       <div
-        className="tw-min-h-screen tw-pb-8 tw-flex tw-flex-col tw-justify-between tw-items-center tw-space-y-4"
+        className="tw-min-h-screen tw-pb-8 tw-flex tw-flex-col tw-items-center tw-space-y-4"
         style={{ backgroundColor: '#EBEBC1', fontFamily: 'Lato Regular, Noto Sans JP Regular' }}
       >
         <Menu />

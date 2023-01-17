@@ -53,25 +53,26 @@ a {
 /* Position and sizing of burger button */
 .bm-burger-button {
   position: fixed;
-  width: 32px;
-  height: 22px;
-  right: 36px;
-  top: 17px;
+  width: 28px;
+  height: 20px;
+  right: 18px;
+  top: 18px;
 }
 /* Color/shape of burger icon bars */
 .bm-burger-bars {
-  background: #000;
+  background: #4b4b4b;
+  height: 3.5px !important;
 }
 /* Color/shape of burger icon bars on hover*/
 .bm-burger-bars-hover {
-  background: #000;
+  background: #4b4b4b;
 }
 /* Position and sizing of clickable cross button */
 .bm-cross-button {
   height: 24px;
   width: 30px;
-  top: 17px !important;
-  right: 36px !important;
+  top: 16px !important;
+  right: 18px !important;
 }
 /* Color/shape of close button cross */
 .bm-cross {

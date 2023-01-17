@@ -7,6 +7,7 @@ import SuimeiIcon from '../../public/images/index/suimei.svg'
 import NumerologyIcon from '../../public/images/index/numerology.svg'
 import Header from '../components/Header'
 import Footer from '../components/Footer'
+import Menu from '../components/Menu'
 
 export type OptionalQuery = Query
 
@@ -18,6 +19,8 @@ export default function Home() {
         <meta name="description" content="Fortune Telling" />
         <link rel="icon" href={staticPath.images.index.logo_svg} />
       </Head>
+
+      <Menu />
 
       <Header />
 

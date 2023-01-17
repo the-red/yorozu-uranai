@@ -49,39 +49,6 @@ a {
   font-family: '001Shirokuma-Regular';
   src: url('/fonts/001Shirokuma-Regular.otf');
 }
-
-.header-and-body {
-  min-height: 100%;
-  /* background-color: #efefef; */
-}
-.header {
-  border-bottom: 1px solid #dcdddd;
-  height: 56px;
-  text-align: center;
-  background-color: #efefef;
-  width: 100%;
-  color: #4b4b4b;
-}
-
-.header h1 {
-  font-size: 27px;
-  font-family: '001shirokuma-Regular';
-  margin: 0 auto;
-  line-height: 56px;
-}
-.header nav {
-  display: none;
-}
-.header nav ul {
-  font-family: 'Noto Sans JP Regular';
-  list-style: none;
-  margin: 0;
-  padding: 0;
-}
-.header .icon {
-  fill: #4b4b4b;
-}
-
 /* ハンバーガーメニューの設定 */
 /* Position and sizing of burger button */
 .bm-burger-button {
@@ -147,6 +114,39 @@ Note: Beware of modifying this element as it can break the animations - you shou
 /* Styling of overlay */
 .bm-overlay {
   background: rgba(0, 0, 0, 0.3);
+}
+/* ハンバーガーメニューの設定ここまで */
+
+.header-and-body {
+  min-height: 100%;
+  /* background-color: #efefef; */
+}
+.header {
+  border-bottom: 1px solid #dcdddd;
+  height: 56px;
+  text-align: center;
+  background-color: #efefef;
+  width: 100%;
+  color: #4b4b4b;
+}
+
+.header h1 {
+  font-size: 27px;
+  font-family: '001shirokuma-Regular';
+  margin: 0 auto;
+  line-height: 56px;
+}
+.header nav {
+  display: none;
+}
+.header nav ul {
+  font-family: 'Noto Sans JP Regular';
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.header .icon {
+  fill: #4b4b4b;
 }
 
 .main {

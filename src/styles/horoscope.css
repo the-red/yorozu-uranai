@@ -5,6 +5,13 @@
   background-size: 100%;
   color: #ffffff;
 }
+.horoscope .bm-burger-bars {
+  background: #fff;
+}
+/* Color/shape of burger icon bars on hover*/
+.horoscope .bm-burger-bars-hover {
+  background: #fff;
+}
 .horoscope .container {
   max-width: 960px;
   margin: 0 auto;

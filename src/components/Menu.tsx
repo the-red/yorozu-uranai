@@ -1,29 +1,37 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { slide as Burger } from 'react-burger-menu'
 import Link from 'next/link'
 import { pagesPath, staticPath } from '../lib/$path'
+import type { PathpidaValue } from '../lib/$path.types'
 import { useRouter } from 'next/router'
 
 export default function Menu() {
   const { query } = useRouter()
 
+  const [isOpen, setOpen] = useState(false)
+  const handleIsOpen = () => {
+    setOpen(!isOpen)
+  }
+  const closeSideBar = () => {
+    setOpen(false)
+  }
+  const SideBarLink = ({ path, children }: { path: PathpidaValue; children: string }) => (
+    <Link href={path.$url({ query })} onClick={closeSideBar}>
+      {children}
+    </Link>
+  )
+
   return (
-    <Burger right width={'100%'}>
+    <Burger right width={'100%'} isOpen={isOpen} onOpen={handleIsOpen} onClose={handleIsOpen}>
       <ul>
         <li>
-          <Link href={pagesPath.$url({ query })}>
-            <a>HOME</a>
-          </Link>
+          <SideBarLink path={pagesPath}>HOME</SideBarLink>
         </li>
         <li>
-          <Link href={pagesPath.horoscope.$url({ query })}>
-            <a>西洋占星術</a>
-          </Link>
+          <SideBarLink path={pagesPath.horoscope}>西洋占星術</SideBarLink>
         </li>
         <li>
-          <Link href={pagesPath.numerology.$url({ query })}>
-            <a>数秘術</a>
-          </Link>
+          <SideBarLink path={pagesPath.numerology}>数秘術</SideBarLink>
         </li>
       </ul>
     </Burger>

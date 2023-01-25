@@ -20,5 +20,5 @@ export const tsuhensei = (nikkan: Jikkan, jikkan: Jikkan) => {
 }
 
 const isEven = (targetNumber: number) => {
-  return targetNumber % 2 === 0 ? true : false
+  return targetNumber % 2 === 0
 }

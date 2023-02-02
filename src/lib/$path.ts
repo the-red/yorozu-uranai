@@ -13,6 +13,9 @@ export const pagesPath = {
   "numerology": {
     $url: (url?: { query?: OptionalQuery2, hash?: string }) => ({ pathname: '/numerology' as const, query: url?.query, hash: url?.hash })
   },
+  "suimei_design": {
+    $url: (url?: { hash?: string }) => ({ pathname: '/suimei-design' as const, hash: url?.hash })
+  },
   "suimei": {
     $url: (url?: { query?: OptionalQuery3, hash?: string }) => ({ pathname: '/suimei' as const, query: url?.query, hash: url?.hash })
   },
@@ -28,7 +31,10 @@ export const staticPath = {
     Khand_Regular_ttf: '/fonts/Khand-Regular.ttf',
     Lato_Regular_ttf: '/fonts/Lato Regular.ttf',
     MTF_Wildflower_ttf: '/fonts/MTF Wildflower.ttf',
-    Noto_Sans_JP_Regular_otf: '/fonts/Noto Sans JP Regular.otf'
+    Noto_Sans_JP_Regular_otf: '/fonts/Noto Sans JP Regular.otf',
+    YujiSyuku_Regular_ttf: '/fonts/YujiSyuku-Regular.ttf',
+    ZenOldMincho_Bold_ttf: '/fonts/ZenOldMincho-Bold.ttf',
+    ZenOldMincho_Regular_ttf: '/fonts/ZenOldMincho-Regular.ttf'
   },
   images: {
     horoscope: {
@@ -62,6 +68,15 @@ export const staticPath = {
       flower_png: '/images/numerology/flower.png',
       leaf_png: '/images/numerology/leaf.png',
       title_png: '/images/numerology/title.png'
+    },
+    suimei: {
+      fun_svg: '/images/suimei/fun.svg',
+      kintoun_svg: '/images/suimei/kintoun.svg',
+      lantern_red_svg: '/images/suimei/lantern_red.svg',
+      lantern_yellow_svg: '/images/suimei/lantern_yellow.svg',
+      logo_suimei_svg: '/images/suimei/logo_suimei.svg',
+      lotus_svg: '/images/suimei/lotus.svg',
+      peach_svg: '/images/suimei/peach.svg'
     }
   },
   map_test: {

@@ -3,6 +3,7 @@ import { useRouter } from 'next/router'
 import useSWR from 'swr'
 import { DateTime } from 'luxon'
 
+import Menu from '../components/Menu'
 import Header from '../components/Header'
 import Footer from '../components/Footer'
 
@@ -107,6 +108,7 @@ function HoroscopePage() {
 
   return (
     <div className="horoscope">
+      <Menu />
       <Header whiteIcon={true} />
       <div className="container">
         <div className="title">Horoscope</div>

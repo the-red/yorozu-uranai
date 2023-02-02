@@ -141,7 +141,7 @@ const MapPage: NextPage = () => {
         overflow: 'auto',
       }}
     >
-      <label htmlFor="zoom">Zoom</label>
+      <label htmlFor="zoom">Zoom </label>
       <input
         type="number"
         id="zoom"
@@ -150,7 +150,7 @@ const MapPage: NextPage = () => {
         onChange={(event) => setZoom(Number(event.target.value))}
       />
       <br />
-      <label htmlFor="lat">Latitude</label>
+      <label htmlFor="lat">緯度 </label>
       <input
         type="number"
         id="lat"
@@ -159,7 +159,7 @@ const MapPage: NextPage = () => {
         onChange={(event) => setCenter({ ...center, lat: Number(event.target.value) })}
       />
       <br />
-      <label htmlFor="lng">Longitude</label>
+      <label htmlFor="lng">経度 </label>
       <input
         type="number"
         id="lng"

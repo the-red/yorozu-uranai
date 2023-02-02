@@ -115,10 +115,11 @@ function useDeepCompareEffectForMaps(callback: React.EffectCallback, dependencie
 
 const MapPage: NextPage = () => {
   const [pinned, setPinned] = React.useState<google.maps.LatLng>()
-  const [zoom, setZoom] = React.useState(3) // initial zoom
+  const [zoom, setZoom] = React.useState(14)
   const [center, setCenter] = React.useState<google.maps.LatLngLiteral>({
-    lat: 0,
-    lng: 0,
+    // デフォルト緯度経度は皇居
+    lat: 35.68518697509635,
+    lng: 139.75278854370117,
   })
 
   const onClick = (e: google.maps.MapMouseEvent) => {

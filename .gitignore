@@ -5,6 +5,7 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 lerna-debug.log*
+public/map-test/index.html
 
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 

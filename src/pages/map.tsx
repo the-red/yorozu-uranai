@@ -135,7 +135,7 @@ const MapPage: NextPage = () => {
     setCenter(m.getCenter()!.toJSON())
   }
 
-  const Form: React.FC = () => (
+  const form = (
     <div
       style={{
         padding: '1rem',
@@ -204,12 +204,13 @@ const MapPage: NextPage = () => {
 
   return (
     <div style={{ display: 'flex', flexFlow: 'column', height: '100%' }}>
-      <Form />
+      {form}
       <Wrapper apiKey={process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY!} render={render}>
         <Map center={center} onClick={onClick} onIdle={onIdle} zoom={zoom} style={{ flexGrow: '1', height: '100%' }}>
           <Marker position={pinned} />
         </Map>
       </Wrapper>
+      {/* Basic form for controlling center and zoom of map. */}
     </div>
   )
 }

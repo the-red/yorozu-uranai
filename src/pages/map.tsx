@@ -121,6 +121,7 @@ const MapPage: NextPage = () => {
     lat: 35.68518697509635,
     lng: 139.75278854370117,
   })
+  const addressInput = React.useRef<HTMLInputElement>(null)
 
   const onClick = (e: google.maps.MapMouseEvent) => {
     // avoid directly mutating state
@@ -168,6 +169,36 @@ const MapPage: NextPage = () => {
         value={center.lng}
         onChange={(event) => setCenter({ ...center, lng: Number(event.target.value) })}
       />
+      <br />
+      <br />
+
+      <form>
+        <label htmlFor="address">住所 </label>
+        <input ref={addressInput} type="text" id="address" name="address" />
+        <button
+          type="submit"
+          onClick={async (e) => {
+            e.preventDefault()
+            const address = addressInput.current?.value
+            if (!address) return
+
+            const geocoder = new window.google.maps.Geocoder()
+            try {
+              const { results } = await geocoder.geocode({ address })
+              const [result] = results
+              setPinned(result.geometry.location)
+              const [lat, lng] = [result.geometry.location.lat(), result.geometry.location.lng()]
+              setCenter({ lat, lng })
+              setZoom(17)
+            } catch {
+              alert('該当の住所が見つかりませんでした。')
+            }
+          }}
+        >
+          Search
+        </button>
+      </form>
+
       <h3>{!pinned ? 'Click on map to add markers' : 'Pinned'}</h3>
       {pinned && <pre>{JSON.stringify(pinned.toJSON(), null, 2)}</pre>}
       <button onClick={() => setPinned(undefined)}>Clear</button>

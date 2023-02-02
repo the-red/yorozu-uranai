@@ -35,6 +35,7 @@
     "windicss-webpack-plugin": "^1.5.8"
   },
   "dependencies": {
+    "@googlemaps/js-api-loader": "^1.15.1",
     "@googlemaps/react-wrapper": "^1.1.35",
     "@googlemaps/typescript-guards": "^2.0.3",
     "@types/react-burger-menu": "^2.8.3",

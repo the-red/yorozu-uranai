@@ -119,14 +119,14 @@ const MapPage: NextPage = () => {
     lat: 35.68518697509635,
     lng: 139.75278854370117,
   }
-  const [pinned, setPinned] = React.useState<google.maps.LatLng>(new google.maps.LatLng(defaultLocation))
+  const [pinned, setPinned] = React.useState<google.maps.LatLngLiteral>(defaultLocation)
   const [center, setCenter] = React.useState<google.maps.LatLngLiteral>(defaultLocation)
   const [zoom, setZoom] = React.useState(14)
   const addressInput = React.useRef<HTMLInputElement>(null)
 
   const onClick = (e: google.maps.MapMouseEvent) => {
     // avoid directly mutating state
-    setPinned(e.latLng!)
+    setPinned({ lat: e.latLng!.lat(), lng: e.latLng!.lng() })
   }
 
   const onIdle = (m: google.maps.Map) => {
@@ -150,20 +150,16 @@ const MapPage: NextPage = () => {
           type="number"
           id="lat"
           name="lat"
-          value={pinned.lat()}
-          onChange={(event) =>
-            setPinned(new google.maps.LatLng({ lat: Number(event.target.value), lng: pinned.lng() }))
-          }
+          value={pinned.lat}
+          onChange={(event) => setPinned({ lat: Number(event.target.value), lng: pinned.lng })}
         />
         <label htmlFor="lng"> 経度 </label>
         <input
           type="number"
           id="lng"
           name="lng"
-          value={pinned.lng()}
-          onChange={(event) =>
-            setPinned(new google.maps.LatLng({ lat: pinned.lat(), lng: Number(event.target.value) }))
-          }
+          value={pinned.lng}
+          onChange={(event) => setPinned({ lat: pinned.lat, lng: Number(event.target.value) })}
         />
       </p>
       <p>
@@ -191,8 +187,8 @@ const MapPage: NextPage = () => {
             try {
               const { results } = await geocoder.geocode({ address })
               const [result] = results
-              setPinned(result.geometry.location)
               const [lat, lng] = [result.geometry.location.lat(), result.geometry.location.lng()]
+              setPinned({ lat, lng })
               setCenter({ lat, lng })
               setZoom(17)
             } catch {

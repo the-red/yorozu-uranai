@@ -114,13 +114,14 @@ function useDeepCompareEffectForMaps(callback: React.EffectCallback, dependencie
 }
 
 const MapPage: NextPage = () => {
-  const [pinned, setPinned] = React.useState<google.maps.LatLng>()
-  const [zoom, setZoom] = React.useState(14)
-  const [center, setCenter] = React.useState<google.maps.LatLngLiteral>({
+  const defaultLocation = {
     // デフォルト緯度経度は皇居
     lat: 35.68518697509635,
     lng: 139.75278854370117,
-  })
+  }
+  const [pinned, setPinned] = React.useState<google.maps.LatLng>(new google.maps.LatLng(defaultLocation))
+  const [center, setCenter] = React.useState<google.maps.LatLngLiteral>(defaultLocation)
+  const [zoom, setZoom] = React.useState(14)
   const addressInput = React.useRef<HTMLInputElement>(null)
 
   const onClick = (e: google.maps.MapMouseEvent) => {
@@ -138,42 +139,46 @@ const MapPage: NextPage = () => {
     <div
       style={{
         padding: '1rem',
-        flexBasis: '250px',
-        height: '100%',
-        overflow: 'auto',
+        // flexBasis: '200px',
+        // width: '100%',
+        // overflow: 'auto',
       }}
     >
-      <label htmlFor="zoom">Zoom </label>
-      <input
-        type="number"
-        id="zoom"
-        name="zoom"
-        value={zoom}
-        onChange={(event) => setZoom(Number(event.target.value))}
-      />
-      <br />
-      <label htmlFor="lat">緯度 </label>
-      <input
-        type="number"
-        id="lat"
-        name="lat"
-        value={center.lat}
-        onChange={(event) => setCenter({ ...center, lat: Number(event.target.value) })}
-      />
-      <br />
-      <label htmlFor="lng">経度 </label>
-      <input
-        type="number"
-        id="lng"
-        name="lng"
-        value={center.lng}
-        onChange={(event) => setCenter({ ...center, lng: Number(event.target.value) })}
-      />
-      <br />
-      <br />
+      <p>
+        <label htmlFor="lat"> 緯度 </label>
+        <input
+          type="number"
+          id="lat"
+          name="lat"
+          value={pinned.lat()}
+          onChange={(event) =>
+            setPinned(new google.maps.LatLng({ lat: Number(event.target.value), lng: pinned.lng() }))
+          }
+        />
+        <label htmlFor="lng"> 経度 </label>
+        <input
+          type="number"
+          id="lng"
+          name="lng"
+          value={pinned.lng()}
+          onChange={(event) =>
+            setPinned(new google.maps.LatLng({ lat: pinned.lat(), lng: Number(event.target.value) }))
+          }
+        />
+      </p>
+      <p>
+        <label htmlFor="zoom"> Zoom </label>
+        <input
+          type="number"
+          id="zoom"
+          name="zoom"
+          value={zoom}
+          onChange={(event) => setZoom(Number(event.target.value))}
+        />
+      </p>
 
       <form>
-        <label htmlFor="address">住所 </label>
+        <label htmlFor="address"> 住所 </label>
         <input ref={addressInput} type="text" id="address" name="address" />
         <button
           type="submit"
@@ -195,25 +200,21 @@ const MapPage: NextPage = () => {
             }
           }}
         >
-          Search
+          検索
         </button>
       </form>
-
-      <h3>{!pinned ? 'Click on map to add markers' : 'Pinned'}</h3>
-      {pinned && <pre>{JSON.stringify(pinned.toJSON(), null, 2)}</pre>}
-      <button onClick={() => setPinned(undefined)}>Clear</button>
     </div>
   )
 
   return (
-    <div style={{ display: 'flex', height: '100%' }}>
+    <div style={{ display: 'flex', flexFlow: 'column', height: '100%' }}>
+      {form}
       <Wrapper apiKey={process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY!} render={render}>
         <Map center={center} onClick={onClick} onIdle={onIdle} zoom={zoom} style={{ flexGrow: '1', height: '100%' }}>
           <Marker position={pinned} />
         </Map>
       </Wrapper>
       {/* Basic form for controlling center and zoom of map. */}
-      {form}
     </div>
   )
 }

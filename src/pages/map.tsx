@@ -210,7 +210,6 @@ const MapPage: NextPage = () => {
           <Marker position={pinned} />
         </Map>
       </Wrapper>
-      {/* Basic form for controlling center and zoom of map. */}
     </div>
   )
 }

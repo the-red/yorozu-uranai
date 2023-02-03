@@ -122,6 +122,7 @@ const MapPage: NextPage = () => {
   const [pinned, setPinned] = React.useState<google.maps.LatLngLiteral>()
   const [center, setCenter] = React.useState<google.maps.LatLngLiteral>()
   const [zoom, setZoom] = React.useState(14)
+  const [foundAddress, setFoundAddress] = React.useState<string>('')
   const addressInput = React.useRef<HTMLInputElement>(null)
 
   const router = useRouter()
@@ -143,6 +144,7 @@ const MapPage: NextPage = () => {
     const lat = roundLatLng(e.latLng!.lat())
     const lng = roundLatLng(e.latLng!.lng())
     setPinned({ lat, lng })
+    setFoundAddress('')
   }
 
   const onIdleMarker = (m: google.maps.Map) => {
@@ -174,6 +176,7 @@ const MapPage: NextPage = () => {
             const [lat, lng] = [Number(event.target.value), pinned.lng]
             setPinned({ lat, lng })
             setCenter({ lat, lng })
+            setFoundAddress('')
           }}
         />
         <label htmlFor="lng"> 経度 </label>
@@ -223,6 +226,7 @@ const MapPage: NextPage = () => {
               ]
               setPinned({ lat, lng })
               setCenter({ lat, lng })
+              setFoundAddress(result.formatted_address)
               setZoom(17)
             } catch {
               alert('該当の住所が見つかりませんでした。')
@@ -231,6 +235,7 @@ const MapPage: NextPage = () => {
         >
           検索
         </button>
+        {` ${foundAddress}`}
       </form>
 
       <button

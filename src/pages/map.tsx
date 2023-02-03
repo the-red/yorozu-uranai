@@ -6,6 +6,7 @@ import { NextPage } from 'next'
 import { imperialPalaceLocation } from '../lib/location'
 import { roundLatLng } from '../lib/math'
 import { useRouter } from 'next/router'
+import { el } from 'date-fns/locale'
 
 export type OptionalQuery = { lat?: number; lng?: number }
 
@@ -258,11 +259,11 @@ const MapPage: NextPage = () => {
 
       <button
         onClick={() => {
-          const { setLocation } = window.opener
-          const succeeded = setLocation(pinned.lat, pinned.lng)
-          if (succeeded) {
+          const setLocation = window?.opener?.setLocation
+          if (setLocation && setLocation(pinned.lat, pinned.lng)) {
             window.close()
           } else {
+            console.error({ opener: window?.opener, setLocation })
             alert('緯度経度が確定できませんでした。')
           }
         }}

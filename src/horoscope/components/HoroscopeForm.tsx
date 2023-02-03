@@ -1,3 +1,4 @@
+import Link from 'next/link'
 import { FC } from 'react'
 import { useForm } from 'react-hook-form'
 import { pagesPath } from '../../lib/$path'
@@ -93,14 +94,11 @@ export const HoroscopeForm: FC<HoroscopeFormProps> = ({ onSubmit, defaultValues 
               }}
             />
           </div>
-          <div style={{ paddingTop: '5px' }}>
-            <button
-              onClick={() => {
-                window.open(pagesPath.map.$url().pathname)
-              }}
-            >
+          <div style={{ textDecoration: 'underline' }}>
+            {/* eslint-disable-next-line react/jsx-no-target-blank */}
+            <a href={pagesPath.map.$url().pathname} target="_blank" rel="opener">
               緯度経度を検索
-            </button>
+            </a>
           </div>
         </div>
       </div>

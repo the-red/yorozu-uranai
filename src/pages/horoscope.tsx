@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useRouter } from 'next/router'
 import useSWR from 'swr'
 import { DateTime } from 'luxon'
@@ -11,52 +11,54 @@ import { Horoscope, HoroscopeProps } from '../horoscope'
 import { HoroscopeForm, HoroscopeFormProps, HoroscopeFormValues } from '../horoscope/components/HoroscopeForm'
 import HoroscopeDetailPage from '../horoscope/components/HoroscopeDetailPage'
 import { Query, FORM_DATE_FORMAT, FORM_TIME_FORMAT, queryToFormValues, formValuesToQuery } from '../lib/params'
-import { defaultLocation } from '../lib/defaultValues'
+import { getCurrentLocation } from '../lib/defaultValues'
 
 export type OptionalQuery = Query
-
-const DEFAULT_LAT = defaultLocation.lat
-const DEFAULT_LON = defaultLocation.lng
 
 function HoroscopePage() {
   const router = useRouter()
   const [horoscope, setHoroscope] = useState<Horoscope>()
+  const [formValues, setFormValues] = useState<HoroscopeFormValues>()
 
-  const formValues = useMemo(() => {
-    if (router.isReady) {
-      const f = queryToFormValues(router.query)
-      const now = DateTime.local({ zone: f.zone })
-      const zone = now.zoneName
+  useEffect(() => {
+    const setDefaultFormValues = async () => {
+      if (router.isReady) {
+        const f = queryToFormValues(router.query)
+        const now = DateTime.local({ zone: f.zone })
+        const zone = now.zoneName
 
-      let date: string
-      let time: string | undefined
-      let timeUnknown: boolean = f.timeUnknown
+        let date: string
+        let time: string | undefined
+        let timeUnknown: boolean = f.timeUnknown
 
-      if (f.date && f.time) {
-        date = f.date
-        time = f.time
-      } else if (f.date && !f.time) {
-        // NOTE: クエリで日付だけ指定の場合は、timeUnknownとして扱う
-        date = f.date
-        timeUnknown = true
-      } else if (!f.date && f.time) {
-        date = now.toFormat(FORM_DATE_FORMAT)
-        time = f.time
-      } else {
-        date = now.toFormat(FORM_DATE_FORMAT)
-        time = now.toFormat(FORM_TIME_FORMAT)
+        if (f.date && f.time) {
+          date = f.date
+          time = f.time
+        } else if (f.date && !f.time) {
+          // NOTE: クエリで日付だけ指定の場合は、timeUnknownとして扱う
+          date = f.date
+          timeUnknown = true
+        } else if (!f.date && f.time) {
+          date = now.toFormat(FORM_DATE_FORMAT)
+          time = f.time
+        } else {
+          date = now.toFormat(FORM_DATE_FORMAT)
+          time = now.toFormat(FORM_TIME_FORMAT)
+        }
+
+        if (timeUnknown || !time) {
+          timeUnknown = true
+          time = '12:00'
+        }
+
+        const currentLocation = await getCurrentLocation()
+        const lat = f.lat === undefined ? currentLocation.lat : f.lat
+        const lon = f.lon === undefined ? currentLocation.lon : f.lon
+
+        setFormValues({ ...f, date, time, zone, timeUnknown, lat, lon })
       }
-
-      if (timeUnknown || !time) {
-        timeUnknown = true
-        time = '12:00'
-      }
-
-      const lat = f.lat === undefined ? DEFAULT_LAT : f.lat
-      const lon = f.lon === undefined ? DEFAULT_LON : f.lon
-
-      return { ...f, date, time, zone, timeUnknown, lat, lon }
     }
+    setDefaultFormValues()
   }, [router])
 
   const { data, error } = useSWR<Horoscope>([formValues], async (formValues: HoroscopeFormValues) => {

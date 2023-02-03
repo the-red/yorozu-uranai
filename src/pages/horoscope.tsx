@@ -61,9 +61,11 @@ function HoroscopePage() {
     setDefaultFormValues()
   }, [router])
 
-  const { data, error } = useSWR<Horoscope>([formValues], async (formValues: HoroscopeFormValues) => {
-    // TODO: SWRじゃなくてuseEffectに変更
-    // キャッシュとかポーリングとか不要だし、formValuesがundefinedのときにエラーになったりするので
+  const { data, error } = useSWR<Horoscope | undefined>([formValues], async (formValues: HoroscopeFormValues) => {
+    if (!formValues) {
+      return
+    }
+
     const { date, time, zone, lat, lon } = formValues
     const horoscopeSeed: {
       dateTime: DateTime
@@ -97,6 +99,7 @@ function HoroscopePage() {
   }, [data])
 
   if (error) return <div>failed to load: {JSON.stringify(error.message)}</div>
+  // TODO: loading時にヘッダー・タイトル・背景色くらいは出したい
   if (!horoscope) return <div>loading...</div>
 
   // TODO:固定値ではなく、ユーザーが画面から指定した値を使うようにしたい

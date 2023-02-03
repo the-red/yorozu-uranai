@@ -18,7 +18,12 @@ export type HoroscopeFormProps = {
 }
 
 export const HoroscopeForm: FC<HoroscopeFormProps> = ({ onSubmit, defaultValues }) => {
-  const { register, handleSubmit: hookFormHandleSubmit, watch } = useForm<HoroscopeFormValues>({ defaultValues })
+  const {
+    register,
+    handleSubmit: hookFormHandleSubmit,
+    watch,
+    setValue,
+  } = useForm<HoroscopeFormValues>({ defaultValues })
 
   const isTimeUnknownChecked = watch('timeUnknown')
   const zone = watch('zone')
@@ -34,13 +39,8 @@ export const HoroscopeForm: FC<HoroscopeFormProps> = ({ onSubmit, defaultValues 
 
   // @ts-expect-error
   window.setLocation = (lat, lng) => {
-    const latEl = document.querySelector<HTMLInputElement>('#lat-input')
-    const lonEl = document.querySelector<HTMLInputElement>('#lng-input')
-    if (!latEl || !lonEl) {
-      return false
-    }
-    latEl.value = lat
-    lonEl.value = lng
+    setValue('lat', lat)
+    setValue('lng', lng)
     return true
   }
 

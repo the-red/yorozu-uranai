@@ -4,7 +4,7 @@ import { createCustomEqual } from 'fast-equals'
 import { isLatLngLiteral } from '@googlemaps/typescript-guards'
 import { NextPage } from 'next'
 import { imperialPalaceLocation } from '../lib/location'
-import { rounddown } from '../lib/math'
+import { roundLatLng } from '../lib/math'
 import { useRouter } from 'next/router'
 
 export type OptionalQuery = { lat?: number; lng?: number }
@@ -140,8 +140,8 @@ const MapPage: NextPage = () => {
 
   const onClickMarker = (e: google.maps.MapMouseEvent) => {
     // avoid directly mutating state
-    const lat = rounddown(e.latLng!.lat(), 7)
-    const lng = rounddown(e.latLng!.lng(), 7)
+    const lat = roundLatLng(e.latLng!.lat())
+    const lng = roundLatLng(e.latLng!.lng())
     setPinned({ lat, lng })
   }
 
@@ -218,8 +218,8 @@ const MapPage: NextPage = () => {
               const { results } = await geocoder.geocode({ address })
               const [result] = results
               const [lat, lng] = [
-                rounddown(result.geometry.location.lat(), 7),
-                rounddown(result.geometry.location.lng(), 7),
+                roundLatLng(result.geometry.location.lat()),
+                roundLatLng(result.geometry.location.lng()),
               ]
               setPinned({ lat, lng })
               setCenter({ lat, lng })

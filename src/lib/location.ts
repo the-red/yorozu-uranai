@@ -1,4 +1,4 @@
-import { rounddown } from './math'
+import { roundLatLng } from './math'
 
 export const imperialPalaceLocation = {
   // 皇居
@@ -16,7 +16,7 @@ export const getCurrentLocation = (): Promise<{ lat: number; lng: number }> =>
     navigator.geolocation.getCurrentPosition(
       (position) => {
         const { latitude, longitude } = position.coords
-        return resolve({ lat: rounddown(latitude, 7), lng: rounddown(longitude, 7) })
+        return resolve({ lat: roundLatLng(latitude), lng: roundLatLng(longitude) })
       },
       (error) => {
         // エラーコード(error.code)の番号

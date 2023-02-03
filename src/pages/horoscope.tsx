@@ -62,6 +62,8 @@ function HoroscopePage() {
   }, [router])
 
   const { data, error } = useSWR<Horoscope>([formValues], async (formValues: HoroscopeFormValues) => {
+    // TODO: SWRじゃなくてuseEffectに変更
+    // キャッシュとかポーリングとか不要だし、formValuesがundefinedのときにエラーになったりするので
     const { date, time, zone, lat, lon } = formValues
     const horoscopeSeed: {
       dateTime: DateTime

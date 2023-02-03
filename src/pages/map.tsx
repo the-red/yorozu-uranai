@@ -217,7 +217,10 @@ const MapPage: NextPage = () => {
             try {
               const { results } = await geocoder.geocode({ address })
               const [result] = results
-              const [lat, lng] = [result.geometry.location.lat(), result.geometry.location.lng()]
+              const [lat, lng] = [
+                rounddown(result.geometry.location.lat(), 7),
+                rounddown(result.geometry.location.lng(), 7),
+              ]
               setPinned({ lat, lng })
               setCenter({ lat, lng })
               setZoom(17)

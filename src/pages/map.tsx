@@ -3,8 +3,11 @@ import { Wrapper, Status } from '@googlemaps/react-wrapper'
 import { createCustomEqual } from 'fast-equals'
 import { isLatLngLiteral } from '@googlemaps/typescript-guards'
 import { NextPage } from 'next'
-import { defaultLocation } from '../lib/location'
+import { imperialPalaceLocation } from '../lib/location'
 import { rounddown } from '../lib/math'
+import { useRouter } from 'next/router'
+
+export type OptionalQuery = { lat?: number; lng?: number }
 
 const render = (status: Status) => {
   return <h1>{status}</h1>
@@ -116,10 +119,24 @@ function useDeepCompareEffectForMaps(callback: React.EffectCallback, dependencie
 }
 
 const MapPage: NextPage = () => {
-  const [pinned, setPinned] = React.useState<google.maps.LatLngLiteral>(defaultLocation)
-  const [center, setCenter] = React.useState<google.maps.LatLngLiteral>(defaultLocation)
+  const [pinned, setPinned] = React.useState<google.maps.LatLngLiteral>()
+  const [center, setCenter] = React.useState<google.maps.LatLngLiteral>()
   const [zoom, setZoom] = React.useState(14)
   const addressInput = React.useRef<HTMLInputElement>(null)
+
+  const router = useRouter()
+  React.useEffect(() => {
+    if (router.isReady) {
+      const defaultLocation =
+        router.query.lat && router.query.lng
+          ? { lat: Number(router.query.lat), lng: Number(router.query.lng) }
+          : imperialPalaceLocation
+
+      setPinned(defaultLocation)
+      setCenter(defaultLocation)
+    }
+  }, [router])
+  if (!pinned || !center) return <div>loading...</div>
 
   const onClickMarker = (e: google.maps.MapMouseEvent) => {
     // avoid directly mutating state

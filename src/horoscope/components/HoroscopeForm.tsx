@@ -22,6 +22,8 @@ export const HoroscopeForm: FC<HoroscopeFormProps> = ({ onSubmit, defaultValues 
 
   const isTimeUnknownChecked = watch('timeUnknown')
   const zone = watch('zone')
+  const lat = watch('lat')
+  const lon = watch('lon')
 
   const handleSubmit = ({ date, time, zone, timeUnknown, lat, lon }: HoroscopeFormValues) => {
     lat = typeof lat === 'number' && !isNaN(lat) ? lat : 0
@@ -96,9 +98,9 @@ export const HoroscopeForm: FC<HoroscopeFormProps> = ({ onSubmit, defaultValues 
           </div>
           <div style={{ textDecoration: 'underline' }}>
             {/* eslint-disable-next-line react/jsx-no-target-blank */}
-            <a href={pagesPath.map.$url().pathname} target="_blank" rel="opener">
+            <Link href={pagesPath.map.$url({ query: { lat: lat, lng: lon } })} target="_blank" rel="opener">
               緯度経度を検索
-            </a>
+            </Link>
           </div>
         </div>
       </div>

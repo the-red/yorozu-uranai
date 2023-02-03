@@ -1,23 +1,24 @@
 import type { OptionalQuery as OptionalQuery0 } from '../pages'
 import type { OptionalQuery as OptionalQuery1 } from '../pages/horoscope'
-import type { OptionalQuery as OptionalQuery2 } from '../pages/numerology'
-import type { OptionalQuery as OptionalQuery3 } from '../pages/suimei'
+import type { OptionalQuery as OptionalQuery2 } from '../pages/map'
+import type { OptionalQuery as OptionalQuery3 } from '../pages/numerology'
+import type { OptionalQuery as OptionalQuery4 } from '../pages/suimei'
 
 export const pagesPath = {
   "horoscope": {
     $url: (url?: { query?: OptionalQuery1, hash?: string }) => ({ pathname: '/horoscope' as const, query: url?.query, hash: url?.hash })
   },
   "map": {
-    $url: (url?: { hash?: string }) => ({ pathname: '/map' as const, hash: url?.hash })
+    $url: (url?: { query?: OptionalQuery2, hash?: string }) => ({ pathname: '/map' as const, query: url?.query, hash: url?.hash })
   },
   "numerology": {
-    $url: (url?: { query?: OptionalQuery2, hash?: string }) => ({ pathname: '/numerology' as const, query: url?.query, hash: url?.hash })
+    $url: (url?: { query?: OptionalQuery3, hash?: string }) => ({ pathname: '/numerology' as const, query: url?.query, hash: url?.hash })
   },
   "suimei_design": {
     $url: (url?: { hash?: string }) => ({ pathname: '/suimei-design' as const, hash: url?.hash })
   },
   "suimei": {
-    $url: (url?: { query?: OptionalQuery3, hash?: string }) => ({ pathname: '/suimei' as const, query: url?.query, hash: url?.hash })
+    $url: (url?: { query?: OptionalQuery4, hash?: string }) => ({ pathname: '/suimei' as const, query: url?.query, hash: url?.hash })
   },
   $url: (url?: { query?: OptionalQuery0, hash?: string }) => ({ pathname: '/' as const, query: url?.query, hash: url?.hash })
 }

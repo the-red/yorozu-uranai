@@ -1,6 +1,6 @@
 import { rounddown } from './math'
 
-export const defaultLocation = {
+export const imperialPalaceLocation = {
   // 皇居
   lat: 35.685175,
   lng: 139.7527995,

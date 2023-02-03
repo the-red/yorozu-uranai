@@ -1,5 +1,6 @@
 import { FC } from 'react'
 import { useForm } from 'react-hook-form'
+import { pagesPath } from '../../lib/$path'
 
 export type HoroscopeFormValues = {
   date: string
@@ -26,6 +27,18 @@ export const HoroscopeForm: FC<HoroscopeFormProps> = ({ onSubmit, defaultValues 
     lon = typeof lon === 'number' && !isNaN(lon) ? lon : 0
 
     onSubmit({ date, time, zone, timeUnknown, lat, lon })
+  }
+
+  // @ts-expect-error
+  window.setLocation = (lat, lon) => {
+    const latEl = document.querySelector<HTMLInputElement>('#lat-input')
+    const lonEl = document.querySelector<HTMLInputElement>('#lon-input')
+    if (!latEl || !lonEl) {
+      return false
+    }
+    latEl.value = lat
+    lonEl.value = lon
+    return true
   }
 
   return (
@@ -55,28 +68,39 @@ export const HoroscopeForm: FC<HoroscopeFormProps> = ({ onSubmit, defaultValues 
           <div>
             <label style={{ marginRight: '8px' }}>緯度</label>
             <input
+              id="lat-input"
               type="number"
-              step="0.0000000000000001"
+              step="0.0000001"
               min="-90"
               max="90"
               {...register('lat', { valueAsNumber: true })}
               style={{
-                width: 80,
+                width: 110,
               }}
             />
           </div>
           <div>
             <label style={{ marginRight: '8px' }}>経度</label>
             <input
+              id="lon-input"
               type="number"
-              step="0.0000000000000001"
+              step="0.0000001"
               min="-180"
               max="180"
               {...register('lon', { valueAsNumber: true })}
               style={{
-                width: 80,
+                width: 110,
               }}
             />
+          </div>
+          <div style={{ paddingTop: '5px' }}>
+            <button
+              onClick={() => {
+                window.open(pagesPath.map.$url().pathname)
+              }}
+            >
+              緯度経度を検索
+            </button>
           </div>
         </div>
       </div>

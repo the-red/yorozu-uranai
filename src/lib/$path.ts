@@ -80,7 +80,7 @@ export const staticPath = {
     }
   },
   map_test: {
-    index_html: '/map-test/index.html',
+    index_html_example: '/map-test/index.html.example',
     index_js: '/map-test/index.js',
     style_css: '/map-test/style.css'
   }

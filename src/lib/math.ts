@@ -1,0 +1,1 @@
+export const rounddown = (value: number, scale: number) => Math.trunc(value * 10 ** scale) / 10 ** scale

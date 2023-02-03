@@ -3,6 +3,8 @@ import { Wrapper, Status } from '@googlemaps/react-wrapper'
 import { createCustomEqual } from 'fast-equals'
 import { isLatLngLiteral } from '@googlemaps/typescript-guards'
 import { NextPage } from 'next'
+import { defaultLocation } from '../lib/defaultValues'
+import { rounddown } from '../lib/math'
 
 const render = (status: Status) => {
   return <h1>{status}</h1>
@@ -114,22 +116,19 @@ function useDeepCompareEffectForMaps(callback: React.EffectCallback, dependencie
 }
 
 const MapPage: NextPage = () => {
-  const defaultLocation = {
-    // デフォルト緯度経度は皇居
-    lat: 35.68518697509635,
-    lng: 139.75278854370117,
-  }
   const [pinned, setPinned] = React.useState<google.maps.LatLngLiteral>(defaultLocation)
   const [center, setCenter] = React.useState<google.maps.LatLngLiteral>(defaultLocation)
   const [zoom, setZoom] = React.useState(14)
   const addressInput = React.useRef<HTMLInputElement>(null)
 
-  const onClick = (e: google.maps.MapMouseEvent) => {
+  const onClickMarker = (e: google.maps.MapMouseEvent) => {
     // avoid directly mutating state
-    setPinned({ lat: e.latLng!.lat(), lng: e.latLng!.lng() })
+    const lat = rounddown(e.latLng!.lat(), 7)
+    const lng = rounddown(e.latLng!.lng(), 7)
+    setPinned({ lat, lng })
   }
 
-  const onIdle = (m: google.maps.Map) => {
+  const onIdleMarker = (m: google.maps.Map) => {
     console.info('onIdle')
     setZoom(m.getZoom()!)
     setCenter(m.getCenter()!.toJSON())
@@ -150,16 +149,30 @@ const MapPage: NextPage = () => {
           type="number"
           id="lat"
           name="lat"
+          step="0.0000001"
+          min="-90"
+          max="90"
           value={pinned.lat}
-          onChange={(event) => setPinned({ lat: Number(event.target.value), lng: pinned.lng })}
+          onChange={(event) => {
+            const [lat, lng] = [Number(event.target.value), pinned.lng]
+            setPinned({ lat, lng })
+            setCenter({ lat, lng })
+          }}
         />
         <label htmlFor="lng"> 経度 </label>
         <input
           type="number"
           id="lng"
           name="lng"
+          step="0.0000001"
+          min="-180"
+          max="180"
           value={pinned.lng}
-          onChange={(event) => setPinned({ lat: pinned.lat, lng: Number(event.target.value) })}
+          onChange={(event) => {
+            const [lat, lng] = [pinned.lat, Number(event.target.value)]
+            setPinned({ lat, lng })
+            setCenter({ lat, lng })
+          }}
         />
       </p>
       <p>
@@ -199,6 +212,20 @@ const MapPage: NextPage = () => {
           検索
         </button>
       </form>
+
+      <button
+        onClick={() => {
+          const { setLocation } = window.opener
+          const succeeded = setLocation(pinned.lat, pinned.lng)
+          if (succeeded) {
+            window.close()
+          } else {
+            alert('緯度経度が確定できませんでした。')
+          }
+        }}
+      >
+        確定
+      </button>
     </div>
   )
 
@@ -206,7 +233,13 @@ const MapPage: NextPage = () => {
     <div style={{ display: 'flex', flexFlow: 'column', height: '100%' }}>
       {form}
       <Wrapper apiKey={process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY!} render={render}>
-        <Map center={center} onClick={onClick} onIdle={onIdle} zoom={zoom} style={{ flexGrow: '1', height: '100%' }}>
+        <Map
+          center={center}
+          onClick={onClickMarker}
+          onIdle={onIdleMarker}
+          zoom={zoom}
+          style={{ flexGrow: '1', height: '100%' }}
+        >
           <Marker position={pinned} />
         </Map>
       </Wrapper>

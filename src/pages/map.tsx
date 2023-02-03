@@ -122,7 +122,7 @@ const MapPage: NextPage = () => {
   const [pinned, setPinned] = React.useState<google.maps.LatLngLiteral>()
   const [center, setCenter] = React.useState<google.maps.LatLngLiteral>()
   const [zoom, setZoom] = React.useState(14)
-  const [foundAddress, setFoundAddress] = React.useState<string>('')
+  const [info, setInfo] = React.useState<string>('')
   const addressInput = React.useRef<HTMLInputElement>(null)
 
   const router = useRouter()
@@ -139,19 +139,24 @@ const MapPage: NextPage = () => {
   }, [router])
   if (!pinned || !center) return <div>loading...</div>
 
-  const onClickMarker = async (e: google.maps.MapMouseEvent | google.maps.IconMouseEvent) => {
+  const onClickMarker = async (event: google.maps.MapMouseEvent | google.maps.IconMouseEvent) => {
     // avoid directly mutating state
-    const lat = roundLatLng(e.latLng!.lat())
-    const lng = roundLatLng(e.latLng!.lng())
-    setPinned({ lat, lng })
-    setFoundAddress('')
+    const location = {
+      lat: roundLatLng(event.latLng!.lat()),
+      lng: roundLatLng(event.latLng!.lng()),
+    }
+    setPinned(location)
 
-    const iconMouseEvent = e as google.maps.IconMouseEvent
-    if (iconMouseEvent.placeId) {
+    try {
+      // ピンの位置を元に住所を検索
       const geocoder = new window.google.maps.Geocoder()
-      const { results } = await geocoder.geocode({ placeId: iconMouseEvent.placeId })
+      const { placeId } = event as google.maps.IconMouseEvent
+      const { results } = placeId ? await geocoder.geocode({ placeId }) : await geocoder.geocode({ location })
       const [result] = results
-      setFoundAddress(result.formatted_address)
+      setInfo(result.formatted_address)
+    } catch (e) {
+      const error = e as google.maps.MapsNetworkError
+      setInfo(`ERROR: ${error.message}`)
     }
   }
 
@@ -184,7 +189,7 @@ const MapPage: NextPage = () => {
             const [lat, lng] = [Number(event.target.value), pinned.lng]
             setPinned({ lat, lng })
             setCenter({ lat, lng })
-            setFoundAddress('')
+            setInfo('')
           }}
         />
         <label htmlFor="lng"> 経度 </label>
@@ -234,16 +239,21 @@ const MapPage: NextPage = () => {
               ]
               setPinned({ lat, lng })
               setCenter({ lat, lng })
-              setFoundAddress(result.formatted_address)
+              setInfo(result.formatted_address)
               setZoom(17)
-            } catch {
-              alert('該当の住所が見つかりませんでした。')
+            } catch (e) {
+              const error = e as google.maps.MapsNetworkError
+              if (error.code === 'ZERO_RESULTS') {
+                setInfo('該当の住所が見つかりませんでした。')
+              } else {
+                setInfo(error.message)
+              }
             }
           }}
         >
           検索
         </button>
-        {` ${foundAddress}`}
+        {` ${info}`}
       </form>
 
       <button

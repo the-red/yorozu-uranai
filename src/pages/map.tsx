@@ -3,7 +3,7 @@ import { Wrapper, Status } from '@googlemaps/react-wrapper'
 import { createCustomEqual } from 'fast-equals'
 import { isLatLngLiteral } from '@googlemaps/typescript-guards'
 import { NextPage } from 'next'
-import { defaultLocation } from '../lib/defaultValues'
+import { defaultLocation } from '../lib/location'
 import { rounddown } from '../lib/math'
 
 const render = (status: Status) => {

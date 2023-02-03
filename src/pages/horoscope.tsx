@@ -11,7 +11,7 @@ import { Horoscope, HoroscopeProps } from '../horoscope'
 import { HoroscopeForm, HoroscopeFormProps, HoroscopeFormValues } from '../horoscope/components/HoroscopeForm'
 import HoroscopeDetailPage from '../horoscope/components/HoroscopeDetailPage'
 import { Query, FORM_DATE_FORMAT, FORM_TIME_FORMAT, queryToFormValues, formValuesToQuery } from '../lib/params'
-import { getCurrentLocation } from '../lib/defaultValues'
+import { getCurrentLocation } from '../lib/location'
 
 export type OptionalQuery = Query
 

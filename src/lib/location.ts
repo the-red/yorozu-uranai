@@ -7,7 +7,7 @@ export const imperialPalaceLocation = {
 } as const
 
 // 参考: https://syncer.jp/how-to-use-geolocation-api
-export const getCurrentLocation = (): Promise<{ lat: number; lon: number }> =>
+export const getCurrentLocation = (): Promise<{ lat: number; lng: number }> =>
   new Promise((resolve, reject) => {
     if (!navigator.geolocation) {
       return reject()
@@ -16,7 +16,7 @@ export const getCurrentLocation = (): Promise<{ lat: number; lon: number }> =>
     navigator.geolocation.getCurrentPosition(
       (position) => {
         const { latitude, longitude } = position.coords
-        return resolve({ lat: rounddown(latitude, 7), lon: rounddown(longitude, 7) })
+        return resolve({ lat: rounddown(latitude, 7), lng: rounddown(longitude, 7) })
       },
       (error) => {
         // エラーコード(error.code)の番号

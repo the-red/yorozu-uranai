@@ -9,7 +9,7 @@ export type HoroscopeFormValues = {
   zone: string
   timeUnknown: boolean
   lat: number
-  lon: number
+  lng: number
 }
 
 export type HoroscopeFormProps = {
@@ -23,24 +23,24 @@ export const HoroscopeForm: FC<HoroscopeFormProps> = ({ onSubmit, defaultValues 
   const isTimeUnknownChecked = watch('timeUnknown')
   const zone = watch('zone')
   const lat = watch('lat')
-  const lon = watch('lon')
+  const lng = watch('lng')
 
-  const handleSubmit = ({ date, time, zone, timeUnknown, lat, lon }: HoroscopeFormValues) => {
+  const handleSubmit = ({ date, time, zone, timeUnknown, lat, lng }: HoroscopeFormValues) => {
     lat = typeof lat === 'number' && !isNaN(lat) ? lat : 0
-    lon = typeof lon === 'number' && !isNaN(lon) ? lon : 0
+    lng = typeof lng === 'number' && !isNaN(lng) ? lng : 0
 
-    onSubmit({ date, time, zone, timeUnknown, lat, lon })
+    onSubmit({ date, time, zone, timeUnknown, lat, lng })
   }
 
   // @ts-expect-error
-  window.setLocation = (lat, lon) => {
+  window.setLocation = (lat, lng) => {
     const latEl = document.querySelector<HTMLInputElement>('#lat-input')
-    const lonEl = document.querySelector<HTMLInputElement>('#lon-input')
+    const lonEl = document.querySelector<HTMLInputElement>('#lng-input')
     if (!latEl || !lonEl) {
       return false
     }
     latEl.value = lat
-    lonEl.value = lon
+    lonEl.value = lng
     return true
   }
 
@@ -85,12 +85,12 @@ export const HoroscopeForm: FC<HoroscopeFormProps> = ({ onSubmit, defaultValues 
           <div>
             <label style={{ marginRight: '8px' }}>経度</label>
             <input
-              id="lon-input"
+              id="lng-input"
               type="number"
               step="0.0000001"
               min="-180"
               max="180"
-              {...register('lon', { valueAsNumber: true })}
+              {...register('lng', { valueAsNumber: true })}
               style={{
                 width: 110,
               }}
@@ -98,7 +98,7 @@ export const HoroscopeForm: FC<HoroscopeFormProps> = ({ onSubmit, defaultValues 
           </div>
           <div style={{ textDecoration: 'underline' }}>
             {/* eslint-disable-next-line react/jsx-no-target-blank */}
-            <Link href={pagesPath.map.$url({ query: { lat: lat, lng: lon } })} target="_blank" rel="opener">
+            <Link href={pagesPath.map.$url({ query: { lat: lat, lng: lng } })} target="_blank" rel="opener">
               緯度経度を検索
             </Link>
           </div>

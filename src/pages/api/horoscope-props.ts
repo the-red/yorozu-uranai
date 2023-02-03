@@ -13,10 +13,10 @@ const horoscopeProps = async (req: NextApiRequest, res: NextApiResponse<Data>) =
 
   // 生まれた場所とハウスシステム
   const lat = Number(req.body.lat)
-  const lon = Number(req.body.lon)
+  const lng = Number(req.body.lng)
   const hsys = req.body.hsys as string
 
-  const horoscopeProps = await getHoroscopeProps(birthday, lat, lon, hsys)
+  const horoscopeProps = await getHoroscopeProps(birthday, lat, lng, hsys)
   res.status(200).json({ data: horoscopeProps })
 }
 

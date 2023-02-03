@@ -53,9 +53,9 @@ function HoroscopePage() {
 
         const currentLocation = await getCurrentLocation()
         const lat = f.lat === undefined ? currentLocation.lat : f.lat
-        const lon = f.lon === undefined ? currentLocation.lon : f.lon
+        const lng = f.lng === undefined ? currentLocation.lng : f.lng
 
-        setFormValues({ ...f, date, time, zone, timeUnknown, lat, lon })
+        setFormValues({ ...f, date, time, zone, timeUnknown, lat, lng })
       }
     }
     setDefaultFormValues()
@@ -66,16 +66,16 @@ function HoroscopePage() {
       return
     }
 
-    const { date, time, zone, lat, lon } = formValues
+    const { date, time, zone, lat, lng } = formValues
     const horoscopeSeed: {
       dateTime: DateTime
       lat: number
-      lon: number
+      lng: number
       // hsys?: string
     } = {
       dateTime: DateTime.fromISO(`${date}T${time}`, { zone }),
       lat,
-      lon,
+      lng,
     }
     const res = await fetch('/api/horoscope-props', {
       method: 'POST',

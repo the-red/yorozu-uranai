@@ -139,12 +139,20 @@ const MapPage: NextPage = () => {
   }, [router])
   if (!pinned || !center) return <div>loading...</div>
 
-  const onClickMarker = (e: google.maps.MapMouseEvent) => {
+  const onClickMarker = async (e: google.maps.MapMouseEvent | google.maps.IconMouseEvent) => {
     // avoid directly mutating state
     const lat = roundLatLng(e.latLng!.lat())
     const lng = roundLatLng(e.latLng!.lng())
     setPinned({ lat, lng })
     setFoundAddress('')
+
+    const iconMouseEvent = e as google.maps.IconMouseEvent
+    if (iconMouseEvent.placeId) {
+      const geocoder = new window.google.maps.Geocoder()
+      const { results } = await geocoder.geocode({ placeId: iconMouseEvent.placeId })
+      const [result] = results
+      setFoundAddress(result.formatted_address)
+    }
   }
 
   const onIdleMarker = (m: google.maps.Map) => {

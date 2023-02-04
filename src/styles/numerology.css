@@ -8,7 +8,9 @@
 }
 
 .numerology .form_outer::before,
-.numerology .form_outer::after {
+.numerology .form_outer::after,
+.numerology .core_numbers_outer::before,
+.numerology .core_numbers_outer::after {
   content: '';
   background-size: contain;
   background-position: center center;
@@ -30,4 +32,20 @@
   transform: rotate(12deg);
   bottom: 10px;
   right: 10px;
+}
+.numerology .core_numbers_outer::before {
+  background-image: url(/images/numerology/bird-1.svg);
+  width: 60px;
+  height: 60px;
+  /* transform: rotate(12deg); */
+  top: 10px;
+  left: 20px;
+}
+.numerology .core_numbers_outer::after {
+  background-image: url(/images/numerology/bird-2.svg);
+  width: 60px;
+  height: 60px;
+  /* transform: rotate(12deg); */
+  bottom: 10px;
+  right: 20px;
 }

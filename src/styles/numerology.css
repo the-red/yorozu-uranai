@@ -6,3 +6,28 @@
 .numerology .twitter-logo {
   fill: #4b4b4b;
 }
+
+.numerology .form_outer::before,
+.numerology .form_outer::after {
+  content: '';
+  background-size: contain;
+  background-position: center center;
+  background-repeat: no-repeat;
+  position: absolute;
+}
+.numerology .form_outer::before {
+  background-image: url(/images/numerology/leaf.svg);
+  width: 60px;
+  height: 60px;
+  transform: rotate(12deg);
+  top: 10px;
+  left: 10px;
+}
+.numerology .form_outer::after {
+  background-image: url(/images/numerology/flower.svg);
+  width: 60px;
+  height: 60px;
+  transform: rotate(12deg);
+  bottom: 10px;
+  right: 10px;
+}

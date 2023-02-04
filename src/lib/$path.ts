@@ -61,9 +61,13 @@ export const staticPath = {
     },
     numerology: {
       bird_1_png: '/images/numerology/bird-1.png',
+      bird_1_svg: '/images/numerology/bird-1.svg',
       bird_2_png: '/images/numerology/bird-2.png',
+      bird_2_svg: '/images/numerology/bird-2.svg',
       flower_png: '/images/numerology/flower.png',
+      flower_svg: '/images/numerology/flower.svg',
       leaf_png: '/images/numerology/leaf.png',
+      leaf_svg: '/images/numerology/leaf.svg',
       title_png: '/images/numerology/title.png'
     },
     suimei: {

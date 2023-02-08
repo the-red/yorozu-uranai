@@ -56,14 +56,7 @@ export const CoreNumbers: FC<CoreNumbersProps> = ({ numerology }) => {
     <div>
       <div className="tw-text-center tw-text-lg sm:tw-text-xl tw-mb-2">コアナンバー</div>
 
-      <div className="tw-relative tw-bg-white tw-p-8 tw-rounded-tl-2xl tw-rounded-tr-5xl tw-rounded-br-2xl tw-rounded-bl-5xl tw-border-2 tw-border-solid">
-        <div className="tw-absolute tw-top-1 tw-left-2  tw-w-20">
-          <Image src={bird1} />
-        </div>
-        <div className="tw-absolute tw-bottom-1 tw-right-2 tw-w-20">
-          <Image src={bird2} />
-        </div>
-
+      <div className="tw-relative tw-bg-white tw-p-8 tw-rounded-tl-2xl tw-rounded-tr-5xl tw-rounded-br-2xl tw-rounded-bl-5xl tw-border-2 tw-border-solid core_numbers_outer">
         <div className="tw-grid tw-grid-cols-2 sm:tw-grid-cols-3 tw-gap-4 sm:tw-gap-8 sm:tw-w-md tw-py-12 sm:tw-py-0 tw-mx-auto">
           <CoreNumberItem key="0">
             <CoreNumber>{numerology.lifePathNumber}</CoreNumber>

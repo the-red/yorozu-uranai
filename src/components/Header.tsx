@@ -12,66 +12,60 @@ export default function Header({ whiteIcon = false }: { whiteIcon?: boolean }) {
       <div className="header_wrapper">
         <h1>
           <Link href={pagesPath.$url({ query })}>
-            <a>
-              {whiteIcon ? (
-                <Image
-                  src={staticPath.images.index.logo_white_png}
-                  className="icon"
-                  width={24}
-                  height={24}
-                  alt="よろず占いロゴ"
-                />
-              ) : (
-                <Image
-                  src={staticPath.images.index.logo_svg}
-                  className="icon"
-                  width={24}
-                  height={24}
-                  alt="よろず占いロゴ"
-                />
-              )}
-              <span
-                style={{
-                  paddingLeft: '5px',
-                }}
-              >
-                よろず占い
-              </span>
-            </a>
+            {whiteIcon ? (
+              <Image
+                src={staticPath.images.index.logo_white_png}
+                className="icon"
+                width={24}
+                height={24}
+                alt="よろず占いロゴ"
+              />
+            ) : (
+              <Image
+                src={staticPath.images.index.logo_svg}
+                className="icon"
+                width={24}
+                height={24}
+                alt="よろず占いロゴ"
+              />
+            )}
+            <span
+              style={{
+                paddingLeft: '5px',
+              }}
+            >
+              よろず占い
+            </span>
           </Link>
         </h1>
         <nav>
           <ul>
             <li>
-              <Link href={pagesPath.horoscope.$url({ query })}>
-                <a title="西洋占星術">
-                  {/* TODO: horoscopeIcon はSVGコンポーネントとして表示すると何故か消えるのでなんとかする */}
-                  {/* NOTE: SVGコンポーネント化がうまくいくまで、暫定対応として条件分岐で色分けする */}
-                  {whiteIcon ? (
-                    <Image
-                      src={staticPath.images.index.horoscope_white_svg}
-                      className="icon"
-                      width={16}
-                      height={16}
-                      alt="西洋占星術"
-                    />
-                  ) : (
-                    <Image
-                      src={staticPath.images.index.horoscope_svg}
-                      className="icon"
-                      width={16}
-                      height={16}
-                      alt="西洋占星術"
-                    />
-                  )}
-                </a>
+              <Link href={pagesPath.horoscope.$url({ query })} title="西洋占星術">
+                {/* TODO: horoscopeIcon はSVGコンポーネントとして表示すると何故か消えるのでなんとかする */}
+                {/* NOTE: SVGコンポーネント化がうまくいくまで、暫定対応として条件分岐で色分けする */}
+                {whiteIcon ? (
+                  <Image
+                    src={staticPath.images.index.horoscope_white_svg}
+                    className="icon"
+                    width={16}
+                    height={16}
+                    alt="西洋占星術"
+                  />
+                ) : (
+                  <Image
+                    src={staticPath.images.index.horoscope_svg}
+                    className="icon"
+                    width={16}
+                    height={16}
+                    alt="西洋占星術"
+                  />
+                )}
               </Link>
             </li>
             <li>
-              <Link href={pagesPath.numerology.$url({ query })}>
-                <a title="数秘術">
-                  <NumerologyIcon className="icon" width={16} height={16} alt="数秘術" />
-                </a>
+              <Link href={pagesPath.numerology.$url({ query })} title="数秘術">
+                <NumerologyIcon className="icon" width={16} height={16} alt="数秘術" />
               </Link>
             </li>
           </ul>

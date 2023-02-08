@@ -79,11 +79,6 @@ export const staticPath = {
       lotus_svg: '/images/suimei/lotus.svg',
       peach_svg: '/images/suimei/peach.svg'
     }
-  },
-  map_test: {
-    index_html_example: '/map-test/index.html.example',
-    index_js: '/map-test/index.js',
-    style_css: '/map-test/style.css'
   }
 } as const
 

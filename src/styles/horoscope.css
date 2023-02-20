@@ -152,7 +152,8 @@
   background-color: transparent;
 }
 
-.horoscope .header .icon {
+.horoscope .header .icon,
+.horoscope .header .logo {
   fill: #fff;
 }
 

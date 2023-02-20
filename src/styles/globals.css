@@ -149,6 +149,9 @@ Note: Beware of modifying this element as it can break the animations - you shou
 .header .icon {
   fill: #4b4b4b;
 }
+.logo {
+  fill: #706756;
+}
 
 .main {
   font-family: 'Noto Sans JP Regular';

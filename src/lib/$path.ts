@@ -54,6 +54,7 @@ export const staticPath = {
       horoscope_svg: '/images/index/horoscope.svg',
       logo_png: '/images/index/logo.png',
       logo_svg: '/images/index/logo.svg',
+      logo_mark_svg: '/images/index/logo_mark.svg',
       logo_white_png: '/images/index/logo_white.png',
       logo_white_svg: '/images/index/logo_white.svg',
       numerology_svg: '/images/index/numerology.svg',

@@ -55,6 +55,7 @@ export const staticPath = {
       logo_png: '/images/index/logo.png',
       logo_svg: '/images/index/logo.svg',
       logo_white_png: '/images/index/logo_white.png',
+      logo_white_svg: '/images/index/logo_white.svg',
       numerology_svg: '/images/index/numerology.svg',
       suimei_svg: '/images/index/suimei.svg',
       twitter_logo_svg: '/images/index/twitter-logo.svg'

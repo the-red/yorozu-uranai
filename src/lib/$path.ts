@@ -23,7 +23,6 @@ export type PagesPath = typeof pagesPath
 
 export const staticPath = {
   fonts: {
-    $001Shirokuma_Regular_otf: '/fonts/001Shirokuma-Regular.otf',
     Farewell_Pro_Regular_ttf: '/fonts/Farewell Pro Regular.ttf',
     Khand_Regular_ttf: '/fonts/Khand-Regular.ttf',
     Lato_Regular_ttf: '/fonts/Lato Regular.ttf',
@@ -52,6 +51,7 @@ export const staticPath = {
     index: {
       horoscope_white_svg: '/images/index/horoscope-white.svg',
       horoscope_svg: '/images/index/horoscope.svg',
+      logo_svg: '/images/index/logo.svg',
       logo_mark_svg: '/images/index/logo_mark.svg',
       numerology_svg: '/images/index/numerology.svg',
       suimei_svg: '/images/index/suimei.svg',

@@ -10,6 +10,9 @@ export const pagesPath = {
   "numerology": {
     $url: (url?: { query?: OptionalQuery2, hash?: string }) => ({ pathname: '/numerology' as const, query: url?.query, hash: url?.hash })
   },
+  "suimei_design": {
+    $url: (url?: { hash?: string }) => ({ pathname: '/suimei-design' as const, hash: url?.hash })
+  },
   "suimei": {
     $url: (url?: { query?: OptionalQuery3, hash?: string }) => ({ pathname: '/suimei' as const, query: url?.query, hash: url?.hash })
   },
@@ -20,12 +23,14 @@ export type PagesPath = typeof pagesPath
 
 export const staticPath = {
   fonts: {
-    $001Shirokuma_Regular_otf: '/fonts/001Shirokuma-Regular.otf',
     Farewell_Pro_Regular_ttf: '/fonts/Farewell Pro Regular.ttf',
     Khand_Regular_ttf: '/fonts/Khand-Regular.ttf',
     Lato_Regular_ttf: '/fonts/Lato Regular.ttf',
     MTF_Wildflower_ttf: '/fonts/MTF Wildflower.ttf',
-    Noto_Sans_JP_Regular_otf: '/fonts/Noto Sans JP Regular.otf'
+    Noto_Sans_JP_Regular_otf: '/fonts/Noto Sans JP Regular.otf',
+    YujiSyuku_Regular_ttf: '/fonts/YujiSyuku-Regular.ttf',
+    ZenOldMincho_Bold_ttf: '/fonts/ZenOldMincho-Bold.ttf',
+    ZenOldMincho_Regular_ttf: '/fonts/ZenOldMincho-Regular.ttf'
   },
   images: {
     horoscope: {
@@ -46,19 +51,27 @@ export const staticPath = {
     index: {
       horoscope_white_svg: '/images/index/horoscope-white.svg',
       horoscope_svg: '/images/index/horoscope.svg',
-      logo_png: '/images/index/logo.png',
       logo_svg: '/images/index/logo.svg',
-      logo_white_png: '/images/index/logo_white.png',
+      logo_mark_svg: '/images/index/logo_mark.svg',
       numerology_svg: '/images/index/numerology.svg',
       suimei_svg: '/images/index/suimei.svg',
       twitter_logo_svg: '/images/index/twitter-logo.svg'
     },
     numerology: {
-      bird_1_png: '/images/numerology/bird-1.png',
-      bird_2_png: '/images/numerology/bird-2.png',
-      flower_png: '/images/numerology/flower.png',
-      leaf_png: '/images/numerology/leaf.png',
+      bird_1_svg: '/images/numerology/bird-1.svg',
+      bird_2_svg: '/images/numerology/bird-2.svg',
+      flower_svg: '/images/numerology/flower.svg',
+      leaf_svg: '/images/numerology/leaf.svg',
       title_png: '/images/numerology/title.png'
+    },
+    suimei: {
+      fun_svg: '/images/suimei/fun.svg',
+      kintoun_svg: '/images/suimei/kintoun.svg',
+      lantern_red_svg: '/images/suimei/lantern_red.svg',
+      lantern_yellow_svg: '/images/suimei/lantern_yellow.svg',
+      logo_suimei_svg: '/images/suimei/logo_suimei.svg',
+      lotus_svg: '/images/suimei/lotus.svg',
+      peach_svg: '/images/suimei/peach.svg'
     }
   }
 } as const

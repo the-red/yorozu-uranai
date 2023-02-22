@@ -9,6 +9,7 @@ import Footer from '../components/Footer'
 
 import { Query } from '../lib/params'
 import useSWR from 'swr'
+import { SuimeiContent } from '../suimei/components/SuimeiContent'
 
 export type OptionalQuery = Query
 

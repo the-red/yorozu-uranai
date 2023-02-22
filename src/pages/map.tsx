@@ -7,7 +7,6 @@ import { TOKYO_STATION } from '../lib/location'
 import { roundLatLng } from '../lib/math'
 import { useRouter } from 'next/router'
 import { getCurrentLocation } from '../lib/location'
-import { geocode } from '../lib/geocode'
 
 export type OptionalQuery = { lat?: number; lng?: number }
 
@@ -20,6 +19,11 @@ interface MapProps extends google.maps.MapOptions {
   onClick?: (e: google.maps.MapMouseEvent) => void
   onIdle?: (map: google.maps.Map) => void
   children?: React.ReactNode
+}
+
+const geocode = async (...props: Parameters<google.maps.Geocoder['geocode']>) => {
+  const geocoder = new window.google.maps.Geocoder()
+  return geocoder.geocode(...props)
 }
 
 const Map: React.FC<MapProps> = ({ onClick, onIdle, children, style, ...options }) => {

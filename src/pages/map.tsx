@@ -3,7 +3,7 @@ import { Wrapper, Status } from '@googlemaps/react-wrapper'
 import { createCustomEqual } from 'fast-equals'
 import { isLatLngLiteral } from '@googlemaps/typescript-guards'
 import { NextPage } from 'next'
-import { imperialPalaceLocation } from '../lib/location'
+import { TOKYO_STATION } from '../lib/location'
 import { roundLatLng } from '../lib/math'
 import { useRouter } from 'next/router'
 
@@ -131,7 +131,7 @@ const MapPage: NextPage = () => {
       const defaultLocation =
         router.query.lat && router.query.lng
           ? { lat: Number(router.query.lat), lng: Number(router.query.lng) }
-          : imperialPalaceLocation
+          : TOKYO_STATION
 
       setPinned(defaultLocation)
       setCenter(defaultLocation)

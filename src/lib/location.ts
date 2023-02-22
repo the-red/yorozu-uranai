@@ -1,9 +1,9 @@
 import { roundLatLng } from './math'
 
-export const imperialPalaceLocation = {
-  // 皇居
-  lat: 35.685175,
-  lng: 139.7527995,
+export const TOKYO_STATION = {
+  // 東京駅
+  lat: 35.6812362,
+  lng: 139.7671248,
 } as const
 
 // 参考: https://syncer.jp/how-to-use-geolocation-api

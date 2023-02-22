@@ -208,16 +208,6 @@ const MapPage: NextPage = () => {
           }}
         />
       </p>
-      <p>
-        <label htmlFor="zoom"> Zoom </label>
-        <input
-          type="number"
-          id="zoom"
-          name="zoom"
-          value={zoom}
-          onChange={(event) => setZoom(Number(event.target.value))}
-        />
-      </p>
 
       <form>
         <label htmlFor="address"> 住所 </label>

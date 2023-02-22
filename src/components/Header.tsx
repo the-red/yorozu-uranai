@@ -3,6 +3,7 @@ import Image from 'next/image'
 import { useRouter } from 'next/router'
 import { pagesPath, staticPath } from '../lib/$path'
 import NumerologyIcon from '../../public/images/index/numerology.svg'
+import Logo from '../svg/Logo'
 
 export default function Header({ whiteIcon = false }: { whiteIcon?: boolean }) {
   const { query } = useRouter()
@@ -12,30 +13,7 @@ export default function Header({ whiteIcon = false }: { whiteIcon?: boolean }) {
       <div className="header_wrapper">
         <h1>
           <Link href={pagesPath.$url({ query })}>
-            {whiteIcon ? (
-              <Image
-                src={staticPath.images.index.logo_white_png}
-                className="icon"
-                width={24}
-                height={24}
-                alt="よろず占いロゴ"
-              />
-            ) : (
-              <Image
-                src={staticPath.images.index.logo_svg}
-                className="icon"
-                width={24}
-                height={24}
-                alt="よろず占いロゴ"
-              />
-            )}
-            <span
-              style={{
-                paddingLeft: '5px',
-              }}
-            >
-              よろず占い
-            </span>
+            <Logo className="logo" width={144.26} height={28} />
           </Link>
         </h1>
         <nav>

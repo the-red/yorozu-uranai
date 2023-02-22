@@ -17,7 +17,7 @@ export default function Home() {
       <Head>
         <title>よろず占い</title>
         <meta name="description" content="Fortune Telling" />
-        <link rel="icon" href={staticPath.images.index.logo_svg} />
+        <link rel="icon" href={staticPath.images.index.logo_mark_svg} />
       </Head>
 
       <Menu />

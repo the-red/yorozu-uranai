@@ -12,7 +12,7 @@ import { HoroscopeForm, HoroscopeFormProps, HoroscopeFormValues } from '../horos
 import HoroscopeDetailPage from '../horoscope/components/HoroscopeDetailPage'
 import { Query, FORM_DATE_FORMAT, FORM_TIME_FORMAT, queryToFormValues, formValuesToQuery } from '../lib/params'
 import { TOKYO_STATION } from '../lib/location'
-import { reverseGeocode } from '../lib/geocode'
+import { reverseGeocodeByLatLng } from '../lib/geocode'
 
 export type OptionalQuery = Query
 
@@ -56,7 +56,7 @@ function HoroscopePage() {
         const lat = f.lat === undefined ? defaultLocation.lat : f.lat
         const lng = f.lng === undefined ? defaultLocation.lng : f.lng
 
-        const address = await reverseGeocode({ latlng: { lat, lng } })
+        const address = await reverseGeocodeByLatLng({ lat, lng })
 
         setFormValues({ ...f, date, time, zone, timeUnknown, lat, lng, address })
       }

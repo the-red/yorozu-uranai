@@ -2,7 +2,7 @@ import Link from 'next/link'
 import { FC } from 'react'
 import { useForm } from 'react-hook-form'
 import { pagesPath } from '../../lib/$path'
-import { reverseGeocode } from '../../lib/geocode'
+import { reverseGeocodeByLatLng } from '../../lib/geocode'
 
 export type HoroscopeFormValues = {
   date: string
@@ -43,7 +43,7 @@ export const HoroscopeForm: FC<HoroscopeFormProps> = ({ onSubmit, defaultValues 
   window.setLocation = async (lat, lng) => {
     setValue('lat', lat)
     setValue('lng', lng)
-    setValue('address', await reverseGeocode({ latlng: { lat, lng } }))
+    setValue('address', await reverseGeocodeByLatLng({ lat, lng }))
     return true
   }
 

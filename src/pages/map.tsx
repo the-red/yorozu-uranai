@@ -7,6 +7,8 @@ import { TOKYO_STATION } from '../lib/location'
 import { roundLatLng } from '../lib/math'
 import { useRouter } from 'next/router'
 import { getCurrentLocation } from '../lib/location'
+// NOTE: Geocoding APIだけは他の画面との共通化のため、google.mapsではなく専用ライブラリを使う
+import { geocodeByAddress, reverseGeocodeByLatLng, reverseGeocodeByPlaceId } from '../lib/geocode'
 
 export type OptionalQuery = { lat?: number; lng?: number }
 
@@ -19,11 +21,6 @@ interface MapProps extends google.maps.MapOptions {
   onClick?: (e: google.maps.MapMouseEvent) => void
   onIdle?: (map: google.maps.Map) => void
   children?: React.ReactNode
-}
-
-const geocode = async (...props: Parameters<google.maps.Geocoder['geocode']>) => {
-  const geocoder = new window.google.maps.Geocoder()
-  return geocoder.geocode(...props)
 }
 
 const Map: React.FC<MapProps> = ({ onClick, onIdle, children, style, ...options }) => {
@@ -156,9 +153,8 @@ const MapPage: NextPage = () => {
     try {
       // ピンの位置を元に住所を検索
       const { placeId } = event as google.maps.IconMouseEvent
-      const { results } = placeId ? await geocode({ placeId }) : await geocode({ location })
-      const [result] = results
-      setInfo(result.formatted_address)
+      const formattedAddress = placeId ? await reverseGeocodeByPlaceId(placeId) : await reverseGeocodeByLatLng(location)
+      setInfo(formattedAddress)
     } catch (e) {
       const error = e as google.maps.MapsNetworkError
       setInfo(`ERROR: ${error.message}`)
@@ -235,15 +231,10 @@ const MapPage: NextPage = () => {
             if (!address) return
 
             try {
-              const { results } = await geocode({ address })
-              const [result] = results
-              const [lat, lng] = [
-                roundLatLng(result.geometry.location.lat()),
-                roundLatLng(result.geometry.location.lng()),
-              ]
+              const { formattedAddress, lat, lng } = await geocodeByAddress(address)
               setPinned({ lat, lng })
               setCenter({ lat, lng })
-              setInfo(result.formatted_address)
+              setInfo(formattedAddress)
               setZoom(17)
             } catch (e) {
               const error = e as google.maps.MapsNetworkError

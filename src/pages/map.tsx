@@ -29,7 +29,7 @@ const Map: React.FC<MapProps> = ({ onClick, onIdle, children, style, ...options 
 
   React.useEffect(() => {
     if (ref.current && !map) {
-      setMap(new window.google.maps.Map(ref.current, {}))
+      setMap(new google.maps.Map(ref.current, {}))
     }
   }, [ref, map])
 

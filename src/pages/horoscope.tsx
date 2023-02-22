@@ -2,7 +2,6 @@ import { useEffect, useState } from 'react'
 import router, { useRouter } from 'next/router'
 import useSWR from 'swr'
 import { DateTime } from 'luxon'
-import { Client } from '@googlemaps/google-maps-services-js'
 
 import Menu from '../components/Menu'
 import Header from '../components/Header'
@@ -13,30 +12,9 @@ import { HoroscopeForm, HoroscopeFormProps, HoroscopeFormValues } from '../horos
 import HoroscopeDetailPage from '../horoscope/components/HoroscopeDetailPage'
 import { Query, FORM_DATE_FORMAT, FORM_TIME_FORMAT, queryToFormValues, formValuesToQuery } from '../lib/params'
 import { TOKYO_STATION } from '../lib/location'
+import { reverseGeocode } from '../lib/geocode'
 
 export type OptionalQuery = Query
-
-const geocode = async ({ lat, lng }: { lat: number; lng: number }) => {
-  const client = new Client()
-  const addresses = await client
-    .reverseGeocode({
-      params: {
-        key: process.env.NEXT_PUBLIC_GOOGLE_GEOCODING_API_KEY!,
-        latlng: { lat, lng },
-      },
-    })
-    .then(({ data }) => data.results)
-
-  const localityAddress = addresses
-    // @ts-expect-error
-    .find((a) => a.types.includes('locality'))
-  const politicalAddress = addresses
-    // @ts-expect-error
-    .find((a) => a.types.includes('political'))
-
-  const [address] = [localityAddress, politicalAddress].map((_) => _?.formatted_address)
-  return address
-}
 
 function HoroscopePage() {
   const router = useRouter()
@@ -78,11 +56,9 @@ function HoroscopePage() {
         const lat = f.lat === undefined ? defaultLocation.lat : f.lat
         const lng = f.lng === undefined ? defaultLocation.lng : f.lng
 
-        const address = await geocode({ lat, lng })
-        // TODO: 画面に表示
-        console.log(address)
+        const address = await reverseGeocode({ lat, lng })
 
-        setFormValues({ ...f, date, time, zone, timeUnknown, lat, lng })
+        setFormValues({ ...f, date, time, zone, timeUnknown, lat, lng, address })
       }
     }
     setDefaultFormValues()

@@ -2,6 +2,7 @@ import Link from 'next/link'
 import { FC } from 'react'
 import { useForm } from 'react-hook-form'
 import { pagesPath } from '../../lib/$path'
+import { reverseGeocode } from '../../lib/geocode'
 
 export type HoroscopeFormValues = {
   date: string
@@ -10,6 +11,7 @@ export type HoroscopeFormValues = {
   timeUnknown: boolean
   lat: number
   lng: number
+  address: string
 }
 
 export type HoroscopeFormProps = {
@@ -30,17 +32,18 @@ export const HoroscopeForm: FC<HoroscopeFormProps> = ({ onSubmit, defaultValues 
   const lat = watch('lat')
   const lng = watch('lng')
 
-  const handleSubmit = ({ date, time, zone, timeUnknown, lat, lng }: HoroscopeFormValues) => {
+  const handleSubmit = async ({ date, time, zone, timeUnknown, lat, lng, address }: HoroscopeFormValues) => {
     lat = typeof lat === 'number' && !isNaN(lat) ? lat : 0
     lng = typeof lng === 'number' && !isNaN(lng) ? lng : 0
 
-    onSubmit({ date, time, zone, timeUnknown, lat, lng })
+    onSubmit({ date, time, zone, timeUnknown, lat, lng, address })
   }
 
   // @ts-expect-error
-  window.setLocation = (lat, lng) => {
+  window.setLocation = async (lat, lng) => {
     setValue('lat', lat)
     setValue('lng', lng)
+    setValue('address', await reverseGeocode({ lat, lng }))
     return true
   }
 
@@ -92,6 +95,7 @@ export const HoroscopeForm: FC<HoroscopeFormProps> = ({ onSubmit, defaultValues 
               }}
             />
           </div>
+          <div>{watch('address')}</div>
           <div style={{ textDecoration: 'underline' }}>
             {/* eslint-disable-next-line react/jsx-no-target-blank */}
             <Link href={pagesPath.map.$url({ query: { lat: lat, lng: lng } })} target="_blank" rel="opener">

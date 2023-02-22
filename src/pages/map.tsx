@@ -6,7 +6,6 @@ import { NextPage } from 'next'
 import { imperialPalaceLocation } from '../lib/location'
 import { roundLatLng } from '../lib/math'
 import { useRouter } from 'next/router'
-import { el } from 'date-fns/locale'
 
 export type OptionalQuery = { lat?: number; lng?: number }
 

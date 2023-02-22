@@ -6,6 +6,7 @@ import { NextPage } from 'next'
 import { TOKYO_STATION } from '../lib/location'
 import { roundLatLng } from '../lib/math'
 import { useRouter } from 'next/router'
+import { getCurrentLocation } from '../lib/location'
 
 export type OptionalQuery = { lat?: number; lng?: number }
 
@@ -208,6 +209,16 @@ const MapPage: NextPage = () => {
           }}
         />
       </p>
+
+      <button
+        onClick={async () => {
+          const { lat, lng } = await getCurrentLocation()
+          setPinned({ lat, lng })
+          setCenter({ lat, lng })
+        }}
+      >
+        現在地を取得
+      </button>
 
       <form>
         <label htmlFor="address"> 住所 </label>

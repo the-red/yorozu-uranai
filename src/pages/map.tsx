@@ -7,6 +7,7 @@ import { TOKYO_STATION } from '../lib/location'
 import { roundLatLng } from '../lib/math'
 import { useRouter } from 'next/router'
 import { getCurrentLocation } from '../lib/location'
+import { geocode } from '../lib/geocode'
 
 export type OptionalQuery = { lat?: number; lng?: number }
 
@@ -150,9 +151,8 @@ const MapPage: NextPage = () => {
 
     try {
       // ピンの位置を元に住所を検索
-      const geocoder = new window.google.maps.Geocoder()
       const { placeId } = event as google.maps.IconMouseEvent
-      const { results } = placeId ? await geocoder.geocode({ placeId }) : await geocoder.geocode({ location })
+      const { results } = placeId ? await geocode({ placeId }) : await geocode({ location })
       const [result] = results
       setInfo(result.formatted_address)
     } catch (e) {
@@ -230,9 +230,8 @@ const MapPage: NextPage = () => {
             const address = addressInput.current?.value
             if (!address) return
 
-            const geocoder = new window.google.maps.Geocoder()
             try {
-              const { results } = await geocoder.geocode({ address })
+              const { results } = await geocode({ address })
               const [result] = results
               const [lat, lng] = [
                 roundLatLng(result.geometry.location.lat()),

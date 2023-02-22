@@ -130,9 +130,11 @@ const MapPage: NextPage = () => {
   const [info, setInfo] = React.useState<string>('')
   const addressInput = React.useRef<HTMLInputElement>(null)
 
-  const setMapLocation = ({ lat, lng }: { lat: number; lng: number }) => {
+  const setMapLocation = async ({ lat, lng }: { lat: number; lng: number }) => {
     setPinned({ lat, lng })
     setCenter({ lat, lng })
+    const address = await reverseGeocodeByLatLng({ lat, lng })
+    setInfo(address)
   }
 
   const router = useRouter()
@@ -195,7 +197,6 @@ const MapPage: NextPage = () => {
           onChange={(event) => {
             const [lat, lng] = [Number(event.target.value), pinned.lng]
             setMapLocation({ lat, lng })
-            setInfo('')
           }}
         />
         <label htmlFor="lng"> 経度 </label>

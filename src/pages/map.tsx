@@ -130,6 +130,11 @@ const MapPage: NextPage = () => {
   const [info, setInfo] = React.useState<string>('')
   const addressInput = React.useRef<HTMLInputElement>(null)
 
+  const setMapLocation = ({ lat, lng }: { lat: number; lng: number }) => {
+    setPinned({ lat, lng })
+    setCenter({ lat, lng })
+  }
+
   const router = useRouter()
   React.useEffect(() => {
     if (router.isReady) {
@@ -138,8 +143,7 @@ const MapPage: NextPage = () => {
           ? { lat: Number(router.query.lat), lng: Number(router.query.lng) }
           : TOKYO_STATION
 
-      setPinned(defaultLocation)
-      setCenter(defaultLocation)
+      setMapLocation(defaultLocation)
     }
   }, [router])
   if (!pinned || !center) return <div>loading...</div>
@@ -190,8 +194,7 @@ const MapPage: NextPage = () => {
           value={pinned.lat}
           onChange={(event) => {
             const [lat, lng] = [Number(event.target.value), pinned.lng]
-            setPinned({ lat, lng })
-            setCenter({ lat, lng })
+            setMapLocation({ lat, lng })
             setInfo('')
           }}
         />
@@ -206,8 +209,7 @@ const MapPage: NextPage = () => {
           value={pinned.lng}
           onChange={(event) => {
             const [lat, lng] = [pinned.lat, Number(event.target.value)]
-            setPinned({ lat, lng })
-            setCenter({ lat, lng })
+            setMapLocation({ lat, lng })
           }}
         />
       </p>
@@ -215,8 +217,7 @@ const MapPage: NextPage = () => {
       <button
         onClick={async () => {
           const { lat, lng } = await getCurrentLocation()
-          setPinned({ lat, lng })
-          setCenter({ lat, lng })
+          setMapLocation({ lat, lng })
         }}
       >
         現在地を取得

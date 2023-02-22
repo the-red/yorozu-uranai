@@ -1,3 +1,5 @@
+// NOTE: Google公式のReactサンプルをベースに作成
+// https://developers.google.com/maps/documentation/javascript/react-map?hl=ja
 import * as React from 'react'
 import { Wrapper, Status } from '@googlemaps/react-wrapper'
 import { createCustomEqual } from 'fast-equals'

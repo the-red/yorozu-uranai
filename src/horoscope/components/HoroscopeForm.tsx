@@ -71,11 +71,9 @@ export const HoroscopeForm: FC<HoroscopeFormProps> = ({ onSubmit, defaultValues 
           <div>
             <label style={{ marginRight: '8px' }}>緯度</label>
             <input
+              disabled
               id="lat-input"
               type="number"
-              step="0.0000001"
-              min="-90"
-              max="90"
               {...register('lat', { valueAsNumber: true })}
               style={{
                 width: 110,
@@ -85,11 +83,9 @@ export const HoroscopeForm: FC<HoroscopeFormProps> = ({ onSubmit, defaultValues 
           <div>
             <label style={{ marginRight: '8px' }}>経度</label>
             <input
+              disabled
               id="lng-input"
               type="number"
-              step="0.0000001"
-              min="-180"
-              max="180"
               {...register('lng', { valueAsNumber: true })}
               style={{
                 width: 110,

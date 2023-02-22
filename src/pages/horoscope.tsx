@@ -56,7 +56,7 @@ function HoroscopePage() {
         const lat = f.lat === undefined ? defaultLocation.lat : f.lat
         const lng = f.lng === undefined ? defaultLocation.lng : f.lng
 
-        const address = await reverseGeocode({ lat, lng })
+        const address = await reverseGeocode({ latlng: { lat, lng } })
 
         setFormValues({ ...f, date, time, zone, timeUnknown, lat, lng, address })
       }

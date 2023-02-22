@@ -1,11 +1,12 @@
-import { AddressType, Client } from '@googlemaps/google-maps-services-js'
+import { AddressType, Client, ReverseGeocodeRequest } from '@googlemaps/google-maps-services-js'
 
-export const reverseGeocode = async ({ lat, lng }: { lat: number; lng: number }): Promise<string> => {
+type Props = Omit<ReverseGeocodeRequest['params'], 'key'>
+export const reverseGeocode = async (props: Props): Promise<string> => {
   const client = new Client()
   const { data } = await client.reverseGeocode({
     params: {
       key: process.env.NEXT_PUBLIC_GOOGLE_GEOCODING_API_KEY!,
-      latlng: { lat, lng },
+      ...props,
     },
   })
   const addresses = data.results

@@ -43,7 +43,7 @@ export const HoroscopeForm: FC<HoroscopeFormProps> = ({ onSubmit, defaultValues 
   window.setLocation = async (lat, lng) => {
     setValue('lat', lat)
     setValue('lng', lng)
-    setValue('address', await reverseGeocode({ lat, lng }))
+    setValue('address', await reverseGeocode({ latlng: { lat, lng } }))
     return true
   }
 

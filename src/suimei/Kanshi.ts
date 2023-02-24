@@ -2,7 +2,7 @@ import { DateTime } from 'luxon'
 import type { 節 } from './Sekki'
 
 export const 十干list = ['甲', '乙', '丙', '丁', '戊', '己', '庚', '辛', '壬', '癸'] as const
-const 十二支list = ['子', '丑', '寅', '卯', '辰', '巳', '午', '未', '申', '酉', '戌', '亥'] as const
+export const 十二支list = ['子', '丑', '寅', '卯', '辰', '巳', '午', '未', '申', '酉', '戌', '亥'] as const
 type 干支 = `${typeof 十干list[number]}${typeof 十二支list[number]}`
 
 const get六十干支 = (): 干支[] => {

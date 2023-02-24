@@ -7,7 +7,7 @@ export type FormValues = {
   zone?: string
   timeUnknown: boolean
   lat?: number
-  lon?: number
+  lng?: number
 }
 
 type QueryValue = string | string[] | undefined
@@ -17,7 +17,7 @@ export type Query = Partial<{
   time: QueryValue
   zone: QueryValue
   lat: QueryValue
-  lon: QueryValue
+  lng: QueryValue
 }>
 
 const QUERY_DATE_FORMAT = 'yyyyMMdd' as const
@@ -47,7 +47,7 @@ export const queryToFormValues = (q: Query): FormValues => {
   const zone = singleValue(q.zone)
 
   const lat = singleValue(q.lat)
-  const lon = singleValue(q.lon)
+  const lng = singleValue(q.lng)
 
   return {
     name,
@@ -56,7 +56,7 @@ export const queryToFormValues = (q: Query): FormValues => {
     zone,
     timeUnknown,
     lat: lat ? Number(lat) : undefined,
-    lon: lon ? Number(lon) : undefined,
+    lng: lng ? Number(lng) : undefined,
   }
 }
 
@@ -68,6 +68,6 @@ export const formValuesToQuery = (f: Partial<FormValues>): Query => {
     ...(f.zone && { zone: f.zone }),
     ...(f.timeUnknown && { time: QUERY_TIME_UNKNOWN }),
     ...(f.lat && { lat: f.lat.toString() }),
-    ...(f.lon && { lon: f.lon.toString() }),
+    ...(f.lng && { lng: f.lng.toString() }),
   }
 }

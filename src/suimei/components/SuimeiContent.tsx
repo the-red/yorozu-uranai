@@ -1,8 +1,8 @@
-import { VFC } from 'react'
+import type { FC } from 'react'
 import Image from 'next/image'
 import { staticPath } from '../../lib/$path'
 
-export const SuimeiContent: VFC<any> = ({ onSubmit, defaultValues }) => {
+export const SuimeiContent: FC = () => {
   return (
     <div>
       <div className="title_area">

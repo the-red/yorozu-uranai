@@ -2,18 +2,16 @@ import { NextPage } from 'next'
 import { useRouter } from 'next/router'
 import { useEffect, useMemo, useState } from 'react'
 import { DateTime } from 'luxon'
-import { Kanshi, SekkiPair } from '../suimei'
+import { Kanshi, SekkiPair, Suimei } from '../suimei'
 
 import Header from '../components/Header'
 import Footer from '../components/Footer'
 
 import { Query } from '../lib/params'
 import useSWR from 'swr'
-import { SuimeiContent } from '../suimei/components/SuimeiContent'
 
 export type OptionalQuery = Query
 
-type Suimei = { sekki: string; kanshi: Kanshi }
 type SuimeiFormValues = any
 
 const SuimeiPage: NextPage = () => {

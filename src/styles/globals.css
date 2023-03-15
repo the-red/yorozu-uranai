@@ -218,6 +218,9 @@ Note: Beware of modifying this element as it can break the animations - you shou
 .twitter-logo {
   fill: #1d9bf0;
 }
+.image {
+  object-fit: contain;
+}
 
 /* PC用 */
 @media all and (min-width: 980px) {

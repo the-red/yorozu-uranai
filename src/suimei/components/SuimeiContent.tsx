@@ -10,33 +10,33 @@ export const SuimeiContent: FC = () => {
           <div className="lantern_inner">
             <Image
               src={staticPath.images.suimei.lantern_yellow_svg}
+              className="image"
               fill
-              objectFit="contain"
               alt="黄色のランタン"
             ></Image>
           </div>
         </div>
         <div className="lantern_outer red left">
           <div className="lantern_inner">
-            <Image src={staticPath.images.suimei.lantern_red_svg} fill objectFit="contain" alt="赤色のランタン"></Image>
+            <Image src={staticPath.images.suimei.lantern_red_svg} className="image" fill alt="赤色のランタン"></Image>
           </div>
         </div>
         <h2>
           <div className="title_logo">
-            <Image src={staticPath.images.suimei.logo_suimei_svg} fill objectFit="contain" alt="四柱推命"></Image>
+            <Image src={staticPath.images.suimei.logo_suimei_svg} className="image" fill alt="四柱推命"></Image>
           </div>
         </h2>
         <div className="lantern_outer red right">
           <div className="lantern_inner">
-            <Image src={staticPath.images.suimei.lantern_red_svg} fill objectFit="contain" alt="赤色のランタン"></Image>
+            <Image src={staticPath.images.suimei.lantern_red_svg} className="image" fill alt="赤色のランタン"></Image>
           </div>
         </div>
         <div className="lantern_outer yellow right">
           <div className="lantern_inner">
             <Image
               src={staticPath.images.suimei.lantern_yellow_svg}
+              className="image"
               fill
-              objectFit="contain"
               alt="黄色のランタン"
             ></Image>
           </div>
@@ -103,7 +103,7 @@ export const SuimeiContent: FC = () => {
         <div className="inner">
           <h3>
             <div className="heading_icon">
-              <Image src={staticPath.images.suimei.fun_svg} fill objectFit="contain" alt="扇のアイコン"></Image>
+              <Image src={staticPath.images.suimei.fun_svg} className="image" fill alt="扇のアイコン"></Image>
             </div>
             <div>命式</div>
           </h3>
@@ -204,7 +204,7 @@ export const SuimeiContent: FC = () => {
         <div className="inner">
           <h3>
             <div className="heading_icon">
-              <Image src={staticPath.images.suimei.lotus_svg} fill objectFit="contain" alt="蓮のアイコン"></Image>
+              <Image src={staticPath.images.suimei.lotus_svg} className="image" fill alt="蓮のアイコン"></Image>
             </div>
             <div>五行バランス</div>
           </h3>
@@ -235,7 +235,7 @@ export const SuimeiContent: FC = () => {
         <div className="inner">
           <h3>
             <div className="heading_icon">
-              <Image src={staticPath.images.suimei.kintoun_svg} fill objectFit="contain" alt="筋斗雲のアイコン"></Image>
+              <Image src={staticPath.images.suimei.kintoun_svg} className="image" fill alt="筋斗雲のアイコン"></Image>
             </div>
             <div>大運</div>
           </h3>
@@ -353,7 +353,7 @@ export const SuimeiContent: FC = () => {
         <div className="inner">
           <h3>
             <div className="heading_icon">
-              <Image src={staticPath.images.suimei.peach_svg} fill objectFit="contain" alt="桃のアイコン"></Image>
+              <Image src={staticPath.images.suimei.peach_svg} className="image" fill alt="桃のアイコン"></Image>
             </div>
             <div>歳運</div>
           </h3>

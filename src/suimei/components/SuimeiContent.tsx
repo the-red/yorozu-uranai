@@ -1,8 +1,9 @@
 import type { FC } from 'react'
 import Image from 'next/image'
 import { staticPath } from '../../lib/$path'
+import { Suimei } from '../'
 
-export const SuimeiContent: FC = () => {
+export const SuimeiContent: FC<Suimei> = ({ sekki, kanshi }) => {
   return (
     <div>
       <div className="title_area">

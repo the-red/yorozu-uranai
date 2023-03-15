@@ -66,6 +66,8 @@ const SuimeiPage: NextPage = () => {
 
   const { sekki, kanshi } = suimei
 
+  console.log(kanshi)
+
   return (
     <div className="suimei">
       <div
@@ -93,14 +95,14 @@ const SuimeiPage: NextPage = () => {
                 <td>{kanshi.年柱[0]}</td>
                 <td>{kanshi.月柱[0]}</td>
                 <td>{kanshi.日柱[0]}</td>
-                <td>{kanshi.時柱[0]}</td>
+                <td>{kanshi.時柱?.[0]}</td>
               </tr>
               <tr>
                 <th>地支</th>
                 <td>{kanshi.年柱[1]}</td>
                 <td>{kanshi.月柱[1]}</td>
                 <td>{kanshi.日柱[1]}</td>
-                <td>{kanshi.時柱[1]}</td>
+                <td>{kanshi.時柱?.[1]}</td>
               </tr>
               <tr>
                 <th>干支</th>

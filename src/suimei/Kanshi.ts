@@ -70,7 +70,7 @@ export class Kanshi {
     // ホロスコープも同じ調整を入れるべきか？
     const hour = this.date.plus({ hour: 1 }).hour
 
-    const index = Math.trunc(hour / 2) + this.日干index * 12
+    const index = (Math.trunc(hour / 2) + this.日干index * 12) % 60
 
     return Kanshi.六十干支.at(index)!
   }

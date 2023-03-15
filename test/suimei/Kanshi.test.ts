@@ -155,4 +155,8 @@ describe('時柱を計算', () => {
     const kanshi = await getKanshiInstance(new Date('2022-02-24T17:28:00+09:00'))
     expect(kanshi.時柱).toEqual('辛酉') // 57
   })
+  it('2023-03-15T11:41:20+09:00（60を超えるパターン）', async () => {
+    const kanshi = await getKanshiInstance(new Date('2023-03-15T11:41:20+09:00'))
+    expect(kanshi.時柱).toEqual('丙午') // 42 (102 % 60)
+  })
 })

@@ -7,7 +7,7 @@ import { DateTime } from 'luxon'
 import { Query } from '../lib/params'
 import Header from '../components/Header'
 import Footer from '../components/Footer'
-import { Kanshi, SekkiPair, Suimei } from '../suimei'
+import { Kanshi, SekkiPair, Suimei, Tsuhensei } from '../suimei'
 import { SuimeiContent } from '../suimei/components/SuimeiContent'
 
 export type OptionalQuery = Query
@@ -46,9 +46,11 @@ const SuimeiPage: NextPage = () => {
     }
     const json = await res.json()
     const sekkiPair = json.data as SekkiPair
+    const kanshi = new Kanshi(suimeiSeed.dateTime, sekkiPair)
     return {
       sekki: sekkiPair.today,
-      kanshi: new Kanshi(suimeiSeed.dateTime, sekkiPair),
+      kanshi,
+      tsuhensei: new Tsuhensei(kanshi),
     }
   })
 
@@ -62,13 +64,11 @@ const SuimeiPage: NextPage = () => {
   if (error) return <div>failed to load: {JSON.stringify(error.message)}</div>
   if (!suimei) return <div>loading...</div>
 
-  const { sekki, kanshi } = suimei
-
   return (
     <div className="suimei">
       <div>
         <Header />
-        <SuimeiContent sekki={sekki} kanshi={kanshi} />
+        <SuimeiContent suimei={suimei} />
         <Footer />
       </div>
     </div>

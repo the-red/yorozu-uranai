@@ -3,7 +3,9 @@ import Image from 'next/image'
 import { staticPath } from '../../lib/$path'
 import { Suimei } from '../'
 
-export const SuimeiContent: FC<Suimei> = ({ sekki, kanshi }) => {
+export const SuimeiContent: FC<{ suimei: Suimei }> = ({ suimei }) => {
+  const { kanshi, tsuhensei } = suimei
+
   const TitleArea = () => (
     <div className="title_area">
       <div className="lantern_outer yellow left">
@@ -130,10 +132,10 @@ export const SuimeiContent: FC<Suimei> = ({ sekki, kanshi }) => {
               <th>
                 天干<br className="header_br_sp"></br>通変星
               </th>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td></td>
+              <td>{tsuhensei.年柱}</td>
+              <td>{tsuhensei.月柱}</td>
+              <td>-</td>
+              <td>{tsuhensei.時柱}</td>
             </tr>
             <tr>
               <th>十二運</th>

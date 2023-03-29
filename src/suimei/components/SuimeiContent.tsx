@@ -114,17 +114,17 @@ export const SuimeiContent: FC<Suimei> = ({ sekki, kanshi }) => {
           <tbody>
             <tr>
               <th>天干</th>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td></td>
+              <td>{kanshi.年柱[0]}</td>
+              <td>{kanshi.月柱[0]}</td>
+              <td>{kanshi.日柱[0]}</td>
+              <td>{kanshi.時柱[0]}</td>
             </tr>
             <tr>
               <th>地支</th>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td></td>
+              <td>{kanshi.年柱[1]}</td>
+              <td>{kanshi.月柱[1]}</td>
+              <td>{kanshi.日柱[1]}</td>
+              <td>{kanshi.時柱[1]}</td>
             </tr>
             <tr>
               <th>

@@ -114,80 +114,56 @@ export const SuimeiContent: FC<Suimei> = ({ sekki, kanshi }) => {
           <tbody>
             <tr>
               <th>天干</th>
-              <td>庚</td>
-              <td>庚</td>
-              <td>庚</td>
-              <td>庚</td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
             </tr>
             <tr>
               <th>地支</th>
-              <td>申</td>
-              <td>申</td>
-              <td>申</td>
-              <td>申</td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
             </tr>
             <tr>
               <th>
                 天干<br className="header_br_sp"></br>通変星
               </th>
-              <td>政官</td>
-              <td>政官</td>
-              <td>-</td>
-              <td>政官</td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
             </tr>
             <tr>
               <th>十二運</th>
-              <td>建禄</td>
-              <td>建禄</td>
-              <td>建禄</td>
-              <td>建禄</td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
             </tr>
             <tr>
               <th>蔵干</th>
-              <td>乙</td>
-              <td>乙</td>
-              <td>乙</td>
-              <td>乙</td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
             </tr>
             <tr>
               <th>
                 蔵干<br className="header_br_sp"></br>通変星
               </th>
-              <td>比肩</td>
-              <td>比肩</td>
-              <td>比肩</td>
-              <td>比肩</td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
             </tr>
             <tr>
               <th>特殊星</th>
-              <td>
-                流霞殺
-                <br />
-                華蓋
-                <br />
-                白虎
-              </td>
-              <td>
-                流霞殺
-                <br />
-                華蓋
-                <br />
-                白虎
-              </td>
-              <td>
-                流霞殺
-                <br />
-                華蓋
-                <br />
-                白虎
-              </td>
-              <td>
-                流霞殺
-                <br />
-                華蓋
-                <br />
-                白虎
-              </td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
             </tr>
           </tbody>
         </table>

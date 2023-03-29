@@ -3,7 +3,6 @@ import type { OptionalQuery as OptionalQuery1 } from '../pages/horoscope'
 import type { OptionalQuery as OptionalQuery2 } from '../pages/map'
 import type { OptionalQuery as OptionalQuery3 } from '../pages/numerology'
 import type { OptionalQuery as OptionalQuery4 } from '../pages/suimei-design'
-import type { OptionalQuery as OptionalQuery5 } from '../pages/suimei'
 
 export const pagesPath = {
   "horoscope": {
@@ -17,9 +16,6 @@ export const pagesPath = {
   },
   "suimei_design": {
     $url: (url?: { query?: OptionalQuery4, hash?: string }) => ({ pathname: '/suimei-design' as const, query: url?.query, hash: url?.hash })
-  },
-  "suimei": {
-    $url: (url?: { query?: OptionalQuery5, hash?: string }) => ({ pathname: '/suimei' as const, query: url?.query, hash: url?.hash })
   },
   $url: (url?: { query?: OptionalQuery0, hash?: string }) => ({ pathname: '/' as const, query: url?.query, hash: url?.hash })
 }

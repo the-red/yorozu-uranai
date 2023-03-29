@@ -78,6 +78,40 @@ export class Kanshi {
     return Kanshi.六十干支.at(index)!
   }
 
+  // 天干を個別取得
+  get 年干(): 十干 {
+    return this.年柱[0] as 十干
+  }
+  get 月干(): 十干 {
+    return this.月柱[0] as 十干
+  }
+  get 日干(): 十干 {
+    return this.日柱[0] as 十干
+  }
+  get 時干(): 十干 {
+    return this.時柱[0] as 十干
+  }
+  get 天干(): [十干, 十干, 十干, 十干] {
+    return [this.年干, this.月干, this.日干, this.時干]
+  }
+
+  // 天干を個別取得
+  get 年支(): 十二支 {
+    return this.年柱[1] as 十二支
+  }
+  get 月支(): 十二支 {
+    return this.月柱[1] as 十二支
+  }
+  get 日支(): 十二支 {
+    return this.日柱[1] as 十二支
+  }
+  get 時支(): 十二支 {
+    return this.時柱[1] as 十二支
+  }
+  get 地支(): [十二支, 十二支, 十二支, 十二支] {
+    return [this.年支, this.月支, this.日支, this.時支]
+  }
+
   private get 日干index(): number {
     const diff = this.date.diff(Kanshi.BASE, 'days').days
     const index = Math.trunc(diff % 10)

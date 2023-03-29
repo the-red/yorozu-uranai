@@ -160,3 +160,51 @@ describe('時柱を計算', () => {
     expect(kanshi.時柱).toEqual('丙午') // 42 (102 % 60)
   })
 })
+
+describe('天干の個別取得', () => {
+  const date = new Date('2023-03-15T11:41:20+09:00')
+  it('年干', async () => {
+    const kanshi = await getKanshiInstance(date)
+    expect(kanshi.年干).toEqual('癸')
+  })
+  it('月干', async () => {
+    const kanshi = await getKanshiInstance(date)
+    expect(kanshi.月干).toEqual('乙')
+  })
+  it('日干', async () => {
+    const kanshi = await getKanshiInstance(date)
+    expect(kanshi.日干).toEqual('壬')
+  })
+  it('時干', async () => {
+    const kanshi = await getKanshiInstance(date)
+    expect(kanshi.時干).toEqual('丙')
+  })
+  it('天干', async () => {
+    const kanshi = await getKanshiInstance(date)
+    expect(kanshi.天干).toMatchObject(['癸', '乙', '壬', '丙'])
+  })
+})
+
+describe('地支の個別取得', () => {
+  const date = new Date('2023-03-15T11:41:20+09:00')
+  it('年支', async () => {
+    const kanshi = await getKanshiInstance(date)
+    expect(kanshi.年支).toEqual('卯')
+  })
+  it('月支', async () => {
+    const kanshi = await getKanshiInstance(date)
+    expect(kanshi.月支).toEqual('卯')
+  })
+  it('日支', async () => {
+    const kanshi = await getKanshiInstance(date)
+    expect(kanshi.日支).toEqual('申')
+  })
+  it('時支', async () => {
+    const kanshi = await getKanshiInstance(date)
+    expect(kanshi.時支).toEqual('午')
+  })
+  it('地支', async () => {
+    const kanshi = await getKanshiInstance(date)
+    expect(kanshi.地支).toMatchObject(['卯', '卯', '申', '午'])
+  })
+})

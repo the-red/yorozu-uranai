@@ -25,7 +25,7 @@ const isEven = (targetNumber: number) => {
   return targetNumber % 2 === 0
 }
 
-export class Tsuhensei {
+export class TenkanTsuhensei {
   readonly 年柱: 通変星
   readonly 月柱: 通変星
   readonly 時柱: 通変星

@@ -1,5 +1,6 @@
 import type { Kanshi } from './Kanshi'
 import type { 節 } from './Sekki'
 import type { TenkanTsuhensei } from './Tsuhensei'
+import type { Zoukan } from './Zoukan'
 
-export type Suimei = { sekki: 節; kanshi: Kanshi; tsuhensei: TenkanTsuhensei }
+export type Suimei = { sekki: 節; kanshi: Kanshi; tsuhensei: TenkanTsuhensei; zoukan: Zoukan }

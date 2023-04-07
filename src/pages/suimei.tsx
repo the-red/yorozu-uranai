@@ -1,14 +1,14 @@
 import { NextPage } from 'next'
 import { useRouter } from 'next/router'
-import { useEffect, useMemo, useState } from 'react'
+import { useState, useMemo, useEffect } from 'react'
+import useSWR from 'swr'
 import { DateTime } from 'luxon'
-import { Kanshi, SekkiPair, Suimei } from '../suimei'
-
-import Header from '../components/Header'
-import Footer from '../components/Footer'
 
 import { Query } from '../lib/params'
-import useSWR from 'swr'
+import Header from '../components/Header'
+import Footer from '../components/Footer'
+import { Kanshi, SekkiPair, Suimei, Tsuhensei } from '../suimei'
+import { SuimeiContent } from '../suimei/components/SuimeiContent'
 
 export type OptionalQuery = Query
 
@@ -46,9 +46,11 @@ const SuimeiPage: NextPage = () => {
     }
     const json = await res.json()
     const sekkiPair = json.data as SekkiPair
+    const kanshi = new Kanshi(suimeiSeed.dateTime, sekkiPair)
     return {
       sekki: sekkiPair.today,
-      kanshi: new Kanshi(suimeiSeed.dateTime, sekkiPair),
+      kanshi,
+      tsuhensei: new Tsuhensei(kanshi),
     }
   })
 
@@ -62,54 +64,11 @@ const SuimeiPage: NextPage = () => {
   if (error) return <div>failed to load: {JSON.stringify(error.message)}</div>
   if (!suimei) return <div>loading...</div>
 
-  const { sekki, kanshi } = suimei
-
   return (
     <div className="suimei">
-      <div
-        className="tw-min-h-screen tw-pb-8 tw-flex tw-flex-col tw-justify-between tw-items-center tw-space-y-4"
-        style={{ fontFamily: 'Serif' }}
-      >
+      <div>
         <Header />
-        <div className="tw-w-full tw-max-w-screen-md tw-px-4 tw-mx-auto tw-space-y-8">
-          <div className="tw-text-center tw-text-7xl sm:tw-text-10xl">四柱推命</div>
-          <p>{NOW.toString()}</p>
-          <p>二十四節気： {sekki}</p>
-          <table>
-            <thead>
-              <tr>
-                <th></th>
-                <th>年柱</th>
-                <th>月柱</th>
-                <th>日柱</th>
-                <th>時柱</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <th>天干</th>
-                <td>{kanshi.年柱[0]}</td>
-                <td>{kanshi.月柱[0]}</td>
-                <td>{kanshi.日柱[0]}</td>
-                <td>{kanshi.時柱[0]}</td>
-              </tr>
-              <tr>
-                <th>地支</th>
-                <td>{kanshi.年柱[1]}</td>
-                <td>{kanshi.月柱[1]}</td>
-                <td>{kanshi.日柱[1]}</td>
-                <td>{kanshi.時柱[1]}</td>
-              </tr>
-              <tr>
-                <th>干支</th>
-                <td>{kanshi.年柱}</td>
-                <td>{kanshi.月柱}</td>
-                <td>{kanshi.日柱}</td>
-                <td>{kanshi.時柱}</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
+        <SuimeiContent suimei={suimei} />
         <Footer />
       </div>
     </div>

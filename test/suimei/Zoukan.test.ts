@@ -168,3 +168,24 @@ describe('Zoukan', () => {
     expect(zoukan.時柱).toMatchObject({ honki: '丁', chuki: '-', yoki: '己' })
   })
 })
+
+describe('ZoukanTsuhensei', () => {
+  const date = new Date('2023-03-15T11:41:20+09:00')
+
+  it('蔵干通変星：年柱', async () => {
+    const zoukanTsuhensei = new ZoukanTsuhensei(new Zoukan(await getKanshiInstance(date)))
+    expect(zoukanTsuhensei.年柱).toMatchObject({ honki: '傷官', chuki: '-', yoki: '食神' })
+  })
+  it('蔵干通変星：月柱', async () => {
+    const zoukanTsuhensei = new ZoukanTsuhensei(new Zoukan(await getKanshiInstance(date)))
+    expect(zoukanTsuhensei.月柱).toMatchObject({ honki: '傷官', chuki: '-', yoki: '食神' })
+  })
+  it('蔵干通変星：日柱', async () => {
+    const zoukanTsuhensei = new ZoukanTsuhensei(new Zoukan(await getKanshiInstance(date)))
+    expect(zoukanTsuhensei.日柱).toMatchObject({ honki: '偏印', chuki: '比肩', yoki: '偏官' })
+  })
+  it('蔵干通変星：時柱', async () => {
+    const zoukanTsuhensei = new ZoukanTsuhensei(new Zoukan(await getKanshiInstance(date)))
+    expect(zoukanTsuhensei.時柱).toMatchObject({ honki: '正財', chuki: '-', yoki: '正官' })
+  })
+})

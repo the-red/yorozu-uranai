@@ -356,12 +356,12 @@ export const SuimeiContent: FC<{ suimei: Suimei }> = ({ suimei }) => {
               <th>天干</th>
               <th>地支</th>
               <th>
-                天干<br></br>通変星
+                天干<br className="header_br_sp"></br>通変星
               </th>
               <th>十二運</th>
               <th>蔵干</th>
               <th>
-                蔵干<br></br>通変星
+                蔵干<br className="header_br_sp"></br>通変星
               </th>
             </tr>
           </thead>

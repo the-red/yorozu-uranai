@@ -3,7 +3,10 @@ import type { 節 } from './Sekki'
 
 export const 十干list = ['甲', '乙', '丙', '丁', '戊', '己', '庚', '辛', '壬', '癸'] as const
 export const 十二支list = ['子', '丑', '寅', '卯', '辰', '巳', '午', '未', '申', '酉', '戌', '亥'] as const
-type 干支 = `${typeof 十干list[number]}${typeof 十二支list[number]}`
+
+export type 十干 = typeof 十干list[number]
+type 十二支 = typeof 十二支list[number]
+type 干支 = `${十干}${十二支}`
 
 const get六十干支 = (): 干支[] => {
   const 干支list: 干支[] = []
@@ -70,9 +73,43 @@ export class Kanshi {
     // ホロスコープも同じ調整を入れるべきか？
     const hour = this.date.plus({ hour: 1 }).hour
 
-    const index = Math.trunc(hour / 2) + this.日干index * 12
+    const index = (Math.trunc(hour / 2) + this.日干index * 12) % 60
 
     return Kanshi.六十干支.at(index)!
+  }
+
+  // 天干を個別取得
+  get 年干(): 十干 {
+    return this.年柱[0] as 十干
+  }
+  get 月干(): 十干 {
+    return this.月柱[0] as 十干
+  }
+  get 日干(): 十干 {
+    return this.日柱[0] as 十干
+  }
+  get 時干(): 十干 {
+    return this.時柱[0] as 十干
+  }
+  get 天干(): [十干, 十干, 十干, 十干] {
+    return [this.年干, this.月干, this.日干, this.時干]
+  }
+
+  // 天干を個別取得
+  get 年支(): 十二支 {
+    return this.年柱[1] as 十二支
+  }
+  get 月支(): 十二支 {
+    return this.月柱[1] as 十二支
+  }
+  get 日支(): 十二支 {
+    return this.日柱[1] as 十二支
+  }
+  get 時支(): 十二支 {
+    return this.時柱[1] as 十二支
+  }
+  get 地支(): [十二支, 十二支, 十二支, 十二支] {
+    return [this.年支, this.月支, this.日支, this.時支]
   }
 
   private get 日干index(): number {

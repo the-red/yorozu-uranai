@@ -8,7 +8,7 @@ describe('Zoukan', () => {
       expect(z.honki).toEqual('癸')
     })
     it('中気：なし', () => {
-      expect(z.chuki).toEqual('')
+      expect(z.chuki).toEqual('-')
     })
     it('余気：壬', () => {
       expect(z.yoki).toEqual('壬')
@@ -44,7 +44,7 @@ describe('Zoukan', () => {
       expect(z.honki).toEqual('乙')
     })
     it('中気：なし', () => {
-      expect(z.chuki).toEqual('')
+      expect(z.chuki).toEqual('-')
     })
     it('余気：甲', () => {
       expect(z.yoki).toEqual('甲')
@@ -80,7 +80,7 @@ describe('Zoukan', () => {
       expect(z.honki).toEqual('丁')
     })
     it('中気：なし', () => {
-      expect(z.chuki).toEqual('')
+      expect(z.chuki).toEqual('-')
     })
     it('余気：己', () => {
       expect(z.yoki).toEqual('己')
@@ -116,7 +116,7 @@ describe('Zoukan', () => {
       expect(z.honki).toEqual('辛')
     })
     it('中気：なし', () => {
-      expect(z.chuki).toEqual('')
+      expect(z.chuki).toEqual('-')
     })
     it('余気：庚', () => {
       expect(z.yoki).toEqual('庚')
@@ -140,7 +140,7 @@ describe('Zoukan', () => {
       expect(z.honki).toEqual('壬')
     })
     it('中気：なし', () => {
-      expect(z.chuki).toEqual('')
+      expect(z.chuki).toEqual('-')
     })
     it('余気：甲', () => {
       expect(z.yoki).toEqual('甲')
@@ -153,11 +153,11 @@ describe('Zoukan', () => {
 
   it('蔵干：年柱', async () => {
     const zoukan = new Zoukan(await getKanshiInstance(date))
-    expect(zoukan.年柱).toMatchObject({ chuki: '', honki: '乙', yoki: '甲' })
+    expect(zoukan.年柱).toMatchObject({ chuki: '-', honki: '乙', yoki: '甲' })
   })
   it('蔵干：月柱', async () => {
     const tsuhensei = new Zoukan(await getKanshiInstance(date))
-    expect(tsuhensei.月柱).toMatchObject({ chuki: '', honki: '乙', yoki: '甲' })
+    expect(tsuhensei.月柱).toMatchObject({ chuki: '-', honki: '乙', yoki: '甲' })
   })
   it('蔵干：日柱', async () => {
     const tsuhensei = new Zoukan(await getKanshiInstance(date))
@@ -165,6 +165,6 @@ describe('Zoukan', () => {
   })
   it('蔵干：時柱', async () => {
     const tsuhensei = new Zoukan(await getKanshiInstance(date))
-    expect(tsuhensei.時柱).toMatchObject({ chuki: '', honki: '丁', yoki: '己' })
+    expect(tsuhensei.時柱).toMatchObject({ chuki: '-', honki: '丁', yoki: '己' })
   })
 })

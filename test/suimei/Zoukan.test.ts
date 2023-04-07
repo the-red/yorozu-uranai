@@ -156,15 +156,15 @@ describe('Zoukan', () => {
     expect(zoukan.年柱).toMatchObject({ chuki: '-', honki: '乙', yoki: '甲' })
   })
   it('蔵干：月柱', async () => {
-    const tsuhensei = new Zoukan(await getKanshiInstance(date))
-    expect(tsuhensei.月柱).toMatchObject({ chuki: '-', honki: '乙', yoki: '甲' })
+    const zoukan = new Zoukan(await getKanshiInstance(date))
+    expect(zoukan.月柱).toMatchObject({ chuki: '-', honki: '乙', yoki: '甲' })
   })
   it('蔵干：日柱', async () => {
-    const tsuhensei = new Zoukan(await getKanshiInstance(date))
-    expect(tsuhensei.日柱).toEqual({ chuki: '壬', honki: '庚', yoki: '戊' })
+    const zoukan = new Zoukan(await getKanshiInstance(date))
+    expect(zoukan.日柱).toEqual({ chuki: '壬', honki: '庚', yoki: '戊' })
   })
   it('蔵干：時柱', async () => {
-    const tsuhensei = new Zoukan(await getKanshiInstance(date))
-    expect(tsuhensei.時柱).toMatchObject({ chuki: '-', honki: '丁', yoki: '己' })
+    const zoukan = new Zoukan(await getKanshiInstance(date))
+    expect(zoukan.時柱).toMatchObject({ chuki: '-', honki: '丁', yoki: '己' })
   })
 })

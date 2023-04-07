@@ -1,14 +1,12 @@
-import { 十干list as jikkanList, 十二支list as junishiList } from './Kanshi'
+import type { 十干 as Jikkan, 十二支 as Junishi } from './Kanshi'
 
-type Jikkan = typeof jikkanList[number]
-type Junishi = typeof junishiList[number]
-type Zoukan = {
+type 蔵干 = {
   honki: Jikkan | ''
   chuki: Jikkan | ''
   yoki: Jikkan | ''
 }
 
-export const zoukan = (chishi: Junishi): Zoukan => {
+export const calcZoukan = (chishi: Junishi): 蔵干 => {
   switch (chishi) {
     case '子':
       return {

@@ -1,4 +1,4 @@
-import { calcTsuhensei, Tsuhensei } from '../../src/suimei/Tsuhensei'
+import { calcTsuhensei, TenkanTsuhensei } from '../../src/suimei/Tsuhensei'
 import { getKanshiInstance } from './test-util'
 
 describe('calcTsuhensei', () => {
@@ -153,15 +153,15 @@ describe('Tsuhensei', () => {
   const date = new Date('2023-03-15T11:41:20+09:00')
 
   it('通変星：年柱', async () => {
-    const tsuhensei = new Tsuhensei(await getKanshiInstance(date))
+    const tsuhensei = new TenkanTsuhensei(await getKanshiInstance(date))
     expect(tsuhensei.年柱).toEqual('劫財')
   })
   it('通変星：月柱', async () => {
-    const tsuhensei = new Tsuhensei(await getKanshiInstance(date))
+    const tsuhensei = new TenkanTsuhensei(await getKanshiInstance(date))
     expect(tsuhensei.月柱).toEqual('傷官')
   })
   it('通変星：時柱', async () => {
-    const tsuhensei = new Tsuhensei(await getKanshiInstance(date))
+    const tsuhensei = new TenkanTsuhensei(await getKanshiInstance(date))
     expect(tsuhensei.時柱).toEqual('偏財')
   })
 })

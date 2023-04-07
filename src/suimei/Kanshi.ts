@@ -95,7 +95,7 @@ export class Kanshi {
     return [this.年干, this.月干, this.日干, this.時干]
   }
 
-  // 天干を個別取得
+  // 地支を個別取得
   get 年支(): 十二支 {
     return this.年柱[1] as 十二支
   }

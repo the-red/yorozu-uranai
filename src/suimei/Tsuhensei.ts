@@ -6,11 +6,11 @@ const tsuhenseiOdd = ['比肩', '劫財', '偏印', '印綬', '偏官', '正官'
 
 type 通変星 = typeof tsuhenseiEven[number] | typeof tsuhenseiOdd[number] | undefined
 
-export const calcTsuhensei = (nikkan: Jikkan, anotherTenkan: Jikkan): 通変星 => {
+export const calcTsuhensei = (nikkan: Jikkan, anotherJikkan: Jikkan): 通変星 => {
   // 日干の判定：奇数か偶数か
   const nikkanIndex = jikkanList.indexOf(nikkan)
-  const anotherTenkanIndex = jikkanList.indexOf(anotherTenkan)
-  const tsuhenseiIndex = nikkanIndex - anotherTenkanIndex
+  const anotherJikkanIndex = jikkanList.indexOf(anotherJikkan)
+  const tsuhenseiIndex = nikkanIndex - anotherJikkanIndex
 
   if (isEven(nikkanIndex)) {
     // 日干が偶数
@@ -25,7 +25,7 @@ const isEven = (targetNumber: number) => {
   return targetNumber % 2 === 0
 }
 
-export class Tsuhensei {
+export class TenkanTsuhensei {
   readonly 年柱: 通変星
   readonly 月柱: 通変星
   readonly 時柱: 通変星

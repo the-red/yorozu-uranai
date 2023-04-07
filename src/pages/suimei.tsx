@@ -7,7 +7,7 @@ import { DateTime } from 'luxon'
 import { Query } from '../lib/params'
 import Header from '../components/Header'
 import Footer from '../components/Footer'
-import { Kanshi, SekkiPair, Suimei, Tsuhensei } from '../suimei'
+import { Kanshi, SekkiPair, Suimei, TenkanTsuhensei } from '../suimei'
 import { SuimeiContent } from '../suimei/components/SuimeiContent'
 
 export type OptionalQuery = Query
@@ -50,7 +50,7 @@ const SuimeiPage: NextPage = () => {
     return {
       sekki: sekkiPair.today,
       kanshi,
-      tsuhensei: new Tsuhensei(kanshi),
+      tsuhensei: new TenkanTsuhensei(kanshi),
     }
   })
 

@@ -4,7 +4,7 @@ import { staticPath } from '../../lib/$path'
 import { Suimei } from '../'
 
 export const SuimeiContent: FC<{ suimei: Suimei }> = ({ suimei }) => {
-  const { kanshi, tsuhensei } = suimei
+  const { kanshi, tsuhensei, zoukan } = suimei
 
   const TitleArea = () => (
     <div className="title_area">
@@ -145,15 +145,29 @@ export const SuimeiContent: FC<{ suimei: Suimei }> = ({ suimei }) => {
               <td></td>
             </tr>
             <tr>
-              <th>蔵干</th>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td></td>
+              <th>
+                蔵干
+                <br />
+                （余気/中気/本気）
+              </th>
+              <td>
+                {zoukan.年柱.yoki}/{zoukan.年柱.chuki}/{zoukan.年柱.honki}
+              </td>
+              <td>
+                {zoukan.月柱.yoki}/{zoukan.月柱.chuki}/{zoukan.月柱.honki}
+              </td>
+              <td>
+                {zoukan.日柱.yoki}/{zoukan.日柱.chuki}/{zoukan.日柱.honki}
+              </td>
+              <td>
+                {zoukan.時柱.yoki}/{zoukan.時柱.chuki}/{zoukan.時柱.honki}
+              </td>
             </tr>
             <tr>
               <th>
                 蔵干<br className="header_br_sp"></br>通変星
+                <br />
+                （余気/中気/本気）
               </th>
               <td></td>
               <td></td>

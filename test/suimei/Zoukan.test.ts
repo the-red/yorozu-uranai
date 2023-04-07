@@ -1,4 +1,5 @@
-import { calcZoukan } from '../../src/suimei/Zoukan'
+import { Zoukan, calcZoukan } from '../../src/suimei/Zoukan'
+import { getKanshiInstance } from './test-util'
 
 describe('Zoukan', () => {
   describe('地支：子', () => {
@@ -144,5 +145,26 @@ describe('Zoukan', () => {
     it('余気：甲', () => {
       expect(z.yoki).toEqual('甲')
     })
+  })
+})
+
+describe('Zoukan', () => {
+  const date = new Date('2023-03-15T11:41:20+09:00')
+
+  it('蔵干：年柱', async () => {
+    const zoukan = new Zoukan(await getKanshiInstance(date))
+    expect(zoukan.年柱).toMatchObject({ chuki: '', honki: '乙', yoki: '甲' })
+  })
+  it('蔵干：月柱', async () => {
+    const tsuhensei = new Zoukan(await getKanshiInstance(date))
+    expect(tsuhensei.月柱).toMatchObject({ chuki: '', honki: '乙', yoki: '甲' })
+  })
+  it('蔵干：日柱', async () => {
+    const tsuhensei = new Zoukan(await getKanshiInstance(date))
+    expect(tsuhensei.日柱).toEqual({ chuki: '壬', honki: '庚', yoki: '戊' })
+  })
+  it('蔵干：時柱', async () => {
+    const tsuhensei = new Zoukan(await getKanshiInstance(date))
+    expect(tsuhensei.時柱).toMatchObject({ chuki: '', honki: '丁', yoki: '己' })
   })
 })

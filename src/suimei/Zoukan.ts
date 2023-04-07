@@ -1,4 +1,4 @@
-import type { 十干 as Jikkan, 十二支 as Junishi } from './Kanshi'
+import type { 十干 as Jikkan, 十二支 as Junishi, Kanshi } from './Kanshi'
 
 type 蔵干 = {
   honki: Jikkan | ''
@@ -80,5 +80,19 @@ export const calcZoukan = (chishi: Junishi): 蔵干 => {
         chuki: '',
         yoki: '甲',
       }
+  }
+}
+
+export class Zoukan {
+  readonly 年柱: 蔵干
+  readonly 月柱: 蔵干
+  readonly 日柱: 蔵干
+  readonly 時柱: 蔵干
+
+  constructor(kanshi: Kanshi) {
+    this.年柱 = calcZoukan(kanshi.年支)
+    this.月柱 = calcZoukan(kanshi.月支)
+    this.日柱 = calcZoukan(kanshi.日支)
+    this.時柱 = calcZoukan(kanshi.時支)
   }
 }

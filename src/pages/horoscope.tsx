@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import router, { useRouter } from 'next/router'
+import { useRouter } from 'next/router'
 import useSWR from 'swr'
 import { DateTime } from 'luxon'
 
@@ -10,9 +10,8 @@ import Footer from '../components/Footer'
 import { Horoscope, HoroscopeProps } from '../horoscope'
 import { HoroscopeForm, HoroscopeFormProps, HoroscopeFormValues } from '../horoscope/components/HoroscopeForm'
 import HoroscopeDetailPage from '../horoscope/components/HoroscopeDetailPage'
-import { Query, FORM_DATE_FORMAT, FORM_TIME_FORMAT, queryToFormValues, formValuesToQuery } from '../lib/params'
-import { TOKYO_STATION } from '../lib/location'
-import { reverseGeocodeByLatLng } from '../lib/geocode'
+import { Query, formValuesToQuery } from '../lib/params'
+import { useDefaultFormValues } from '../hooks/useDefaultFormValues'
 
 export type OptionalQuery = Query
 
@@ -20,49 +19,7 @@ function HoroscopePage() {
   const router = useRouter()
   const [horoscope, setHoroscope] = useState<Horoscope>()
   const [formValues, setFormValues] = useState<HoroscopeFormValues>()
-
-  useEffect(() => {
-    const setDefaultFormValues = async () => {
-      if (router.isReady) {
-        const f = queryToFormValues(router.query)
-        const now = DateTime.local({ zone: f.zone })
-        const zone = now.zoneName
-
-        let date: string
-        let time: string | undefined
-        let timeUnknown: boolean = f.timeUnknown
-
-        if (f.date && f.time) {
-          date = f.date
-          time = f.time
-        } else if (f.date && !f.time) {
-          // NOTE: クエリで日付だけ指定の場合は、timeUnknownとして扱う
-          date = f.date
-          timeUnknown = true
-        } else if (!f.date && f.time) {
-          date = now.toFormat(FORM_DATE_FORMAT)
-          time = f.time
-        } else {
-          date = now.toFormat(FORM_DATE_FORMAT)
-          time = now.toFormat(FORM_TIME_FORMAT)
-        }
-
-        if (timeUnknown || !time) {
-          timeUnknown = true
-          time = '12:00'
-        }
-
-        const defaultLocation = TOKYO_STATION
-        const lat = f.lat === undefined ? defaultLocation.lat : f.lat
-        const lng = f.lng === undefined ? defaultLocation.lng : f.lng
-
-        const address = await reverseGeocodeByLatLng({ lat, lng })
-
-        setFormValues({ ...f, date, time, zone, timeUnknown, lat, lng, address })
-      }
-    }
-    setDefaultFormValues()
-  }, [router])
+  useDefaultFormValues(setFormValues)
 
   const { data, error } = useSWR<Horoscope | undefined>([formValues], async (formValues: HoroscopeFormValues) => {
     if (!formValues) {

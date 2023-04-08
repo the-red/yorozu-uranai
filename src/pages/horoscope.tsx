@@ -8,7 +8,7 @@ import Header from '../components/Header'
 import Footer from '../components/Footer'
 
 import { Horoscope, HoroscopeProps } from '../horoscope'
-import { HoroscopeForm, HoroscopeFormProps, HoroscopeFormValues } from '../horoscope/components/HoroscopeForm'
+import { HoroscopeFormProps, HoroscopeFormValues } from '../horoscope/components/HoroscopeForm'
 import HoroscopeDetailPage from '../horoscope/components/HoroscopeDetailPage'
 import { Query, formValuesToQuery } from '../lib/params'
 import { useFormValues } from '../hooks/useFormValues'
@@ -80,9 +80,12 @@ function HoroscopePage() {
       <Header whiteIcon={true} />
       <div className="container">
         <div className="title">Horoscope</div>
-        <HoroscopeDetailPage horoscope={horoscope} orb={orb}>
-          <HoroscopeForm onSubmit={handleSubmit} defaultValues={formValues} />
-        </HoroscopeDetailPage>
+        <HoroscopeDetailPage
+          horoscope={horoscope}
+          orb={orb}
+          onSubmit={handleSubmit}
+          defaultValues={formValues}
+        ></HoroscopeDetailPage>
       </div>
       <Footer />
     </div>

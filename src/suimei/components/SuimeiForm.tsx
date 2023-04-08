@@ -1,4 +1,20 @@
-export const SuimeiForm = () => (
+import { FC } from 'react'
+
+export type SuimeiFormValues = {
+  date: string
+  time: string
+  zone: string
+  timeUnknown: boolean
+  lat: number
+  lng: number
+  address: string
+}
+export type SuimeiFormProps = {
+  onSubmit: (formValues: SuimeiFormValues) => void
+  defaultValues?: Partial<SuimeiFormValues>
+}
+
+export const SuimeiForm: FC<SuimeiFormProps> = ({ onSubmit, defaultValues }) => (
   <section className="information_input">
     <div className="inner">
       <h3>情報入力</h3>

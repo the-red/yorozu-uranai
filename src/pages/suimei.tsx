@@ -4,11 +4,13 @@ import { useState, useMemo, useEffect } from 'react'
 import useSWR from 'swr'
 import { DateTime } from 'luxon'
 
-import { Query } from '../lib/params'
+import { Query, formValuesToQuery } from '../lib/params'
 import Header from '../components/Header'
 import Footer from '../components/Footer'
 import { Kanshi, SekkiPair, Suimei, TenkanTsuhensei, Zoukan, ZoukanTsuhensei } from '../suimei'
 import { SuimeiContent } from '../suimei/components/SuimeiContent'
+import { useFormValues } from '../hooks/useFormValues'
+import { SuimeiFormProps } from '../suimei/components/SuimeiForm'
 
 export type OptionalQuery = Query
 
@@ -17,12 +19,8 @@ type SuimeiFormValues = any
 const SuimeiPage: NextPage = () => {
   const router = useRouter()
   const [suimei, setSuimei] = useState<Suimei>()
-
-  const formValues = useMemo(() => {
-    if (router.isReady) {
-      return {}
-    }
-  }, [router])
+  const [formValues, setFormValues] = useState<SuimeiFormValues>()
+  useFormValues(setFormValues, router)
 
   // 暫定的な固定値
   const NOW = DateTime.now()
@@ -67,11 +65,20 @@ const SuimeiPage: NextPage = () => {
   if (error) return <div>failed to load: {JSON.stringify(error.message)}</div>
   if (!suimei) return <div>loading...</div>
 
+  const handleSubmit: SuimeiFormProps['onSubmit'] = (formValues) => {
+    router.push({
+      query: {
+        ...router.query,
+        ...formValuesToQuery(formValues),
+      },
+    })
+  }
+
   return (
     <div className="suimei">
       <div>
         <Header />
-        <SuimeiContent suimei={suimei} />
+        <SuimeiContent suimei={suimei} onSubmit={handleSubmit} defaultValues={formValues} />
         <Footer />
       </div>
     </div>

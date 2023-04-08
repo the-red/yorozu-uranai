@@ -1,6 +1,6 @@
 import { NextPage } from 'next'
 import { useRouter } from 'next/router'
-import { useState, useMemo, useEffect } from 'react'
+import { useState, useEffect } from 'react'
 import useSWR from 'swr'
 import { DateTime } from 'luxon'
 

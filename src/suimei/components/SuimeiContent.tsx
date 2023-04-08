@@ -1,4 +1,4 @@
-import type { FC, ReactNode } from 'react'
+import type { FC } from 'react'
 import { Suimei } from '../'
 import { TitleArea } from './TitleArea'
 import { SuimeiForm, SuimeiFormProps } from './SuimeiForm'

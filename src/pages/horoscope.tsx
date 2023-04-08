@@ -11,7 +11,7 @@ import { Horoscope, HoroscopeProps } from '../horoscope'
 import { HoroscopeForm, HoroscopeFormProps, HoroscopeFormValues } from '../horoscope/components/HoroscopeForm'
 import HoroscopeDetailPage from '../horoscope/components/HoroscopeDetailPage'
 import { Query, formValuesToQuery } from '../lib/params'
-import { useDefaultFormValues } from '../hooks/useDefaultFormValues'
+import { useFormValues } from '../hooks/useFormValues'
 
 export type OptionalQuery = Query
 
@@ -19,7 +19,7 @@ function HoroscopePage() {
   const router = useRouter()
   const [horoscope, setHoroscope] = useState<Horoscope>()
   const [formValues, setFormValues] = useState<HoroscopeFormValues>()
-  useDefaultFormValues(setFormValues)
+  useFormValues(setFormValues, router)
 
   const { data, error } = useSWR<Horoscope | undefined>([formValues], async (formValues: HoroscopeFormValues) => {
     if (!formValues) {

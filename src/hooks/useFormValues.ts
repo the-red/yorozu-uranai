@@ -1,12 +1,15 @@
 import { DateTime } from 'luxon'
-import router from 'next/router'
+import type { NextRouter } from 'next/router'
 import { Dispatch, SetStateAction, useEffect } from 'react'
 import { reverseGeocodeByLatLng } from '../lib/geocode'
 import { TOKYO_STATION } from '../lib/location'
 import { queryToFormValues, FORM_DATE_FORMAT, FORM_TIME_FORMAT } from '../lib/params'
 import type { HoroscopeFormValues } from '../horoscope/components/HoroscopeForm'
 
-export const useDefaultFormValues = (setFormValues: Dispatch<SetStateAction<HoroscopeFormValues | undefined>>) => {
+export const useFormValues = (
+  setFormValues: Dispatch<SetStateAction<HoroscopeFormValues | undefined>>,
+  router: NextRouter
+) => {
   useEffect(() => {
     const setDefaultFormValues = async () => {
       if (router.isReady) {

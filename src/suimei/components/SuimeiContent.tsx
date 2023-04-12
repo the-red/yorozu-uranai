@@ -4,7 +4,7 @@ import { staticPath } from '../../lib/$path'
 import { Suimei } from '../'
 
 export const SuimeiContent: FC<{ suimei: Suimei }> = ({ suimei }) => {
-  const { kanshi, tsuhensei } = suimei
+  const { kanshi, tenkanTsuhensei, zoukan, zoukanTsuhensei } = suimei
 
   const TitleArea = () => (
     <div className="title_area">
@@ -132,10 +132,10 @@ export const SuimeiContent: FC<{ suimei: Suimei }> = ({ suimei }) => {
               <th>
                 天干<br className="header_br_sp"></br>通変星
               </th>
-              <td>{tsuhensei.年柱}</td>
-              <td>{tsuhensei.月柱}</td>
+              <td>{tenkanTsuhensei.年柱}</td>
+              <td>{tenkanTsuhensei.月柱}</td>
               <td>-</td>
-              <td>{tsuhensei.時柱}</td>
+              <td>{tenkanTsuhensei.時柱}</td>
             </tr>
             <tr>
               <th>十二運</th>
@@ -145,20 +145,42 @@ export const SuimeiContent: FC<{ suimei: Suimei }> = ({ suimei }) => {
               <td></td>
             </tr>
             <tr>
-              <th>蔵干</th>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td></td>
+              <th>
+                蔵干
+                <br />
+                （余気/中気/本気）
+              </th>
+              <td>
+                {zoukan.年柱.yoki}/{zoukan.年柱.chuki}/{zoukan.年柱.honki}
+              </td>
+              <td>
+                {zoukan.月柱.yoki}/{zoukan.月柱.chuki}/{zoukan.月柱.honki}
+              </td>
+              <td>
+                {zoukan.日柱.yoki}/{zoukan.日柱.chuki}/{zoukan.日柱.honki}
+              </td>
+              <td>
+                {zoukan.時柱.yoki}/{zoukan.時柱.chuki}/{zoukan.時柱.honki}
+              </td>
             </tr>
             <tr>
               <th>
                 蔵干<br className="header_br_sp"></br>通変星
+                <br />
+                （余気/中気/本気）
               </th>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td></td>
+              <td>
+                {zoukanTsuhensei.年柱.yoki}/{zoukanTsuhensei.年柱.chuki}/{zoukanTsuhensei.年柱.honki}
+              </td>
+              <td>
+                {zoukanTsuhensei.月柱.yoki}/{zoukanTsuhensei.月柱.chuki}/{zoukanTsuhensei.月柱.honki}
+              </td>
+              <td>
+                {zoukanTsuhensei.日柱.yoki}/{zoukanTsuhensei.日柱.chuki}/{zoukanTsuhensei.日柱.honki}
+              </td>
+              <td>
+                {zoukanTsuhensei.時柱.yoki}/{zoukanTsuhensei.時柱.chuki}/{zoukanTsuhensei.時柱.honki}
+              </td>
             </tr>
             <tr>
               <th>特殊星</th>
@@ -342,12 +364,12 @@ export const SuimeiContent: FC<{ suimei: Suimei }> = ({ suimei }) => {
               <th>天干</th>
               <th>地支</th>
               <th>
-                天干<br></br>通変星
+                天干<br className="header_br_sp"></br>通変星
               </th>
               <th>十二運</th>
               <th>蔵干</th>
               <th>
-                蔵干<br></br>通変星
+                蔵干<br className="header_br_sp"></br>通変星
               </th>
             </tr>
           </thead>

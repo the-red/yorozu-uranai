@@ -149,7 +149,7 @@ describe('calcTsuhensei', () => {
   })
 })
 
-describe('Tsuhensei', () => {
+describe('TenkanTsuhensei', () => {
   const date = new Date('2023-03-15T11:41:20+09:00')
 
   it('通変星：年柱', async () => {

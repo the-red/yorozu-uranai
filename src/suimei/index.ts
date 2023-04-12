@@ -1,4 +1,5 @@
 export * from './Kanshi'
 export * from './Sekki'
 export * from './Tsuhensei'
+export * from './Zoukan'
 export * from './types'

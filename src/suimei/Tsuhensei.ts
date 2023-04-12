@@ -4,7 +4,7 @@ import type { 十干 as Jikkan, Kanshi } from './Kanshi'
 const tsuhenseiEven = ['比肩', '印綬', '偏印', '正官', '偏官', '正財', '偏財', '傷官', '食神', '劫財'] as const
 const tsuhenseiOdd = ['比肩', '劫財', '偏印', '印綬', '偏官', '正官', '偏財', '正財', '食神', '傷官'] as const
 
-type 通変星 = typeof tsuhenseiEven[number] | typeof tsuhenseiOdd[number] | undefined
+export type 通変星 = typeof tsuhenseiEven[number] | typeof tsuhenseiOdd[number]
 
 export const calcTsuhensei = (nikkan: Jikkan, anotherJikkan: Jikkan): 通変星 => {
   // 日干の判定：奇数か偶数か
@@ -14,10 +14,10 @@ export const calcTsuhensei = (nikkan: Jikkan, anotherJikkan: Jikkan): 通変星 
 
   if (isEven(nikkanIndex)) {
     // 日干が偶数
-    return tsuhenseiEven.at(tsuhenseiIndex)
+    return tsuhenseiEven.at(tsuhenseiIndex) as 通変星
   } else {
     // 日干が奇数
-    return tsuhenseiOdd.at(tsuhenseiIndex)
+    return tsuhenseiOdd.at(tsuhenseiIndex) as 通変星
   }
 }
 

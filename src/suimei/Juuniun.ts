@@ -3,6 +3,8 @@ import { 十干list as jikkanList, 十二支list as junishiList } from './Kanshi
 const juuniunEven = ['胎', '養', '長生', '沐浴', '冠帯', '建禄', '帝旺', '衰', '病', '死', '墓', '絶']
 const juuniunOdd = ['絶', '墓', '死', '病', '衰', '帝旺', '建禄', '冠帯', '沐浴', '長生', '養', '胎']
 
+type Juniun = typeof juuniunEven[number] | typeof juuniunOdd[number]
+
 const startIndex = (jikkan: typeof jikkanList[number]) => {
   if (jikkan === '甲' || jikkan === '乙') {
     return 9
@@ -15,14 +17,14 @@ const startIndex = (jikkan: typeof jikkanList[number]) => {
   }
 }
 
-export const juuniun = (nikkan: typeof jikkanList[number], junishi: typeof junishiList[number]) => {
+export const juuniun = (nikkan: typeof jikkanList[number], junishi: typeof junishiList[number]): Juniun => {
   const nikkanIndex = startIndex(nikkan)
   const junishiIndex = junishiList.indexOf(junishi)
   const juuniunIndex = junishiIndex - Number(nikkanIndex)
 
   if (jikkanList.indexOf(nikkan) % 2 === 0) {
-    return juuniunEven.at(juuniunIndex)
+    return juuniunEven.at(juuniunIndex) as Juniun
   } else {
-    return juuniunOdd.at(juuniunIndex)
+    return juuniunOdd.at(juuniunIndex) as Juniun
   }
 }

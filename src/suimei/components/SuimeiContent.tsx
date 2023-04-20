@@ -502,7 +502,7 @@ export const SuimeiContent: FC<{ suimei: Suimei }> = ({ suimei }) => {
   )
 
   return (
-    <div>
+    <div className="main">
       <TitleArea />
       <InformationInput />
       <Meisiki />

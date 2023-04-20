@@ -48,7 +48,10 @@ $sp_width: 375;
   width: (100% - ($row_header_width / $table_width * 100%)) / $data_columns_number;
 }
 
-.suimei {
+.suimei .main {
+  // global.cssでmargin-top設定されているので打ち消す
+  margin-top: 0;
+
   // 全体共通スタイル
   font-size: 16px;
   color: $text_black;

@@ -58,6 +58,11 @@ export const staticPath = {
       suimei_svg: '/images/index/suimei.svg',
       twitter_logo_svg: '/images/index/twitter-logo.svg'
     },
+    map: {
+      back_svg: '/images/map/back.svg',
+      current_location_svg: '/images/map/current_location.svg',
+      search_svg: '/images/map/search.svg'
+    },
     numerology: {
       bird_1_svg: '/images/numerology/bird-1.svg',
       bird_2_svg: '/images/numerology/bird-2.svg',

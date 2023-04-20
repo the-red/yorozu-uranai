@@ -48,6 +48,14 @@ $sp_width: 375;
   width: (100% - ($row_header_width / $table_width * 100%)) / $data_columns_number;
 }
 
+.suimei {
+  .header {
+    background-color: $accent_yellow_light;
+  }
+  .twitter-logo {
+    fill: #4b4b4b;
+  }
+}
 .suimei .main {
   // global.cssでmargin-top設定されているので打ち消す
   margin-top: 0;
@@ -92,13 +100,6 @@ $sp_width: 375;
   textarea {
     -webkit-appearance: none;
     border-radius: 0;
-  }
-
-  .header {
-    background-color: $accent_yellow_light;
-  }
-  .twitter-logo {
-    fill: #4b4b4b;
   }
 
   // タイトル表示エリア

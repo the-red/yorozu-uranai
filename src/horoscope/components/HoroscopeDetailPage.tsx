@@ -5,10 +5,11 @@ import PlanetPositions from './PlanetPositions'
 import HouseCusp from './HouseCusp'
 import SignTable from './SignTable'
 import AspectChart from './AspectChart'
-import { HoroscopeFormProps, HoroscopeForm } from './HoroscopeForm'
+import { HoroscopeForm } from './HoroscopeForm'
+import { FormProps } from '../../hooks/useYorozuUranaiForm'
 const HoroscopeCircle = dynamic(() => import('./HoroscopeCircle'), { ssr: false })
 
-type Props = { horoscope: Horoscope; orb: number } & HoroscopeFormProps
+type Props = { horoscope: Horoscope; orb: number } & FormProps
 
 const HoroscopeDetailPage: FC<Props> = ({ horoscope, orb, onSubmit, defaultValues }) => {
   return (

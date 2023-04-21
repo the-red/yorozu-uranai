@@ -1,7 +1,7 @@
 import { useForm } from 'react-hook-form'
 import { reverseGeocodeByLatLng } from '../lib/geocode'
 
-type FormValues = {
+export type FormValues = {
   date: string
   time: string
   zone: string

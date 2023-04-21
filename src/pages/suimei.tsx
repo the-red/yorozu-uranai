@@ -10,7 +10,7 @@ import Footer from '../components/Footer'
 import { Kanshi, SekkiPair, Suimei, TenkanTsuhensei, Zoukan, ZoukanTsuhensei } from '../suimei'
 import { SuimeiContent } from '../suimei/components/SuimeiContent'
 import { useFormValues } from '../hooks/useFormValues'
-import { SuimeiFormProps } from '../suimei/components/SuimeiForm'
+import { FormProps } from '../hooks/useYorozuUranaiForm'
 
 export type OptionalQuery = Query
 
@@ -65,7 +65,7 @@ const SuimeiPage: NextPage = () => {
   if (error) return <div>failed to load: {JSON.stringify(error.message)}</div>
   if (!suimei) return <div>loading...</div>
 
-  const handleSubmit: SuimeiFormProps['onSubmit'] = (formValues) => {
+  const handleSubmit: FormProps['onSubmit'] = (formValues) => {
     router.push({
       query: {
         ...router.query,

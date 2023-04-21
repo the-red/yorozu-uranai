@@ -8,9 +8,9 @@ import Header from '../components/Header'
 import Footer from '../components/Footer'
 
 import { Horoscope, HoroscopeProps } from '../horoscope'
-import { HoroscopeFormProps, HoroscopeFormValues } from '../horoscope/components/HoroscopeForm'
 import HoroscopeDetailPage from '../horoscope/components/HoroscopeDetailPage'
 import { Query, formValuesToQuery } from '../lib/params'
+import { FormProps, FormValues } from '../hooks/useYorozuUranaiForm'
 import { useFormValues } from '../hooks/useFormValues'
 
 export type OptionalQuery = Query
@@ -18,10 +18,10 @@ export type OptionalQuery = Query
 function HoroscopePage() {
   const router = useRouter()
   const [horoscope, setHoroscope] = useState<Horoscope>()
-  const [formValues, setFormValues] = useState<HoroscopeFormValues>()
+  const [formValues, setFormValues] = useState<FormValues>()
   useFormValues(setFormValues, router)
 
-  const { data, error } = useSWR<Horoscope | undefined>([formValues], async (formValues: HoroscopeFormValues) => {
+  const { data, error } = useSWR<Horoscope | undefined>([formValues], async (formValues: FormValues) => {
     if (!formValues) {
       return
     }
@@ -65,7 +65,7 @@ function HoroscopePage() {
   // TODO:固定値ではなく、ユーザーが画面から指定した値を使うようにしたい
   const orb = 6
 
-  const handleSubmit: HoroscopeFormProps['onSubmit'] = (formValues) => {
+  const handleSubmit: FormProps['onSubmit'] = (formValues) => {
     router.push({
       query: {
         ...router.query,

@@ -26,17 +26,17 @@ export const SuimeiForm: FC<SuimeiFormProps> = ({ onSubmit, defaultValues }) => 
             <input type="time" name="time" />
           </dd>
           <dt>出生場所</dt>
-          <dd className="longitude_latitude">
-            <div className="longitude">
+          <dd className="location">
+            <div className="lat">
               <label>
                 <span>緯度</span>
-                <input type="text" name="longitude" value="35.604839" />
+                <input type="text" name="lat" value="35.604839" />
               </label>
             </div>
-            <div className="latitude">
+            <div className="lng">
               <label>
                 <span>経度</span>
-                <input type="text" name="latitude" value="139.667717" />
+                <input type="text" name="lng" value="139.667717" />
               </label>
             </div>
           </dd>

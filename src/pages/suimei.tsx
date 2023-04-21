@@ -22,16 +22,12 @@ const SuimeiPage: NextPage = () => {
   const [formValues, setFormValues] = useState<SuimeiFormValues>()
   useFormValues(setFormValues, router)
 
-  // 暫定的な固定値
-  const NOW = DateTime.now()
-
   const { data, error } = useSWR<Suimei>([formValues], async (formValues: SuimeiFormValues) => {
     const { date, time, zone } = formValues
     const suimeiSeed: {
       dateTime: DateTime
     } = {
-      dateTime: NOW,
-      // dateTime: DateTime.fromISO(`${date}T${time}`, { zone }),
+      dateTime: DateTime.fromISO(`${date}T${time}`, { zone }),
     }
     const res = await fetch('/api/suimei-props', {
       method: 'POST',

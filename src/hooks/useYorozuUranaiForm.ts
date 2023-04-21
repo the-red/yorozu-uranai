@@ -1,15 +1,8 @@
 import { useForm } from 'react-hook-form'
 import { reverseGeocodeByLatLng } from '../lib/geocode'
+import { FormValuesBase } from '../lib/params'
 
-export type FormValues = {
-  date: string
-  time: string
-  zone: string
-  timeUnknown: boolean
-  lat: number
-  lng: number
-  address: string
-}
+export type FormValues = Required<Omit<FormValuesBase, 'name'>> & { address: string }
 
 export type FormProps = {
   onSubmit: (formValues: FormValues) => void
@@ -24,11 +17,11 @@ export const useYorozuUranaiForm = ({ onSubmit, defaultValues }: FormProps) => {
   const lat = watch('lat')
   const lng = watch('lng')
 
-  const handleSubmit = async ({ date, time, zone, timeUnknown, lat, lng, address }: FormValues) => {
+  const handleSubmit = async ({ lat, lng, ...rest }: FormValues) => {
     lat = typeof lat === 'number' && !isNaN(lat) ? lat : 0
     lng = typeof lng === 'number' && !isNaN(lng) ? lng : 0
 
-    onSubmit({ date, time, zone, timeUnknown, lat, lng, address })
+    onSubmit({ lat, lng, ...rest })
   }
 
   // @ts-expect-error

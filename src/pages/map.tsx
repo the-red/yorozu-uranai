@@ -19,7 +19,7 @@ const render = (status: Status) => {
 }
 
 interface MapProps extends google.maps.MapOptions {
-  style: { [key: string]: string }
+  // style: { [key: string]: string }
   onClick?: (e: google.maps.MapMouseEvent) => void
   onIdle?: (map: google.maps.Map) => void
   children?: React.ReactNode
@@ -272,7 +272,8 @@ const MapPage: NextPage = () => {
   )
 
   return (
-    <div style={{ display: 'flex', flexFlow: 'column', height: '100%' }}>
+    <div className="map">
+      {/* <div className="map" style={{ display: 'flex', flexFlow: 'column', height: '100%' }}> */}
       {form}
       {/* NOTE: Wrapperコンポーネントを呼ぶとwindow.google.mapsがグローバルに設定される */}
       <Wrapper apiKey={process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY!} render={render}>
@@ -281,7 +282,7 @@ const MapPage: NextPage = () => {
           onClick={onClickMarker}
           onIdle={onIdleMarker}
           zoom={zoom}
-          style={{ flexGrow: '1', height: '100%' }}
+          // style={{ flexGrow: '1', height: '100%' }}
         >
           <Marker position={pinned} />
         </Map>

@@ -49,6 +49,17 @@ $sp_width: 375;
 }
 
 .suimei {
+  .header {
+    background-color: $accent_yellow_light;
+  }
+  .twitter-logo {
+    fill: #4b4b4b;
+  }
+}
+.suimei .main {
+  // global.cssでmargin-top設定されているので打ち消す
+  margin-top: 0;
+
   // 全体共通スタイル
   font-size: 16px;
   color: $text_black;
@@ -89,13 +100,6 @@ $sp_width: 375;
   textarea {
     -webkit-appearance: none;
     border-radius: 0;
-  }
-
-  .header {
-    background-color: $accent_yellow_light;
-  }
-  .twitter-logo {
-    fill: #4b4b4b;
   }
 
   // タイトル表示エリア

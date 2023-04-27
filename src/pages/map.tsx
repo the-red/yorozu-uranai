@@ -178,93 +178,99 @@ const MapPage: NextPage = () => {
   }
 
   const form = (
-    <div className="form_area">
-      <form>
-        <input ref={addressInput} type="text" id="address" name="address" />
-        <button
-          className="search_button"
-          type="submit"
-          onClick={async (e) => {
-            e.preventDefault()
-            const address = addressInput.current?.value
-            if (!address) return
+    <div className="search_area">
+      <div className="search_area_inner">
+        <form>
+          <input ref={addressInput} type="text" id="address" name="address" />
+          <button
+            className="search_button"
+            type="submit"
+            onClick={async (e) => {
+              e.preventDefault()
+              const address = addressInput.current?.value
+              if (!address) return
 
-            try {
-              const { formattedAddress, lat, lng } = await geocodeByAddress(address)
-              setPinned({ lat, lng })
-              setCenter({ lat, lng })
-              setInfo(formattedAddress)
-              setZoom(17)
-            } catch (e) {
-              const error = e as google.maps.MapsNetworkError
-              if (error.code === 'ZERO_RESULTS') {
-                setInfo('該当の住所が見つかりませんでした。')
-              } else {
-                setInfo(error.message)
+              try {
+                const { formattedAddress, lat, lng } = await geocodeByAddress(address)
+                setPinned({ lat, lng })
+                setCenter({ lat, lng })
+                setInfo(formattedAddress)
+                setZoom(17)
+              } catch (e) {
+                const error = e as google.maps.MapsNetworkError
+                if (error.code === 'ZERO_RESULTS') {
+                  setInfo('該当の住所が見つかりませんでした。')
+                } else {
+                  setInfo(error.message)
+                }
               }
+            }}
+          >
+            <Image src={staticPath.images.map.search_svg} alt="検索" width={24} height={24} />
+          </button>
+          <button
+            className="current_location_button"
+            onClick={async () => {
+              const { lat, lng } = await getCurrentLocation()
+              setMapLocation({ lat, lng })
+            }}
+          >
+            <Image src={staticPath.images.map.current_location_svg} alt="現在地取得アイコン" width={24} height={24} />
+          </button>
+        </form>
+        <button
+          className="confirm_button"
+          onClick={() => {
+            const setLocation = window?.opener?.setLocation
+            if (setLocation && setLocation(pinned.lat, pinned.lng)) {
+              window.close()
+            } else {
+              console.error({ opener: window?.opener, setLocation })
+              alert('緯度経度が確定できませんでした。')
             }
           }}
         >
-          <Image src={staticPath.images.map.search_svg} alt="検索" width={24} height={24} />
+          確定して戻る
         </button>
-        <button
-          className="current_location_button"
-          onClick={async () => {
-            const { lat, lng } = await getCurrentLocation()
-            setMapLocation({ lat, lng })
-          }}
-        >
-          <Image src={staticPath.images.map.current_location_svg} alt="現在地取得アイコン" width={24} height={24} />
-        </button>
-        <div className="lat">
-          <label htmlFor="lat">緯度</label>
-          <input
-            type="number"
-            id="lat"
-            name="lat"
-            step="0.0000001"
-            min="-90"
-            max="90"
-            value={pinned.lat}
-            onChange={(event) => {
-              const [lat, lng] = [Number(event.target.value), pinned.lng]
-              setMapLocation({ lat, lng })
-            }}
-          />
+        <div className="location_info">
+          <div className="lat">
+            <label htmlFor="lat">緯度</label>
+            <input
+              type="number"
+              id="lat"
+              name="lat"
+              step="0.0000001"
+              min="-90"
+              max="90"
+              value={pinned.lat}
+              onChange={(event) => {
+                const [lat, lng] = [Number(event.target.value), pinned.lng]
+                setMapLocation({ lat, lng })
+              }}
+            />
+          </div>
+          <div className="lng">
+            <label htmlFor="lng">経度</label>
+            <input
+              type="number"
+              id="lng"
+              name="lng"
+              step="0.0000001"
+              min="-180"
+              max="180"
+              value={pinned.lng}
+              onChange={(event) => {
+                const [lat, lng] = [pinned.lat, Number(event.target.value)]
+                setMapLocation({ lat, lng })
+              }}
+            />
+          </div>
+          <div className="search_result_address">{` ${info}`}</div>
         </div>
-        <div className="lng">
-          <label htmlFor="lng">経度</label>
-          <input
-            type="number"
-            id="lng"
-            name="lng"
-            step="0.0000001"
-            min="-180"
-            max="180"
-            value={pinned.lng}
-            onChange={(event) => {
-              const [lat, lng] = [pinned.lat, Number(event.target.value)]
-              setMapLocation({ lat, lng })
-            }}
-          />
-        </div>
-        <div className="search_result_address">{` ${info}`}</div>
-      </form>
-      <button
-        className="confirm_button"
-        onClick={() => {
-          const setLocation = window?.opener?.setLocation
-          if (setLocation && setLocation(pinned.lat, pinned.lng)) {
-            window.close()
-          } else {
-            console.error({ opener: window?.opener, setLocation })
-            alert('緯度経度が確定できませんでした。')
-          }
-        }}
-      >
-        確定して戻る
-      </button>
+      </div>
+      {/* search_area_innerの終了タグ */}
     </div>
+    // search_areaの終了タグ
   )
 
   return (

@@ -11,6 +11,8 @@ import { useRouter } from 'next/router'
 import { getCurrentLocation } from '../lib/location'
 // NOTE: Geocoding APIだけは他の画面との共通化のため、google.mapsではなく専用ライブラリを使う
 import { geocodeByAddress, reverseGeocodeByLatLng, reverseGeocodeByPlaceId } from '../lib/geocode'
+import { staticPath } from '../lib/$path'
+import Image from 'next/image'
 
 export type OptionalQuery = { lat?: number; lng?: number }
 
@@ -202,7 +204,7 @@ const MapPage: NextPage = () => {
             }
           }}
         >
-          検索
+          <Image src={staticPath.images.map.search_svg} alt="検索アイコン" width={24} height={24} />
         </button>
         <button
           onClick={async () => {
@@ -210,7 +212,7 @@ const MapPage: NextPage = () => {
             setMapLocation({ lat, lng })
           }}
         >
-          現在地を取得
+          <Image src={staticPath.images.map.current_location_svg} alt="現在地取得アイコン" width={24} height={24} />
         </button>
         <p>
           <label htmlFor="lat"> 緯度 </label>

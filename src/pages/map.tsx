@@ -216,8 +216,8 @@ const MapPage: NextPage = () => {
         >
           <Image src={staticPath.images.map.current_location_svg} alt="現在地取得アイコン" width={24} height={24} />
         </button>
-        <p>
-          <label htmlFor="lat"> 緯度 </label>
+        <div className="lat">
+          <label htmlFor="lat">緯度</label>
           <input
             type="number"
             id="lat"
@@ -231,7 +231,9 @@ const MapPage: NextPage = () => {
               setMapLocation({ lat, lng })
             }}
           />
-          <label htmlFor="lng"> 経度 </label>
+        </div>
+        <div className="lng">
+          <label htmlFor="lng">経度</label>
           <input
             type="number"
             id="lng"
@@ -245,8 +247,8 @@ const MapPage: NextPage = () => {
               setMapLocation({ lat, lng })
             }}
           />
-        </p>
-        {` ${info}`}
+        </div>
+        <div className="search_result_address">{` ${info}`}</div>
       </form>
       <button
         className="confirm_button"

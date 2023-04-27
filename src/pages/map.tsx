@@ -182,6 +182,7 @@ const MapPage: NextPage = () => {
       <form>
         <input ref={addressInput} type="text" id="address" name="address" />
         <button
+          className="search_button"
           type="submit"
           onClick={async (e) => {
             e.preventDefault()
@@ -204,9 +205,10 @@ const MapPage: NextPage = () => {
             }
           }}
         >
-          <Image src={staticPath.images.map.search_svg} alt="検索アイコン" width={24} height={24} />
+          <Image src={staticPath.images.map.search_svg} alt="検索" width={24} height={24} />
         </button>
         <button
+          className="current_location_button"
           onClick={async () => {
             const { lat, lng } = await getCurrentLocation()
             setMapLocation({ lat, lng })
@@ -247,6 +249,7 @@ const MapPage: NextPage = () => {
         {` ${info}`}
       </form>
       <button
+        className="confirm_button"
         onClick={() => {
           const setLocation = window?.opener?.setLocation
           if (setLocation && setLocation(pinned.lat, pinned.lng)) {

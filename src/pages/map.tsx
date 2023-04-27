@@ -178,7 +178,6 @@ const MapPage: NextPage = () => {
   const form = (
     <div className="form_area">
       <form>
-        <label htmlFor="address"> 住所 </label>
         <input ref={addressInput} type="text" id="address" name="address" />
         <button
           type="submit"
@@ -256,7 +255,7 @@ const MapPage: NextPage = () => {
           }
         }}
       >
-        確定
+        確定して戻る
       </button>
     </div>
   )

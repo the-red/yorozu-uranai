@@ -58,7 +58,7 @@ const Map: React.FC<MapProps> = ({ onClick, onIdle, children, style, ...options 
   }, [map, onClick, onIdle])
 
   return (
-    <div className="mapArea">
+    <div className="map_area">
       <div ref={ref} style={style} />
       {React.Children.map(children, (child) => {
         if (React.isValidElement(child)) {
@@ -176,7 +176,7 @@ const MapPage: NextPage = () => {
   }
 
   const form = (
-    <div className="formArea">
+    <div className="form_area">
       <form>
         <label htmlFor="address"> 住所 </label>
         <input ref={addressInput} type="text" id="address" name="address" />

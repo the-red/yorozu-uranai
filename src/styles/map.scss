@@ -2,11 +2,11 @@
   height: 100%;
 
   // 検索エリア
-  .formArea {
+  .form_area {
     height: 216px;
   }
   // 地図エリア
-  .mapArea {
+  .map_area {
     height: calc(100vh - 216px);
     & > div {
       height: 100%;

@@ -58,7 +58,7 @@ const Map: React.FC<MapProps> = ({ onClick, onIdle, children, style, ...options 
   }, [map, onClick, onIdle])
 
   return (
-    <>
+    <div className="mapArea">
       <div ref={ref} style={style} />
       {React.Children.map(children, (child) => {
         if (React.isValidElement(child)) {
@@ -67,7 +67,7 @@ const Map: React.FC<MapProps> = ({ onClick, onIdle, children, style, ...options 
           return React.cloneElement(child, { map })
         }
       })}
-    </>
+    </div>
   )
 }
 
@@ -177,6 +177,7 @@ const MapPage: NextPage = () => {
 
   const form = (
     <div
+      className="formArea"
       style={{
         padding: '1rem',
         // flexBasis: '200px',

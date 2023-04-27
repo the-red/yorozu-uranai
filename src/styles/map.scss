@@ -1,5 +1,22 @@
+// 端末の横幅サイズ
+$sp_width: 375;
+// レスポンシブ計算用
+@mixin width($target_width) {
+  width: ($target_width / $sp_width) * 100vw;
+}
+
 .map {
   // リセット用
+  input[type='text'],
+  input[type='number'] {
+    margin: 0;
+    padding: 0;
+    background: none;
+    border: none;
+    border-radius: 0;
+    outline: none;
+    appearance: none;
+  }
   button {
     background-color: transparent;
     border: none;
@@ -13,6 +30,19 @@
   // 検索エリア
   .form_area {
     height: 216px;
+    padding-top: 20px;
+    form {
+      @include width(355);
+      margin: 0 auto;
+      // 共通スタイル
+      input[type='text'],
+      input[type='number'] {
+        line-height: 48px;
+        border: 1px solid #767676;
+        border-radius: 2px;
+        font-size: 16px;
+      }
+    }
 
     .confirm_button {
       position: fixed;

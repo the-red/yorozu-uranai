@@ -177,46 +177,6 @@ const MapPage: NextPage = () => {
 
   const form = (
     <div className="formArea">
-      <p>
-        <label htmlFor="lat"> 緯度 </label>
-        <input
-          type="number"
-          id="lat"
-          name="lat"
-          step="0.0000001"
-          min="-90"
-          max="90"
-          value={pinned.lat}
-          onChange={(event) => {
-            const [lat, lng] = [Number(event.target.value), pinned.lng]
-            setMapLocation({ lat, lng })
-          }}
-        />
-        <label htmlFor="lng"> 経度 </label>
-        <input
-          type="number"
-          id="lng"
-          name="lng"
-          step="0.0000001"
-          min="-180"
-          max="180"
-          value={pinned.lng}
-          onChange={(event) => {
-            const [lat, lng] = [pinned.lat, Number(event.target.value)]
-            setMapLocation({ lat, lng })
-          }}
-        />
-      </p>
-
-      <button
-        onClick={async () => {
-          const { lat, lng } = await getCurrentLocation()
-          setMapLocation({ lat, lng })
-        }}
-      >
-        現在地を取得
-      </button>
-
       <form>
         <label htmlFor="address"> 住所 </label>
         <input ref={addressInput} type="text" id="address" name="address" />
@@ -245,9 +205,46 @@ const MapPage: NextPage = () => {
         >
           検索
         </button>
+        <button
+          onClick={async () => {
+            const { lat, lng } = await getCurrentLocation()
+            setMapLocation({ lat, lng })
+          }}
+        >
+          現在地を取得
+        </button>
+        <p>
+          <label htmlFor="lat"> 緯度 </label>
+          <input
+            type="number"
+            id="lat"
+            name="lat"
+            step="0.0000001"
+            min="-90"
+            max="90"
+            value={pinned.lat}
+            onChange={(event) => {
+              const [lat, lng] = [Number(event.target.value), pinned.lng]
+              setMapLocation({ lat, lng })
+            }}
+          />
+          <label htmlFor="lng"> 経度 </label>
+          <input
+            type="number"
+            id="lng"
+            name="lng"
+            step="0.0000001"
+            min="-180"
+            max="180"
+            value={pinned.lng}
+            onChange={(event) => {
+              const [lat, lng] = [pinned.lat, Number(event.target.value)]
+              setMapLocation({ lat, lng })
+            }}
+          />
+        </p>
         {` ${info}`}
       </form>
-
       <button
         onClick={() => {
           const setLocation = window?.opener?.setLocation

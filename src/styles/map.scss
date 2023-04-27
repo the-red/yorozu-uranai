@@ -4,6 +4,13 @@
   // 検索エリア
   .form_area {
     height: 216px;
+    .confirm_button {
+      position: fixed;
+      bottom: 48px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 100;
+    }
   }
   // 地図エリア
   .map_area {

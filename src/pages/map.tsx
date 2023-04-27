@@ -176,15 +176,7 @@ const MapPage: NextPage = () => {
   }
 
   const form = (
-    <div
-      className="formArea"
-      style={{
-        padding: '1rem',
-        // flexBasis: '200px',
-        // width: '100%',
-        // overflow: 'auto',
-      }}
-    >
+    <div className="formArea">
       <p>
         <label htmlFor="lat"> 緯度 </label>
         <input

@@ -232,7 +232,7 @@ const MapPage: NextPage = () => {
         >
           確定して戻る
         </button>
-        <div className="location_info">
+        <div className="search_result">
           <div className="lat">
             <label htmlFor="lat">緯度</label>
             <input
@@ -267,10 +267,11 @@ const MapPage: NextPage = () => {
           </div>
           <div className="search_result_address">{` ${info}`}</div>
         </div>
+        {/* .search_resultの終了タグ */}
       </div>
-      {/* search_area_innerの終了タグ */}
+      {/* .search_area_innerの終了タグ */}
     </div>
-    // search_areaの終了タグ
+    // .search_areaの終了タグ
   )
 
   return (

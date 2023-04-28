@@ -41,8 +41,10 @@ $sp_width: 375;
         border: 1px solid #767676;
         border-radius: 2px;
         font-size: 16px;
+        padding-left: 10px;
       }
       form {
+        margin-bottom: 12px;
       }
       .confirm_button {
         position: fixed;
@@ -67,6 +69,27 @@ $sp_width: 375;
           background-repeat: no-repeat;
           vertical-align: middle;
           margin-right: 3px;
+        }
+      }
+      .search_result {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        row-gap: 12px;
+        .lat,
+        .lng {
+          @include width(173);
+          label {
+            display: block;
+            margin-bottom: 8px;
+          }
+          input {
+            width: 100%;
+          }
+        }
+        .search_result_address {
+          width: 100%;
+          padding: 10px;
         }
       }
     }

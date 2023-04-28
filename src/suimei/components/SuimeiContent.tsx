@@ -1,17 +1,20 @@
 import type { FC } from 'react'
 import { Suimei } from '../'
 import { TitleArea } from './TitleArea'
+import { FormProps } from '../../hooks/useYorozuUranaiForm'
 import { SuimeiForm } from './SuimeiForm'
 import { Meisiki } from './Meisiki'
 import { GogyoBalance } from './GogyoBalance'
 import { Daiun } from './Daiun'
 import { Saiun } from './Saiun'
 
-export const SuimeiContent: FC<{ suimei: Suimei }> = ({ suimei }) => {
+type Props = { suimei: Suimei } & FormProps
+
+export const SuimeiContent: FC<Props> = ({ suimei, onSubmit, defaultValues }) => {
   return (
     <div className="main">
       <TitleArea />
-      <SuimeiForm />
+      <SuimeiForm onSubmit={onSubmit} defaultValues={defaultValues} />
       <Meisiki suimei={suimei} />
       <GogyoBalance />
       <Daiun />

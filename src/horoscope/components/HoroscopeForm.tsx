@@ -1,51 +1,11 @@
 import Link from 'next/link'
 import { FC } from 'react'
-import { useForm } from 'react-hook-form'
 import { pagesPath } from '../../lib/$path'
-import { reverseGeocodeByLatLng } from '../../lib/geocode'
+import { FormProps, useYorozuUranaiForm } from '../../hooks/useYorozuUranaiForm'
 
-export type HoroscopeFormValues = {
-  date: string
-  time: string
-  zone: string
-  timeUnknown: boolean
-  lat: number
-  lng: number
-  address: string
-}
-
-export type HoroscopeFormProps = {
-  onSubmit: (formValues: HoroscopeFormValues) => void
-  defaultValues?: Partial<HoroscopeFormValues>
-}
-
-export const HoroscopeForm: FC<HoroscopeFormProps> = ({ onSubmit, defaultValues }) => {
-  const {
-    register,
-    handleSubmit: hookFormHandleSubmit,
-    watch,
-    setValue,
-  } = useForm<HoroscopeFormValues>({ defaultValues })
-
-  const isTimeUnknownChecked = watch('timeUnknown')
-  const zone = watch('zone')
-  const lat = watch('lat')
-  const lng = watch('lng')
-
-  const handleSubmit = async ({ date, time, zone, timeUnknown, lat, lng, address }: HoroscopeFormValues) => {
-    lat = typeof lat === 'number' && !isNaN(lat) ? lat : 0
-    lng = typeof lng === 'number' && !isNaN(lng) ? lng : 0
-
-    onSubmit({ date, time, zone, timeUnknown, lat, lng, address })
-  }
-
-  // @ts-expect-error
-  window.setLocation = async (lat, lng) => {
-    setValue('lat', lat)
-    setValue('lng', lng)
-    setValue('address', await reverseGeocodeByLatLng({ lat, lng }))
-    return true
-  }
+export const HoroscopeForm: FC<FormProps> = (props) => {
+  const { register, hookFormHandleSubmit, watch, handleSubmit, isTimeUnknownChecked, zone, lat, lng } =
+    useYorozuUranaiForm(props)
 
   return (
     <form onSubmit={hookFormHandleSubmit(handleSubmit)} style={{ width: '100%' }}>

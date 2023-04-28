@@ -1,14 +1,16 @@
 import { NextPage } from 'next'
 import { useRouter } from 'next/router'
-import { useState, useMemo, useEffect } from 'react'
+import { useState, useEffect } from 'react'
 import useSWR from 'swr'
 import { DateTime } from 'luxon'
 
-import { Query } from '../lib/params'
+import { Query, formValuesToQuery } from '../lib/params'
 import Header from '../components/Header'
 import Footer from '../components/Footer'
 import { Kanshi, SekkiPair, Suimei, TenkanTsuhensei, Zoukan, ZoukanTsuhensei } from '../suimei'
 import { SuimeiContent } from '../suimei/components/SuimeiContent'
+import { useFormValues } from '../hooks/useFormValues'
+import { FormProps } from '../hooks/useYorozuUranaiForm'
 
 export type OptionalQuery = Query
 
@@ -17,23 +19,15 @@ type SuimeiFormValues = any
 const SuimeiPage: NextPage = () => {
   const router = useRouter()
   const [suimei, setSuimei] = useState<Suimei>()
-
-  const formValues = useMemo(() => {
-    if (router.isReady) {
-      return {}
-    }
-  }, [router])
-
-  // 暫定的な固定値
-  const NOW = DateTime.now()
+  const [formValues, setFormValues] = useState<SuimeiFormValues>()
+  useFormValues(setFormValues, router)
 
   const { data, error } = useSWR<Suimei>([formValues], async (formValues: SuimeiFormValues) => {
     const { date, time, zone } = formValues
     const suimeiSeed: {
       dateTime: DateTime
     } = {
-      dateTime: NOW,
-      // dateTime: DateTime.fromISO(`${date}T${time}`, { zone }),
+      dateTime: DateTime.fromISO(`${date}T${time}`, { zone }),
     }
     const res = await fetch('/api/suimei-props', {
       method: 'POST',
@@ -67,11 +61,20 @@ const SuimeiPage: NextPage = () => {
   if (error) return <div>failed to load: {JSON.stringify(error.message)}</div>
   if (!suimei) return <div>loading...</div>
 
+  const handleSubmit: FormProps['onSubmit'] = (formValues) => {
+    router.push({
+      query: {
+        ...router.query,
+        ...formValuesToQuery(formValues),
+      },
+    })
+  }
+
   return (
     <div className="suimei">
       <div>
         <Header />
-        <SuimeiContent suimei={suimei} />
+        <SuimeiContent suimei={suimei} onSubmit={handleSubmit} defaultValues={formValues} />
         <Footer />
       </div>
     </div>

@@ -217,16 +217,16 @@ $sp_width: 375;
                 margin-bottom: 5px;
               }
             }
-            &.longitude_latitude {
-              .longitude,
-              .latitude {
+            &.location {
+              .lat,
+              .lng {
                 span {
                   display: block;
                   font-size: 14px;
                   margin-bottom: 5px;
                 }
               }
-              .longitude {
+              .lat {
                 margin-bottom: 10px;
               }
             }
@@ -479,9 +479,9 @@ $sp_width: 375;
                   width: 84px;
                 }
               }
-              &.longitude_latitude {
-                .longitude,
-                .latitude {
+              &.location {
+                .lat,
+                .lng {
                   span {
                     display: inline;
                     margin-bottom: 0px;
@@ -491,7 +491,7 @@ $sp_width: 375;
                     width: 107px;
                   }
                 }
-                .longitude {
+                .lat {
                   margin-bottom: 4px;
                 }
               }

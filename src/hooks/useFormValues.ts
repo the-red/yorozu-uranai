@@ -4,12 +4,9 @@ import { Dispatch, SetStateAction, useEffect } from 'react'
 import { reverseGeocodeByLatLng } from '../lib/geocode'
 import { TOKYO_STATION } from '../lib/location'
 import { queryToFormValues, FORM_DATE_FORMAT, FORM_TIME_FORMAT } from '../lib/params'
-import type { HoroscopeFormValues } from '../horoscope/components/HoroscopeForm'
+import type { FormValues } from './useYorozuUranaiForm'
 
-export const useFormValues = (
-  setFormValues: Dispatch<SetStateAction<HoroscopeFormValues | undefined>>,
-  router: NextRouter
-) => {
+export const useFormValues = (setFormValues: Dispatch<SetStateAction<FormValues | undefined>>, router: NextRouter) => {
   useEffect(() => {
     const setDefaultFormValues = async () => {
       if (router.isReady) {
@@ -47,7 +44,9 @@ export const useFormValues = (
 
         const address = await reverseGeocodeByLatLng({ lat, lng })
 
-        setFormValues({ ...f, date, time, zone, timeUnknown, lat, lng, address })
+        const gender = f.gender ?? ''
+
+        setFormValues({ ...f, date, time, zone, timeUnknown, lat, lng, address, gender })
       }
     }
     setDefaultFormValues()

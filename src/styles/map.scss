@@ -27,6 +27,9 @@ $sp_width: 375;
   }
 
   height: 100%;
+  // デザインカンプに合わせて調整
+  line-height: 1.26;
+
   // 検索エリア
   .search_area {
     height: 216px;
@@ -53,6 +56,9 @@ $sp_width: 375;
           input {
             //ボタンの幅と余白分
             padding-right: calc(2.5em + 10px);
+            &::placeholder {
+              color: #adadad;
+            }
           }
           button {
             position: absolute;

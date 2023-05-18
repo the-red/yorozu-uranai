@@ -182,7 +182,7 @@ const MapPage: NextPage = () => {
       <div className="search_area_inner">
         <form>
           <div className="search_groupe">
-            <input ref={addressInput} type="text" id="address" name="address" />
+            <input ref={addressInput} type="text" id="address" name="address" placeholder="住所から検索する" />
             <button
               className="search_button"
               type="submit"

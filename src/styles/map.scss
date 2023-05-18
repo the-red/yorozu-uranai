@@ -1,5 +1,7 @@
 // 端末の横幅サイズ
 $sp_width: 375;
+// 検索エリアの高さ
+$sp_search_area_height: 235px;
 // レスポンシブ計算用
 @mixin width($target_width) {
   width: ($target_width / $sp_width) * 100vw;
@@ -31,7 +33,7 @@ $sp_width: 375;
 
   // 検索エリア
   .search_area {
-    height: 216px;
+    height: $sp_search_area_height;
     padding-top: 20px;
     .search_area_inner {
       @include width(355);
@@ -122,7 +124,7 @@ $sp_width: 375;
   }
   // 地図エリア
   .map_area {
-    height: calc(100vh - 216px);
+    height: calc(100vh - $sp_search_area_height);
     & > div {
       height: 100%;
     }

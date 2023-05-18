@@ -59,7 +59,8 @@ export const staticPath = {
       twitter_logo_svg: '/images/index/twitter-logo.svg'
     },
     map: {
-      back_svg: '/images/map/back.svg',
+      back_blue_svg: '/images/map/back_blue.svg',
+      back_white_svg: '/images/map/back_white.svg',
       current_location_svg: '/images/map/current_location.svg',
       search_svg: '/images/map/search.svg'
     },

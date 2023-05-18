@@ -267,7 +267,6 @@ const MapPage: NextPage = () => {
           </div>
           <div className="search_result_address">{` ${info}`}</div>
         </div>
-        {/* .search_resultの終了タグ */}
       </div>
       {/* .search_area_innerの終了タグ */}
     </div>

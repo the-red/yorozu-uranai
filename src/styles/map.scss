@@ -1,16 +1,17 @@
-// 端末の横幅サイズ
+// デザインカンプ上の端末の横幅サイズ
 $sp_width: 375;
 // 検索エリアの高さ
 $sp_search_area_height: 235px;
+$pc_search_area_height: 203px;
 // レスポンシブ計算用
 @mixin width($target_width) {
   width: ($target_width / $sp_width) * 100vw;
 }
 
 .map {
-  // リセット用
   input[type='text'],
   input[type='number'] {
+    // リセット用
     margin: 0;
     padding: 0;
     background: none;
@@ -18,9 +19,11 @@ $sp_search_area_height: 235px;
     border-radius: 0;
     outline: none;
     appearance: none;
+    // リセット用ここまで
     width: 100%;
   }
   button {
+    // リセット用
     background-color: transparent;
     border: none;
     cursor: pointer;
@@ -35,6 +38,7 @@ $sp_search_area_height: 235px;
   .search_area {
     height: $sp_search_area_height;
     padding-top: 20px;
+    background-color: #fff;
     .search_area_inner {
       @include width(355);
       margin: 0 auto;
@@ -126,6 +130,25 @@ $sp_search_area_height: 235px;
   .map_area {
     height: calc(100vh - $sp_search_area_height);
     & > div {
+      height: 100%;
+    }
+  }
+
+  // PC用スタイル
+  @media screen and (min-width: 980px) {
+    // 検索エリア
+    .search_area {
+      width: 651px;
+      height: $pc_search_area_height;
+      padding: 0;
+      position: fixed;
+      top: 72px;
+      left: 0;
+      z-index: 100;
+      .search_area_inner {
+      }
+    }
+    .map_area {
       height: 100%;
     }
   }

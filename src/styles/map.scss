@@ -16,6 +16,7 @@ $sp_width: 375;
     border-radius: 0;
     outline: none;
     appearance: none;
+    width: 100%;
   }
   button {
     background-color: transparent;
@@ -27,8 +28,6 @@ $sp_width: 375;
   }
 
   height: 100%;
-  // デザインカンプに合わせて調整
-  line-height: 1.26;
 
   // 検索エリア
   .search_area {
@@ -40,7 +39,7 @@ $sp_width: 375;
       // 共通スタイル
       input[type='text'],
       input[type='number'] {
-        line-height: 48px;
+        line-height: 46px;
         border: 1px solid #767676;
         border-radius: 2px;
         font-size: 16px;
@@ -115,6 +114,8 @@ $sp_width: 375;
         .search_result_address {
           width: 100%;
           padding: 10px;
+          // デザインカンプに合わせて調整
+          line-height: calc(19 / 16);
         }
       }
     }

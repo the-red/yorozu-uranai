@@ -181,33 +181,35 @@ const MapPage: NextPage = () => {
     <div className="search_area">
       <div className="search_area_inner">
         <form>
-          <input ref={addressInput} type="text" id="address" name="address" />
-          <button
-            className="search_button"
-            type="submit"
-            onClick={async (e) => {
-              e.preventDefault()
-              const address = addressInput.current?.value
-              if (!address) return
+          <div className="search_groupe">
+            <input ref={addressInput} type="text" id="address" name="address" />
+            <button
+              className="search_button"
+              type="submit"
+              onClick={async (e) => {
+                e.preventDefault()
+                const address = addressInput.current?.value
+                if (!address) return
 
-              try {
-                const { formattedAddress, lat, lng } = await geocodeByAddress(address)
-                setPinned({ lat, lng })
-                setCenter({ lat, lng })
-                setInfo(formattedAddress)
-                setZoom(17)
-              } catch (e) {
-                const error = e as google.maps.MapsNetworkError
-                if (error.code === 'ZERO_RESULTS') {
-                  setInfo('該当の住所が見つかりませんでした。')
-                } else {
-                  setInfo(error.message)
+                try {
+                  const { formattedAddress, lat, lng } = await geocodeByAddress(address)
+                  setPinned({ lat, lng })
+                  setCenter({ lat, lng })
+                  setInfo(formattedAddress)
+                  setZoom(17)
+                } catch (e) {
+                  const error = e as google.maps.MapsNetworkError
+                  if (error.code === 'ZERO_RESULTS') {
+                    setInfo('該当の住所が見つかりませんでした。')
+                  } else {
+                    setInfo(error.message)
+                  }
                 }
-              }
-            }}
-          >
-            <Image src={staticPath.images.map.search_svg} alt="検索" width={24} height={24} />
-          </button>
+              }}
+            >
+              <Image src={staticPath.images.map.search_svg} alt="検索" width={24} height={24} />
+            </button>
+          </div>
           <button
             className="current_location_button"
             onClick={async () => {

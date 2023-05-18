@@ -45,6 +45,24 @@ $sp_width: 375;
       }
       form {
         margin-bottom: 12px;
+        display: flex;
+        justify-content: space-between;
+        .search_groupe {
+          @include width(323);
+          position: relative;
+          input {
+            //ボタンの幅と余白分
+            padding-right: calc(2.5em + 10px);
+          }
+          button {
+            position: absolute;
+            top: 0;
+            right: 10px;
+            width: 2.5em;
+            height: 100%;
+            padding: 0;
+          }
+        }
       }
       .confirm_button {
         position: fixed;

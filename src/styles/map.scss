@@ -140,18 +140,32 @@ $sp_search_area_height: 235px;
     .search_area {
       width: 651px;
       height: auto;
-      padding: 0;
+      padding: 32px;
       position: fixed;
       top: 72px;
       left: 0;
       z-index: 100;
       .search_area_inner {
         width: auto;
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
         form {
+          width: 400px;
+          .search_groupe {
+            width: 368px;
+          }
         }
         .confirm_button {
           position: static;
           transform: translateX(0);
+          z-index: auto;
+          height: 48px;
+          background-color: #6399d6;
+          color: #fff;
+          &::before {
+            background-image: url(../../public/images/map/back_white.svg);
+          }
         }
         .search_result {
           .search_result_address {

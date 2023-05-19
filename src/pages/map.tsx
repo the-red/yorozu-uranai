@@ -277,7 +277,6 @@ const MapPage: NextPage = () => {
 
   return (
     <div className="map">
-      {/* <div className="map" style={{ display: 'flex', flexFlow: 'column', height: '100%' }}> */}
       {form}
       {/* NOTE: Wrapperコンポーネントを呼ぶとwindow.google.mapsがグローバルに設定される */}
       <Wrapper apiKey={process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY!} render={render}>

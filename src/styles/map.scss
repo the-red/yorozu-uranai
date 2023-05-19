@@ -2,7 +2,6 @@
 $sp_width: 375;
 // 検索エリアの高さ
 $sp_search_area_height: 235px;
-// $pc_search_area_height: 203px;
 // レスポンシブ計算用
 @mixin width($target_width) {
   width: ($target_width / $sp_width) * 100vw;
@@ -59,7 +58,7 @@ $sp_search_area_height: 235px;
           @include width(323);
           position: relative;
           input {
-            //ボタンの幅と余白分
+            //虫眼鏡アイコンの幅と余白分
             padding-right: calc(2.5em + 10px);
             &::placeholder {
               color: #adadad;
@@ -168,6 +167,13 @@ $sp_search_area_height: 235px;
           }
         }
         .search_result {
+          width: 100%;
+          justify-content: flex-start;
+          column-gap: 8px;
+          .lat,
+          .lng {
+            width: 173px;
+          }
           .search_result_address {
           }
         }

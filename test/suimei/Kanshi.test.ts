@@ -1,4 +1,4 @@
-import { Kanshi } from '../../src/suimei/Kanshi'
+import { Kanshi, get十二支五行, get十干五行 } from '../../src/suimei/Kanshi'
 import { getKanshiInstance } from './test-util'
 
 describe('六十干支', () => {
@@ -65,6 +65,37 @@ describe('六十干支', () => {
       '壬戌', // 58
       '癸亥', // 59
     ])
+  })
+})
+
+describe('五行', () => {
+  it('十干', () => {
+    expect(get十干五行('甲')).toEqual('木')
+    expect(get十干五行('乙')).toEqual('木')
+    expect(get十干五行('丙')).toEqual('火')
+    expect(get十干五行('丁')).toEqual('火')
+    expect(get十干五行('戊')).toEqual('土')
+    expect(get十干五行('己')).toEqual('土')
+    expect(get十干五行('庚')).toEqual('金')
+    expect(get十干五行('辛')).toEqual('金')
+    expect(get十干五行('壬')).toEqual('水')
+    expect(get十干五行('癸')).toEqual('水')
+  })
+  it('十二支', () => {
+    // NOTE: 丑, 寅, ..., 子に並べたほうが分かりやすい
+    // NOTE: 土が区切りのように4回挿入される
+    expect(get十二支五行('丑')).toEqual('土') // index:0
+    expect(get十二支五行('寅')).toEqual('木')
+    expect(get十二支五行('卯')).toEqual('木')
+    expect(get十二支五行('辰')).toEqual('土') // index:3
+    expect(get十二支五行('巳')).toEqual('火')
+    expect(get十二支五行('午')).toEqual('火')
+    expect(get十二支五行('未')).toEqual('土') // index:6
+    expect(get十二支五行('申')).toEqual('金')
+    expect(get十二支五行('酉')).toEqual('金')
+    expect(get十二支五行('戌')).toEqual('土') // index:9
+    expect(get十二支五行('亥')).toEqual('水')
+    expect(get十二支五行('子')).toEqual('水')
   })
 })
 

@@ -15,6 +15,7 @@ const 十干pronunciation = {
 } as const
 export const 十干list = ['甲', '乙', '丙', '丁', '戊', '己', '庚', '辛', '壬', '癸'] as const
 export const 十二支list = ['子', '丑', '寅', '卯', '辰', '巳', '午', '未', '申', '酉', '戌', '亥'] as const
+export const 五行list = ['木', '火', '土', '金', '水'] as const // 読み方: もく, か, ど, こん, すい
 
 export type 十干 = typeof 十干list[number]
 export type 十二支 = typeof 十二支list[number]
@@ -29,6 +30,34 @@ const get六十干支 = (): 干支[] => {
     干支list.push(`${干}${支}`)
   }
   return 干支list
+}
+
+export const get十干五行 = (干: 十干) => {
+  let index = 十干list.indexOf(干)
+
+  // 2つずつペアで同じ五行とする
+  index = (index - (index % 2)) / 2
+
+  return 五行list[index]
+}
+
+export const get十二支五行 = (支: 十二支) => {
+  // 丑, 寅, ..., 子 になるように並べ直す
+  let index = 十二支list.indexOf(支) - 1
+  if (index < 0) index += 12
+
+  // 土だけ先に判定
+  if (index % 3 === 0) {
+    return 五行list[2]
+  }
+
+  // 2つずつペアで同じ五行とする（土が抜けた調整あり）
+  index = (index - (index % 3)) / 3
+  if (index > 1) {
+    index += 1
+  }
+
+  return 五行list[index]
 }
 
 export type SekkiPair = {

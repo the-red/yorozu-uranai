@@ -11,6 +11,8 @@ import { useRouter } from 'next/router'
 import { getCurrentLocation } from '../lib/location'
 // NOTE: Geocoding APIだけは他の画面との共通化のため、google.mapsではなく専用ライブラリを使う
 import { geocodeByAddress, reverseGeocodeByLatLng, reverseGeocodeByPlaceId } from '../lib/geocode'
+import { staticPath } from '../lib/$path'
+import Image from 'next/image'
 
 export type OptionalQuery = { lat?: number; lng?: number }
 
@@ -19,7 +21,6 @@ const render = (status: Status) => {
 }
 
 interface MapProps extends google.maps.MapOptions {
-  style: { [key: string]: string }
   onClick?: (e: google.maps.MapMouseEvent) => void
   onIdle?: (map: google.maps.Map) => void
   children?: React.ReactNode
@@ -58,7 +59,7 @@ const Map: React.FC<MapProps> = ({ onClick, onIdle, children, style, ...options 
   }, [map, onClick, onIdle])
 
   return (
-    <>
+    <div className="map_area">
       <div ref={ref} style={style} />
       {React.Children.map(children, (child) => {
         if (React.isValidElement(child)) {
@@ -67,7 +68,7 @@ const Map: React.FC<MapProps> = ({ onClick, onIdle, children, style, ...options 
           return React.cloneElement(child, { map })
         }
       })}
-    </>
+    </div>
   )
 }
 
@@ -176,113 +177,110 @@ const MapPage: NextPage = () => {
   }
 
   const form = (
-    <div
-      style={{
-        padding: '1rem',
-        // flexBasis: '200px',
-        // width: '100%',
-        // overflow: 'auto',
-      }}
-    >
-      <p>
-        <label htmlFor="lat"> 緯度 </label>
-        <input
-          type="number"
-          id="lat"
-          name="lat"
-          step="0.0000001"
-          min="-90"
-          max="90"
-          value={pinned.lat}
-          onChange={(event) => {
-            const [lat, lng] = [Number(event.target.value), pinned.lng]
-            setMapLocation({ lat, lng })
-          }}
-        />
-        <label htmlFor="lng"> 経度 </label>
-        <input
-          type="number"
-          id="lng"
-          name="lng"
-          step="0.0000001"
-          min="-180"
-          max="180"
-          value={pinned.lng}
-          onChange={(event) => {
-            const [lat, lng] = [pinned.lat, Number(event.target.value)]
-            setMapLocation({ lat, lng })
-          }}
-        />
-      </p>
+    <div className="search_area">
+      <div className="search_area_inner">
+        <form>
+          <div className="search_groupe">
+            <input ref={addressInput} type="text" id="address" name="address" placeholder="住所から検索する" />
+            <button
+              className="search_button"
+              type="submit"
+              onClick={async (e) => {
+                e.preventDefault()
+                const address = addressInput.current?.value
+                if (!address) return
 
-      <button
-        onClick={async () => {
-          const { lat, lng } = await getCurrentLocation()
-          setMapLocation({ lat, lng })
-        }}
-      >
-        現在地を取得
-      </button>
-
-      <form>
-        <label htmlFor="address"> 住所 </label>
-        <input ref={addressInput} type="text" id="address" name="address" />
+                try {
+                  const { formattedAddress, lat, lng } = await geocodeByAddress(address)
+                  setPinned({ lat, lng })
+                  setCenter({ lat, lng })
+                  setInfo(formattedAddress)
+                  setZoom(17)
+                } catch (e) {
+                  const error = e as google.maps.MapsNetworkError
+                  if (error.code === 'ZERO_RESULTS') {
+                    setInfo('該当の住所が見つかりませんでした。')
+                  } else {
+                    setInfo(error.message)
+                  }
+                }
+              }}
+            >
+              <Image src={staticPath.images.map.search_svg} alt="検索" width={24} height={24} />
+            </button>
+          </div>
+          <button
+            className="current_location_button"
+            onClick={async () => {
+              const { lat, lng } = await getCurrentLocation()
+              setMapLocation({ lat, lng })
+            }}
+          >
+            <Image src={staticPath.images.map.current_location_svg} alt="現在地取得アイコン" width={24} height={24} />
+          </button>
+        </form>
         <button
-          type="submit"
-          onClick={async (e) => {
-            e.preventDefault()
-            const address = addressInput.current?.value
-            if (!address) return
-
-            try {
-              const { formattedAddress, lat, lng } = await geocodeByAddress(address)
-              setPinned({ lat, lng })
-              setCenter({ lat, lng })
-              setInfo(formattedAddress)
-              setZoom(17)
-            } catch (e) {
-              const error = e as google.maps.MapsNetworkError
-              if (error.code === 'ZERO_RESULTS') {
-                setInfo('該当の住所が見つかりませんでした。')
-              } else {
-                setInfo(error.message)
-              }
+          className="confirm_button"
+          onClick={() => {
+            const setLocation = window?.opener?.setLocation
+            if (setLocation && setLocation(pinned.lat, pinned.lng)) {
+              window.close()
+            } else {
+              console.error({ opener: window?.opener, setLocation })
+              alert('緯度経度が確定できませんでした。')
             }
           }}
         >
-          検索
+          確定して戻る
         </button>
-        {` ${info}`}
-      </form>
-
-      <button
-        onClick={() => {
-          const setLocation = window?.opener?.setLocation
-          if (setLocation && setLocation(pinned.lat, pinned.lng)) {
-            window.close()
-          } else {
-            console.error({ opener: window?.opener, setLocation })
-            alert('緯度経度が確定できませんでした。')
-          }
-        }}
-      >
-        確定
-      </button>
+        <div className="search_result">
+          <div className="lat">
+            <label htmlFor="lat">緯度</label>
+            <input
+              type="number"
+              id="lat"
+              name="lat"
+              step="0.0000001"
+              min="-90"
+              max="90"
+              value={pinned.lat}
+              onChange={(event) => {
+                const [lat, lng] = [Number(event.target.value), pinned.lng]
+                setMapLocation({ lat, lng })
+              }}
+            />
+          </div>
+          <div className="lng">
+            <label htmlFor="lng">経度</label>
+            <input
+              type="number"
+              id="lng"
+              name="lng"
+              step="0.0000001"
+              min="-180"
+              max="180"
+              value={pinned.lng}
+              onChange={(event) => {
+                const [lat, lng] = [pinned.lat, Number(event.target.value)]
+                setMapLocation({ lat, lng })
+              }}
+            />
+          </div>
+          <div className="search_result_address">{` ${info}`}</div>
+        </div>
+        {/* .search_resultの終了タグ */}
+      </div>
+      {/* .search_area_innerの終了タグ */}
     </div>
+    // .search_areaの終了タグ
   )
 
   return (
-    <div style={{ display: 'flex', flexFlow: 'column', height: '100%' }}>
+    <div className="map">
       {form}
       {/* NOTE: Wrapperコンポーネントを呼ぶとwindow.google.mapsがグローバルに設定される */}
       <Wrapper apiKey={process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY!} render={render}>
-        <Map
-          center={center}
-          onClick={onClickMarker}
-          onIdle={onIdleMarker}
-          zoom={zoom}
-          style={{ flexGrow: '1', height: '100%' }}
-        >
+        <Map center={center} onClick={onClickMarker} onIdle={onIdleMarker} zoom={zoom}>
           <Marker position={pinned} />
         </Map>
       </Wrapper>

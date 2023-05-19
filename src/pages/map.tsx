@@ -21,7 +21,6 @@ const render = (status: Status) => {
 }
 
 interface MapProps extends google.maps.MapOptions {
-  // style: { [key: string]: string }
   onClick?: (e: google.maps.MapMouseEvent) => void
   onIdle?: (map: google.maps.Map) => void
   children?: React.ReactNode
@@ -282,13 +281,7 @@ const MapPage: NextPage = () => {
       {form}
       {/* NOTE: Wrapperコンポーネントを呼ぶとwindow.google.mapsがグローバルに設定される */}
       <Wrapper apiKey={process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY!} render={render}>
-        <Map
-          center={center}
-          onClick={onClickMarker}
-          onIdle={onIdleMarker}
-          zoom={zoom}
-          // style={{ flexGrow: '1', height: '100%' }}
-        >
+        <Map center={center} onClick={onClickMarker} onIdle={onIdleMarker} zoom={zoom}>
           <Marker position={pinned} />
         </Map>
       </Wrapper>

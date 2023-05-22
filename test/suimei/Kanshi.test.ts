@@ -82,20 +82,23 @@ describe('五行', () => {
     expect(get十干五行('癸')).toEqual('水')
   })
   it('十二支', () => {
-    // NOTE: 丑, 寅, ..., 子に並べたほうが分かりやすい
-    // NOTE: 土が区切りのように4回挿入される
-    expect(get十二支五行('丑')).toEqual('土') // index:0
+    // NOTE: 寅, 卯, ..., 子, 丑 に並べたほうが分かりやすい
+    // 春
     expect(get十二支五行('寅')).toEqual('木')
     expect(get十二支五行('卯')).toEqual('木')
-    expect(get十二支五行('辰')).toEqual('土') // index:3
+    expect(get十二支五行('辰')).toEqual('土') // 夏土用
+    // 夏
     expect(get十二支五行('巳')).toEqual('火')
     expect(get十二支五行('午')).toEqual('火')
-    expect(get十二支五行('未')).toEqual('土') // index:6
+    expect(get十二支五行('未')).toEqual('土') // 秋土用
+    // 秋
     expect(get十二支五行('申')).toEqual('金')
     expect(get十二支五行('酉')).toEqual('金')
-    expect(get十二支五行('戌')).toEqual('土') // index:9
+    expect(get十二支五行('戌')).toEqual('土') // 冬土用
+    // 冬
     expect(get十二支五行('亥')).toEqual('水')
     expect(get十二支五行('子')).toEqual('水')
+    expect(get十二支五行('丑')).toEqual('土') // 春土用
   })
 })
 

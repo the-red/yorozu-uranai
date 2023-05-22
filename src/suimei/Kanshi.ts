@@ -42,12 +42,12 @@ export const get十干五行 = (干: 十干): 五行 => {
 }
 
 export const get十二支五行 = (支: 十二支): 五行 => {
-  // 丑, 寅, ..., 子 になるように並べ直す
-  let index = 十二支list.indexOf(支) - 1
+  // 寅, 卯, ..., 子, 丑 になるように並べ直す
+  let index = 十二支list.indexOf(支) - 2
   if (index < 0) index += 12
 
   // 土だけは特殊なので先に判定
-  if (index % 3 === 0) {
+  if (index % 3 === 2) {
     return '土'
   }
 

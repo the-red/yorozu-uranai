@@ -16,7 +16,7 @@ export const SuimeiContent: FC<Props> = ({ suimei, onSubmit, defaultValues }) =>
       <TitleArea />
       <SuimeiForm onSubmit={onSubmit} defaultValues={defaultValues} />
       <Meisiki suimei={suimei} />
-      <GogyoBalance />
+      <GogyoBalance kanshi={suimei.kanshi} />
       <Daiun />
       <Saiun />
     </div>

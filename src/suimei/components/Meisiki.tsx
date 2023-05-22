@@ -2,9 +2,10 @@ import Image from 'next/image'
 import { staticPath } from '../../lib/$path'
 import type { FC } from 'react'
 import type { Suimei } from '../types'
+import StringArrayWithBreaks from '../../components/A'
 
 export const Meisiki: FC<{ suimei: Suimei }> = ({ suimei }) => {
-  const { kanshi, tenkanTsuhensei, zoukan, zoukanTsuhensei } = suimei
+  const { kanshi, tenkanTsuhensei, zoukan, zoukanTsuhensei, tokushusei } = suimei
 
   return (
     <section className="result meisiki">
@@ -96,10 +97,18 @@ export const Meisiki: FC<{ suimei: Suimei }> = ({ suimei }) => {
             </tr>
             <tr>
               <th>特殊星</th>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td></td>
+              <td>
+                <StringArrayWithBreaks strings={tokushusei.年柱} />
+              </td>
+              <td>
+                <StringArrayWithBreaks strings={tokushusei.月柱} />
+              </td>
+              <td>
+                <StringArrayWithBreaks strings={tokushusei.日柱} />
+              </td>
+              <td>
+                <StringArrayWithBreaks strings={tokushusei.時柱} />
+              </td>
             </tr>
           </tbody>
         </table>

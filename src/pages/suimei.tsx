@@ -7,7 +7,7 @@ import { DateTime } from 'luxon'
 import { Query, formValuesToQuery } from '../lib/params'
 import Header from '../components/Header'
 import Footer from '../components/Footer'
-import { Kanshi, SekkiPair, Suimei, TenkanTsuhensei, Zoukan, ZoukanTsuhensei } from '../suimei'
+import { Kanshi, SekkiPair, Suimei, TenkanTsuhensei, Zoukan, ZoukanTsuhensei, tokushusei } from '../suimei'
 import { SuimeiContent } from '../suimei/components/SuimeiContent'
 import { useFormValues } from '../hooks/useFormValues'
 import { FormProps } from '../hooks/useYorozuUranaiForm'
@@ -48,6 +48,7 @@ const SuimeiPage: NextPage = () => {
       tenkanTsuhensei: new TenkanTsuhensei(kanshi),
       zoukan,
       zoukanTsuhensei: new ZoukanTsuhensei(zoukan),
+      tokushusei: tokushusei(kanshi),
     }
   })
 

@@ -65,4 +65,13 @@ describe('Tokushusei', () => {
     const tokushuseiList = tokushusei(kanshi)
     expect(tokushuseiList).toEqual(expect.arrayContaining(['白虎']))
   })
+
+  it('日柱', async () => {
+    const date = new Date('1939-07-17T12:00:00+09:00')
+    const kanshi = await getKanshiInstance(date)
+    expect(kanshi.天干).toMatchObject(['己', '辛', '乙', '壬'])
+    expect(kanshi.地支).toMatchObject(['卯', '未', '卯', '午'])
+    const tokushuseiList = tokushusei(kanshi)
+    expect(tokushuseiList).toEqual(expect.arrayContaining(['妨害殺']))
+  })
 })

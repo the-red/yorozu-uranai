@@ -8,7 +8,17 @@ describe('Tokushusei', () => {
     expect(kanshi.天干).toMatchObject(['癸', '乙', '壬', '辛'])
     expect(kanshi.地支).toMatchObject(['亥', '卯', '寅', '亥'])
     const tokushuseiList = tokushusei(kanshi)
-    expect(tokushuseiList).toMatchObject(['天官貴人', '天厨貴人', '暗禄', '十干禄', '流霞殺'])
+    expect(tokushuseiList).toMatchObject([
+      '天官貴人',
+      '天厨貴人',
+      '暗禄',
+      '十干禄',
+      '流霞殺',
+      '咸池',
+      '劫殺',
+      '孤辰',
+      '血刃',
+    ])
   })
 
   it('日干と支', async () => {
@@ -45,5 +55,14 @@ describe('Tokushusei', () => {
     expect(kanshi.地支).toMatchObject(['卯', '寅', '戌', '午'])
     const tokushuseiList = tokushusei(kanshi)
     expect(tokushuseiList).toEqual(expect.arrayContaining(['華蓋']))
+  })
+
+  it('年支日支と支', async () => {
+    const date = new Date('1939-02-06T12:00:00+09:00')
+    const kanshi = await getKanshiInstance(date)
+    expect(kanshi.天干).toMatchObject(['己', '丙', '甲', '庚'])
+    expect(kanshi.地支).toMatchObject(['卯', '寅', '戌', '午'])
+    const tokushuseiList = tokushusei(kanshi)
+    expect(tokushuseiList).toEqual(expect.arrayContaining(['白虎']))
   })
 })

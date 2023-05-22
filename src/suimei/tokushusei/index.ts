@@ -2,6 +2,7 @@ import { Kanshi } from '../Kanshi'
 import 日干と支 from './nikkan-shi'
 import 日干と日支 from './nikkan-nisshi'
 import 月支と干支 from './gesshi-kanshi'
+import 月支と支 from './gesshi-shi'
 
 export const tokushusei = (kanshi: Kanshi) => {
   const tokushuseiList: string[] = []
@@ -19,6 +20,11 @@ export const tokushusei = (kanshi: Kanshi) => {
   Object.entries(月支と干支).forEach(([name, rule]) => {
     const tenkanChishi = [...kanshi.天干, ...kanshi.地支]
     if (tenkanChishi.some((shi) => rule[kanshi.月支].includes(shi))) {
+      tokushuseiList.push(name)
+    }
+  })
+  Object.entries(月支と支).forEach(([name, rule]) => {
+    if (kanshi.地支.some((shi) => rule[kanshi.月支].includes(shi))) {
       tokushuseiList.push(name)
     }
   })

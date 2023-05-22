@@ -1,4 +1,5 @@
-import { DateTime } from 'luxon'
+import { DateTime, FixedOffsetZone } from 'luxon'
+import { getFixedOffsetZone } from './zone'
 
 type Gender = 'man' | 'woman' | ''
 export type FormValuesBase = {
@@ -34,23 +35,22 @@ export const queryToFormValues = (q: Query): FormValuesBase => {
 
   const name = singleValue(q.name)
 
+  const lat = singleValue(q.lat)
+  const lng = singleValue(q.lng)
+  const zone = getFixedOffsetZone(Number(lng))
+
   const _date = singleValue(q.date)
   let date: string | undefined
   if (_date) {
-    date = DateTime.fromFormat(_date, QUERY_DATE_FORMAT).toFormat(FORM_DATE_FORMAT)
+    date = DateTime.fromFormat(_date, QUERY_DATE_FORMAT, { zone }).toFormat(FORM_DATE_FORMAT)
   }
 
   const _time = singleValue(q.time)
   const timeUnknown = _time === QUERY_TIME_UNKNOWN
   let time: string | undefined
   if (_time && !timeUnknown) {
-    time = DateTime.fromFormat(_time, QUERY_TIME_FORMAT).toFormat(FORM_TIME_FORMAT)
+    time = DateTime.fromFormat(_time, QUERY_TIME_FORMAT, { zone }).toFormat(FORM_TIME_FORMAT)
   }
-
-  const zone = singleValue(q.zone)
-
-  const lat = singleValue(q.lat)
-  const lng = singleValue(q.lng)
 
   const gender = singleValue(q.gender) as Gender
 
@@ -58,7 +58,7 @@ export const queryToFormValues = (q: Query): FormValuesBase => {
     name,
     date,
     time,
-    zone,
+    zone: zone.name,
     timeUnknown,
     lat: lat ? Number(lat) : undefined,
     lng: lng ? Number(lng) : undefined,

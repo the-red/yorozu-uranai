@@ -236,3 +236,17 @@ describe('地支の個別取得', () => {
     expect(kanshi.地支).toMatchObject(['卯', '卯', '申', '午'])
   })
 })
+
+describe('五行', () => {
+  const date = new Date('2023-03-15T11:41:20+09:00')
+  it('五行', async () => {
+    const kanshi = await getKanshiInstance(date)
+    expect(kanshi.五行).toMatchObject({
+      木: 3,
+      火: 2,
+      土: 0,
+      金: 1,
+      水: 2,
+    })
+  })
+})

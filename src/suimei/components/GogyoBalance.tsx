@@ -1,7 +1,9 @@
 import Image from 'next/image'
 import { staticPath } from '../../lib/$path'
+import type { Kanshi } from '../Kanshi'
 
-export const GogyoBalance = () => (
+type Props = { kanshi: Kanshi }
+export const GogyoBalance = ({ kanshi }: Props) => (
   <section className="result gogyo_balance">
     <div className="inner">
       <h3>
@@ -22,11 +24,11 @@ export const GogyoBalance = () => (
         </thead>
         <tbody>
           <tr>
-            <td>1</td>
-            <td>2</td>
-            <td>2</td>
-            <td>3</td>
-            <td>0</td>
+            <td>{kanshi.五行.木}</td>
+            <td>{kanshi.五行.火}</td>
+            <td>{kanshi.五行.土}</td>
+            <td>{kanshi.五行.金}</td>
+            <td>{kanshi.五行.水}</td>
           </tr>
         </tbody>
       </table>

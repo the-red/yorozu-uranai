@@ -5,13 +5,15 @@ import 月支と支 from './gesshi-shi'
 import 年支日支と支 from './nenshi_nisshi-shi'
 import 日柱 from './nicchuu'
 
+export type Tokushusei = {
+  年柱: string[]
+  月柱: string[]
+  日柱: string[]
+  時柱: string[]
+}
+
 export const tokushusei = (kanshi: Kanshi) => {
-  const tokushuseiMap: {
-    年柱: string[]
-    月柱: string[]
-    日柱: string[]
-    時柱: string[]
-  } = {
+  const tokushuseiMap: Tokushusei = {
     年柱: [],
     月柱: [],
     日柱: [],

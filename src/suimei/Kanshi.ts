@@ -149,6 +149,17 @@ export class Kanshi {
     return [this.年支, this.月支, this.日支, this.時支]
   }
 
+  get 五行(): Record<五行, number> {
+    const allGogyos = [...this.天干.map((_) => get十干五行(_)), ...this.地支.map((_) => get十二支五行(_))]
+    return {
+      木: allGogyos.filter((_) => _ === '木').length,
+      火: allGogyos.filter((_) => _ === '火').length,
+      土: allGogyos.filter((_) => _ === '土').length,
+      金: allGogyos.filter((_) => _ === '金').length,
+      水: allGogyos.filter((_) => _ === '水').length,
+    }
+  }
+
   private get 日干index(): number {
     const diff = this.date.diff(Kanshi.BASE, 'days').days
     const index = Math.trunc(diff % 10)

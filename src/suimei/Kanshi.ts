@@ -19,7 +19,7 @@ const 五行list = ['木', '火', '土', '金', '水'] as const // 読み方: �
 
 export type 十干 = typeof 十干list[number]
 export type 十二支 = typeof 十二支list[number]
-type 干支 = `${十干}${十二支}`
+export type 干支 = `${十干}${十二支}`
 type 五行 = typeof 五行list[number]
 
 const get六十干支 = (): 干支[] => {

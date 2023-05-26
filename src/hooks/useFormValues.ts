@@ -4,7 +4,6 @@ import { Dispatch, SetStateAction, useEffect } from 'react'
 import { reverseGeocodeByLatLng } from '../lib/geocode'
 import { TOKYO_STATION } from '../lib/location'
 import { queryToFormValues, FORM_DATE_FORMAT, FORM_TIME_FORMAT } from '../lib/params'
-import { getFixedOffsetZone } from '../lib/zone'
 import type { FormValues } from './useYorozuUranaiForm'
 
 export const useFormValues = (setFormValues: Dispatch<SetStateAction<FormValues | undefined>>, router: NextRouter) => {
@@ -12,14 +11,8 @@ export const useFormValues = (setFormValues: Dispatch<SetStateAction<FormValues 
     const setDefaultFormValues = async () => {
       if (router.isReady) {
         const f = queryToFormValues(router.query)
-
-        const defaultLocation = TOKYO_STATION
-        const lat = f.lat === undefined ? defaultLocation.lat : f.lat
-        const lng = f.lng === undefined ? defaultLocation.lng : f.lng
-
-        const address = await reverseGeocodeByLatLng({ lat, lng })
-        const zone = getFixedOffsetZone(lng)
-        const now = DateTime.local({ zone })
+        const now = DateTime.local({ zone: f.zone })
+        const zone = now.zoneName
 
         let date: string
         let time: string | undefined
@@ -45,9 +38,15 @@ export const useFormValues = (setFormValues: Dispatch<SetStateAction<FormValues 
           time = '12:00'
         }
 
+        const defaultLocation = TOKYO_STATION
+        const lat = f.lat === undefined ? defaultLocation.lat : f.lat
+        const lng = f.lng === undefined ? defaultLocation.lng : f.lng
+
+        const address = await reverseGeocodeByLatLng({ lat, lng })
+
         const gender = f.gender ?? ''
 
-        setFormValues({ ...f, date, time, zone: zone.name, timeUnknown, lat, lng, address, gender })
+        setFormValues({ ...f, date, time, zone, timeUnknown, lat, lng, address, gender })
       }
     }
     setDefaultFormValues()

@@ -1,7 +1,6 @@
 import { useForm } from 'react-hook-form'
 import { reverseGeocodeByLatLng } from '../lib/geocode'
 import { FormValuesBase } from '../lib/params'
-import { getFixedOffsetZone } from '../lib/zone'
 
 export type FormValues = Required<Omit<FormValuesBase, 'name'>> & { address: string }
 
@@ -14,9 +13,9 @@ export const useYorozuUranaiForm = ({ onSubmit, defaultValues }: FormProps) => {
   const { register, handleSubmit: hookFormHandleSubmit, watch, setValue } = useForm<FormValues>({ defaultValues })
 
   const isTimeUnknownChecked = watch('timeUnknown')
+  const zone = watch('zone')
   const lat = watch('lat')
   const lng = watch('lng')
-  const zone = getFixedOffsetZone(lng)
 
   const handleSubmit = async ({ lat, lng, ...rest }: FormValues) => {
     lat = typeof lat === 'number' && !isNaN(lat) ? lat : 0
@@ -33,5 +32,5 @@ export const useYorozuUranaiForm = ({ onSubmit, defaultValues }: FormProps) => {
     return true
   }
 
-  return { register, hookFormHandleSubmit, watch, handleSubmit, isTimeUnknownChecked, zone: zone.name, lat, lng }
+  return { register, hookFormHandleSubmit, watch, handleSubmit, isTimeUnknownChecked, zone, lat, lng }
 }

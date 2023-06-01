@@ -3,6 +3,7 @@ import { staticPath } from '../../lib/$path'
 import type { FC } from 'react'
 import type { Suimei } from '../types'
 import StringArrayWithBreaks from '../../components/A'
+import { Tooltip } from 'react-tooltip'
 
 export const Meisiki: FC<{ suimei: Suimei }> = ({ suimei }) => {
   const { kanshi, tenkanTsuhensei, zoukan, zoukanTsuhensei, tokushusei } = suimei
@@ -58,29 +59,40 @@ export const Meisiki: FC<{ suimei: Suimei }> = ({ suimei }) => {
               <td></td>
             </tr>
             <tr>
-              <th>
-                蔵干
-                <br />
-                （余気/中気/本気）
+              <th rowSpan={3}>
+                <div className="exist-help">
+                  <div>蔵干</div>
+                  <Image
+                    src={staticPath.images.suimei.help_svg}
+                    width={14}
+                    height={14}
+                    alt="ヘルプアイコン"
+                    data-tooltip-id="tooltip-help"
+                    data-tooltip-html="上から余気・中気・本気の順で<br/>表記しています。"
+                  ></Image>
+                  <Tooltip id="tooltip-help" />
+                </div>
               </th>
-              <td>
-                {zoukan.年柱.yoki}/{zoukan.年柱.chuki}/{zoukan.年柱.honki}
-              </td>
-              <td>
-                {zoukan.月柱.yoki}/{zoukan.月柱.chuki}/{zoukan.月柱.honki}
-              </td>
-              <td>
-                {zoukan.日柱.yoki}/{zoukan.日柱.chuki}/{zoukan.日柱.honki}
-              </td>
-              <td>
-                {zoukan.時柱.yoki}/{zoukan.時柱.chuki}/{zoukan.時柱.honki}
-              </td>
+              <td>{zoukan.年柱.yoki}</td>
+              <td>{zoukan.月柱.yoki}</td>
+              <td>{zoukan.日柱.yoki}</td>
+              <td>{zoukan.時柱.yoki}</td>
+            </tr>
+            <tr>
+              <td>{zoukan.年柱.chuki}</td>
+              <td>{zoukan.月柱.chuki}</td>
+              <td>{zoukan.日柱.chuki}</td>
+              <td>{zoukan.時柱.chuki}</td>
+            </tr>
+            <tr>
+              <td>{zoukan.年柱.honki}</td>
+              <td>{zoukan.月柱.honki}</td>
+              <td>{zoukan.日柱.honki}</td>
+              <td>{zoukan.時柱.honki}</td>
             </tr>
             <tr>
               <th>
                 蔵干<br className="header_br_sp"></br>通変星
-                <br />
-                （余気/中気/本気）
               </th>
               <td>
                 {zoukanTsuhensei.年柱.yoki}/{zoukanTsuhensei.年柱.chuki}/{zoukanTsuhensei.年柱.honki}

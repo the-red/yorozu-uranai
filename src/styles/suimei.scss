@@ -317,6 +317,12 @@ $sp_width: 375;
     &.meisiki {
       table {
         font-size: 14px;
+        .exist-help {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          gap: 4px;
+        }
       }
     }
     // 五行バランス

@@ -45,10 +45,7 @@ export default function Header({ whiteIcon = false }: { whiteIcon?: boolean }) {
                   />
                 )}
               </Link>
-              <Tooltip
-                id="tooltip-horoscope-link"
-                style={{ backgroundColor: 'rgb(75, 75, 75)', fontSize: '10px', zIndex: '2' }}
-              />
+              <Tooltip id="tooltip-horoscope-link" className="tooltip-nav-style" />
             </li>
             <li>
               <Link
@@ -58,10 +55,7 @@ export default function Header({ whiteIcon = false }: { whiteIcon?: boolean }) {
               >
                 <NumerologyIcon className="icon" width={16} height={16} alt="数秘術" />
               </Link>
-              <Tooltip
-                id="tooltip-numerology-link"
-                style={{ backgroundColor: 'rgb(75, 75, 75)', fontSize: '10px', zIndex: '2' }}
-              />
+              <Tooltip id="tooltip-numerology-link" className="tooltip-nav-style" />
             </li>
           </ul>
         </nav>

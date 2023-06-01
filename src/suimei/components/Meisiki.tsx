@@ -92,7 +92,20 @@ export const Meisiki: FC<{ suimei: Suimei }> = ({ suimei }) => {
             </tr>
             <tr>
               <th rowSpan={3}>
-                蔵干<br className="header_br_sp"></br>通変星
+                <div className="exist-help">
+                  <div>
+                    蔵干<br className="header_br_sp"></br>通変星
+                  </div>
+                  <Image
+                    src={staticPath.images.suimei.help_svg}
+                    width={14}
+                    height={14}
+                    alt="ヘルプアイコン"
+                    data-tooltip-id="tooltip-help"
+                    data-tooltip-html="上から余気・中気・本気の順で<br/>表記しています。"
+                  ></Image>
+                  <Tooltip id="tooltip-help" />
+                </div>
               </th>
               <td>{zoukanTsuhensei.年柱.yoki}</td>
               <td>{zoukanTsuhensei.月柱.yoki}</td>

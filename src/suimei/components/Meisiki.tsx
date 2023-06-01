@@ -91,21 +91,25 @@ export const Meisiki: FC<{ suimei: Suimei }> = ({ suimei }) => {
               <td>{zoukan.時柱.honki}</td>
             </tr>
             <tr>
-              <th>
+              <th rowSpan={3}>
                 蔵干<br className="header_br_sp"></br>通変星
               </th>
-              <td>
-                {zoukanTsuhensei.年柱.yoki}/{zoukanTsuhensei.年柱.chuki}/{zoukanTsuhensei.年柱.honki}
-              </td>
-              <td>
-                {zoukanTsuhensei.月柱.yoki}/{zoukanTsuhensei.月柱.chuki}/{zoukanTsuhensei.月柱.honki}
-              </td>
-              <td>
-                {zoukanTsuhensei.日柱.yoki}/{zoukanTsuhensei.日柱.chuki}/{zoukanTsuhensei.日柱.honki}
-              </td>
-              <td>
-                {zoukanTsuhensei.時柱.yoki}/{zoukanTsuhensei.時柱.chuki}/{zoukanTsuhensei.時柱.honki}
-              </td>
+              <td>{zoukanTsuhensei.年柱.yoki}</td>
+              <td>{zoukanTsuhensei.月柱.yoki}</td>
+              <td>{zoukanTsuhensei.日柱.yoki}</td>
+              <td>{zoukanTsuhensei.時柱.yoki}</td>
+            </tr>
+            <tr>
+              <td>{zoukanTsuhensei.年柱.chuki}</td>
+              <td>{zoukanTsuhensei.月柱.chuki}</td>
+              <td>{zoukanTsuhensei.日柱.chuki}</td>
+              <td>{zoukanTsuhensei.時柱.chuki}</td>
+            </tr>
+            <tr>
+              <td>{zoukanTsuhensei.年柱.honki}</td>
+              <td>{zoukanTsuhensei.月柱.honki}</td>
+              <td>{zoukanTsuhensei.日柱.honki}</td>
+              <td>{zoukanTsuhensei.時柱.honki}</td>
             </tr>
             <tr>
               <th>特殊星</th>

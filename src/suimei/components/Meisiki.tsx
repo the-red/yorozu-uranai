@@ -2,7 +2,7 @@ import Image from 'next/image'
 import { staticPath } from '../../lib/$path'
 import type { FC } from 'react'
 import type { Suimei } from '../types'
-import StringArrayWithBreaks from '../../components/A'
+import StringArrayWithBreaks from '../../components/StringArrayWithBreaks'
 
 export const Meisiki: FC<{ suimei: Suimei }> = ({ suimei }) => {
   const { kanshi, tenkanTsuhensei, zoukan, zoukanTsuhensei, tokushusei } = suimei

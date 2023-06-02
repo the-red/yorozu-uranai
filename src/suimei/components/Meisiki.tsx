@@ -64,8 +64,8 @@ export const Meisiki: FC<{ suimei: Suimei }> = ({ suimei }) => {
                   <div>蔵干</div>
                   <Image
                     src={staticPath.images.suimei.help_svg}
-                    width={14}
-                    height={14}
+                    width={16}
+                    height={16}
                     alt="ヘルプアイコン"
                     data-tooltip-id="tooltip-help"
                     data-tooltip-html="上から余気・中気・本気の順で<br/>表記しています。"
@@ -98,8 +98,8 @@ export const Meisiki: FC<{ suimei: Suimei }> = ({ suimei }) => {
                   </div>
                   <Image
                     src={staticPath.images.suimei.help_svg}
-                    width={14}
-                    height={14}
+                    width={16}
+                    height={16}
                     alt="ヘルプアイコン"
                     data-tooltip-id="tooltip-help"
                     data-tooltip-html="上から余気・中気・本気の順で<br/>表記しています。"

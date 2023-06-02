@@ -3,7 +3,6 @@ import Image from 'next/image'
 import { useRouter } from 'next/router'
 import { pagesPath, staticPath } from '../lib/$path'
 import NumerologyIcon from '../../public/images/index/numerology.svg'
-import SuimeiIcon from '../../public/images/index/suimei.svg'
 import Logo from '../svg/Logo'
 import { Tooltip } from 'react-tooltip'
 
@@ -63,7 +62,23 @@ export default function Header({ whiteIcon = false }: { whiteIcon?: boolean }) {
                 data-tooltip-id="tooltip-nav"
                 data-tooltip-content="四柱推命"
               >
-                <SuimeiIcon className="icon" width={16} height={16} alt="四柱推命" />
+                {whiteIcon ? (
+                  <Image
+                    src={staticPath.images.index.suimei_white_svg}
+                    className="icon"
+                    width={16}
+                    height={16}
+                    alt="四柱推命"
+                  />
+                ) : (
+                  <Image
+                    src={staticPath.images.index.suimei_svg}
+                    className="icon"
+                    width={16}
+                    height={16}
+                    alt="四柱推命"
+                  />
+                )}
               </Link>
             </li>
           </ul>

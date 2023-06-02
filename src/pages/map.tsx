@@ -26,7 +26,7 @@ interface MapProps extends google.maps.MapOptions {
   children?: React.ReactNode
 }
 
-const Map: React.FC<MapProps> = ({ onClick, onIdle, children, style, ...options }) => {
+const Map: React.FC<MapProps> = ({ onClick, onIdle, children, ...options }) => {
   const ref = React.useRef<HTMLDivElement>(null)
   const [map, setMap] = React.useState<google.maps.Map>()
 
@@ -60,7 +60,7 @@ const Map: React.FC<MapProps> = ({ onClick, onIdle, children, style, ...options 
 
   return (
     <div className="map_area">
-      <div ref={ref} style={style} />
+      <div ref={ref} />
       {React.Children.map(children, (child) => {
         if (React.isValidElement(child)) {
           // set the map prop on the child component

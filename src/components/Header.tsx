@@ -3,6 +3,7 @@ import Image from 'next/image'
 import { useRouter } from 'next/router'
 import { pagesPath, staticPath } from '../lib/$path'
 import NumerologyIcon from '../../public/images/index/numerology.svg'
+import SuimeiIcon from '../../public/images/index/suimei.svg'
 import Logo from '../svg/Logo'
 import { Tooltip } from 'react-tooltip'
 
@@ -11,8 +12,7 @@ export default function Header({ whiteIcon = false }: { whiteIcon?: boolean }) {
 
   return (
     <header className="header">
-      <Tooltip id="tooltip-horoscope-link" className="tooltip-nav-style" />
-      <Tooltip id="tooltip-numerology-link" className="tooltip-nav-style" />
+      <Tooltip id="tooltip-nav" className="tooltip-nav-style" />
       <div className="header_wrapper">
         <h1>
           <Link href={pagesPath.$url({ query })}>
@@ -24,7 +24,7 @@ export default function Header({ whiteIcon = false }: { whiteIcon?: boolean }) {
             <li>
               <Link
                 href={pagesPath.horoscope.$url({ query })}
-                data-tooltip-id="tooltip-horoscope-link"
+                data-tooltip-id="tooltip-nav"
                 data-tooltip-content="西洋占星術"
               >
                 {/* TODO: horoscopeIcon はSVGコンポーネントとして表示すると何故か消えるのでなんとかする */}
@@ -51,10 +51,19 @@ export default function Header({ whiteIcon = false }: { whiteIcon?: boolean }) {
             <li>
               <Link
                 href={pagesPath.numerology.$url({ query })}
-                data-tooltip-id="tooltip-numerology-link"
+                data-tooltip-id="tooltip-nav"
                 data-tooltip-content="数秘術"
               >
                 <NumerologyIcon className="icon" width={16} height={16} alt="数秘術" />
+              </Link>
+            </li>
+            <li>
+              <Link
+                href={pagesPath.suimei.$url({ query })}
+                data-tooltip-id="tooltip-nav"
+                data-tooltip-content="四柱推命"
+              >
+                <SuimeiIcon className="icon" width={16} height={16} alt="四柱推命" />
               </Link>
             </li>
           </ul>

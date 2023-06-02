@@ -43,7 +43,7 @@ function HoroscopePage() {
       body: JSON.stringify(horoscopeSeed),
     })
     if (!res.ok) {
-      const { errorMessage } = await res.json()
+      const errorMessage = await res.text()
       throw new Error(errorMessage)
     }
     const json = await res.json()
@@ -58,7 +58,7 @@ function HoroscopePage() {
     }
   }, [data])
 
-  if (error) return <div>failed to load: {JSON.stringify(error.message)}</div>
+  if (error) return <div>failed to load: {error.message}</div>
   // TODO: loading時にヘッダー・タイトル・背景色くらいは出したい
   if (!horoscope) return <div>loading...</div>
 

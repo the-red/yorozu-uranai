@@ -165,7 +165,7 @@ export default function HoroscopeCircle({
   )
   const PlanetIcons = () => (
     <>
-      {Object.values(planets).map((planet, i) => (
+      {Object?.values(planets).map((planet, i) => (
         <ScaledText
           key={i}
           text={planet.icon}
@@ -210,7 +210,7 @@ export default function HoroscopeCircle({
 
     return (
       <>
-        {Object.values(majorAspects).map(([from, to, aspect], i) => (
+        {Object?.values(majorAspects).map(([from, to, aspect], i) => (
           <AspectLine
             key={i}
             from={from.position}

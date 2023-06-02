@@ -73,6 +73,7 @@ export const staticPath = {
     },
     suimei: {
       fun_svg: '/images/suimei/fun.svg',
+      help_svg: '/images/suimei/help.svg',
       kintoun_svg: '/images/suimei/kintoun.svg',
       lantern_red_svg: '/images/suimei/lantern_red.svg',
       lantern_yellow_svg: '/images/suimei/lantern_yellow.svg',

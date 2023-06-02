@@ -535,6 +535,12 @@ $sp_width: 375;
             font-size: 20px;
             @include table_data_width(980, 143, 4);
           }
+          .exist-help {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 4px;
+          }
         }
       }
 

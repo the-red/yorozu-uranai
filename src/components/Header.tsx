@@ -11,6 +11,8 @@ export default function Header({ whiteIcon = false }: { whiteIcon?: boolean }) {
 
   return (
     <header className="header">
+      <Tooltip id="tooltip-horoscope-link" className="tooltip-nav-style" />
+      <Tooltip id="tooltip-numerology-link" className="tooltip-nav-style" />
       <div className="header_wrapper">
         <h1>
           <Link href={pagesPath.$url({ query })}>
@@ -45,7 +47,6 @@ export default function Header({ whiteIcon = false }: { whiteIcon?: boolean }) {
                   />
                 )}
               </Link>
-              <Tooltip id="tooltip-horoscope-link" className="tooltip-nav-style" />
             </li>
             <li>
               <Link
@@ -55,7 +56,6 @@ export default function Header({ whiteIcon = false }: { whiteIcon?: boolean }) {
               >
                 <NumerologyIcon className="icon" width={16} height={16} alt="数秘術" />
               </Link>
-              <Tooltip id="tooltip-numerology-link" className="tooltip-nav-style" />
             </li>
           </ul>
         </nav>

@@ -1,4 +1,4 @@
-import { Numerology } from '../../src/numerology/Numerology'
+import { Numerology } from '../../src/numerology/models/Numerology'
 
 describe('Numerology', () => {
   describe('通常のテスト', () => {

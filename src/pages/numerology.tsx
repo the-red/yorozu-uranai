@@ -8,7 +8,7 @@ import Footer from '../components/Footer'
 
 import { NumerologyForm, NumerologyFormProps, NumerologyFormValues } from '../numerology/components/NumerologyForm'
 import { CoreNumbers } from '../numerology/components/CoreNumbers'
-import { Numerology } from '../numerology/Numerology'
+import { Numerology } from '../numerology/models/Numerology'
 import { Query, queryToFormValues, formValuesToQuery } from '../lib/params'
 
 export type OptionalQuery = Query

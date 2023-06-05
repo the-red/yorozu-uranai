@@ -1,8 +1,12 @@
 import { DateTime } from 'luxon'
 import { getEclipticLongitude } from '../../astronomy'
-import { sekki, sekkiIndex, 節, 節list } from './Sekki'
+import { adjustment, interval, sekki, sekkiIndex, 節, 節list } from './Sekki'
 import { SekkiPair } from './Kanshi'
 
+const getSekkiIndex = async (date: Date): Promise<number> => {
+  const longitude = await getEclipticLongitude(date)
+  return sekkiIndex(longitude)
+}
 const getSekki = async (date: Date): Promise<節> => {
   const longitude = await getEclipticLongitude(date)
   return sekki(longitude)
@@ -78,4 +82,13 @@ export const longitudeToDate = async (
 
   const newDate = new Date(nearbyDate.getTime() + diffSecondsInt * 1000)
   return longitudeToDate(targetLongitude, newDate, forward, count + 1)
+}
+
+export const getSetsuIri = async (baseDate: Date, forward: boolean = true) => {
+  const baseIndex = await getSekkiIndex(baseDate)
+  const index = forward ? (baseIndex + 1) % 12 : baseIndex
+  const sekki = 節list[index]
+  const longitudeOfNextSekki = (節list.indexOf(sekki) * interval - adjustment + 360) % 360
+  const date = await longitudeToDate(longitudeOfNextSekki, baseDate, forward)
+  return { sekki, date }
 }

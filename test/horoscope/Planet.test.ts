@@ -1,6 +1,6 @@
-import { Planet } from '../../src/horoscope/Planet'
-import { House } from '../../src/horoscope/House'
-import { Position } from '../../src/horoscope/Position'
+import { Planet } from '../../src/horoscope/models/Planet'
+import { House } from '../../src/horoscope/models/House'
+import { Position } from '../../src/horoscope/models/Position'
 
 describe('Planet', () => {
   const house = new House({

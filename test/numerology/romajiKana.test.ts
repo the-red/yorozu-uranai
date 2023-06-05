@@ -1,4 +1,4 @@
-import { convertHiraganaToRomagi } from '../../src/numerology/romajiKana'
+import { convertHiraganaToRomagi } from '../../src/numerology/models/romajiKana'
 
 describe('convertHiraganaToRomagi', () => {
   describe('五十音と撥音（ん）', () => {

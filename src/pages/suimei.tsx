@@ -5,6 +5,7 @@ import useSWR from 'swr'
 import { DateTime } from 'luxon'
 
 import { Query, formValuesToQuery } from '../lib/params'
+import Menu from '../components/Menu'
 import Header from '../components/Header'
 import Footer from '../components/Footer'
 import { Kanshi, SekkiPair, Suimei, TenkanTsuhensei, Zoukan, ZoukanTsuhensei, tokushusei } from '../suimei'
@@ -74,6 +75,7 @@ const SuimeiPage: NextPage = () => {
   return (
     <div className="suimei">
       <div>
+        <Menu />
         <Header />
         <SuimeiContent suimei={suimei} onSubmit={handleSubmit} defaultValues={formValues} />
         <Footer />

@@ -39,28 +39,28 @@ describe('日時→節気 変換', () => {
 describe('節入りまでの日数（日のみ）', () => {
   it('順行: 立春→30日→啓蟄', async () => {
     const days = await daysToNextSekki(new Date('2023-02-04T12:00:00+09:00'))
-    expect(days).toBe(30)
+    expect(days).toMatchObject({ days: 30, sekki: '啓蟄' })
   })
   it('順行: 小暑→32日→立秋', async () => {
     const days = await daysToNextSekki(new Date('2023-07-07T20:00:00+09:00'))
-    expect(days).toBe(32)
+    expect(days).toMatchObject({ days: 32, sekki: '立秋' })
   })
   it('順行: 小寒→1日→立春', async () => {
     const days = await daysToNextSekki(new Date('2023-02-03T12:00:00+09:00'))
-    expect(days).toBe(1)
+    expect(days).toMatchObject({ days: 1, sekki: '立春' })
   })
 
-  it('逆行: 啓蟄→30日→立春', async () => {
+  it('逆行: 立春→30日→小寒', async () => {
     const days = await daysToNextSekki(new Date('2023-03-05T12:00:00+09:00'), false)
-    expect(days).toBe(30)
+    expect(days).toMatchObject({ days: 30, sekki: '小寒' })
   })
-  it('逆行: 立秋→32日→小暑', async () => {
+  it('逆行: 小暑→32日→芒種', async () => {
     const days = await daysToNextSekki(new Date('2023-08-07T20:00:00+09:00'), false)
-    expect(days).toBe(32)
+    expect(days).toMatchObject({ days: 32, sekki: '芒種' })
   })
   it('逆行: 立春→1日→小寒', async () => {
     const days = await daysToNextSekki(new Date('2023-02-04T12:00:00+09:00'), false)
-    expect(days).toBe(1)
+    expect(days).toMatchObject({ days: 1, sekki: '小寒' })
   })
 })
 

@@ -17,7 +17,7 @@ export const getSekkiPair = async (date: Date): Promise<SekkiPair> => {
   }
 }
 
-export const daysToNextSekki = async (date: Date, forward: boolean = true): Promise<number> => {
+export const daysToNextSekki = async (date: Date, forward: boolean = true): Promise<{ days: number; sekki: 節 }> => {
   const currentSekki = await getSekki(date)
   const index = 節list.indexOf(currentSekki)
 
@@ -29,7 +29,7 @@ export const daysToNextSekki = async (date: Date, forward: boolean = true): Prom
       const nextDate = DateTime.fromJSDate(date).plus({ days }).toJSDate()
       const sekki = await getSekki(nextDate)
       if (sekki === nextSekki) {
-        return days
+        return { days, sekki }
       }
     }
   } else {
@@ -40,7 +40,7 @@ export const daysToNextSekki = async (date: Date, forward: boolean = true): Prom
       const prevDate = DateTime.fromJSDate(date).minus({ days }).toJSDate()
       const sekki = await getSekki(prevDate)
       if (sekki === prevSekki) {
-        return days
+        return { days, sekki }
       }
     }
   }

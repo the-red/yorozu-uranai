@@ -1,4 +1,4 @@
-import { Planet, PLANET_NAMES_JA } from '../'
+import { Planet, PLANET_NAMES_JA } from '../models'
 
 type Props = {
   planets: Planet[]

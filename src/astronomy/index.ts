@@ -141,3 +141,36 @@ export const houseSystemName = (hsys?: string) => {
       return 'Placidus'
   }
 }
+
+// 黄経から日付を算出
+export const longitudeToDate = async (
+  targetLongitude: number,
+  nearbyDate: Date, // この日付に一番近い日付を探す
+  forward: boolean = true, // 順行ならtrue、逆行ならfalse
+  count: number = 0
+): Promise<Date> => {
+  const secondsOfYear = 365.2422 / 24 / 60 / 60
+  const longitudesOfSeconds = secondsOfYear / 360 // 1秒で黄経が進む度数
+
+  const currentLongitude = await getEclipticLongitude(nearbyDate)
+  const sign = forward ? 1 : -1
+
+  let longitudeDiff = targetLongitude - currentLongitude
+  if (count === 0 && sign * longitudeDiff < 0) {
+    longitudeDiff += sign * 360
+  }
+  const diffSeconds = longitudeDiff / longitudesOfSeconds
+  const diffSecondsInt = Math.trunc(diffSeconds)
+
+  if (diffSecondsInt === 0) {
+    return nearbyDate
+  }
+
+  if (count > 10) {
+    // 無限再帰の防止
+    return nearbyDate
+  }
+
+  const newDate = new Date(nearbyDate.getTime() + diffSecondsInt * 1000)
+  return longitudeToDate(targetLongitude, newDate, forward, count + 1)
+}

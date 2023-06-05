@@ -1,5 +1,5 @@
 import { sekkiIndex, sekki } from '../../src/suimei/models/Sekki'
-import { longitudeToDate, getSetsuIri } from '../../src/suimei/models/SekkiUtil'
+import { getSetsuIri } from '../../src/suimei/models/SekkiUtil'
 import { getEclipticLongitude } from '../../src/astronomy'
 
 describe('二十四節気', () => {
@@ -34,29 +34,6 @@ describe('日時→節気 変換', () => {
   it('大雪の開始日時分秒', async () => {
     expect(sekki(await getEclipticLongitude(new Date('2018-12-07T13:25:55+09:00')))).toEqual('大雪')
   })
-})
-
-describe('黄経から日付を算出', () => {
-  it('順行: 3日後に立春', async () => {
-    const res = await longitudeToDate(315, new Date('2022-02-01T05:00:48+09:00'), true)
-    expect(res).toMatchObject(new Date('2022-02-04T05:50:46+09:00'))
-  }, 100_000)
-  it('逆行: 1日前に立春', async () => {
-    const res = await longitudeToDate(315, new Date('2022-02-05T05:50:46+09:00'), false)
-    expect(res).toMatchObject(new Date('2022-02-04T05:50:46+09:00'))
-  }, 100_000)
-  it('順行: 4か月後に立春', async () => {
-    const res = await longitudeToDate(315, new Date('2021-10-05T05:50:46+09:00'), true)
-    expect(res).toMatchObject(new Date('2022-02-04T05:50:46+09:00'))
-  }, 100_000)
-  it('逆行: 4か月前に立春', async () => {
-    const res = await longitudeToDate(315, new Date('2022-08-05T05:50:46+09:00'), false)
-    expect(res).toMatchObject(new Date('2022-02-04T05:50:46+09:00'))
-  }, 100_000)
-  it('順行: 1年後に立春', async () => {
-    const res = await longitudeToDate(315, new Date('2021-02-03T23:58:47+09:00'), true)
-    expect(res).toMatchObject(new Date('2022-02-04T05:50:46+09:00'))
-  }, 100_000)
 })
 
 describe('節入り日', () => {

@@ -21,7 +21,10 @@ export const getSekkiPair = async (date: Date): Promise<SekkiPair> => {
   }
 }
 
-export const getSetsuIri = async (baseDate: Date, forward: boolean = true) => {
+export const getSetsuIri = async (
+  baseDate: Date, // この日付に一番近い日付を探す
+  forward: boolean = true // 順行ならtrue、逆行ならfalse
+) => {
   const baseIndex = await getSekkiIndex(baseDate)
   const index = forward ? (baseIndex + 1) % 12 : baseIndex
   const sekki = 節list[index]

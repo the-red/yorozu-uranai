@@ -1,5 +1,5 @@
 import { getKanshiInstance } from './test-util'
-import { tokushusei } from '../../src/suimei'
+import { tokushusei } from '../../src/suimei/models'
 
 describe('Tokushusei', () => {
   it('all', async () => {

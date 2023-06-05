@@ -1,7 +1,7 @@
 import Image from 'next/image'
 import { staticPath } from '../../lib/$path'
 import type { FC } from 'react'
-import type { Suimei } from '../types'
+import type { Suimei } from '../models/types'
 import StringArrayWithBreaks from '../../components/StringArrayWithBreaks'
 import { Tooltip } from 'react-tooltip'
 

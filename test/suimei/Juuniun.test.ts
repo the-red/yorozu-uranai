@@ -1,4 +1,4 @@
-import { juuniun } from '../../src/suimei/Juuniun'
+import { juuniun } from '../../src/suimei/models/Juuniun'
 
 describe('Juuniun', () => {
   describe('十二運：日干のindexが偶数', () => {

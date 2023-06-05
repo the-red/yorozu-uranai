@@ -1,5 +1,5 @@
 import { DateTime } from 'luxon'
-import { getEclipticLongitude } from '../astronomy'
+import { getEclipticLongitude } from '../../astronomy'
 import { sekki, 節 } from './Sekki'
 import { SekkiPair } from './Kanshi'
 

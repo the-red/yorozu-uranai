@@ -1,5 +1,5 @@
 import type { FC } from 'react'
-import { Suimei } from '../'
+import { Suimei } from '../models'
 import { TitleArea } from './TitleArea'
 import { FormProps } from '../../hooks/useYorozuUranaiForm'
 import { SuimeiForm } from './SuimeiForm'

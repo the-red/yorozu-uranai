@@ -1,6 +1,6 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 import type { NextApiRequest, NextApiResponse } from 'next'
-import { getSekkiPair } from '../../suimei/kanshiFactory'
+import { getSekkiPair } from '../../suimei/models/kanshiFactory'
 
 type Data = { data: any } | { errorMessage: string }
 

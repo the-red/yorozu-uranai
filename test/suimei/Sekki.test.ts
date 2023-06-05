@@ -1,4 +1,4 @@
-import { sekkiIndex, sekki } from '../../src/suimei/Sekki'
+import { sekkiIndex, sekki } from '../../src/suimei/models/Sekki'
 import { getEclipticLongitude } from '../../src/astronomy'
 
 describe('二十四節気', () => {

@@ -1,4 +1,5 @@
 import { sekkiIndex, sekki } from '../../src/suimei/models/Sekki'
+import { daysToNextSekki } from '../../src/suimei/models/SekkiUtil'
 import { getEclipticLongitude } from '../../src/astronomy'
 
 describe('二十四節気', () => {

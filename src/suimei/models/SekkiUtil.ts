@@ -21,37 +21,6 @@ export const getSekkiPair = async (date: Date): Promise<SekkiPair> => {
   }
 }
 
-export const daysToNextSekki = async (date: Date, forward: boolean = true): Promise<{ days: number; sekki: 節 }> => {
-  const currentSekki = await getSekki(date)
-  const index = 節list.indexOf(currentSekki)
-
-  if (forward) {
-    // 順行
-    const nextIndex = (index + 1) % 12
-    const nextSekki = 節list.at(nextIndex)
-    for (let days = 1; days <= 32; days++) {
-      const nextDate = DateTime.fromJSDate(date).plus({ days }).toJSDate()
-      const sekki = await getSekki(nextDate)
-      if (sekki === nextSekki) {
-        return { days, sekki }
-      }
-    }
-  } else {
-    // 逆行
-    const prevIndex = (index - 1) % 12
-    const prevSekki = 節list.at(prevIndex)
-    for (let days = 1; days <= 32; days++) {
-      const prevDate = DateTime.fromJSDate(date).minus({ days }).toJSDate()
-      const sekki = await getSekki(prevDate)
-      if (sekki === prevSekki) {
-        return { days, sekki }
-      }
-    }
-  }
-
-  throw new Error('節入りできません！') // ここには来ないはず
-}
-
 export const longitudeToDate = async (
   targetLongitude: number,
   nearbyDate: Date, // この日付に一番近い日付を探す

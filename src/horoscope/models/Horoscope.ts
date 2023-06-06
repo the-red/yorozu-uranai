@@ -1,6 +1,6 @@
 import { Position } from './Position'
 import { Planet } from './Planet'
-import type { PlanetName, EclipticPosition, Houses } from '../astronomy/types'
+import type { PlanetName, EclipticPosition, Houses } from '../../astronomy/types'
 import { House } from './House'
 
 export type PlanetsMap = Record<PlanetName, Planet>

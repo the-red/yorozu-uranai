@@ -1,4 +1,4 @@
-import { Zoukan, ZoukanTsuhensei, calcZoukan } from '../../src/suimei/Zoukan'
+import { Zoukan, ZoukanTsuhensei, calcZoukan } from '../../src/suimei/models/Zoukan'
 import { getKanshiInstance } from './test-util'
 
 describe('Zoukan', () => {

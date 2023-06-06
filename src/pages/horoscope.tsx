@@ -7,7 +7,7 @@ import Menu from '../components/Menu'
 import Header from '../components/Header'
 import Footer from '../components/Footer'
 
-import { Horoscope, HoroscopeProps } from '../horoscope'
+import { Horoscope, HoroscopeProps } from '../horoscope/models'
 import HoroscopeDetailPage from '../horoscope/components/HoroscopeDetailPage'
 import { Query, formValuesToQuery } from '../lib/params'
 import { FormProps, FormValues } from '../hooks/useYorozuUranaiForm'

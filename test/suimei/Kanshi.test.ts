@@ -1,4 +1,4 @@
-import { Kanshi, get十二支五行, get十干五行 } from '../../src/suimei/Kanshi'
+import { Kanshi, get十二支五行, get十干五行 } from '../../src/suimei/models/Kanshi'
 import { getKanshiInstance } from './test-util'
 
 describe('六十干支', () => {

@@ -1,7 +1,7 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 import type { NextApiRequest, NextApiResponse } from 'next'
-import { HoroscopeProps } from '../../horoscope'
-import { getHoroscopeProps } from '../../horoscope/horoscopeFactory'
+import { HoroscopeProps } from '../../horoscope/models'
+import { getHoroscopeProps } from '../../horoscope/models/horoscopeFactory'
 
 type Data = { data: HoroscopeProps } | { errorMessage: string }
 

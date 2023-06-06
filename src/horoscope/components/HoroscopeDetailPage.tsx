@@ -1,6 +1,6 @@
 import type { FC } from 'react'
 import dynamic from 'next/dynamic'
-import { Horoscope } from '../'
+import { Horoscope } from '../models'
 import PlanetPositions from './PlanetPositions'
 import HouseCusp from './HouseCusp'
 import SignTable from './SignTable'

@@ -1,4 +1,4 @@
-import { calcTsuhensei, TenkanTsuhensei } from '../../src/suimei/Tsuhensei'
+import { calcTsuhensei, TenkanTsuhensei } from '../../src/suimei/models/Tsuhensei'
 import { getKanshiInstance } from './test-util'
 
 describe('calcTsuhensei', () => {

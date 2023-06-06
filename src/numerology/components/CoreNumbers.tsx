@@ -1,6 +1,6 @@
 import Image from 'next/image'
 import { FC, ReactNode } from 'react'
-import { Numerology } from '../Numerology'
+import { Numerology } from '../models/Numerology'
 
 import bird1 from '../../../public/images/numerology/bird-1.png'
 import bird2 from '../../../public/images/numerology/bird-2.png'

@@ -1,6 +1,6 @@
 import Image from 'next/image'
 import { staticPath } from '../../lib/$path'
-import type { Kanshi } from '../Kanshi'
+import type { Kanshi } from '../models/Kanshi'
 
 type Props = { kanshi: Kanshi }
 export const GogyoBalance = ({ kanshi }: Props) => (

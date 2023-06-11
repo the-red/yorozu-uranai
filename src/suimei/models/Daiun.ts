@@ -3,10 +3,10 @@ import { Kanshi } from './Kanshi'
 import { SekkiPair } from './Kanshi'
 import { DateTime } from 'luxon'
 import { 十干, 干支, 十二支, get六十干支 } from './Kanshi'
-import { calcZoukan, 蔵干通変星 } from './Zoukan'
+import { calcZoukan } from './Zoukan'
 import { 通変星, calcTsuhensei } from './Tsuhensei'
 
-type Gender = 'man' | 'woman' | ''
+type Gender = 'man' | 'woman'
 
 type Daiun = {
   fromAge: number

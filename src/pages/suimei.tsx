@@ -12,6 +12,7 @@ import { Kanshi, SekkiPair, Suimei, TenkanTsuhensei, Zoukan, ZoukanTsuhensei, to
 import { SuimeiContent } from '../suimei/components/SuimeiContent'
 import { useFormValues } from '../hooks/useFormValues'
 import { FormProps } from '../hooks/useYorozuUranaiForm'
+import { Juuniun } from '../suimei/models/Juuniun'
 
 export type OptionalQuery = Query
 
@@ -50,6 +51,7 @@ const SuimeiPage: NextPage = () => {
       zoukan,
       zoukanTsuhensei: new ZoukanTsuhensei(zoukan),
       tokushusei: tokushusei(kanshi),
+      juuniun: new Juuniun(kanshi),
     }
   })
 

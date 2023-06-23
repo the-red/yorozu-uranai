@@ -1,6 +1,6 @@
 import { DateTime } from 'luxon'
 
-type Gender = 'man' | 'woman' | ''
+type Gender = 'man' | 'woman'
 export type FormValuesBase = {
   name?: string
   date?: string

@@ -9,7 +9,7 @@ import Menu from '../components/Menu'
 import Header from '../components/Header'
 import Footer from '../components/Footer'
 import { Kanshi, SekkiPair, Suimei, TenkanTsuhensei, Zoukan, ZoukanTsuhensei, tokushusei } from '../suimei/models'
-import { daiun } from '../suimei/models/Daiun'
+import { Daiun, Gender } from '../suimei/models/Daiun'
 import { SuimeiContent } from '../suimei/components/SuimeiContent'
 import { useFormValues } from '../hooks/useFormValues'
 import { FormProps } from '../hooks/useYorozuUranaiForm'
@@ -28,8 +28,10 @@ const SuimeiPage: NextPage = () => {
     const { date, time, zone, gender } = formValues
     const suimeiSeed: {
       dateTime: DateTime
+      gender: Gender
     } = {
       dateTime: DateTime.fromISO(`${date}T${time}`, { zone }),
+      gender,
     }
     const res = await fetch('/api/suimei-props', {
       method: 'POST',
@@ -44,7 +46,9 @@ const SuimeiPage: NextPage = () => {
     const sekkiPair = json.data as SekkiPair
     const kanshi = new Kanshi(suimeiSeed.dateTime, sekkiPair)
     const zoukan = new Zoukan(kanshi)
-    const daiunDetail = await daiun(date, suimeiSeed.dateTime, gender)
+    const daiunDetail = json.daiun as Daiun[]
+
+    console.log(json)
 
     return {
       sekki: sekkiPair.today,

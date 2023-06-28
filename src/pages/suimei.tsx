@@ -9,6 +9,7 @@ import Menu from '../components/Menu'
 import Header from '../components/Header'
 import Footer from '../components/Footer'
 import { Kanshi, SekkiPair, Suimei, TenkanTsuhensei, Zoukan, ZoukanTsuhensei, tokushusei } from '../suimei/models'
+import { daiun } from '../suimei/models/Daiun'
 import { SuimeiContent } from '../suimei/components/SuimeiContent'
 import { useFormValues } from '../hooks/useFormValues'
 import { FormProps } from '../hooks/useYorozuUranaiForm'
@@ -24,7 +25,7 @@ const SuimeiPage: NextPage = () => {
   useFormValues(setFormValues, router)
 
   const { data, error } = useSWR<Suimei>([formValues], async (formValues: SuimeiFormValues) => {
-    const { date, time, zone } = formValues
+    const { date, time, zone, gender } = formValues
     const suimeiSeed: {
       dateTime: DateTime
     } = {
@@ -43,6 +44,8 @@ const SuimeiPage: NextPage = () => {
     const sekkiPair = json.data as SekkiPair
     const kanshi = new Kanshi(suimeiSeed.dateTime, sekkiPair)
     const zoukan = new Zoukan(kanshi)
+    const daiunDetail = await daiun(date, suimeiSeed.dateTime, gender)
+
     return {
       sekki: sekkiPair.today,
       kanshi,
@@ -50,6 +53,7 @@ const SuimeiPage: NextPage = () => {
       zoukan,
       zoukanTsuhensei: new ZoukanTsuhensei(zoukan),
       tokushusei: tokushusei(kanshi),
+      daiun: daiunDetail,
     }
   })
 

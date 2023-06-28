@@ -6,9 +6,9 @@ import { 十干, 干支, 十二支, get六十干支 } from './Kanshi'
 import { calcZoukan } from './Zoukan'
 import { 通変星, calcTsuhensei } from './Tsuhensei'
 
-type Gender = 'man' | 'woman'
+export type Gender = 'man' | 'woman'
 
-type Daiun = {
+export type Daiun = {
   fromAge: number
   toAge: number
   kanshi: 干支
@@ -23,12 +23,11 @@ const junkou = get六十干支()
 const gyakkou = [...junkou].reverse()
 
 // 節入りまでの日数
-const numberOfDaysToSetsuIri = async (date: Date, forward: boolean) => {
-  const baseDate = DateTime.fromJSDate(date)
+const numberOfDaysToSetsuIri = async (date: Date, datetime: DateTime, forward: boolean) => {
   // 一番近い節入りの日付を取得
   const setsuIri = await getSetsuIri(date, forward)
   // 生まれた日から節入りまでの日数
-  const days = Math.abs(Math.round(baseDate.diff(DateTime.fromJSDate(setsuIri.date), ['days']).days))
+  const days = Math.abs(Math.round(datetime.diff(DateTime.fromJSDate(setsuIri.date), ['days']).days))
 
   return days <= 3 ? 1 : days
 }
@@ -49,7 +48,7 @@ const calcShoun = (numberOfDays: number) => {
   return numberOfDays % 3 === 2 ? Math.ceil(quotient) : Math.trunc(quotient)
 }
 
-export const daiun = async (date: Date, gender: Gender) => {
+export const daiun = async (date: Date, datetime: DateTime, gender: Gender) => {
   const baseDate = DateTime.fromJSDate(date)
   const sekki = await getSekkiPair(date)
   // 干支
@@ -57,7 +56,7 @@ export const daiun = async (date: Date, gender: Gender) => {
   // 順行か逆行か
   const forward = isForward(kanshi.年干, gender)
   // 初運
-  const daysOfSetsuIri = await numberOfDaysToSetsuIri(date, forward)
+  const daysOfSetsuIri = await numberOfDaysToSetsuIri(date, datetime, forward)
   const shoun = calcShoun(daysOfSetsuIri)
   // 月柱の干支の順行 / 逆行早見表でのindex
   const gecchuIndex = forward ? junkou.indexOf(kanshi.月柱) : gyakkou.indexOf(kanshi.月柱)
@@ -84,4 +83,6 @@ export const daiun = async (date: Date, gender: Gender) => {
     }
     daiun.push(daiunDetail)
   }
+
+  return daiun
 }

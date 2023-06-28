@@ -1,7 +1,9 @@
 import Image from 'next/image'
 import { staticPath } from '../../lib/$path'
+import type { Daiun } from '../models/Daiun'
 
-export const Daiun = () => (
+type Props = { daiun: Daiun[] }
+export const DaiunContent = ({ daiun }: Props) => (
   <section className="result daiun">
     <div className="inner">
       <h3>
@@ -26,7 +28,21 @@ export const Daiun = () => (
           </tr>
         </thead>
         <tbody>
-          <tr>
+          {daiun.map((d: Daiun, key) => {
+            return (
+              <tr key={key}>
+                <th>
+                  {d.fromAge}〜<br className="header_br_sp"></br>
+                  {d.toAge}
+                </th>
+                <td>{d.tenkanTsuhensei}</td>
+                <td>{d.kanshi}</td>
+                <td>{d.zoukan}</td>
+                <td>{d.zoukanTsuhensei}</td>
+              </tr>
+            )
+          })}
+          {/* <tr>
             <th>
               0〜<br className="header_br_sp"></br>7歳
             </th>
@@ -105,7 +121,7 @@ export const Daiun = () => (
             <td>戊</td>
             <td>偏印</td>
             <td>養</td>
-          </tr>
+          </tr> */}
         </tbody>
       </table>
     </div>

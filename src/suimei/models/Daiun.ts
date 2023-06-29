@@ -1,10 +1,10 @@
 import { getSekkiPair, getSetsuIri } from './SekkiUtil'
-import { Kanshi } from './Kanshi'
-import { SekkiPair } from './Kanshi'
+import { Kanshi, SekkiPair } from './Kanshi'
 import { DateTime } from 'luxon'
 import { 十干, 干支, 十二支, get六十干支 } from './Kanshi'
 import { calcZoukan } from './Zoukan'
 import { 通変星, calcTsuhensei } from './Tsuhensei'
+import { Juniun, juuniun } from './Juuniun'
 
 export type Gender = 'man' | 'woman'
 
@@ -17,6 +17,7 @@ export type Daiun = {
   tenkanTsuhensei: 通変星
   zoukan: 十干
   zoukanTsuhensei: 通変星
+  juuniun: Juniun
 }
 
 const junkou = get六十干支()
@@ -48,9 +49,9 @@ const calcShoun = (numberOfDays: number) => {
   return numberOfDays % 3 === 2 ? Math.ceil(quotient) : Math.trunc(quotient)
 }
 
-export const daiun = async (date: Date, datetime: DateTime, gender: Gender) => {
+export const generateDaiun = async (date: Date, datetime: DateTime, gender: Gender, sekkiPair: SekkiPair) => {
   const baseDate = DateTime.fromJSDate(date)
-  const sekki = await getSekkiPair(date)
+  const sekki = sekkiPair
   // 干支
   const kanshi = new Kanshi(baseDate, sekki)
   // 順行か逆行か
@@ -64,22 +65,26 @@ export const daiun = async (date: Date, datetime: DateTime, gender: Gender) => {
   // 8列分の箱を作る
   const daiun: Daiun[] = []
 
-  for (let i = 0; i++; i < 8) {
+  for (let i = 0; i < 8; i++) {
     const kanshiIndex = gecchuIndex + i < 60 ? gecchuIndex + i : gecchuIndex + i - 60
     const daiunKanshi = forward ? junkou[kanshiIndex] : gyakkou[kanshiIndex]
     const tenkan = daiunKanshi.charAt(0) as 十干
     const tishi = daiunKanshi.charAt(1) as 十二支
     const zoukanHonki = calcZoukan(tishi).honki
 
+    const fromAge = i === 0 ? 0 : shoun + 1 + 10 * (i - 1)
+    const toAge = i === 0 ? shoun : fromAge + 9
+
     const daiunDetail: Daiun = {
-      fromAge: shoun + i,
-      toAge: shoun + i + 9,
+      fromAge,
+      toAge,
       kanshi: daiunKanshi,
       tenkan,
       tishi,
       tenkanTsuhensei: calcTsuhensei(kanshi.日干, tenkan),
       zoukan: zoukanHonki,
       zoukanTsuhensei: calcTsuhensei(kanshi.日干, zoukanHonki),
+      juuniun: juuniun(kanshi.日干, tishi),
     }
     daiun.push(daiunDetail)
   }

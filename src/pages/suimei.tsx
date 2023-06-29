@@ -48,8 +48,6 @@ const SuimeiPage: NextPage = () => {
     const zoukan = new Zoukan(kanshi)
     const daiunDetail = json.daiun as Daiun[]
 
-    console.log(json)
-
     return {
       sekki: sekkiPair.today,
       kanshi,

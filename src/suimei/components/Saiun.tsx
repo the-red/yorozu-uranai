@@ -14,16 +14,15 @@ export const Saiun = () => (
         <thead>
           <tr>
             <th></th>
-            <th>天干</th>
-            <th>地支</th>
             <th>
               天干<br className="header_br_sp"></br>通変星
             </th>
-            <th>十二運</th>
+            <th>大運</th>
             <th>蔵干</th>
             <th>
               蔵干<br className="header_br_sp"></br>通変星
             </th>
+            <th>十二運</th>
           </tr>
         </thead>
         <tbody>
@@ -31,9 +30,8 @@ export const Saiun = () => (
             <th>
               <span>30歳</span>2017年
             </th>
-            <td>庚</td>
-            <td>辰</td>
             <td>比肩</td>
+            <td>戊午</td>
             <td>養</td>
             <td>戊</td>
             <td>偏印</td>
@@ -42,9 +40,8 @@ export const Saiun = () => (
             <th>
               <span>31歳</span>2018年
             </th>
-            <td>庚</td>
-            <td>辰</td>
             <td>比肩</td>
+            <td>戊午</td>
             <td>養</td>
             <td>戊</td>
             <td>偏印</td>
@@ -53,9 +50,8 @@ export const Saiun = () => (
             <th>
               <span>32歳</span>2019年
             </th>
-            <td>庚</td>
-            <td>辰</td>
             <td>比肩</td>
+            <td>戊午</td>
             <td>養</td>
             <td>戊</td>
             <td>偏印</td>
@@ -64,9 +60,8 @@ export const Saiun = () => (
             <th>
               <span>33歳</span>2020年
             </th>
-            <td>庚</td>
-            <td>辰</td>
             <td>比肩</td>
+            <td>戊午</td>
             <td>養</td>
             <td>戊</td>
             <td>偏印</td>
@@ -75,9 +70,8 @@ export const Saiun = () => (
             <th>
               <span>34歳</span>2021年
             </th>
-            <td>庚</td>
-            <td>辰</td>
             <td>比肩</td>
+            <td>戊午</td>
             <td>養</td>
             <td>戊</td>
             <td>偏印</td>
@@ -86,9 +80,8 @@ export const Saiun = () => (
             <th>
               <span>35歳</span>2022年
             </th>
-            <td>庚</td>
-            <td>辰</td>
             <td>比肩</td>
+            <td>戊午</td>
             <td>養</td>
             <td>戊</td>
             <td>偏印</td>
@@ -97,9 +90,8 @@ export const Saiun = () => (
             <th>
               <span>36歳</span>2023年
             </th>
-            <td>庚</td>
-            <td>辰</td>
             <td>比肩</td>
+            <td>戊午</td>
             <td>養</td>
             <td>戊</td>
             <td>偏印</td>
@@ -108,9 +100,8 @@ export const Saiun = () => (
             <th>
               <span>37歳</span>2024年
             </th>
-            <td>庚</td>
-            <td>辰</td>
             <td>比肩</td>
+            <td>戊午</td>
             <td>養</td>
             <td>戊</td>
             <td>偏印</td>
@@ -119,9 +110,8 @@ export const Saiun = () => (
             <th>
               <span>38歳</span>2025年
             </th>
-            <td>庚</td>
-            <td>辰</td>
             <td>比肩</td>
+            <td>戊午</td>
             <td>養</td>
             <td>戊</td>
             <td>偏印</td>
@@ -130,9 +120,8 @@ export const Saiun = () => (
             <th>
               <span>39歳</span>2026年
             </th>
-            <td>庚</td>
-            <td>辰</td>
             <td>比肩</td>
+            <td>戊午</td>
             <td>養</td>
             <td>戊</td>
             <td>偏印</td>
@@ -141,9 +130,8 @@ export const Saiun = () => (
             <th>
               <span>40歳</span>2027年
             </th>
-            <td>庚</td>
-            <td>辰</td>
             <td>比肩</td>
+            <td>戊午</td>
             <td>養</td>
             <td>戊</td>
             <td>偏印</td>

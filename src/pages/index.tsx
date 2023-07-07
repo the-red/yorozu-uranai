@@ -16,7 +16,10 @@ export default function Home() {
     <div className="header-and-body">
       <Head>
         <title>よろず占い</title>
-        <meta name="description" content="Fortune Telling" />
+        <meta
+          name="description"
+          content="西洋占星術のホロスコープ、四柱推命の命式、数秘術のパーソナルチャートを無料で作成できます。"
+        />
         <link rel="icon" href={staticPath.images.index.logo_mark_svg} />
       </Head>
 

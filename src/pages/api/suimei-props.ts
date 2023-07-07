@@ -3,10 +3,11 @@ import type { NextApiRequest, NextApiResponse } from 'next'
 import { getSekkiPair } from '../../suimei/models/SekkiUtil'
 import { Daiun, generateDaiun } from '../../suimei/models/Daiun'
 import { DateTime } from 'luxon'
+import { SekkiPair } from '../../suimei/models'
 
 type Data =
   | {
-      data: any
+      sekkiPair: SekkiPair
       daiun: Daiun[]
     }
   | { errorMessage: string }
@@ -22,7 +23,7 @@ const suimeiProps = async (req: NextApiRequest, res: NextApiResponse<Data>) => {
   const sekkiPair = await getSekkiPair(birthday)
   const daiunDetail = await generateDaiun(birthday, dateTime, req.body.gender, sekkiPair)
   res.status(200).json({
-    data: sekkiPair,
+    sekkiPair: sekkiPair,
     daiun: daiunDetail,
   })
 }

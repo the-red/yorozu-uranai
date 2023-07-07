@@ -44,7 +44,7 @@ const SuimeiPage: NextPage = () => {
       throw new Error(errorMessage)
     }
     const json = await res.json()
-    const sekkiPair = json.data as SekkiPair
+    const sekkiPair = json.sekkiPair as SekkiPair
     const kanshi = new Kanshi(suimeiSeed.dateTime, sekkiPair)
     const zoukan = new Zoukan(kanshi)
     const daiunDetail = json.daiun as Daiun[]

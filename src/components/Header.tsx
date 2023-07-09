@@ -56,31 +56,6 @@ export default function Header({ whiteIcon = false }: { whiteIcon?: boolean }) {
                 <NumerologyIcon className="icon" width={16} height={16} alt="数秘術" />
               </Link>
             </li>
-            <li>
-              <Link
-                href={pagesPath.suimei.$url({ query })}
-                data-tooltip-id="tooltip-nav"
-                data-tooltip-content="四柱推命"
-              >
-                {whiteIcon ? (
-                  <Image
-                    src={staticPath.images.index.suimei_white_svg}
-                    className="icon"
-                    width={16}
-                    height={16}
-                    alt="四柱推命"
-                  />
-                ) : (
-                  <Image
-                    src={staticPath.images.index.suimei_svg}
-                    className="icon"
-                    width={16}
-                    height={16}
-                    alt="四柱推命"
-                  />
-                )}
-              </Link>
-            </li>
           </ul>
         </nav>
       </div>

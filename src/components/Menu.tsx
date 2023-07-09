@@ -33,9 +33,6 @@ export default function Menu() {
         <li>
           <SideBarLink path={pagesPath.numerology}>数秘術</SideBarLink>
         </li>
-        <li>
-          <SideBarLink path={pagesPath.suimei}>四柱推命</SideBarLink>
-        </li>
       </ul>
     </Burger>
   )

@@ -53,16 +53,14 @@ export default function Home() {
                 </div>
               </Link>
             </div>
-            <div className="menu menu-suimei">
-              <Link href={pagesPath.suimei.$url()}>
-                <div className="menu-link">
-                  <div className="menu-link-block-1">
-                    <h2 className="menu-title">四柱推命</h2>
-                    <SuimeiIcon width={40} height={40} alt="四柱推命" />
-                    <p className="menu-text">命式を計算する</p>
-                  </div>
+            <div className="menu menu-suimei coming-soon">
+              <div className="menu-link">
+                <div className="menu-link-block-1">
+                  <h2 className="menu-title">四柱推命</h2>
+                  <SuimeiIcon width={40} height={40} alt="四柱推命" />
+                  <p className="menu-text">命式を計算する</p>
                 </div>
-              </Link>
+              </div>
             </div>
           </div>
         </div>

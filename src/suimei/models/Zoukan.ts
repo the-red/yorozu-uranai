@@ -1,12 +1,12 @@
 import type { 十干 as Jikkan, 十二支 as Junishi, Kanshi } from './Kanshi'
 import { calcTsuhensei, 通変星 } from './Tsuhensei'
 
-type 蔵干 = {
+export type 蔵干 = {
   honki: Jikkan
   chuki: Jikkan | '-'
   yoki: Jikkan
 }
-type 蔵干通変星 = {
+export type 蔵干通変星 = {
   honki: 通変星
   chuki: 通変星 | '-'
   yoki: 通変星

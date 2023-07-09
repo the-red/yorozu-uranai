@@ -6,7 +6,7 @@ import StringArrayWithBreaks from '../../components/StringArrayWithBreaks'
 import { Tooltip } from 'react-tooltip'
 
 export const Meisiki: FC<{ suimei: Suimei }> = ({ suimei }) => {
-  const { kanshi, tenkanTsuhensei, zoukan, zoukanTsuhensei, tokushusei } = suimei
+  const { kanshi, tenkanTsuhensei, zoukan, zoukanTsuhensei, tokushusei, juuniun } = suimei
 
   return (
     <section className="result meisiki">
@@ -53,10 +53,10 @@ export const Meisiki: FC<{ suimei: Suimei }> = ({ suimei }) => {
             </tr>
             <tr>
               <th>十二運</th>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td></td>
+              <td>{juuniun.nenshi}</td>
+              <td>{juuniun.gesshi}</td>
+              <td>{juuniun.nisshi}</td>
+              <td>{juuniun.jishi}</td>
             </tr>
             <tr>
               <th rowSpan={3}>

@@ -22,7 +22,7 @@ export type 十二支 = typeof 十二支list[number]
 export type 干支 = `${十干}${十二支}`
 type 五行 = typeof 五行list[number]
 
-const get六十干支 = (): 干支[] => {
+export const get六十干支 = (): 干支[] => {
   const 干支list: 干支[] = []
 
   for (let i = 0; i < 60; i++) {

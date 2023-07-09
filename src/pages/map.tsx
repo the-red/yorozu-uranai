@@ -125,6 +125,9 @@ function useDeepCompareEffectForMaps(callback: React.EffectCallback, dependencie
 }
 
 const MapPage: NextPage = () => {
+  console.info(process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY)
+  console.info(process.env.NEXT_PUBLIC_GOOGLE_GEOCODING_API_KEY)
+
   const [pinned, setPinned] = React.useState<google.maps.LatLngLiteral>()
   const [center, setCenter] = React.useState<google.maps.LatLngLiteral>()
   const [zoom, setZoom] = React.useState(14)

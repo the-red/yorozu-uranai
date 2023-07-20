@@ -58,12 +58,7 @@ export const SuimeiForm: FC<FormProps> = (props) => {
                 </li>
                 <li>
                   <label>
-                    <input
-                      {...register('gender', { required: true })}
-                      type="radio"
-                      value="woman"
-                      defaultChecked={true}
-                    />
+                    <input {...register('gender', { required: true })} type="radio" defaultChecked={true} />
                     <div>女性</div>
                   </label>
                 </li>

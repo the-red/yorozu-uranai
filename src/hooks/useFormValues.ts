@@ -44,7 +44,7 @@ export const useFormValues = (setFormValues: Dispatch<SetStateAction<FormValues 
 
         const address = await reverseGeocodeByLatLng({ lat, lng })
 
-        const gender = f.gender ?? ''
+        const gender = f.gender ?? 'woman'
 
         setFormValues({ ...f, date, time, zone, timeUnknown, lat, lng, address, gender })
       }

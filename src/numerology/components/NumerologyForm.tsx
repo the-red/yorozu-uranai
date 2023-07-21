@@ -1,9 +1,5 @@
-import Image from 'next/image'
 import { useEffect, VFC } from 'react'
 import { useForm } from 'react-hook-form'
-
-import leaf from '../../../public/images/numerology/leaf.png'
-import flower from '../../../public/images/numerology/flower.png'
 
 export type NumerologyFormValues = {
   name: string

@@ -10,7 +10,7 @@ import { roundLatLng } from '../lib/math'
 import { useRouter } from 'next/router'
 import { getCurrentLocation } from '../lib/location'
 // NOTE: Geocoding APIだけは他の画面との共通化のため、google.mapsではなく専用ライブラリを使う
-import { geocodeByAddress, reverseGeocodeByLatLng, reverseGeocodeByPlaceId } from '../lib/geocode'
+import { geocodeByAddress, reverseGeocodeByLatLng } from '../lib/geocode'
 import { staticPath } from '../lib/$path'
 import Image from 'next/image'
 
@@ -161,8 +161,7 @@ const MapPage: NextPage = () => {
 
     try {
       // ピンの位置を元に住所を検索
-      const { placeId } = event as google.maps.IconMouseEvent
-      const formattedAddress = placeId ? await reverseGeocodeByPlaceId(placeId) : await reverseGeocodeByLatLng(location)
+      const formattedAddress = await reverseGeocodeByLatLng(location)
       setInfo(formattedAddress)
     } catch (e) {
       const error = e as google.maps.MapsNetworkError

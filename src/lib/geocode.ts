@@ -39,9 +39,3 @@ export const reverseGeocodeByLatLng = async (latlng: { lat: number; lng: number 
 
   return formattedAddress ?? ''
 }
-
-export const reverseGeocodeByPlaceId = async (place_id: string): Promise<string> => {
-  const [address] = await reverseGeocode({ place_id })
-  const formattedAddress = address?.formatted_address
-  return formattedAddress ?? ''
-}

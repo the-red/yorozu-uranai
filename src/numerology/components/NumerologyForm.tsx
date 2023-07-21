@@ -1,4 +1,4 @@
-import { useEffect, VFC } from 'react'
+import { useEffect, FC } from 'react'
 import { useForm } from 'react-hook-form'
 
 export type NumerologyFormValues = {
@@ -11,7 +11,7 @@ export type NumerologyFormProps = {
   defaultValues?: Partial<NumerologyFormValues>
 }
 
-export const NumerologyForm: VFC<NumerologyFormProps> = ({ onSubmit, defaultValues }) => {
+export const NumerologyForm: FC<NumerologyFormProps> = ({ onSubmit, defaultValues }) => {
   const { register, handleSubmit, reset } = useForm<NumerologyFormValues>()
 
   // NOTE: クエリパラメータをdefaultValuesにする関係で遅延するので、

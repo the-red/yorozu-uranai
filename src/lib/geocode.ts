@@ -1,4 +1,4 @@
-import { AddressType, Client, ReverseGeocodeRequest } from '@googlemaps/google-maps-services-js'
+import { AddressType, Client, GeocodeResult, ReverseGeocodeRequest } from '@googlemaps/google-maps-services-js'
 import { roundLatLng } from './math'
 
 export const geocodeByAddress = async (address: string) => {
@@ -35,12 +35,15 @@ const reverseGeocode = async (props: ReverseGeocodeProps) => {
   return data.results
 }
 
-export const reverseGeocodeByLatLng = async (latlng: { lat: number; lng: number }): Promise<string> => {
-  const addresses = await reverseGeocode({ latlng })
-
+export const formatAddress = (addresses: GeocodeResult[]): string => {
   const localityAddress = addresses.find((_) => _.types.includes(AddressType.locality))
   const politicalAddress = addresses.find((_) => _.types.includes(AddressType.political))
   const [formattedAddress] = [localityAddress, politicalAddress].filter(Boolean).map((_) => _?.formatted_address)
-
   return formattedAddress ?? ''
+}
+
+export const reverseGeocodeByLatLng = async (latlng: { lat: number; lng: number }): Promise<string> => {
+  const addresses = await reverseGeocode({ latlng })
+  const formattedAddress = formatAddress(addresses)
+  return formattedAddress
 }

@@ -215,6 +215,7 @@ const MapPage: NextPage = () => {
             </button>
           </div>
           <button
+            type="button"
             className="current_location_button"
             onClick={async () => {
               const latlng = await getCurrentLocation()

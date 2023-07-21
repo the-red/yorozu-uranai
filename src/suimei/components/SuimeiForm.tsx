@@ -36,13 +36,13 @@ export const SuimeiForm: FC<FormProps> = (props) => {
               <div className="lat">
                 <label>
                   <span>緯度</span>
-                  <input disabled type="text" value="35.604839" {...register('lat', { valueAsNumber: true })} />
+                  <input disabled type="text" {...register('lat', { valueAsNumber: true })} />
                 </label>
               </div>
               <div className="lng">
                 <label>
                   <span>経度</span>
-                  <input disabled type="text" value="139.667717" {...register('lng', { valueAsNumber: true })} />
+                  <input disabled type="text" {...register('lng', { valueAsNumber: true })} />
                 </label>
               </div>
               <div>{watch('address')}</div>

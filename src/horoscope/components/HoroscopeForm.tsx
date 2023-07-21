@@ -41,8 +41,7 @@ export const HoroscopeForm: FC<FormProps> = (props) => {
             <label style={{ marginRight: '8px' }}>緯度</label>
             <input
               disabled
-              id="lat-input"
-              type="number"
+              type="text"
               {...register('lat', { valueAsNumber: true })}
               style={{
                 width: 110,
@@ -53,8 +52,7 @@ export const HoroscopeForm: FC<FormProps> = (props) => {
             <label style={{ marginRight: '8px' }}>経度</label>
             <input
               disabled
-              id="lng-input"
-              type="number"
+              type="text"
               {...register('lng', { valueAsNumber: true })}
               style={{
                 width: 110,

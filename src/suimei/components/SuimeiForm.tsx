@@ -1,7 +1,7 @@
 import { FC } from 'react'
 import { FormProps, useYorozuUranaiForm } from '../../hooks/useYorozuUranaiForm'
-import Link from 'next/link'
-import { pagesPath } from '../../lib/$path'
+// import Link from 'next/link'
+// import { pagesPath } from '../../lib/$path'
 
 export const SuimeiForm: FC<FormProps> = (props) => {
   const { register, hookFormHandleSubmit, watch, handleSubmit, isTimeUnknownChecked, zone, lat, lng } =
@@ -25,10 +25,9 @@ export const SuimeiForm: FC<FormProps> = (props) => {
                 </span>
               </div>
             </dd>
-            <dt>出生場所</dt>
+            {/* <dt>出生場所</dt>
             <dd className="location">
               <div style={{ textDecoration: 'underline', marginBottom: '5px' }}>
-                {/* eslint-disable-next-line react/jsx-no-target-blank */}
                 <Link href={pagesPath.map.$url({ query: { lat: lat, lng: lng } })} target="_blank" rel="opener">
                   地図から検索
                 </Link>
@@ -46,7 +45,7 @@ export const SuimeiForm: FC<FormProps> = (props) => {
                 </label>
               </div>
               <div>{watch('address')}</div>
-            </dd>
+            </dd> */}
             <dt>性別</dt>
             <dd className="gender">
               <ul>

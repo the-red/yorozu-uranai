@@ -35,7 +35,7 @@ export const reverseGeocodeByLatLng = async (latlng: { lat: number; lng: number 
 
   const localityAddress = addresses.find((_) => _.types.includes(AddressType.locality))
   const politicalAddress = addresses.find((_) => _.types.includes(AddressType.political))
-  const [formattedAddress] = [localityAddress, politicalAddress].map((_) => _?.formatted_address)
+  const [formattedAddress] = [localityAddress, politicalAddress].filter(Boolean).map((_) => _?.formatted_address)
 
   return formattedAddress ?? ''
 }

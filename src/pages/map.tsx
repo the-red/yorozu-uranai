@@ -203,7 +203,7 @@ const MapPage: NextPage = () => {
                   setZoom(17)
                 } catch (e) {
                   const error = e as google.maps.MapsNetworkError
-                  if (error.code === 'ZERO_RESULTS') {
+                  if (error.code === 'ZERO_RESULTS' || error.message === 'No result') {
                     setInfo('該当の住所が見つかりませんでした。')
                   } else {
                     setInfo(error.message)

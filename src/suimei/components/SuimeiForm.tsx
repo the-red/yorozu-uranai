@@ -27,6 +27,12 @@ export const SuimeiForm: FC<FormProps> = (props) => {
             </dd>
             <dt>出生場所</dt>
             <dd className="location">
+              <div style={{ textDecoration: 'underline', marginBottom: '5px' }}>
+                {/* eslint-disable-next-line react/jsx-no-target-blank */}
+                <Link href={pagesPath.map.$url({ query: { lat: lat, lng: lng } })} target="_blank" rel="opener">
+                  地図から検索
+                </Link>
+              </div>
               <div className="lat">
                 <label>
                   <span>緯度</span>
@@ -40,12 +46,6 @@ export const SuimeiForm: FC<FormProps> = (props) => {
                 </label>
               </div>
               <div>{watch('address')}</div>
-              <div style={{ textDecoration: 'underline' }}>
-                {/* eslint-disable-next-line react/jsx-no-target-blank */}
-                <Link href={pagesPath.map.$url({ query: { lat: lat, lng: lng } })} target="_blank" rel="opener">
-                  緯度経度を検索
-                </Link>
-              </div>
             </dd>
             <dt>性別</dt>
             <dd className="gender">

@@ -137,10 +137,9 @@ const MapPage: NextPage = () => {
     setInfo(address)
   }
 
-  const setMapLocation = async (latlng: LatLng) => {
+  const setMapLocation = (latlng: LatLng) => {
     setPinned(latlng)
     setCenter(latlng)
-    await updateAddress(latlng)
   }
 
   const router = useRouter()
@@ -152,6 +151,7 @@ const MapPage: NextPage = () => {
           : TOKYO_STATION
 
       setMapLocation(defaultLocation)
+      updateAddress(defaultLocation)
     }
   }, [router])
   if (!pinned || !center) return <div>loading...</div>
@@ -216,8 +216,9 @@ const MapPage: NextPage = () => {
           <button
             className="current_location_button"
             onClick={async () => {
-              const { lat, lng } = await getCurrentLocation()
-              setMapLocation({ lat, lng })
+              const latlng = await getCurrentLocation()
+              setMapLocation(latlng)
+              await updateAddress(latlng)
             }}
           >
             <Image src={staticPath.images.map.current_location_svg} alt="現在地取得アイコン" width={24} height={24} />

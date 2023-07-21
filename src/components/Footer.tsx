@@ -4,7 +4,7 @@ export default function Footer() {
       <p className="copyright">
         <small>
           <a href="https://www.sonicgarden.jp" target="_blank" rel="noopener noreferrer">
-            Copyright © SonicGarden All rights reserved.
+            © SonicGarden Inc. All rights reserved.
           </a>
         </small>
       </p>

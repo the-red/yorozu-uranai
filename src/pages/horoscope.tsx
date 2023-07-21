@@ -46,6 +46,7 @@ function HoroscopePage() {
       if (!res.ok) {
         const errorMessage = await res.text()
         setErrorMessage(errorMessage)
+        return
       }
       const json = await res.json()
       const horoscopeProps = json.data as HoroscopeProps

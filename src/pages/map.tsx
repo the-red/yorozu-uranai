@@ -4,6 +4,7 @@ import * as React from 'react'
 import { Wrapper, Status } from '@googlemaps/react-wrapper'
 import { createCustomEqual } from 'fast-equals'
 import { isLatLngLiteral } from '@googlemaps/typescript-guards'
+import { LatLngLiteral } from '@googlemaps/google-maps-services-js'
 import { NextPage } from 'next'
 import { TOKYO_STATION } from '../lib/location'
 import { roundLatLng } from '../lib/math'
@@ -14,7 +15,7 @@ import { geocodeByAddress, reverseGeocodeByLatLng } from '../lib/geocode'
 import { staticPath } from '../lib/$path'
 import Image from 'next/image'
 
-type LatLng = { lat: number; lng: number }
+type LatLng = LatLngLiteral
 export type OptionalQuery = Partial<LatLng>
 
 const render = (status: Status) => {
@@ -126,8 +127,8 @@ function useDeepCompareEffectForMaps(callback: React.EffectCallback, dependencie
 }
 
 const MapPage: NextPage = () => {
-  const [pinned, setPinned] = React.useState<google.maps.LatLngLiteral>()
-  const [center, setCenter] = React.useState<google.maps.LatLngLiteral>()
+  const [pinned, setPinned] = React.useState<LatLng>()
+  const [center, setCenter] = React.useState<LatLng>()
   const [zoom, setZoom] = React.useState(14)
   const [info, setInfo] = React.useState<string>('')
   const addressInput = React.useRef<HTMLInputElement>(null)

@@ -30,7 +30,7 @@ export const SuimeiForm: FC<FormProps> = (props) => {
               <div style={{ textDecoration: 'underline', marginBottom: '5px' }}>
                 {/* eslint-disable-next-line react/jsx-no-target-blank */}
                 <Link href={pagesPath.map.$url({ query: { lat: lat, lng: lng } })} target="_blank" rel="opener">
-                  位置情報を検索
+                  地図から検索
                 </Link>
               </div>
               <div className="lat">

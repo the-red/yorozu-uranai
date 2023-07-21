@@ -35,7 +35,7 @@ export const HoroscopeForm: FC<FormProps> = (props) => {
             <div style={{ textDecoration: 'underline', marginBottom: '5px' }}>
               {/* eslint-disable-next-line react/jsx-no-target-blank */}
               <Link href={pagesPath.map.$url({ query: { lat: lat, lng: lng } })} target="_blank" rel="opener">
-                位置情報を検索
+                地図から検索
               </Link>
             </div>
             <label style={{ marginRight: '8px' }}>緯度</label>

@@ -218,9 +218,14 @@ const MapPage: NextPage = () => {
             type="button"
             className="current_location_button"
             onClick={async () => {
-              const latlng = await getCurrentLocation()
-              setMapLocation(latlng)
-              await updateAddress(latlng)
+              try {
+                const latlng = await getCurrentLocation()
+                setMapLocation(latlng)
+                await updateAddress(latlng)
+              } catch (e) {
+                const error = e as Error
+                alert(error.message)
+              }
             }}
           >
             <Image src={staticPath.images.map.current_location_svg} alt="現在地取得アイコン" width={24} height={24} />

@@ -11,10 +11,15 @@ export const geocodeByAddress = async (address: string) => {
   })
   const [result] = data.results
 
-  return {
-    formattedAddress: result.formatted_address,
+  const latlng = {
     lat: roundLatLng(result.geometry.location.lat),
     lng: roundLatLng(result.geometry.location.lng),
+  }
+  const formattedAddress = await reverseGeocodeByLatLng(latlng)
+
+  return {
+    formattedAddress,
+    ...latlng,
   }
 }
 

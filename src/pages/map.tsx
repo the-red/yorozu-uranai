@@ -14,7 +14,8 @@ import { geocodeByAddress, reverseGeocodeByLatLng } from '../lib/geocode'
 import { staticPath } from '../lib/$path'
 import Image from 'next/image'
 
-export type OptionalQuery = { lat?: number; lng?: number }
+type LatLng = { lat: number; lng: number }
+export type OptionalQuery = Partial<LatLng>
 
 const render = (status: Status) => {
   return <h1>{status}</h1>
@@ -131,11 +132,15 @@ const MapPage: NextPage = () => {
   const [info, setInfo] = React.useState<string>('')
   const addressInput = React.useRef<HTMLInputElement>(null)
 
-  const setMapLocation = async ({ lat, lng }: { lat: number; lng: number }) => {
-    setPinned({ lat, lng })
-    setCenter({ lat, lng })
-    const address = await reverseGeocodeByLatLng({ lat, lng })
+  const updateAddress = async (latlng: LatLng) => {
+    const address = await reverseGeocodeByLatLng(latlng)
     setInfo(address)
+  }
+
+  const setMapLocation = async (latlng: LatLng) => {
+    setPinned(latlng)
+    setCenter(latlng)
+    await updateAddress(latlng)
   }
 
   const router = useRouter()

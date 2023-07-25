@@ -14,6 +14,7 @@ import { SuimeiContent } from '../suimei/components/SuimeiContent'
 import { useFormValues } from '../hooks/useFormValues'
 import { FormProps } from '../hooks/useYorozuUranaiForm'
 import { Juuniun } from '../suimei/models/Juuniun'
+import { generateSaiun } from '../suimei/models/Saiun'
 
 export type OptionalQuery = Query
 
@@ -48,6 +49,7 @@ const SuimeiPage: NextPage = () => {
     const kanshi = new Kanshi(suimeiSeed.dateTime, sekkiPair)
     const zoukan = new Zoukan(kanshi)
     const daiunDetail = json.daiun as Daiun[]
+    const saiun = generateSaiun(kanshi, suimeiSeed.dateTime, sekkiPair)
 
     return {
       sekki: sekkiPair.today,
@@ -58,6 +60,7 @@ const SuimeiPage: NextPage = () => {
       tokushusei: tokushusei(kanshi),
       juuniun: new Juuniun(kanshi),
       daiun: daiunDetail,
+      saiun,
     }
   })
 

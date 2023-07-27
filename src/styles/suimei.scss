@@ -317,6 +317,9 @@ $sp_width: 375;
     &.meisiki {
       table {
         font-size: 14px;
+        tbody tr td {
+          @include table_data_width(343, 74, 4);
+        }
       }
     }
     // 五行バランス

@@ -343,7 +343,7 @@ $sp_width: 375;
           td {
             font-size: 12px;
             font-family: $text_regular;
-            @include table_data_width(343, 45, 6);
+            @include table_data_width(343, 45, 5);
           }
         }
       }
@@ -577,6 +577,7 @@ $sp_width: 375;
             td {
               font-size: 14px;
               width: 139.5px;
+              @include table_data_width(980, 143, 5);
             }
           }
         }

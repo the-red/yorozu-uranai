@@ -10,6 +10,7 @@ export const geocodeByAddress = async (address: string) => {
     },
   })
   const [result] = data.results
+  if (!result) throw new Error('No result')
 
   const latlng = {
     lat: roundLatLng(result.geometry.location.lat),

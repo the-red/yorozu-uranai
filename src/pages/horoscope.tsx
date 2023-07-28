@@ -18,7 +18,7 @@ function HoroscopePage() {
   const router = useRouter()
   const [horoscope, setHoroscope] = useState<Horoscope>()
   const [formValues, setFormValues] = useState<FormValues>()
-  const [errorMessage, setErrorMessage] = useState<string>()
+  const [error, setError] = useState<string>()
   useFormValues(setFormValues, router)
 
   useEffect(() => {
@@ -44,8 +44,24 @@ function HoroscopePage() {
         body: JSON.stringify(horoscopeSeed),
       })
       if (!res.ok) {
-        const errorMessage = await res.text()
-        setErrorMessage(errorMessage)
+        const errorText = await res.text()
+        try {
+          const { errorMessage } = JSON.parse(errorText)
+          let message = `ホロスコープを作成できませんでした。入力値が不正です。\n\n${errorMessage}`
+          switch (errorMessage) {
+            case 'Invalid birthday':
+              message += '\n生年月日を修正してください。'
+              break
+            case `Can't calculate houses.`:
+              message += '\n出生場所を修正してください。'
+              break
+          }
+          alert(message)
+        } catch (e) {
+          alert(errorText)
+        } finally {
+          return
+        }
       }
       const json = await res.json()
       const horoscopeProps = json.data as HoroscopeProps
@@ -54,7 +70,8 @@ function HoroscopePage() {
     load()
   }, [formValues])
 
-  if (errorMessage) return <div>failed to load: {errorMessage}</div>
+  // TODO: useEffect内のalertよりも、errorの内容をtoastで表示したい
+  if (error) return <div>failed to load: {error}</div>
   // TODO: loading時にヘッダー・タイトル・背景色くらいは出したい
   if (!horoscope) return <div>loading...</div>
 

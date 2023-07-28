@@ -32,10 +32,10 @@ export const eclipticPosition = (julday_ut: number, planet: PlanetName): Promise
       swisseph.SEFLG_SPEED,
       (result) => {
         if ('error' in result) {
-          return reject(result.error)
+          return reject(new Error(result.error))
         }
         if (!('latitude' in result)) {
-          return reject('ERROR!' + JSON.stringify(result))
+          return reject(new Error('ERROR!' + JSON.stringify(result)))
         }
 
         // 処理系が変わると少し誤差が出るので丸めておく
@@ -66,7 +66,7 @@ export const calcHouses = (julday_ut: number, geolat: number, geolon: number, hs
   new Promise((resolve, reject) =>
     swisseph.swe_houses(julday_ut, geolat, geolon, hsys, (result) => {
       if ('error' in result) {
-        return reject(result.error)
+        return reject(new Error(result.error))
       }
 
       // 処理系が変わると少し誤差が出るので丸めておく

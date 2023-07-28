@@ -1,4 +1,4 @@
-import { getHoroscopeInstance } from '../../src/horoscope/models/horoscopeFactory'
+import { getHoroscopeInstance, getHoroscopeProps } from '../../src/horoscope/models/horoscopeFactory'
 
 describe('Horoscope', () => {
   const funadyBirthday = new Date('1987-09-08T08:53:00+09:00')
@@ -83,6 +83,21 @@ describe('Horoscope', () => {
         munkaseyCoAscendant: 206.8052,
         munkaseyPolarAscendant: 57.939031,
       })
+    })
+  })
+
+  describe('不正値のテスト', () => {
+    it('緯度の不正値：エラー', async () => {
+      const invalidLatitude = 100
+      await expect(() => getHoroscopeProps(funadyBirthday, invalidLatitude, funadyBirthLon)).rejects.toThrow(
+        `Can't calculate houses.`
+      )
+    })
+
+    it('経度の不正値：一般角として計算', async () => {
+      const a = await getHoroscopeProps(funadyBirthday, funadyBirthLat, 460)
+      const b = await getHoroscopeProps(funadyBirthday, funadyBirthLat, 100)
+      expect(a).toStrictEqual(b)
     })
   })
 })

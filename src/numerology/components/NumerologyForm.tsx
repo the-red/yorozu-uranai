@@ -1,9 +1,5 @@
-import Image from 'next/image'
-import { useEffect, VFC } from 'react'
+import { useEffect, FC } from 'react'
 import { useForm } from 'react-hook-form'
-
-import leaf from '../../../public/images/numerology/leaf.png'
-import flower from '../../../public/images/numerology/flower.png'
 
 export type NumerologyFormValues = {
   name: string
@@ -15,8 +11,13 @@ export type NumerologyFormProps = {
   defaultValues?: Partial<NumerologyFormValues>
 }
 
-export const NumerologyForm: VFC<NumerologyFormProps> = ({ onSubmit, defaultValues }) => {
-  const { register, handleSubmit, reset } = useForm<NumerologyFormValues>()
+export const NumerologyForm: FC<NumerologyFormProps> = ({ onSubmit, defaultValues }) => {
+  const {
+    register,
+    formState: { errors },
+    handleSubmit,
+    reset,
+  } = useForm<NumerologyFormValues>()
 
   // NOTE: クエリパラメータをdefaultValuesにする関係で遅延するので、
   // useForm({ defaultValues })だと値が入らないため、reset APIを使う
@@ -35,7 +36,14 @@ export const NumerologyForm: VFC<NumerologyFormProps> = ({ onSubmit, defaultValu
     <div style={{ display: 'flex', marginBottom: '32px' }}>
       <label style={{ width: '180px' }}>名前（ローマ字）</label>
       <div style={{ width: '200px' }}>
-        <input type="text" required style={{ width: '100%' }} {...register('name')} />
+        <input type="text" required style={{ width: '100%' }} {...register('name', { pattern: /^[a-z ]+$/i })} />
+        {errors.name && (
+          <span className="error">
+            英字と半角スペースのみ
+            <br />
+            入力可能です。
+          </span>
+        )}
       </div>
     </div>
   )

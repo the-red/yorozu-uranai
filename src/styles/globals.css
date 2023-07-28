@@ -208,15 +208,9 @@ Note: Beware of modifying this element as it can break the animations - you shou
   font-family: 'Noto Sans JP Regular';
   padding-bottom: 32px;
 }
-.contact {
-  text-align: center;
-}
 .copyright {
   width: fit-content;
-  margin: 0 auto;
-}
-.twitter-logo {
-  fill: #1d9bf0;
+  margin: 64px auto;
 }
 .image {
   object-fit: contain;

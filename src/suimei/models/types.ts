@@ -1,4 +1,5 @@
-import { Daiun } from './Daiun'
+import type { Daiun } from './Daiun'
+import type { Juuniun } from './Juuniun'
 import type { Kanshi } from './Kanshi'
 import { Saiun } from './Saiun'
 import type { 節 } from './Sekki'
@@ -13,6 +14,7 @@ export type Suimei = {
   zoukan: Zoukan
   zoukanTsuhensei: ZoukanTsuhensei
   tokushusei: Tokushusei
+  juuniun: Juuniun
   daiun: Daiun[]
   saiun: Saiun[]
 }

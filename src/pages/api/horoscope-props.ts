@@ -16,8 +16,12 @@ const horoscopeProps = async (req: NextApiRequest, res: NextApiResponse<Data>) =
   const lng = Number(req.body.lng)
   const hsys = req.body.hsys as string
 
-  const horoscopeProps = await getHoroscopeProps(birthday, lat, lng, hsys)
-  res.status(200).json({ data: horoscopeProps })
+  try {
+    const horoscopeProps = await getHoroscopeProps(birthday, lat, lng, hsys)
+    res.status(200).json({ data: horoscopeProps })
+  } catch (e) {
+    res.status(400).json({ errorMessage: (e as Error).message })
+  }
 }
 
 export default horoscopeProps

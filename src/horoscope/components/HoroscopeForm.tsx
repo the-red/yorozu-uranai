@@ -35,8 +35,7 @@ export const HoroscopeForm: FC<FormProps> = (props) => {
             <label style={{ marginRight: '8px' }}>緯度</label>
             <input
               disabled
-              id="lat-input"
-              type="number"
+              type="text"
               {...register('lat', { valueAsNumber: true })}
               style={{
                 width: 110,
@@ -47,21 +46,20 @@ export const HoroscopeForm: FC<FormProps> = (props) => {
             <label style={{ marginRight: '8px' }}>経度</label>
             <input
               disabled
-              id="lng-input"
-              type="number"
+              type="text"
               {...register('lng', { valueAsNumber: true })}
               style={{
                 width: 110,
               }}
             />
           </div>
-          <div>{watch('address')}</div>
-          <div style={{ textDecoration: 'underline' }}>
+          <div style={{ textDecoration: 'underline', marginBottom: '5px' }}>
             {/* eslint-disable-next-line react/jsx-no-target-blank */}
             <Link href={pagesPath.map.$url({ query: { lat: lat, lng: lng } })} target="_blank" rel="opener">
-              緯度経度を検索
+              地図から検索
             </Link>
           </div>
+          <div>{watch('address')}</div>
         </div>
       </div>
 

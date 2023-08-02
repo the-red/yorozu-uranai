@@ -23,8 +23,8 @@ export const generateSaiun = (kanshi: Kanshi, datetime: DateTime, sekki: SekkiPa
   const nikkan = kanshi.日干
   const birthYear = datetime.year
   // 算出したい年を作成
-  // 当年から前後5年ずつ、算出するので最初の年は当年-5年
-  const saiun1stYear = thisYear - 5
+  // (当年-5年 or 未来の誕生年)を起点に算出する
+  const saiun1stYear = Math.max(thisYear - 5, birthYear)
 
   const saiun: Saiun[] = []
 
@@ -33,8 +33,8 @@ export const generateSaiun = (kanshi: Kanshi, datetime: DateTime, sekki: SekkiPa
     const saiunTargetYear = saiun1stYear + i
     const age = saiunTargetYear - birthYear
 
-    // 昨年以前のマイナス年齢は表示しない
-    if (age < 0 && saiunTargetYear < thisYear) {
+    // マイナス年齢は表示しない
+    if (age < 0) {
       continue
     }
 

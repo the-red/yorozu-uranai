@@ -1,4 +1,3 @@
-import { getSekkiPair, getSetsuIri } from './SekkiUtil'
 import { Kanshi, SekkiPair } from './Kanshi'
 import { DateTime } from 'luxon'
 import { 十干, 干支, 十二支 } from './Kanshi'

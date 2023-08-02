@@ -1,10 +1,13 @@
 import Image from 'next/image'
-import { staticPath } from '../../lib/$path'
+import { pagesPath, staticPath } from '../../lib/$path'
 import { Saiun } from '../models/Saiun'
+import OpenIcon from '../../../public/images/index/open_in_new.svg'
+import Link from 'next/link'
+import { Query } from '../../lib/params'
 
-type Props = { saiun: Saiun[] }
+type Props = { saiun: Saiun[]; query?: Query }
 
-export const SaiunContent = ({ saiun }: Props) => (
+export const SaiunContent = ({ saiun, query }: Props) => (
   <section className="result saiun">
     <div className="inner">
       <h3>
@@ -13,6 +16,14 @@ export const SaiunContent = ({ saiun }: Props) => (
         </div>
         <div>歳運</div>
       </h3>
+      {query && (
+        <div style={{ textAlign: 'right', textDecoration: 'underline', marginBottom: '5px' }}>
+          <Link href={pagesPath.suimei.saiun.$url({ query })} target="_blank">
+            歳運表を表示する
+            <OpenIcon style={{ verticalAlign: 'text-bottom' }} height={20} width={20} />
+          </Link>
+        </div>
+      )}
       <table>
         <thead>
           <tr>

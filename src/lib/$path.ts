@@ -59,6 +59,7 @@ export const staticPath = {
       logo_svg: '/images/index/logo.svg',
       logo_mark_svg: '/images/index/logo_mark.svg',
       numerology_svg: '/images/index/numerology.svg',
+      open_in_new_svg: '/images/index/open_in_new.svg',
       suimei_svg: '/images/index/suimei.svg',
       suimei_white_svg: '/images/index/suimei_white.svg'
     },

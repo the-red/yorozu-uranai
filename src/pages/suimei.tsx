@@ -88,7 +88,7 @@ const SuimeiPage: NextPage = () => {
       <div>
         <Menu />
         <Header />
-        <SuimeiContent suimei={suimei} onSubmit={handleSubmit} defaultValues={formValues} />
+        <SuimeiContent suimei={suimei} query={router.query} onSubmit={handleSubmit} defaultValues={formValues} />
         <Footer />
       </div>
     </div>

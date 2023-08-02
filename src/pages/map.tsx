@@ -4,17 +4,19 @@ import * as React from 'react'
 import { Wrapper, Status } from '@googlemaps/react-wrapper'
 import { createCustomEqual } from 'fast-equals'
 import { isLatLngLiteral } from '@googlemaps/typescript-guards'
+import { LatLngLiteral } from '@googlemaps/google-maps-services-js'
 import { NextPage } from 'next'
 import { TOKYO_STATION } from '../lib/location'
 import { roundLatLng } from '../lib/math'
 import { useRouter } from 'next/router'
 import { getCurrentLocation } from '../lib/location'
 // NOTE: Geocoding APIだけは他の画面との共通化のため、google.mapsではなく専用ライブラリを使う
-import { geocodeByAddress, reverseGeocodeByLatLng, reverseGeocodeByPlaceId } from '../lib/geocode'
+import { geocodeByAddress, reverseGeocodeByLatLng } from '../lib/geocode'
 import { staticPath } from '../lib/$path'
 import Image from 'next/image'
 
-export type OptionalQuery = { lat?: number; lng?: number }
+type LatLng = LatLngLiteral
+export type OptionalQuery = Partial<LatLng>
 
 const render = (status: Status) => {
   return <h1>{status}</h1>
@@ -125,17 +127,20 @@ function useDeepCompareEffectForMaps(callback: React.EffectCallback, dependencie
 }
 
 const MapPage: NextPage = () => {
-  const [pinned, setPinned] = React.useState<google.maps.LatLngLiteral>()
-  const [center, setCenter] = React.useState<google.maps.LatLngLiteral>()
+  const [pinned, setPinned] = React.useState<LatLng>()
+  const [center, setCenter] = React.useState<LatLng>()
   const [zoom, setZoom] = React.useState(14)
   const [info, setInfo] = React.useState<string>('')
   const addressInput = React.useRef<HTMLInputElement>(null)
 
-  const setMapLocation = async ({ lat, lng }: { lat: number; lng: number }) => {
-    setPinned({ lat, lng })
-    setCenter({ lat, lng })
-    const address = await reverseGeocodeByLatLng({ lat, lng })
+  const updateAddress = async (latlng: LatLng) => {
+    const address = await reverseGeocodeByLatLng(latlng)
     setInfo(address)
+  }
+
+  const setMapLocation = (latlng: LatLng) => {
+    setPinned(latlng)
+    setCenter(latlng)
   }
 
   const router = useRouter()
@@ -147,6 +152,7 @@ const MapPage: NextPage = () => {
           : TOKYO_STATION
 
       setMapLocation(defaultLocation)
+      updateAddress(defaultLocation)
     }
   }, [router])
   if (!pinned || !center) return <div>loading...</div>
@@ -161,8 +167,7 @@ const MapPage: NextPage = () => {
 
     try {
       // ピンの位置を元に住所を検索
-      const { placeId } = event as google.maps.IconMouseEvent
-      const formattedAddress = placeId ? await reverseGeocodeByPlaceId(placeId) : await reverseGeocodeByLatLng(location)
+      const formattedAddress = await reverseGeocodeByLatLng(location)
       setInfo(formattedAddress)
     } catch (e) {
       const error = e as google.maps.MapsNetworkError
@@ -198,7 +203,7 @@ const MapPage: NextPage = () => {
                   setZoom(17)
                 } catch (e) {
                   const error = e as google.maps.MapsNetworkError
-                  if (error.code === 'ZERO_RESULTS') {
+                  if (error.code === 'ZERO_RESULTS' || error.message === 'No result') {
                     setInfo('該当の住所が見つかりませんでした。')
                   } else {
                     setInfo(error.message)
@@ -210,10 +215,17 @@ const MapPage: NextPage = () => {
             </button>
           </div>
           <button
+            type="button"
             className="current_location_button"
             onClick={async () => {
-              const { lat, lng } = await getCurrentLocation()
-              setMapLocation({ lat, lng })
+              try {
+                const latlng = await getCurrentLocation()
+                setMapLocation(latlng)
+                await updateAddress(latlng)
+              } catch (e) {
+                const error = e as Error
+                alert(error.message)
+              }
             }}
           >
             <Image src={staticPath.images.map.current_location_svg} alt="現在地取得アイコン" width={24} height={24} />

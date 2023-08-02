@@ -10,7 +10,7 @@ export const TOKYO_STATION = {
 export const getCurrentLocation = (): Promise<{ lat: number; lng: number }> =>
   new Promise((resolve, reject) => {
     if (!navigator.geolocation) {
-      return reject()
+      return reject(new Error('原因不明のエラーが発生しました。'))
     }
 
     navigator.geolocation.getCurrentPosition(
@@ -32,7 +32,7 @@ export const getCurrentLocation = (): Promise<{ lat: number; lng: number }> =>
         ]
         const errorNo = error.code
         const errorMessage = '[エラー番号: ' + errorNo + ']\n' + errorInfo[errorNo]
-        return reject(errorMessage)
+        return reject(new Error(errorMessage))
       },
       {
         enableHighAccuracy: false,

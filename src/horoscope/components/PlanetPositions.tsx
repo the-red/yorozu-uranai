@@ -10,7 +10,7 @@ export default function PlanetPositions({ horoscope }: Props) {
       <div className="list">Planet Positions</div>
       <table style={{ width: '100%' }}>
         <tbody>
-          {Object?.values(horoscope.planets).map((planet, i) => (
+          {Object.values(horoscope.planets).map((planet, i) => (
             <tr key={i}>
               <td>{PLANET_NAMES_JA[planet.name]}</td>
               <td>{planet.sign}</td>

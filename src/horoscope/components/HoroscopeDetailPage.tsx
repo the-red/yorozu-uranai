@@ -44,7 +44,7 @@ const HoroscopeDetailPage: FC<Props> = ({ horoscope, orb, onSubmit, defaultValue
       <div className="content-row">
         <div className="content">
           <div className="content-inner">
-            <SignTable planets={Object?.values(horoscope.planets)} />
+            <SignTable planets={Object.values(horoscope.planets)} />
           </div>
         </div>
         <div className="content">

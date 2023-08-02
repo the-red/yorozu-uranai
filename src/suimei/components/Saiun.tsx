@@ -1,7 +1,10 @@
 import Image from 'next/image'
 import { staticPath } from '../../lib/$path'
+import { Saiun } from '../models/Saiun'
 
-export const Saiun = () => (
+type Props = { saiun: Saiun[] }
+
+export const SaiunContent = ({ saiun }: Props) => (
   <section className="result saiun">
     <div className="inner">
       <h3>
@@ -26,7 +29,22 @@ export const Saiun = () => (
           </tr>
         </thead>
         <tbody>
-          <tr>
+          {saiun.map((s: Saiun, key) => {
+            return (
+              <tr key={key} className={s.thisYear ? 'current' : ''}>
+                <th>
+                  <span>{s.age}歳</span>
+                  {s.year}年
+                </th>
+                <td>{s.tenkanTsuhensei}</td>
+                <td>{s.yearKanshi}</td>
+                <td>{s.zoukan}</td>
+                <td>{s.zoukanTsuhensei}</td>
+                <td>{s.juuniun}</td>
+              </tr>
+            )
+          })}
+          {/* <tr>
             <th>
               <span>30歳</span>2017年
             </th>
@@ -35,107 +53,7 @@ export const Saiun = () => (
             <td>養</td>
             <td>戊</td>
             <td>偏印</td>
-          </tr>
-          <tr>
-            <th>
-              <span>31歳</span>2018年
-            </th>
-            <td>比肩</td>
-            <td>戊午</td>
-            <td>養</td>
-            <td>戊</td>
-            <td>偏印</td>
-          </tr>
-          <tr>
-            <th>
-              <span>32歳</span>2019年
-            </th>
-            <td>比肩</td>
-            <td>戊午</td>
-            <td>養</td>
-            <td>戊</td>
-            <td>偏印</td>
-          </tr>
-          <tr>
-            <th>
-              <span>33歳</span>2020年
-            </th>
-            <td>比肩</td>
-            <td>戊午</td>
-            <td>養</td>
-            <td>戊</td>
-            <td>偏印</td>
-          </tr>
-          <tr>
-            <th>
-              <span>34歳</span>2021年
-            </th>
-            <td>比肩</td>
-            <td>戊午</td>
-            <td>養</td>
-            <td>戊</td>
-            <td>偏印</td>
-          </tr>
-          <tr className="current">
-            <th>
-              <span>35歳</span>2022年
-            </th>
-            <td>比肩</td>
-            <td>戊午</td>
-            <td>養</td>
-            <td>戊</td>
-            <td>偏印</td>
-          </tr>
-          <tr>
-            <th>
-              <span>36歳</span>2023年
-            </th>
-            <td>比肩</td>
-            <td>戊午</td>
-            <td>養</td>
-            <td>戊</td>
-            <td>偏印</td>
-          </tr>
-          <tr>
-            <th>
-              <span>37歳</span>2024年
-            </th>
-            <td>比肩</td>
-            <td>戊午</td>
-            <td>養</td>
-            <td>戊</td>
-            <td>偏印</td>
-          </tr>
-          <tr>
-            <th>
-              <span>38歳</span>2025年
-            </th>
-            <td>比肩</td>
-            <td>戊午</td>
-            <td>養</td>
-            <td>戊</td>
-            <td>偏印</td>
-          </tr>
-          <tr>
-            <th>
-              <span>39歳</span>2026年
-            </th>
-            <td>比肩</td>
-            <td>戊午</td>
-            <td>養</td>
-            <td>戊</td>
-            <td>偏印</td>
-          </tr>
-          <tr>
-            <th>
-              <span>40歳</span>2027年
-            </th>
-            <td>比肩</td>
-            <td>戊午</td>
-            <td>養</td>
-            <td>戊</td>
-            <td>偏印</td>
-          </tr>
+          </tr> */}
         </tbody>
       </table>
     </div>

@@ -31,6 +31,13 @@ export const generateSaiun = (kanshi: Kanshi, datetime: DateTime, sekki: SekkiPa
   for (let i = 0; i < 10; i++) {
     // 誕生日ではないので12/31の年干支を取ることにする
     const saiunTargetYear = saiun1stYear + i
+    const age = saiunTargetYear - birthYear
+
+    // 昨年以前のマイナス年齢は表示しない
+    if (age < 0 && saiunTargetYear < thisYear) {
+      continue
+    }
+
     const saiunTargetDate = DateTime.fromISO(`${saiunTargetYear}-12-31`)
     const yearKanshi = new Kanshi(saiunTargetDate, sekki)
     const tenkan = yearKanshi.年干
@@ -38,7 +45,7 @@ export const generateSaiun = (kanshi: Kanshi, datetime: DateTime, sekki: SekkiPa
     const zoukanHonki = calcZoukan(tishi).honki
 
     const saiunDetail: Saiun = {
-      age: saiunTargetYear - birthYear,
+      age,
       year: saiunTargetYear,
       yearKanshi: yearKanshi.年柱,
       tenkan,

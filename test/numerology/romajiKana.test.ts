@@ -72,3 +72,16 @@ describe('convertHiraganaToRomagi', () => {
     })
   })
 })
+
+describe('空白文字はすべて半角に統一', () => {
+  it('全角スペース', () => {
+    const hiraganaString = 'やまだ　たろう'
+    const romajiString = 'YAMADA TAROU'
+    expect(convertKanaToRomaji(hiraganaString)).toEqual(romajiString)
+  })
+  it('タブ文字', () => {
+    const hiraganaString = 'やまだ\tはなこ'
+    const romajiString = 'YAMADA HANAKO'
+    expect(convertKanaToRomaji(hiraganaString)).toEqual(romajiString)
+  })
+})

@@ -47,7 +47,16 @@ const SuimeiSaiunPage: NextPage = () => {
       const json = await res.json()
       const sekkiPair = json.sekkiPair as SekkiPair
       const kanshi = new Kanshi(suimeiSeed.dateTime, sekkiPair)
-      const saiun = generateSaiun(kanshi, suimeiSeed.dateTime, sekkiPair, DateTime.now().year)
+
+      const thisYear = DateTime.now().year
+      const saiun = generateSaiun(
+        kanshi,
+        suimeiSeed.dateTime,
+        sekkiPair,
+        thisYear,
+        suimeiSeed.dateTime.year,
+        suimeiSeed.dateTime.year + 120
+      )
 
       setSaiun(saiun)
     }

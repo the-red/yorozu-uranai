@@ -18,16 +18,19 @@ export type Saiun = {
   juuniun: Juniun
 }
 
-export const generateSaiun = (kanshi: Kanshi, datetime: DateTime, sekki: SekkiPair, thisYear: number) => {
+export const generateSaiun = (
+  kanshi: Kanshi,
+  datetime: DateTime,
+  sekki: SekkiPair,
+  thisYear: number,
+  saiun1stYear: number,
+  saiunLastYear: number
+) => {
   const nikkan = kanshi.日干
   const birthYear = datetime.year
-  // 算出したい年を作成
-  // (当年-5年 or 未来の誕生年)を起点に算出する
-  const saiun1stYear = Math.max(thisYear - 5, birthYear)
-
   const saiun: Saiun[] = []
 
-  for (let i = 0; i < 16; i++) {
+  for (let i = 0; ; i++) {
     // 誕生日ではないので12/31の年干支を取ることにする
     const saiunTargetYear = saiun1stYear + i
     const age = saiunTargetYear - birthYear
@@ -56,6 +59,10 @@ export const generateSaiun = (kanshi: Kanshi, datetime: DateTime, sekki: SekkiPa
       juuniun: juuniun(nikkan, tishi),
     }
     saiun.push(saiunDetail)
+
+    if (saiunTargetYear === saiunLastYear) {
+      break
+    }
   }
   return saiun
 }

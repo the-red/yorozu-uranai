@@ -20,7 +20,7 @@ export const SaiunContent = ({ saiun }: Props) => (
             <th>
               天干<br className="header_br_sp"></br>通変星
             </th>
-            <th>大運</th>
+            <th>歳運</th>
             <th>蔵干</th>
             <th>
               蔵干<br className="header_br_sp"></br>通変星

@@ -62,10 +62,9 @@ export const generateDaiun = async (date: Date, datetime: DateTime, gender: Gend
   // 月柱の干支の順行 / 逆行早見表でのindex
   const gecchuIndex = forward ? junkou.indexOf(kanshi.月柱) : gyakkou.indexOf(kanshi.月柱)
 
-  // 8列分の箱を作る
   const daiun: Daiun[] = []
 
-  for (let i = 0; i < 8; i++) {
+  for (let i = 0; ; i++) {
     const kanshiIndex = gecchuIndex + i < 60 ? gecchuIndex + i : gecchuIndex + i - 60
     const daiunKanshi = forward ? junkou[kanshiIndex] : gyakkou[kanshiIndex]
     const tenkan = daiunKanshi.charAt(0) as 十干
@@ -87,6 +86,11 @@ export const generateDaiun = async (date: Date, datetime: DateTime, gender: Gend
       juuniun: juuniun(kanshi.日干, tishi),
     }
     daiun.push(daiunDetail)
+
+    // 120歳（大還暦）を超えたら終了
+    if (toAge >= 120) {
+      break
+    }
   }
 
   return daiun

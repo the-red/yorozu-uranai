@@ -19,12 +19,11 @@ export type Saiun = {
   juuniun: Juniun
 }
 
-export const generateSaiun = (kanshi: Kanshi, datetime: DateTime, sekki: SekkiPair) => {
+export const generateSaiun = (kanshi: Kanshi, datetime: DateTime, sekki: SekkiPair, thisYear: number) => {
   const nikkan = kanshi.日干
   const birthYear = datetime.year
   // 算出したい年を作成
   // 当年から前後5年ずつ、算出するので最初の年は当年-5年
-  const thisYear = DateTime.now().year
   const saiun1stYear = thisYear - 5
 
   const saiun: Saiun[] = []

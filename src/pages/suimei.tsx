@@ -49,7 +49,7 @@ const SuimeiPage: NextPage = () => {
     const kanshi = new Kanshi(suimeiSeed.dateTime, sekkiPair)
     const zoukan = new Zoukan(kanshi)
     const daiunDetail = json.daiun as Daiun[]
-    const saiun = generateSaiun(kanshi, suimeiSeed.dateTime, sekkiPair)
+    const saiun = generateSaiun(kanshi, suimeiSeed.dateTime, sekkiPair, DateTime.now().year)
 
     return {
       sekki: sekkiPair.today,

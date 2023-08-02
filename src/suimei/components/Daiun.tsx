@@ -30,7 +30,7 @@ export const DaiunContent = ({ daiun }: Props) => (
         <tbody>
           {daiun.map((d: Daiun, key) => {
             return (
-              <tr key={key}>
+              <tr key={key} className={d.thisYear ? 'current' : ''}>
                 <th>
                   {d.fromAge}〜<br className="header_br_sp"></br>
                   {d.toAge}歳

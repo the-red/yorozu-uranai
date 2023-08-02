@@ -8,7 +8,7 @@ export const getKanshiInstance = async (date: Date) => {
   return new Kanshi(DateTime.fromJSDate(date), sekkiPair)
 }
 
-export const getDaiun = async (date: Date, dateTime: DateTime, gender: Gender) => {
+export const getDaiun = async (date: Date, dateTime: DateTime, gender: Gender, thisYear: number) => {
   const sekkiPair = await getSekkiPair(date)
-  return await generateDaiun(date, dateTime, gender, sekkiPair)
+  return await generateDaiun(date, dateTime, gender, sekkiPair, thisYear)
 }

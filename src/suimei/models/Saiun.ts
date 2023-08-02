@@ -28,7 +28,7 @@ export const generateSaiun = (kanshi: Kanshi, datetime: DateTime, sekki: SekkiPa
 
   const saiun: Saiun[] = []
 
-  for (let i = 0; i < 10; i++) {
+  for (let i = 0; i < 16; i++) {
     // 誕生日ではないので12/31の年干支を取ることにする
     const saiunTargetYear = saiun1stYear + i
     const age = saiunTargetYear - birthYear

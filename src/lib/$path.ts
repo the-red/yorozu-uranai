@@ -2,7 +2,8 @@ import type { OptionalQuery as OptionalQuery0 } from '../pages'
 import type { OptionalQuery as OptionalQuery1 } from '../pages/horoscope'
 import type { OptionalQuery as OptionalQuery2 } from '../pages/map'
 import type { OptionalQuery as OptionalQuery3 } from '../pages/numerology'
-import type { OptionalQuery as OptionalQuery4 } from '../pages/suimei'
+import type { OptionalQuery as OptionalQuery4 } from '../pages/suimei/saiun'
+import type { OptionalQuery as OptionalQuery5 } from '../pages/suimei'
 
 export const pagesPath = {
   "horoscope": {
@@ -15,7 +16,10 @@ export const pagesPath = {
     $url: (url?: { query?: OptionalQuery3, hash?: string }) => ({ pathname: '/numerology' as const, query: url?.query, hash: url?.hash })
   },
   "suimei": {
-    $url: (url?: { query?: OptionalQuery4, hash?: string }) => ({ pathname: '/suimei' as const, query: url?.query, hash: url?.hash })
+    $url: (url?: { query?: OptionalQuery5, hash?: string }) => ({ pathname: '/suimei' as const, query: url?.query, hash: url?.hash }),
+    "saiun": {
+      $url: (url?: { query?: OptionalQuery4, hash?: string }) => ({ pathname: '/suimei/saiun' as const, query: url?.query, hash: url?.hash })
+    }
   },
   $url: (url?: { query?: OptionalQuery0, hash?: string }) => ({ pathname: '/' as const, query: url?.query, hash: url?.hash })
 }
@@ -55,6 +59,7 @@ export const staticPath = {
       logo_svg: '/images/index/logo.svg',
       logo_mark_svg: '/images/index/logo_mark.svg',
       numerology_svg: '/images/index/numerology.svg',
+      open_in_new_svg: '/images/index/open_in_new.svg',
       suimei_svg: '/images/index/suimei.svg',
       suimei_white_svg: '/images/index/suimei_white.svg'
     },

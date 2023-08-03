@@ -54,7 +54,11 @@ const SuimeiPage: NextPage = () => {
       const kanshi = new Kanshi(suimeiSeed.dateTime, sekkiPair)
       const zoukan = new Zoukan(kanshi)
       const daiunDetail = json.daiun as Daiun[]
-      const saiun = generateSaiun(kanshi, suimeiSeed.dateTime, sekkiPair, DateTime.now().year)
+
+      const thisYear = DateTime.now().year
+      const saiun1stYear = Math.max(thisYear - 5, suimeiSeed.dateTime.year)
+      const saiunLastYear = Math.max(thisYear, suimeiSeed.dateTime.year) + 10
+      const saiun = generateSaiun(kanshi, suimeiSeed.dateTime, sekkiPair, thisYear, saiun1stYear, saiunLastYear)
 
       setSuimei({
         sekki: sekkiPair.today,
@@ -88,7 +92,7 @@ const SuimeiPage: NextPage = () => {
       <div>
         <Menu />
         <Header />
-        <SuimeiContent suimei={suimei} onSubmit={handleSubmit} defaultValues={formValues} />
+        <SuimeiContent suimei={suimei} query={router.query} onSubmit={handleSubmit} defaultValues={formValues} />
         <Footer />
       </div>
     </div>

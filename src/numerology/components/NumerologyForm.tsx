@@ -1,5 +1,6 @@
 import { useEffect, FC } from 'react'
 import { useForm } from 'react-hook-form'
+import { convertKanaToRomaji } from '../models/romajiKana'
 
 export type NumerologyFormValues = {
   name: string
@@ -11,10 +12,14 @@ export type NumerologyFormProps = {
   defaultValues?: Partial<NumerologyFormValues>
 }
 
+const REGX_NAME_PATTERN = /^[a-z ]+$/i
+
 export const NumerologyForm: FC<NumerologyFormProps> = ({ onSubmit, defaultValues }) => {
   const {
     register,
     formState: { errors },
+    watch,
+    setValue,
     handleSubmit,
     reset,
   } = useForm<NumerologyFormValues>()
@@ -24,6 +29,8 @@ export const NumerologyForm: FC<NumerologyFormProps> = ({ onSubmit, defaultValue
   useEffect(() => {
     reset(defaultValues)
   }, [reset, defaultValues])
+
+  const name = watch('name')
 
   const dateInput = (
     <div style={{ display: 'flex', marginBottom: '32px' }}>
@@ -36,13 +43,25 @@ export const NumerologyForm: FC<NumerologyFormProps> = ({ onSubmit, defaultValue
     <div style={{ display: 'flex', marginBottom: '32px' }}>
       <label style={{ width: '180px' }}>名前（ローマ字）</label>
       <div style={{ width: '200px' }}>
-        <input type="text" required style={{ width: '100%' }} {...register('name', { pattern: /^[a-z ]+$/i })} />
+        <input type="text" required style={{ width: '100%' }} {...register('name', { pattern: REGX_NAME_PATTERN })} />
+        <div
+          className="tw-text-sm tw-underline tw-cursor-pointer"
+          onClick={() => {
+            const romajiName = convertKanaToRomaji(name)
+            setValue('name', romajiName)
+            if (!REGX_NAME_PATTERN.test(romajiName)) {
+              alert('ひらがな・カタカナ・空白文字のみ自動変換されます。')
+            }
+          }}
+        >
+          仮名→ローマ字変換
+        </div>
         {errors.name && (
-          <span className="error">
+          <div className="error">
             英字と半角スペースのみ
             <br />
             入力可能です。
-          </span>
+          </div>
         )}
       </div>
     </div>

@@ -5,11 +5,12 @@ describe('Daiun', () => {
   it('1983-05-17T18:15.000+9:00の大運', async () => {
     const dateTime = DateTime.fromISO('1983-05-17T18:15:00+09:00')
     const date = dateTime.toJSDate()
-    const daiunDetail = await getDaiun(date, dateTime, 'woman')
+    const daiunDetail = await getDaiun(date, dateTime, 'woman', 2023)
     expect(daiunDetail).toEqual([
       {
         fromAge: 0,
         toAge: 6,
+        thisYear: false,
         kanshi: '丁巳',
         tenkan: '丁',
         tishi: '巳',
@@ -21,6 +22,7 @@ describe('Daiun', () => {
       {
         fromAge: 7,
         toAge: 16,
+        thisYear: false,
         kanshi: '戊午',
         tenkan: '戊',
         tishi: '午',
@@ -32,6 +34,7 @@ describe('Daiun', () => {
       {
         fromAge: 17,
         toAge: 26,
+        thisYear: false,
         kanshi: '己未',
         tenkan: '己',
         tishi: '未',
@@ -43,6 +46,7 @@ describe('Daiun', () => {
       {
         fromAge: 27,
         toAge: 36,
+        thisYear: false,
         kanshi: '庚申',
         tenkan: '庚',
         tishi: '申',
@@ -54,6 +58,7 @@ describe('Daiun', () => {
       {
         fromAge: 37,
         toAge: 46,
+        thisYear: true,
         kanshi: '辛酉',
         tenkan: '辛',
         tishi: '酉',
@@ -65,6 +70,7 @@ describe('Daiun', () => {
       {
         fromAge: 47,
         toAge: 56,
+        thisYear: false,
         kanshi: '壬戌',
         tenkan: '壬',
         tishi: '戌',
@@ -76,6 +82,7 @@ describe('Daiun', () => {
       {
         fromAge: 57,
         toAge: 66,
+        thisYear: false,
         kanshi: '癸亥',
         tenkan: '癸',
         tishi: '亥',
@@ -87,6 +94,7 @@ describe('Daiun', () => {
       {
         fromAge: 67,
         toAge: 76,
+        thisYear: false,
         kanshi: '甲子',
         tenkan: '甲',
         tishi: '子',
@@ -98,6 +106,7 @@ describe('Daiun', () => {
       {
         fromAge: 77,
         toAge: 86,
+        thisYear: false,
         kanshi: '乙丑',
         tenkan: '乙',
         tishi: '丑',
@@ -109,6 +118,7 @@ describe('Daiun', () => {
       {
         fromAge: 87,
         toAge: 96,
+        thisYear: false,
         kanshi: '丙寅',
         tenkan: '丙',
         tishi: '寅',
@@ -120,6 +130,7 @@ describe('Daiun', () => {
       {
         fromAge: 97,
         toAge: 106,
+        thisYear: false,
         kanshi: '丁卯',
         tenkan: '丁',
         tishi: '卯',
@@ -131,6 +142,7 @@ describe('Daiun', () => {
       {
         fromAge: 107,
         toAge: 116,
+        thisYear: false,
         kanshi: '戊辰',
         tenkan: '戊',
         tishi: '辰',
@@ -142,6 +154,7 @@ describe('Daiun', () => {
       {
         fromAge: 117,
         toAge: 126,
+        thisYear: false,
         kanshi: '己巳',
         tenkan: '己',
         tishi: '巳',

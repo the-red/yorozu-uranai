@@ -346,11 +346,23 @@ $sp_width: 375;
             font-family: $text_regular;
             @include table_data_width(343, 45, 5);
           }
+          &.current {
+            th {
+              background-color: $accent_yellow;
+              color: $text_black;
+              span::after {
+                background-color: $text_black;
+              }
+            }
+            td {
+              background-color: $accent_yellow_light;
+            }
+          }
         }
       }
     }
     // 大運
-    &.daiun tbody tr {
+    &.daiun table tbody tr {
       th,
       td {
         padding: 7px 0;
@@ -375,18 +387,6 @@ $sp_width: 375;
           bottom: -3px;
           left: 50%;
           transform: translateX(-50%);
-        }
-      }
-      &.current {
-        th {
-          background-color: $accent_yellow;
-          color: $text_black;
-          span::after {
-            background-color: $text_black;
-          }
-        }
-        td {
-          background-color: $accent_yellow_light;
         }
       }
     }

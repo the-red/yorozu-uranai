@@ -11,6 +11,7 @@ export type Gender = 'man' | 'woman'
 export type Daiun = {
   fromAge: number
   toAge: number
+  thisYear: boolean
   kanshi: 干支
   tenkan: 十干
   tishi: 十二支
@@ -49,7 +50,13 @@ const calcShoun = (numberOfDays: number) => {
   return numberOfDays % 3 === 2 ? Math.ceil(quotient) : Math.trunc(quotient)
 }
 
-export const generateDaiun = async (date: Date, datetime: DateTime, gender: Gender, sekkiPair: SekkiPair) => {
+export const generateDaiun = async (
+  date: Date,
+  datetime: DateTime,
+  gender: Gender,
+  sekkiPair: SekkiPair,
+  thisYear: number
+) => {
   const baseDate = DateTime.fromJSDate(date)
   const sekki = sekkiPair
   // 干支
@@ -62,6 +69,7 @@ export const generateDaiun = async (date: Date, datetime: DateTime, gender: Gend
   // 月柱の干支の順行 / 逆行早見表でのindex
   const gecchuIndex = forward ? junkou.indexOf(kanshi.月柱) : gyakkou.indexOf(kanshi.月柱)
 
+  const age = thisYear - baseDate.year
   const daiun: Daiun[] = []
 
   for (let i = 0; ; i++) {
@@ -77,6 +85,7 @@ export const generateDaiun = async (date: Date, datetime: DateTime, gender: Gend
     const daiunDetail: Daiun = {
       fromAge,
       toAge,
+      thisYear: fromAge <= age && age <= toAge,
       kanshi: daiunKanshi,
       tenkan,
       tishi,

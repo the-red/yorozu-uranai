@@ -19,19 +19,25 @@ export type Saiun = {
   juuniun: Juniun
 }
 
-export const generateSaiun = (kanshi: Kanshi, datetime: DateTime, sekki: SekkiPair) => {
+export const generateSaiun = (kanshi: Kanshi, datetime: DateTime, sekki: SekkiPair, thisYear: number) => {
   const nikkan = kanshi.日干
   const birthYear = datetime.year
   // 算出したい年を作成
-  // 当年から前後5年ずつ、算出するので最初の年は当年-5年
-  const thisYear = DateTime.now().year
-  const saiun1stYear = thisYear - 5
+  // (当年-5年 or 未来の誕生年)を起点に算出する
+  const saiun1stYear = Math.max(thisYear - 5, birthYear)
 
   const saiun: Saiun[] = []
 
-  for (let i = 0; i < 10; i++) {
+  for (let i = 0; i < 16; i++) {
     // 誕生日ではないので12/31の年干支を取ることにする
     const saiunTargetYear = saiun1stYear + i
+    const age = saiunTargetYear - birthYear
+
+    // マイナス年齢は表示しない
+    if (age < 0) {
+      continue
+    }
+
     const saiunTargetDate = DateTime.fromISO(`${saiunTargetYear}-12-31`)
     const yearKanshi = new Kanshi(saiunTargetDate, sekki)
     const tenkan = yearKanshi.年干
@@ -39,7 +45,7 @@ export const generateSaiun = (kanshi: Kanshi, datetime: DateTime, sekki: SekkiPa
     const zoukanHonki = calcZoukan(tishi).honki
 
     const saiunDetail: Saiun = {
-      age: saiunTargetYear - birthYear,
+      age,
       year: saiunTargetYear,
       yearKanshi: yearKanshi.年柱,
       tenkan,

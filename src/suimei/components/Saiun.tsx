@@ -44,16 +44,6 @@ export const SaiunContent = ({ saiun }: Props) => (
               </tr>
             )
           })}
-          {/* <tr>
-            <th>
-              <span>30歳</span>2017年
-            </th>
-            <td>比肩</td>
-            <td>戊午</td>
-            <td>養</td>
-            <td>戊</td>
-            <td>偏印</td>
-          </tr> */}
         </tbody>
       </table>
     </div>

@@ -9,7 +9,7 @@ describe('Daiun', () => {
     const date = dateTime.toJSDate()
     const kanshi = await getKanshiInstance(date)
     const sekki = await getSekkiPair(date)
-    const saiunDetail = generateSaiun(kanshi, dateTime, sekki)
+    const saiunDetail = generateSaiun(kanshi, dateTime, sekki, 2023)
     expect(saiunDetail[3]).toEqual({
       age: 38,
       year: 2021,

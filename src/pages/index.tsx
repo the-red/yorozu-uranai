@@ -16,7 +16,10 @@ export default function Home() {
     <div className="header-and-body">
       <Head>
         <title>よろず占い</title>
-        <meta name="description" content="Fortune Telling" />
+        <meta
+          name="description"
+          content="西洋占星術のホロスコープ、四柱推命の命式、数秘術のパーソナルチャートを無料で作成できます。"
+        />
         <link rel="icon" href={staticPath.images.index.logo_mark_svg} />
       </Head>
 
@@ -50,14 +53,16 @@ export default function Home() {
                 </div>
               </Link>
             </div>
-            <div className="menu menu-suimei coming-soon">
-              <div className="menu-link">
-                <div className="menu-link-block-1">
-                  <h2 className="menu-title">四柱推命</h2>
-                  <SuimeiIcon width={40} height={40} alt="四柱推命" />
-                  <p className="menu-text">命式を計算する</p>
+            <div className="menu menu-suimei">
+              <Link href={pagesPath.suimei.$url()}>
+                <div className="menu-link">
+                  <div className="menu-link-block-1">
+                    <h2 className="menu-title">四柱推命</h2>
+                    <SuimeiIcon width={40} height={40} alt="四柱推命" />
+                    <p className="menu-text">命式を計算する</p>
+                  </div>
                 </div>
-              </div>
+              </Link>
             </div>
           </div>
         </div>

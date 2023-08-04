@@ -1,76 +1,104 @@
-import { DateTime } from 'luxon'
-import { Kanshi } from '../../src/suimei/Kanshi'
-import { getSekkiPair } from '../../src/suimei/kanshiFactory'
-
-const getKanshiInstance = async (date: Date) => {
-  const sekkiPair = await getSekkiPair(date)
-  return new Kanshi(DateTime.fromJSDate(date), sekkiPair)
-}
+import { Kanshi, get十二支五行, get十干五行 } from '../../src/suimei/models/Kanshi'
+import { getKanshiInstance } from './test-util'
 
 describe('六十干支', () => {
   it('六十干支', () => {
     expect(Kanshi.六十干支).toEqual([
-      '甲子',
-      '乙丑',
-      '丙寅',
-      '丁卯',
-      '戊辰',
-      '己巳',
-      '庚午',
-      '辛未',
-      '壬申',
-      '癸酉',
-      '甲戌',
-      '乙亥',
-      '丙子',
-      '丁丑',
-      '戊寅',
-      '己卯',
-      '庚辰',
-      '辛巳',
-      '壬午',
-      '癸未',
-      '甲申',
-      '乙酉',
-      '丙戌',
-      '丁亥',
-      '戊子',
-      '己丑',
-      '庚寅',
-      '辛卯',
-      '壬辰',
-      '癸巳',
-      '甲午',
-      '乙未',
-      '丙申',
-      '丁酉',
-      '戊戌',
-      '己亥',
-      '庚子',
-      '辛丑',
-      '壬寅',
-      '癸卯',
-      '甲辰',
-      '乙巳',
-      '丙午',
-      '丁未',
-      '戊申',
-      '己酉',
-      '庚戌',
-      '辛亥',
-      '壬子',
-      '癸丑',
-      '甲寅',
-      '乙卯',
-      '丙辰',
-      '丁巳',
-      '戊午',
-      '己未',
-      '庚申',
-      '辛酉',
-      '壬戌',
-      '癸亥',
+      '甲子', // 0
+      '乙丑', // 1
+      '丙寅', // 2
+      '丁卯', // 3
+      '戊辰', // 4
+      '己巳', // 5
+      '庚午', // 6
+      '辛未', // 7
+      '壬申', // 8
+      '癸酉', // 9
+      '甲戌', // 10
+      '乙亥', // 11
+      '丙子', // 12
+      '丁丑', // 13
+      '戊寅', // 14
+      '己卯', // 15
+      '庚辰', // 16
+      '辛巳', // 17
+      '壬午', // 18
+      '癸未', // 19
+      '甲申', // 20
+      '乙酉', // 21
+      '丙戌', // 22
+      '丁亥', // 23
+      '戊子', // 24
+      '己丑', // 25
+      '庚寅', // 26
+      '辛卯', // 27
+      '壬辰', // 28
+      '癸巳', // 29
+      '甲午', // 30
+      '乙未', // 31
+      '丙申', // 32
+      '丁酉', // 33
+      '戊戌', // 34
+      '己亥', // 35
+      '庚子', // 36
+      '辛丑', // 37
+      '壬寅', // 38
+      '癸卯', // 39
+      '甲辰', // 40
+      '乙巳', // 41
+      '丙午', // 42
+      '丁未', // 43
+      '戊申', // 44
+      '己酉', // 45
+      '庚戌', // 46
+      '辛亥', // 47
+      '壬子', // 48
+      '癸丑', // 49
+      '甲寅', // 50
+      '乙卯', // 51
+      '丙辰', // 52
+      '丁巳', // 53
+      '戊午', // 54
+      '己未', // 55
+      '庚申', // 56
+      '辛酉', // 57
+      '壬戌', // 58
+      '癸亥', // 59
     ])
+  })
+})
+
+describe('五行', () => {
+  it('十干', () => {
+    expect(get十干五行('甲')).toEqual('木')
+    expect(get十干五行('乙')).toEqual('木')
+    expect(get十干五行('丙')).toEqual('火')
+    expect(get十干五行('丁')).toEqual('火')
+    expect(get十干五行('戊')).toEqual('土')
+    expect(get十干五行('己')).toEqual('土')
+    expect(get十干五行('庚')).toEqual('金')
+    expect(get十干五行('辛')).toEqual('金')
+    expect(get十干五行('壬')).toEqual('水')
+    expect(get十干五行('癸')).toEqual('水')
+  })
+  it('十二支', () => {
+    // NOTE: 寅, 卯, ..., 子, 丑 に並べたほうが分かりやすい
+    // 春
+    expect(get十二支五行('寅')).toEqual('木')
+    expect(get十二支五行('卯')).toEqual('木')
+    expect(get十二支五行('辰')).toEqual('土') // 夏土用
+    // 夏
+    expect(get十二支五行('巳')).toEqual('火')
+    expect(get十二支五行('午')).toEqual('火')
+    expect(get十二支五行('未')).toEqual('土') // 秋土用
+    // 秋
+    expect(get十二支五行('申')).toEqual('金')
+    expect(get十二支五行('酉')).toEqual('金')
+    expect(get十二支五行('戌')).toEqual('土') // 冬土用
+    // 冬
+    expect(get十二支五行('亥')).toEqual('水')
+    expect(get十二支五行('子')).toEqual('水')
+    expect(get十二支五行('丑')).toEqual('土') // 春土用
   })
 })
 
@@ -154,5 +182,71 @@ describe('時柱を計算', () => {
   it('2022-02-24T17:28:00+09:00', async () => {
     const kanshi = await getKanshiInstance(new Date('2022-02-24T17:28:00+09:00'))
     expect(kanshi.時柱).toEqual('辛酉') // 57
+  })
+  it('2023-03-15T11:41:20+09:00（60を超えるパターン）', async () => {
+    const kanshi = await getKanshiInstance(new Date('2023-03-15T11:41:20+09:00'))
+    expect(kanshi.時柱).toEqual('丙午') // 42 (102 % 60)
+  })
+})
+
+describe('天干の個別取得', () => {
+  const date = new Date('2023-03-15T11:41:20+09:00')
+  it('年干', async () => {
+    const kanshi = await getKanshiInstance(date)
+    expect(kanshi.年干).toEqual('癸')
+  })
+  it('月干', async () => {
+    const kanshi = await getKanshiInstance(date)
+    expect(kanshi.月干).toEqual('乙')
+  })
+  it('日干', async () => {
+    const kanshi = await getKanshiInstance(date)
+    expect(kanshi.日干).toEqual('壬')
+  })
+  it('時干', async () => {
+    const kanshi = await getKanshiInstance(date)
+    expect(kanshi.時干).toEqual('丙')
+  })
+  it('天干', async () => {
+    const kanshi = await getKanshiInstance(date)
+    expect(kanshi.天干).toMatchObject(['癸', '乙', '壬', '丙'])
+  })
+})
+
+describe('地支の個別取得', () => {
+  const date = new Date('2023-03-15T11:41:20+09:00')
+  it('年支', async () => {
+    const kanshi = await getKanshiInstance(date)
+    expect(kanshi.年支).toEqual('卯')
+  })
+  it('月支', async () => {
+    const kanshi = await getKanshiInstance(date)
+    expect(kanshi.月支).toEqual('卯')
+  })
+  it('日支', async () => {
+    const kanshi = await getKanshiInstance(date)
+    expect(kanshi.日支).toEqual('申')
+  })
+  it('時支', async () => {
+    const kanshi = await getKanshiInstance(date)
+    expect(kanshi.時支).toEqual('午')
+  })
+  it('地支', async () => {
+    const kanshi = await getKanshiInstance(date)
+    expect(kanshi.地支).toMatchObject(['卯', '卯', '申', '午'])
+  })
+})
+
+describe('五行', () => {
+  const date = new Date('2023-03-15T11:41:20+09:00')
+  it('五行', async () => {
+    const kanshi = await getKanshiInstance(date)
+    expect(kanshi.五行).toMatchObject({
+      木: 3,
+      火: 2,
+      土: 0,
+      金: 1,
+      水: 2,
+    })
   })
 })

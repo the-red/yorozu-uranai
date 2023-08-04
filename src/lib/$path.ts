@@ -1,20 +1,25 @@
 import type { OptionalQuery as OptionalQuery0 } from '../pages'
 import type { OptionalQuery as OptionalQuery1 } from '../pages/horoscope'
-import type { OptionalQuery as OptionalQuery2 } from '../pages/numerology'
-import type { OptionalQuery as OptionalQuery3 } from '../pages/suimei'
+import type { OptionalQuery as OptionalQuery2 } from '../pages/map'
+import type { OptionalQuery as OptionalQuery3 } from '../pages/numerology'
+import type { OptionalQuery as OptionalQuery4 } from '../pages/suimei/saiun'
+import type { OptionalQuery as OptionalQuery5 } from '../pages/suimei'
 
 export const pagesPath = {
   "horoscope": {
     $url: (url?: { query?: OptionalQuery1, hash?: string }) => ({ pathname: '/horoscope' as const, query: url?.query, hash: url?.hash })
   },
-  "numerology": {
-    $url: (url?: { query?: OptionalQuery2, hash?: string }) => ({ pathname: '/numerology' as const, query: url?.query, hash: url?.hash })
+  "map": {
+    $url: (url?: { query?: OptionalQuery2, hash?: string }) => ({ pathname: '/map' as const, query: url?.query, hash: url?.hash })
   },
-  "suimei_design": {
-    $url: (url?: { hash?: string }) => ({ pathname: '/suimei-design' as const, hash: url?.hash })
+  "numerology": {
+    $url: (url?: { query?: OptionalQuery3, hash?: string }) => ({ pathname: '/numerology' as const, query: url?.query, hash: url?.hash })
   },
   "suimei": {
-    $url: (url?: { query?: OptionalQuery3, hash?: string }) => ({ pathname: '/suimei' as const, query: url?.query, hash: url?.hash })
+    $url: (url?: { query?: OptionalQuery5, hash?: string }) => ({ pathname: '/suimei' as const, query: url?.query, hash: url?.hash }),
+    "saiun": {
+      $url: (url?: { query?: OptionalQuery4, hash?: string }) => ({ pathname: '/suimei/saiun' as const, query: url?.query, hash: url?.hash })
+    }
   },
   $url: (url?: { query?: OptionalQuery0, hash?: string }) => ({ pathname: '/' as const, query: url?.query, hash: url?.hash })
 }
@@ -54,8 +59,15 @@ export const staticPath = {
       logo_svg: '/images/index/logo.svg',
       logo_mark_svg: '/images/index/logo_mark.svg',
       numerology_svg: '/images/index/numerology.svg',
+      open_in_new_svg: '/images/index/open_in_new.svg',
       suimei_svg: '/images/index/suimei.svg',
-      twitter_logo_svg: '/images/index/twitter-logo.svg'
+      suimei_white_svg: '/images/index/suimei_white.svg'
+    },
+    map: {
+      back_blue_svg: '/images/map/back_blue.svg',
+      back_white_svg: '/images/map/back_white.svg',
+      current_location_svg: '/images/map/current_location.svg',
+      search_svg: '/images/map/search.svg'
     },
     numerology: {
       bird_1_svg: '/images/numerology/bird-1.svg',
@@ -66,6 +78,7 @@ export const staticPath = {
     },
     suimei: {
       fun_svg: '/images/suimei/fun.svg',
+      help_svg: '/images/suimei/help.svg',
       kintoun_svg: '/images/suimei/kintoun.svg',
       lantern_red_svg: '/images/suimei/lantern_red.svg',
       lantern_yellow_svg: '/images/suimei/lantern_yellow.svg',

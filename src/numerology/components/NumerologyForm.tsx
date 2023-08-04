@@ -1,9 +1,6 @@
-import Image from 'next/image'
-import { useEffect, VFC } from 'react'
+import { useEffect, FC } from 'react'
 import { useForm } from 'react-hook-form'
-
-import leaf from '../../../public/images/numerology/leaf.png'
-import flower from '../../../public/images/numerology/flower.png'
+import { convertKanaToRomaji } from '../models/romajiKana'
 
 export type NumerologyFormValues = {
   name: string
@@ -15,14 +12,25 @@ export type NumerologyFormProps = {
   defaultValues?: Partial<NumerologyFormValues>
 }
 
-export const NumerologyForm: VFC<NumerologyFormProps> = ({ onSubmit, defaultValues }) => {
-  const { register, handleSubmit, reset } = useForm<NumerologyFormValues>()
+const REGX_NAME_PATTERN = /^[a-z ]+$/i
+
+export const NumerologyForm: FC<NumerologyFormProps> = ({ onSubmit, defaultValues }) => {
+  const {
+    register,
+    formState: { errors },
+    watch,
+    setValue,
+    handleSubmit,
+    reset,
+  } = useForm<NumerologyFormValues>()
 
   // NOTE: クエリパラメータをdefaultValuesにする関係で遅延するので、
   // useForm({ defaultValues })だと値が入らないため、reset APIを使う
   useEffect(() => {
     reset(defaultValues)
   }, [reset, defaultValues])
+
+  const name = watch('name')
 
   const dateInput = (
     <div style={{ display: 'flex', marginBottom: '32px' }}>
@@ -35,7 +43,26 @@ export const NumerologyForm: VFC<NumerologyFormProps> = ({ onSubmit, defaultValu
     <div style={{ display: 'flex', marginBottom: '32px' }}>
       <label style={{ width: '180px' }}>名前（ローマ字）</label>
       <div style={{ width: '200px' }}>
-        <input type="text" required style={{ width: '100%' }} {...register('name')} />
+        <input type="text" required style={{ width: '100%' }} {...register('name', { pattern: REGX_NAME_PATTERN })} />
+        <div
+          className="tw-text-sm tw-underline tw-cursor-pointer"
+          onClick={() => {
+            const romajiName = convertKanaToRomaji(name)
+            setValue('name', romajiName)
+            if (!REGX_NAME_PATTERN.test(romajiName)) {
+              alert('ひらがな・カタカナで入力してください。')
+            }
+          }}
+        >
+          仮名→ローマ字変換
+        </div>
+        {errors.name && (
+          <div className="error">
+            英字と半角スペースのみ
+            <br />
+            入力可能です。
+          </div>
+        )}
       </div>
     </div>
   )

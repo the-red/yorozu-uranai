@@ -1,20 +1,24 @@
-import { ReactNode } from 'react'
+import type { FC } from 'react'
 import dynamic from 'next/dynamic'
-
-import { Horoscope } from '../'
-
+import { Horoscope } from '../models'
 import PlanetPositions from './PlanetPositions'
 import HouseCusp from './HouseCusp'
 import SignTable from './SignTable'
 import AspectChart from './AspectChart'
+import { HoroscopeForm } from './HoroscopeForm'
+import { FormProps } from '../../hooks/useYorozuUranaiForm'
 const HoroscopeCircle = dynamic(() => import('./HoroscopeCircle'), { ssr: false })
 
-function HoroscopeDetailPage({ horoscope, orb, children }: { horoscope: Horoscope; orb: number; children: ReactNode }) {
+type Props = { horoscope: Horoscope; orb: number } & FormProps
+
+const HoroscopeDetailPage: FC<Props> = ({ horoscope, orb, onSubmit, defaultValues }) => {
   return (
     <div>
       <div className="content-row">
         <div className="content form">
-          <div className="content-inner">{children}</div>
+          <div className="content-inner">
+            <HoroscopeForm onSubmit={onSubmit} defaultValues={defaultValues} />
+          </div>
         </div>
         <>
           <div className="content circle pc">

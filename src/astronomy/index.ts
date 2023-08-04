@@ -32,10 +32,10 @@ export const eclipticPosition = (julday_ut: number, planet: PlanetName): Promise
       swisseph.SEFLG_SPEED,
       (result) => {
         if ('error' in result) {
-          return reject(result.error)
+          return reject(new Error(result.error))
         }
         if (!('latitude' in result)) {
-          return reject('ERROR!' + JSON.stringify(result))
+          return reject(new Error('ERROR!' + JSON.stringify(result)))
         }
 
         // 処理系が変わると少し誤差が出るので丸めておく
@@ -66,7 +66,7 @@ export const calcHouses = (julday_ut: number, geolat: number, geolon: number, hs
   new Promise((resolve, reject) =>
     swisseph.swe_houses(julday_ut, geolat, geolon, hsys, (result) => {
       if ('error' in result) {
-        return reject(result.error)
+        return reject(new Error(result.error))
       }
 
       // 処理系が変わると少し誤差が出るので丸めておく
@@ -140,4 +140,37 @@ export const houseSystemName = (hsys?: string) => {
     default:
       return 'Placidus'
   }
+}
+
+// 黄経から日付を算出
+export const longitudeToDate = async (
+  targetLongitude: number,
+  nearbyDate: Date, // この日付に一番近い日付を探す
+  forward: boolean = true, // 順行ならtrue、逆行ならfalse
+  count: number = 0
+): Promise<Date> => {
+  const secondsOfYear = 365.2422 / 24 / 60 / 60
+  const longitudesOfSeconds = secondsOfYear / 360 // 1秒で黄経が進む度数
+
+  const currentLongitude = await getEclipticLongitude(nearbyDate)
+  const sign = forward ? 1 : -1
+
+  let longitudeDiff = targetLongitude - currentLongitude
+  if (count === 0 && sign * longitudeDiff < 0) {
+    longitudeDiff += sign * 360
+  }
+  const diffSeconds = longitudeDiff / longitudesOfSeconds
+  const diffSecondsInt = Math.trunc(diffSeconds)
+
+  if (diffSecondsInt === 0) {
+    return nearbyDate
+  }
+
+  if (count > 10) {
+    // 無限再帰の防止
+    return nearbyDate
+  }
+
+  const newDate = new Date(nearbyDate.getTime() + diffSecondsInt * 1000)
+  return longitudeToDate(targetLongitude, newDate, forward, count + 1)
 }

@@ -49,6 +49,14 @@ $sp_width: 375;
 }
 
 .suimei {
+  .header {
+    background-color: $accent_yellow_light;
+  }
+}
+.suimei .main {
+  // global.cssでmargin-top設定されているので打ち消す
+  margin-top: 0;
+
   // 全体共通スタイル
   font-size: 16px;
   color: $text_black;
@@ -89,13 +97,6 @@ $sp_width: 375;
   textarea {
     -webkit-appearance: none;
     border-radius: 0;
-  }
-
-  .header {
-    background-color: $accent_yellow_light;
-  }
-  .twitter-logo {
-    fill: #4b4b4b;
   }
 
   // タイトル表示エリア
@@ -213,16 +214,16 @@ $sp_width: 375;
                 margin-bottom: 5px;
               }
             }
-            &.longitude_latitude {
-              .longitude,
-              .latitude {
+            &.location {
+              .lat,
+              .lng {
                 span {
                   display: block;
                   font-size: 14px;
                   margin-bottom: 5px;
                 }
               }
-              .longitude {
+              .lat {
                 margin-bottom: 10px;
               }
             }
@@ -255,6 +256,7 @@ $sp_width: 375;
             font-size: 14px;
             font-family: $text_bold;
             letter-spacing: 0.1em;
+            cursor: pointer;
           }
         }
       }
@@ -313,6 +315,9 @@ $sp_width: 375;
     &.meisiki {
       table {
         font-size: 14px;
+        tbody tr td {
+          @include table_data_width(343, 74, 4);
+        }
       }
     }
     // 五行バランス
@@ -339,13 +344,25 @@ $sp_width: 375;
           td {
             font-size: 12px;
             font-family: $text_regular;
-            @include table_data_width(343, 45, 6);
+            @include table_data_width(343, 45, 5);
+          }
+          &.current {
+            th {
+              background-color: $accent_yellow;
+              color: $text_black;
+              span::after {
+                background-color: $text_black;
+              }
+            }
+            td {
+              background-color: $accent_yellow_light;
+            }
           }
         }
       }
     }
     // 大運
-    &.daiun tbody tr {
+    &.daiun table tbody tr {
       th,
       td {
         padding: 7px 0;
@@ -370,18 +387,6 @@ $sp_width: 375;
           bottom: -3px;
           left: 50%;
           transform: translateX(-50%);
-        }
-      }
-      &.current {
-        th {
-          background-color: $accent_yellow;
-          color: $text_black;
-          span::after {
-            background-color: $text_black;
-          }
-        }
-        td {
-          background-color: $accent_yellow_light;
         }
       }
     }
@@ -475,9 +480,9 @@ $sp_width: 375;
                   width: 84px;
                 }
               }
-              &.longitude_latitude {
-                .longitude,
-                .latitude {
+              &.location {
+                .lat,
+                .lng {
                   span {
                     display: inline;
                     margin-bottom: 0px;
@@ -487,7 +492,7 @@ $sp_width: 375;
                     width: 107px;
                   }
                 }
-                .longitude {
+                .lat {
                   margin-bottom: 4px;
                 }
               }
@@ -531,6 +536,12 @@ $sp_width: 375;
             font-size: 20px;
             @include table_data_width(980, 143, 4);
           }
+          .exist-help {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 4px;
+          }
         }
       }
 
@@ -567,6 +578,7 @@ $sp_width: 375;
             td {
               font-size: 14px;
               width: 139.5px;
+              @include table_data_width(980, 143, 5);
             }
           }
         }

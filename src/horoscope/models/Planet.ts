@@ -1,4 +1,4 @@
-import type { PlanetName } from '../astronomy/types'
+import type { PlanetName } from '../../astronomy/types'
 import { Position } from './Position'
 import { House } from './House'
 

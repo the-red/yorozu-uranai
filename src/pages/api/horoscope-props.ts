@@ -1,7 +1,7 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 import type { NextApiRequest, NextApiResponse } from 'next'
-import { HoroscopeProps } from '../../horoscope'
-import { getHoroscopeProps } from '../../horoscope/horoscopeFactory'
+import { HoroscopeProps } from '../../horoscope/models'
+import { getHoroscopeProps } from '../../horoscope/models/horoscopeFactory'
 
 type Data = { data: HoroscopeProps } | { errorMessage: string }
 
@@ -13,11 +13,15 @@ const horoscopeProps = async (req: NextApiRequest, res: NextApiResponse<Data>) =
 
   // 生まれた場所とハウスシステム
   const lat = Number(req.body.lat)
-  const lon = Number(req.body.lon)
+  const lng = Number(req.body.lng)
   const hsys = req.body.hsys as string
 
-  const horoscopeProps = await getHoroscopeProps(birthday, lat, lon, hsys)
-  res.status(200).json({ data: horoscopeProps })
+  try {
+    const horoscopeProps = await getHoroscopeProps(birthday, lat, lng, hsys)
+    res.status(200).json({ data: horoscopeProps })
+  } catch (e) {
+    res.status(400).json({ errorMessage: (e as Error).message })
+  }
 }
 
 export default horoscopeProps

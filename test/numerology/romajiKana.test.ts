@@ -85,3 +85,16 @@ describe('空白文字はすべて半角に統一', () => {
     expect(convertKanaToRomaji(hiraganaString)).toEqual(romajiString)
   })
 })
+
+describe('未入力対応', () => {
+  it('undefined', () => {
+    const hiraganaString = undefined
+    const romajiString = ''
+    expect(convertKanaToRomaji(hiraganaString)).toEqual(romajiString)
+  })
+  it('ブランク', () => {
+    const hiraganaString = ''
+    const romajiString = ''
+    expect(convertKanaToRomaji(hiraganaString)).toEqual(romajiString)
+  })
+})

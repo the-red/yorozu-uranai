@@ -50,7 +50,7 @@ export const NumerologyForm: FC<NumerologyFormProps> = ({ onSubmit, defaultValue
             const romajiName = convertKanaToRomaji(name)
             setValue('name', romajiName)
             if (!REGX_NAME_PATTERN.test(romajiName)) {
-              alert('ひらがな・カタカナ・空白文字のみ自動変換されます。')
+              alert('ひらがな・カタカナで入力してください。')
             }
           }}
         >

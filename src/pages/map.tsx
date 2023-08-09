@@ -11,6 +11,7 @@ import { useRouter } from 'next/router'
 import { getCurrentLocation } from '../lib/location'
 import { staticPath } from '../lib/$path'
 import Image from 'next/image'
+import { fetchAddressFromLatLng } from '../lib/fetch-geocode'
 
 type LatLng = { lat: number; lng: number }
 export type OptionalQuery = Partial<LatLng>
@@ -135,10 +136,9 @@ const MapPage: NextPage = () => {
   const [info, setInfo] = React.useState<string>('')
   const addressInput = React.useRef<HTMLInputElement>(null)
 
-  const updateAddress = async (location: LatLng) => {
-    const { results } = await geocode({ location })
-    const [result] = results
-    setInfo(result.formatted_address)
+  const updateAddress = async ({ lat, lng }: LatLng) => {
+    const address = await fetchAddressFromLatLng(lat, lng)
+    setInfo(address)
   }
 
   const setMapLocation = (latlng: LatLng) => {
@@ -161,17 +161,14 @@ const MapPage: NextPage = () => {
 
   const onClickMarker = async (event: google.maps.MapMouseEvent | google.maps.IconMouseEvent) => {
     // avoid directly mutating state
-    const location = {
-      lat: roundLatLng(event.latLng!.lat()),
-      lng: roundLatLng(event.latLng!.lng()),
-    }
-    setPinned(location)
+    const lat = roundLatLng(event.latLng!.lat())
+    const lng = roundLatLng(event.latLng!.lng())
+    setPinned({ lat, lng })
 
     try {
       // ピンの位置を元に住所を検索
-      const { results } = await geocode({ location })
-      const [result] = results
-      setInfo(result.formatted_address)
+      const address = await fetchAddressFromLatLng(lat, lng)
+      setInfo(address)
     } catch (e) {
       const error = e as google.maps.MapsNetworkError
       setInfo(`ERROR: ${error.message}`)
@@ -211,7 +208,6 @@ const MapPage: NextPage = () => {
                   ]
                   setPinned({ lat, lng })
                   setCenter({ lat, lng })
-                  setInfo(result.formatted_address)
                   setZoom(17)
                 } catch (e) {
                   const error = e as google.maps.MapsNetworkError

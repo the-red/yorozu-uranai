@@ -1,5 +1,4 @@
-import '../src/lib/geocode'
-import { formatAddress } from '../src/lib/geocode'
+import { formatAddress } from '../src/pages/api/geocode'
 import { GeocodeResult } from '@googlemaps/google-maps-services-js'
 
 describe('geocode', () => {

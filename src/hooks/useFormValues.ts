@@ -1,10 +1,10 @@
 import { DateTime } from 'luxon'
 import type { NextRouter } from 'next/router'
 import { Dispatch, SetStateAction, useEffect } from 'react'
-import { reverseGeocodeByLatLng } from '../lib/geocode'
 import { TOKYO_STATION } from '../lib/location'
 import { queryToFormValues, FORM_DATE_FORMAT, FORM_TIME_FORMAT } from '../lib/params'
 import type { FormValues } from './useYorozuUranaiForm'
+import { fetchAddressFromLatLng } from '../lib/fetch-geocode'
 
 export const useFormValues = (setFormValues: Dispatch<SetStateAction<FormValues | undefined>>, router: NextRouter) => {
   useEffect(() => {
@@ -41,8 +41,7 @@ export const useFormValues = (setFormValues: Dispatch<SetStateAction<FormValues 
         const defaultLocation = TOKYO_STATION
         const lat = f.lat === undefined ? defaultLocation.lat : f.lat
         const lng = f.lng === undefined ? defaultLocation.lng : f.lng
-
-        const address = await reverseGeocodeByLatLng({ lat, lng })
+        const address = await fetchAddressFromLatLng(lat, lng)
 
         const gender = f.gender ?? 'woman'
 

@@ -1,28 +1,11 @@
-import { AddressType, Client, GeocodeResult, ReverseGeocodeRequest } from '@googlemaps/google-maps-services-js'
-import { roundLatLng } from './math'
-
-export const geocodeByAddress = async (address: string) => {
-  const client = new Client()
-  const { data } = await client.geocode({
-    params: {
-      key: process.env.NEXT_PUBLIC_GOOGLE_GEOCODING_API_KEY!,
-      address,
-    },
-  })
-  const [result] = data.results
-  if (!result) throw new Error('No result')
-
-  const latlng = {
-    lat: roundLatLng(result.geometry.location.lat),
-    lng: roundLatLng(result.geometry.location.lng),
-  }
-  const formattedAddress = await reverseGeocodeByLatLng(latlng)
-
-  return {
-    formattedAddress,
-    ...latlng,
-  }
-}
+import { NextApiRequest, NextApiResponse } from 'next'
+import {
+  AddressType,
+  Client,
+  GeocodeResult,
+  Language,
+  ReverseGeocodeRequest,
+} from '@googlemaps/google-maps-services-js'
 
 type ReverseGeocodeProps = Omit<ReverseGeocodeRequest['params'], 'key'>
 const reverseGeocode = async (props: ReverseGeocodeProps) => {
@@ -30,6 +13,7 @@ const reverseGeocode = async (props: ReverseGeocodeProps) => {
   const { data } = await client.reverseGeocode({
     params: {
       key: process.env.NEXT_PUBLIC_GOOGLE_GEOCODING_API_KEY!,
+      language: Language.ja,
       ...props,
     },
   })
@@ -48,3 +32,19 @@ export const reverseGeocodeByLatLng = async (latlng: { lat: number; lng: number 
   const formattedAddress = formatAddress(addresses)
   return formattedAddress
 }
+
+type Data = { address: string } | { errorMessage: string }
+
+const geocode = async (req: NextApiRequest, res: NextApiResponse<Data>) => {
+  const lat = Number(req.body.lat as string)
+  const lng = Number(req.body.lng as string)
+
+  if (isNaN(lat) || isNaN(lng)) {
+    return res.status(400).json({ errorMessage: 'Invalid LatLng' })
+  }
+
+  const address = await reverseGeocodeByLatLng({ lat, lng })
+  res.status(200).json({ address })
+}
+
+export default geocode

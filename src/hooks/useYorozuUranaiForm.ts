@@ -1,6 +1,6 @@
 import { useForm } from 'react-hook-form'
-import { reverseGeocodeByLatLng } from '../lib/geocode'
 import { FormValuesBase } from '../lib/params'
+import { fetchAddressFromLatLng } from '../lib/fetch-geocode'
 
 export type FormValues = Required<Omit<FormValuesBase, 'name'>> & { address: string }
 
@@ -25,10 +25,11 @@ export const useYorozuUranaiForm = ({ onSubmit, defaultValues }: FormProps) => {
   }
 
   // @ts-expect-error
-  window.setLocation = async (lat, lng) => {
+  window.setLocation = async (lat: number, lng: number) => {
     setValue('lat', lat)
     setValue('lng', lng)
-    setValue('address', await reverseGeocodeByLatLng({ lat, lng }))
+    const address = await fetchAddressFromLatLng(lat, lng)
+    setValue('address', address)
     return true
   }
 

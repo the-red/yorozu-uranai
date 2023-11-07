@@ -4,18 +4,16 @@ import * as React from 'react'
 import { Wrapper, Status } from '@googlemaps/react-wrapper'
 import { createCustomEqual } from 'fast-equals'
 import { isLatLngLiteral } from '@googlemaps/typescript-guards'
-import { LatLngLiteral } from '@googlemaps/google-maps-services-js'
 import { NextPage } from 'next'
 import { TOKYO_STATION } from '../lib/location'
 import { roundLatLng } from '../lib/math'
 import { useRouter } from 'next/router'
 import { getCurrentLocation } from '../lib/location'
-// NOTE: Geocoding APIだけは他の画面との共通化のため、google.mapsではなく専用ライブラリを使う
-import { geocodeByAddress, reverseGeocodeByLatLng } from '../lib/geocode'
 import { staticPath } from '../lib/$path'
 import Image from 'next/image'
+import { fetchAddressFromLatLng } from '../lib/fetch-geocode'
 
-type LatLng = LatLngLiteral
+type LatLng = { lat: number; lng: number }
 export type OptionalQuery = Partial<LatLng>
 
 const render = (status: Status) => {
@@ -26,6 +24,11 @@ interface MapProps extends google.maps.MapOptions {
   onClick?: (e: google.maps.MapMouseEvent) => void
   onIdle?: (map: google.maps.Map) => void
   children?: React.ReactNode
+}
+
+const geocode = async (...props: Parameters<google.maps.Geocoder['geocode']>) => {
+  const geocoder = new window.google.maps.Geocoder()
+  return geocoder.geocode(...props)
 }
 
 const Map: React.FC<MapProps> = ({ onClick, onIdle, children, ...options }) => {
@@ -133,8 +136,8 @@ const MapPage: NextPage = () => {
   const [info, setInfo] = React.useState<string>('')
   const addressInput = React.useRef<HTMLInputElement>(null)
 
-  const updateAddress = async (latlng: LatLng) => {
-    const address = await reverseGeocodeByLatLng(latlng)
+  const updateAddress = async ({ lat, lng }: LatLng) => {
+    const address = await fetchAddressFromLatLng(lat, lng)
     setInfo(address)
   }
 
@@ -152,23 +155,20 @@ const MapPage: NextPage = () => {
           : TOKYO_STATION
 
       setMapLocation(defaultLocation)
-      updateAddress(defaultLocation)
     }
   }, [router])
   if (!pinned || !center) return <div>loading...</div>
 
   const onClickMarker = async (event: google.maps.MapMouseEvent | google.maps.IconMouseEvent) => {
     // avoid directly mutating state
-    const location = {
-      lat: roundLatLng(event.latLng!.lat()),
-      lng: roundLatLng(event.latLng!.lng()),
-    }
-    setPinned(location)
+    const lat = roundLatLng(event.latLng!.lat())
+    const lng = roundLatLng(event.latLng!.lng())
+    setPinned({ lat, lng })
 
     try {
       // ピンの位置を元に住所を検索
-      const formattedAddress = await reverseGeocodeByLatLng(location)
-      setInfo(formattedAddress)
+      const address = await fetchAddressFromLatLng(lat, lng)
+      setInfo(address)
     } catch (e) {
       const error = e as google.maps.MapsNetworkError
       setInfo(`ERROR: ${error.message}`)
@@ -178,7 +178,11 @@ const MapPage: NextPage = () => {
   const onIdleMarker = (m: google.maps.Map) => {
     console.info('onIdle')
     setZoom(m.getZoom()!)
-    setCenter(m.getCenter()!.toJSON())
+    const center = m.getCenter()!
+    setCenter(center.toJSON())
+    if (pinned?.lat === center?.lat() && pinned?.lng === center?.lng()) {
+      updateAddress(pinned)
+    }
   }
 
   const form = (
@@ -196,10 +200,14 @@ const MapPage: NextPage = () => {
                 if (!address) return
 
                 try {
-                  const { formattedAddress, lat, lng } = await geocodeByAddress(address)
+                  const { results } = await geocode({ address })
+                  const [result] = results
+                  const [lat, lng] = [
+                    roundLatLng(result.geometry.location.lat()),
+                    roundLatLng(result.geometry.location.lng()),
+                  ]
                   setPinned({ lat, lng })
                   setCenter({ lat, lng })
-                  setInfo(formattedAddress)
                   setZoom(17)
                 } catch (e) {
                   const error = e as google.maps.MapsNetworkError

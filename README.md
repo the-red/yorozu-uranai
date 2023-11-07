@@ -2,7 +2,7 @@
 
 環境構築
 ```
-git clone git@github.com:SonicGarden/yorozu-uranai.git
+git clone https://github.com/the-red/yorozu-uranai.git
 cd yorozu-uranai
 yarn install
 cp .env.example .env.development.deploy # 開発デプロイ向け環境変数

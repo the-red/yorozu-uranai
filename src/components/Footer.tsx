@@ -8,13 +8,6 @@ export default function Footer() {
           <TwitterLogo className="twitter-logo" width={25} height={25} alt="Twitterアイコン" />
         </a>
       </p>
-      <p className="copyright">
-        <small>
-          <a href="https://www.sonicgarden.jp" target="_blank" rel="noopener noreferrer">
-            © SonicGarden Inc. All rights reserved.
-          </a>
-        </small>
-      </p>
     </footer>
   )
 }

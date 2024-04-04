@@ -1,5 +1,7 @@
 # よろず占い🔮
 
+https://yorozu-uranai.com
+
 環境構築
 ```
 git clone https://github.com/the-red/yorozu-uranai.git

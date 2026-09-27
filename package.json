@@ -49,7 +49,7 @@
     "hepburn": "^1.2.0",
     "konva": "^8.1.1",
     "luxon": "^3.0.1",
-    "next": "^13.4.4",
+    "next": "^13.5.11",
     "react": "^18.2.0",
     "react-burger-menu": "^3.0.9",
     "react-dom": "^18.2.0",

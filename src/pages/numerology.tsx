@@ -1,6 +1,7 @@
 import { NextPage } from 'next'
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
+import { DateTime } from 'luxon'
 
 import Menu from '../components/Menu'
 import Header from '../components/Header'
@@ -9,7 +10,7 @@ import Footer from '../components/Footer'
 import { NumerologyForm, NumerologyFormProps, NumerologyFormValues } from '../numerology/components/NumerologyForm'
 import { CoreNumbers } from '../numerology/components/CoreNumbers'
 import { Numerology } from '../numerology/models/Numerology'
-import { Query, queryToFormValues, formValuesToQuery } from '../lib/params'
+import { Query, queryToFormValues, formValuesToQuery, FORM_DATE_FORMAT } from '../lib/params'
 
 export type OptionalQuery = Query
 
@@ -26,7 +27,7 @@ const NumerologyPage: NextPage = () => {
       if (f.name && f.date) {
         setNumerology(
           new Numerology({
-            birthDate: new Date(f.date),
+            birthDate: DateTime.fromFormat(f.date, FORM_DATE_FORMAT),
             fullName: f.name,
             maxSameNumber: 22,
           })

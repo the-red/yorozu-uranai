@@ -61,6 +61,19 @@ export const getEclipticLongitude = async (date: Date) => {
   return longitude
 }
 
+// 均時差（視太陽時 − 平均太陽時）を分単位で算出
+export const equationOfTime = (julday_ut: number): Promise<number> =>
+  new Promise((resolve, reject) =>
+    swisseph.swe_time_equ(julday_ut, (result) => {
+      if ('error' in result) {
+        return reject(new Error(result.error))
+      }
+
+      // 日単位で返ってくるので分に直す
+      resolve(result.timeEquation * 24 * 60)
+    })
+  )
+
 // ハウスの計算
 export const calcHouses = (julday_ut: number, geolat: number, geolon: number, hsys: string = ''): Promise<Houses> =>
   new Promise((resolve, reject) =>

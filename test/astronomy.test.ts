@@ -1,4 +1,11 @@
-import { julday, eclipticPosition, calcHouses, houseSystemName, longitudeToDate } from '../src/astronomy'
+import {
+  julday,
+  eclipticPosition,
+  calcHouses,
+  houseSystemName,
+  longitudeToDate,
+  equationOfTime,
+} from '../src/astronomy'
 import { NUM_DIGITS, expectToBeCloseTo } from './test-util'
 
 describe('astronomy', () => {
@@ -90,6 +97,22 @@ describe('astronomy', () => {
       expect(houseSystemName('A')).toEqual('equal')
       expect(houseSystemName()).toEqual('Placidus')
     })
+  })
+})
+
+describe('均時差', () => {
+  // 期待値は暦の一般的な値（年による違いは数秒程度）。分単位で、0.5分未満の差なら一致とみなす
+  const MINUTE_DIGITS = 0
+  const getEquationOfTime = async (iso: string) => equationOfTime(await julday(new Date(iso)))
+
+  it('9月上旬はほぼ0（視太陽時がわずかに進んでいる）', async () => {
+    expect(await getEquationOfTime('1987-09-08T08:53:00+09:00')).toBeCloseTo(2.05, MINUTE_DIGITS)
+  })
+  it('11月上旬は視太陽時が最も進んでいる', async () => {
+    expect(await getEquationOfTime('2023-11-03T12:00:00+09:00')).toBeCloseTo(16.4, MINUTE_DIGITS)
+  })
+  it('2月中旬は視太陽時が最も遅れている', async () => {
+    expect(await getEquationOfTime('2023-02-11T12:00:00+09:00')).toBeCloseTo(-14.2, MINUTE_DIGITS)
   })
 })
 

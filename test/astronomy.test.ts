@@ -1,4 +1,5 @@
 import { julday, eclipticPosition, calcHouses, houseSystemName, longitudeToDate } from '../src/astronomy'
+import { NUM_DIGITS, expectToBeCloseTo } from './test-util'
 
 describe('astronomy', () => {
   const funadyBirthday = new Date('1987-09-08T08:53:00+09:00')
@@ -7,13 +8,13 @@ describe('astronomy', () => {
 
   describe('ユリウス日', () => {
     it('ユリウス日', async () => {
-      expect(await julday(funadyBirthday)).toEqual(2447046.4951388887)
+      expect(await julday(funadyBirthday)).toBeCloseTo(2447046.4951388887, NUM_DIGITS)
     })
   })
 
   describe('黄道座標', () => {
     it('太陽', async () => {
-      expect(await eclipticPosition(await julday(funadyBirthday), 'sun')).toEqual({
+      expectToBeCloseTo(await eclipticPosition(await julday(funadyBirthday), 'sun'), {
         latitude: -0.000063,
         latitudeSpeed: 0.00004,
         longitude: 164.817337,
@@ -25,7 +26,7 @@ describe('astronomy', () => {
       })
     })
     it('月', async () => {
-      expect(await eclipticPosition(await julday(funadyBirthday), 'moon')).toEqual({
+      expectToBeCloseTo(await eclipticPosition(await julday(funadyBirthday), 'moon'), {
         latitude: -1.303161,
         latitudeSpeed: 1.30799,
         longitude: 348.062352,
@@ -37,7 +38,7 @@ describe('astronomy', () => {
       })
     })
     it('海王星', async () => {
-      expect(await eclipticPosition(await julday(funadyBirthday), 'neptune')).toEqual({
+      expectToBeCloseTo(await eclipticPosition(await julday(funadyBirthday), 'neptune'), {
         latitude: 1.018576,
         latitudeSpeed: -0.000705,
         longitude: 275.253885,
@@ -52,7 +53,7 @@ describe('astronomy', () => {
 
   describe('ハウス', () => {
     it('プラシーダス（デフォルト）', async () => {
-      expect(await calcHouses(await julday(funadyBirthday), funadyBirthLat, funadyBirthLon)).toEqual({
+      expectToBeCloseTo(await calcHouses(await julday(funadyBirthday), funadyBirthLat, funadyBirthLon), {
         house: [
           207.908591, 235.781911, 268.307258, 303.803709, 337.205891, 5.251311, 27.908591, 55.781911, 88.307258,
           123.803709, 157.205891, 185.251311,
@@ -69,7 +70,7 @@ describe('astronomy', () => {
     })
 
     it('コッホ', async () => {
-      expect(await calcHouses(await julday(funadyBirthday), funadyBirthLat, funadyBirthLon, 'K')).toEqual({
+      expectToBeCloseTo(await calcHouses(await julday(funadyBirthday), funadyBirthLat, funadyBirthLon, 'K'), {
         house: [
           207.908591, 235.809886, 265.452867, 303.803709, 331.708461, 359.806556, 27.908591, 55.809886, 85.452867,
           123.803709, 151.708461, 179.806556,

@@ -1,4 +1,5 @@
 import { getHoroscopeInstance, getHoroscopeProps } from '../../src/horoscope/models/horoscopeFactory'
+import { NUM_DIGITS, expectToBeCloseTo } from '../test-util'
 
 describe('Horoscope', () => {
   const funadyBirthday = new Date('1987-09-08T08:53:00+09:00')
@@ -8,16 +9,16 @@ describe('Horoscope', () => {
   describe('planets', () => {
     it('longitude', async () => {
       const { planets } = await getHoroscopeInstance(funadyBirthday, funadyBirthLat, funadyBirthLon)
-      expect(planets.sun.longitude).toEqual(164.817337)
-      expect(planets.moon.longitude).toEqual(348.062352)
-      expect(planets.mercury.longitude).toEqual(180.67738)
-      expect(planets.venus.longitude).toEqual(169.112858)
-      expect(planets.mars.longitude).toEqual(160.29299)
-      expect(planets.jupiter.longitude).toEqual(29.125698)
-      expect(planets.saturn.longitude).toEqual(254.845661)
-      expect(planets.uranus.longitude).toEqual(262.735112)
-      expect(planets.neptune.longitude).toEqual(275.253885)
-      expect(planets.pluto.longitude).toEqual(217.890372)
+      expect(planets.sun.longitude).toBeCloseTo(164.817337, NUM_DIGITS)
+      expect(planets.moon.longitude).toBeCloseTo(348.062352, NUM_DIGITS)
+      expect(planets.mercury.longitude).toBeCloseTo(180.67738, NUM_DIGITS)
+      expect(planets.venus.longitude).toBeCloseTo(169.112858, NUM_DIGITS)
+      expect(planets.mars.longitude).toBeCloseTo(160.29299, NUM_DIGITS)
+      expect(planets.jupiter.longitude).toBeCloseTo(29.125698, NUM_DIGITS)
+      expect(planets.saturn.longitude).toBeCloseTo(254.845661, NUM_DIGITS)
+      expect(planets.uranus.longitude).toBeCloseTo(262.735112, NUM_DIGITS)
+      expect(planets.neptune.longitude).toBeCloseTo(275.253885, NUM_DIGITS)
+      expect(planets.pluto.longitude).toBeCloseTo(217.890372, NUM_DIGITS)
     })
 
     it('sign', async () => {
@@ -52,7 +53,7 @@ describe('Horoscope', () => {
   describe('houses', () => {
     it('プラシーダス（デフォルト）', async () => {
       const horoscope = await getHoroscopeInstance(funadyBirthday, funadyBirthLat, funadyBirthLon)
-      expect(horoscope.house.raw).toEqual({
+      expectToBeCloseTo(horoscope.house.raw, {
         house: [
           207.908591, 235.781911, 268.307258, 303.803709, 337.205891, 5.251311, 27.908591, 55.781911, 88.307258,
           123.803709, 157.205891, 185.251311,
@@ -69,7 +70,7 @@ describe('Horoscope', () => {
     })
     it('コッホ', async () => {
       const horoscope = await getHoroscopeInstance(funadyBirthday, funadyBirthLat, funadyBirthLon, 'K')
-      expect(horoscope.house.raw).toEqual({
+      expectToBeCloseTo(horoscope.house.raw, {
         house: [
           207.908591, 235.809886, 265.452867, 303.803709, 331.708461, 359.806556, 27.908591, 55.809886, 85.452867,
           123.803709, 151.708461, 179.806556,

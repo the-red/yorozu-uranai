@@ -14,6 +14,7 @@ import { useFormValues } from '../hooks/useFormValues'
 import { FormProps } from '../hooks/useYorozuUranaiForm'
 import { Juuniun } from '../suimei/models/Juuniun'
 import { generateSaiun } from '../suimei/models/Saiun'
+import { toSolarTime } from '../suimei/models/SolarTime'
 
 export type OptionalQuery = Query
 
@@ -32,13 +33,15 @@ const SuimeiPage: NextPage = () => {
         return
       }
 
-      const { date, time, zone, gender } = formValues
+      const { date, time, zone, gender, lng } = formValues
       const suimeiSeed: {
         dateTime: DateTime
         gender: Gender
+        lng: number
       } = {
         dateTime: DateTime.fromISO(`${date}T${time}`, { zone }),
         gender,
+        lng,
       }
       const res = await fetch('/api/suimei-props', {
         method: 'POST',
@@ -51,7 +54,8 @@ const SuimeiPage: NextPage = () => {
       }
       const json = await res.json()
       const sekkiPair = json.sekkiPair as SekkiPair
-      const kanshi = new Kanshi(suimeiSeed.dateTime, sekkiPair)
+      const solarTime = toSolarTime(suimeiSeed.dateTime, suimeiSeed.lng, json.equationOfTime as number)
+      const kanshi = new Kanshi(suimeiSeed.dateTime, sekkiPair, solarTime.dateTime)
       const zoukan = new Zoukan(kanshi)
       const daiunDetail = json.daiun as Daiun[]
 

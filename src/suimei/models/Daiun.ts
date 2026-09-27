@@ -55,11 +55,12 @@ export const generateDaiun = async (
   datetime: DateTime,
   gender: Gender,
   sekkiPair: SekkiPair,
-  thisYear: number
+  thisYear: number,
+  solarTime: DateTime = datetime // 真太陽時
 ) => {
   const sekki = sekkiPair
   // 干支
-  const kanshi = new Kanshi(datetime, sekki)
+  const kanshi = new Kanshi(datetime, sekki, solarTime)
   // 順行か逆行か
   const forward = isForward(kanshi.年干, gender)
   // 初運

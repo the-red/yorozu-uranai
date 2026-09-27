@@ -1,4 +1,5 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
+import { Settings } from 'luxon'
 import suimeiProps from '../src/pages/api/suimei-props'
 
 const post = async (body: { dateTime: string; gender: 'man' | 'woman'; lng?: number }) => {
@@ -55,6 +56,30 @@ describe('/api/suimei-props', () => {
       tenkanTsuhensei: '偏印',
       zoukanTsuhensei: '比肩',
       juuniun: '建禄',
+    })
+  })
+
+  describe('大運の「現在」の行', () => {
+    afterEach(() => {
+      Settings.now = () => Date.now()
+    })
+
+    // 日本時間の 2028-01-01 03:00（UTCやニューヨークでは、まだ2027年の大晦日）
+    const setNow = () => {
+      Settings.now = () => new Date('2028-01-01T03:00:00+09:00').getTime()
+    }
+    const currentRow = (json: any) => json.daiun.filter((_: any) => _.thisYear).map((_: any) => _.fromAge)
+
+    it('日本生まれ: サーバーがUTCでも、日本時間で年が明けていれば新年で判定する', async () => {
+      // 1987年生まれ。2028年なら41歳（41〜50歳の行）、2027年なら40歳（31〜40歳の行）
+      setNow()
+      const { json } = await post({ dateTime: '1987-09-08T08:53:00.000+09:00', gender: 'woman', lng: 141.35 })
+      expect(currentRow(json)).toEqual([41])
+    })
+    it('海外生まれ: 現地で年が明けていなければ前年で判定する', async () => {
+      setNow()
+      const { json } = await post({ dateTime: '1987-09-08T20:00:00.000-04:00', gender: 'woman', lng: -74.006 })
+      expect(currentRow(json)).toEqual([31])
     })
   })
 

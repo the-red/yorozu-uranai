@@ -9,6 +9,7 @@ import { SekkiPair, Kanshi } from '../../suimei/models'
 import { Gender } from '../../suimei/models/Daiun'
 import { Saiun, generateSaiun } from '../../suimei/models/Saiun'
 import { toSolarTime } from '../../suimei/models/SolarTime'
+import { getThisYear } from '../../suimei/models/ThisYear'
 import { SaiunContent } from '../../suimei/components/Saiun'
 
 export type OptionalQuery = Query
@@ -52,7 +53,7 @@ const SuimeiSaiunPage: NextPage = () => {
       const solarTime = toSolarTime(suimeiSeed.dateTime, suimeiSeed.lng, json.equationOfTime as number)
       const kanshi = new Kanshi(suimeiSeed.dateTime, sekkiPair, solarTime.dateTime)
 
-      const thisYear = DateTime.now().year
+      const thisYear = getThisYear(suimeiSeed.dateTime)
       const saiun = generateSaiun(
         kanshi,
         suimeiSeed.dateTime,

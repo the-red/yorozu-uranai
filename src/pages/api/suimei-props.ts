@@ -4,6 +4,7 @@ import { julday, equationOfTime as calcEquationOfTime } from '../../astronomy'
 import { getSekkiPair } from '../../suimei/models/SekkiUtil'
 import { Daiun, generateDaiun } from '../../suimei/models/Daiun'
 import { toSolarTime } from '../../suimei/models/SolarTime'
+import { getThisYear } from '../../suimei/models/ThisYear'
 import { DateTime } from 'luxon'
 import { SekkiPair } from '../../suimei/models'
 
@@ -38,7 +39,7 @@ const suimeiProps = async (req: NextApiRequest, res: NextApiResponse<Data>) => {
     dateTime,
     req.body.gender,
     sekkiPair,
-    DateTime.now().year,
+    getThisYear(dateTime),
     solarTime.dateTime
   )
   res.status(200).json({

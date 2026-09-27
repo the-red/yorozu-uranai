@@ -1,6 +1,7 @@
 export * from './Kanshi'
 export * from './Sekki'
 export * from './SolarTime'
+export * from './ThisYear'
 export * from './Tsuhensei'
 export * from './Zoukan'
 export * from './types'

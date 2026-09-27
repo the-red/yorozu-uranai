@@ -8,7 +8,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## コマンド
 
-パッケージマネージャは yarn (v1)、Node.js は 18（`.tool-versions`）。
+パッケージマネージャは yarn (v1)、Node.js は 24（`.tool-versions` と `package.json` の `engines`）。
 
 ```sh
 yarn dev          # next dev と pathpida --watch を並列起動
@@ -41,6 +41,7 @@ yarn deploy production    # GCPプロジェクト yorozu-uranai-production
 - **計算結果は、実行環境のタイムゾーンに依存させない**。本番サーバー（Cloud Run）は UTC で動く可能性があり、利用者のブラウザも日本時間とは限らないため。日時を扱う変更をしたら `TZ=UTC yarn test` と `TZ=America/New_York yarn test` でも確認する
 - 小数の比較は `toBeCloseTo()` を使う。桁数は `test/test-util.ts` の `NUM_DIGITS`。オブジェクトや配列は同ファイルの `expectToBeCloseTo()` でまとめて比較する（Jest 27.4 には `expect.closeTo()` が無い）
 - `swisseph` はネイティブアドオンなので、Node.js のバージョンを変えたら `yarn install` し直す（リビルドが必要）
+  - `swisseph` が依存する `nan` と `node-gyp` は古いままだと Node.js 24 でビルドできないので、`package.json` の `resolutions` で新しいバージョンに固定している
 - テスト対象は `src/*/models` と `src/astronomy` の計算ロジックが中心。コンポーネントのテストは無い
 - 期待値は実在の生年月日に対する計算結果をハードコードしている。天文計算の結果は `src/astronomy` 側で小数第6位に切り捨てている
 
@@ -122,5 +123,4 @@ SVG は `import X from './x.svg'` で React コンポーネント（SVGR）、`'
 
 ## 既知の不整合
 
-- `Dockerfile` のベースイメージは `node:16.15.1` のままで、`.tool-versions` の Node.js 18 と一致していない
 - `src/pages/_middleware.ts.txt` は Basic 認証ミドルウェアを拡張子で無効化したもの（現在は使われていない）

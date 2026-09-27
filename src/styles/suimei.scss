@@ -322,6 +322,11 @@ $sp_width: 375;
           @include table_data_width(343, 74, 4);
         }
       }
+      .solar_time {
+        margin-top: 12px;
+        font-size: 12px;
+        text-align: right;
+      }
     }
     // 五行バランス
     &.gogyo_balance {

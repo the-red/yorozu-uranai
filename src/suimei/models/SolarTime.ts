@@ -28,3 +28,19 @@ export const toSolarTime = (
     equationOfTime,
   }
 }
+
+// 分単位の差を符号付きで表示
+const formatMinutes = (minutes: number) => {
+  const rounded = Math.round(minutes)
+  if (rounded === 0) {
+    return '±0分'
+  }
+  return `${rounded > 0 ? '+' : '-'}${Math.abs(rounded)}分`
+}
+
+// 画面表示用の文字列に変換
+export const formatSolarTime = (solarTime: SolarTime) => ({
+  dateTime: solarTime.dateTime.toFormat('yyyy/MM/dd HH:mm'),
+  longitudeDiff: formatMinutes(solarTime.longitudeDiff),
+  equationOfTime: formatMinutes(solarTime.equationOfTime),
+})

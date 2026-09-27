@@ -1,5 +1,5 @@
 import { DateTime } from 'luxon'
-import { toSolarTime } from '../../src/suimei/models/SolarTime'
+import { toSolarTime, formatSolarTime } from '../../src/suimei/models/SolarTime'
 import { NUM_DIGITS } from '../test-util'
 
 const FORMAT = 'yyyy-MM-dd HH:mm'
@@ -37,5 +37,32 @@ describe('真太陽時', () => {
     const solarTime = toSolarTime(dateTime, -74.006, 2.2)
     expect(solarTime.longitudeDiff).toBeCloseTo(-56.024, NUM_DIGITS)
     expect(solarTime.dateTime.toFormat(FORMAT)).toEqual('1987-09-08 19:06')
+  })
+})
+
+describe('真太陽時の表示', () => {
+  it('進む場合', () => {
+    const dateTime = DateTime.fromISO('1987-09-08T08:53:00', { zone: 'Asia/Tokyo' })
+    expect(formatSolarTime(toSolarTime(dateTime, 141.35, 2.05))).toEqual({
+      dateTime: '1987/09/08 09:20',
+      longitudeDiff: '+25分',
+      equationOfTime: '+2分',
+    })
+  })
+  it('遅れる場合', () => {
+    const dateTime = DateTime.fromISO('1987-02-11T08:53:00', { zone: 'Asia/Tokyo' })
+    expect(formatSolarTime(toSolarTime(dateTime, 127.68, -14.2))).toEqual({
+      dateTime: '1987/02/11 08:09',
+      longitudeDiff: '-29分',
+      equationOfTime: '-14分',
+    })
+  })
+  it('差が無い場合', () => {
+    const dateTime = DateTime.fromISO('1987-09-08T08:53:00', { zone: 'Asia/Tokyo' })
+    expect(formatSolarTime(toSolarTime(dateTime, 135, 0.2))).toEqual({
+      dateTime: '1987/09/08 08:53',
+      longitudeDiff: '±0分',
+      equationOfTime: '±0分',
+    })
   })
 })

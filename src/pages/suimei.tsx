@@ -66,6 +66,7 @@ const SuimeiPage: NextPage = () => {
 
       setSuimei({
         sekki: sekkiPair.today,
+        solarTime,
         kanshi,
         tenkanTsuhensei: new TenkanTsuhensei(kanshi),
         zoukan,

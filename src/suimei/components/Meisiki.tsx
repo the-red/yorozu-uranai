@@ -4,9 +4,11 @@ import type { FC } from 'react'
 import type { Suimei } from '../models/types'
 import StringArrayWithBreaks from '../../components/StringArrayWithBreaks'
 import { Tooltip } from 'react-tooltip'
+import { formatSolarTime } from '../models/SolarTime'
 
 export const Meisiki: FC<{ suimei: Suimei }> = ({ suimei }) => {
   const { kanshi, tenkanTsuhensei, zoukan, zoukanTsuhensei, tokushusei, juuniun } = suimei
+  const solarTime = formatSolarTime(suimei.solarTime)
 
   return (
     <section className="result meisiki">
@@ -141,6 +143,11 @@ export const Meisiki: FC<{ suimei: Suimei }> = ({ suimei }) => {
             </tr>
           </tbody>
         </table>
+        <p className="solar_time">
+          日柱と時柱は、出生場所での真太陽時 {solarTime.dateTime} で算出しています。
+          <br />
+          （地方時差 {solarTime.longitudeDiff}、均時差 {solarTime.equationOfTime}）
+        </p>
       </div>
     </section>
   )

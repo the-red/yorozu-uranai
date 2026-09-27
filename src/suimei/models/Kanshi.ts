@@ -64,7 +64,12 @@ export type SekkiPair = {
 export class Kanshi {
   static readonly 六十干支 = get六十干支()
 
-  constructor(private readonly date: DateTime, private readonly sekki: SekkiPair) {}
+  constructor(
+    private readonly date: DateTime, // 出生地のタイムゾーンで渡す
+    private readonly sekki: SekkiPair,
+    // 真太陽時。日柱と時柱はこちらで決まる。年柱と月柱は節入り（絶対時刻）で決まるので使わない
+    private readonly solarTime: DateTime = date
+  ) {}
 
   get 年柱(): 干支 {
     let { year } = this.date
@@ -98,7 +103,7 @@ export class Kanshi {
   // 基準日からの日数
   // 出生地の暦の日付だけで数える（実行環境のタイムゾーンや時刻に左右されないよう、日付をUTCに置き換えて差を取る）
   private get daysFromBase(): number {
-    const { year, month, day } = this.date
+    const { year, month, day } = this.solarTime
     return DateTime.utc(year, month, day).diff(Kanshi.BASE, 'days').days
   }
 
@@ -109,10 +114,7 @@ export class Kanshi {
   }
 
   get 時柱(): 干支 {
-    // TODO: 位置情報を考慮して時刻を微調整する
-    // 四柱推命の本P22を参照
-    // ホロスコープも同じ調整を入れるべきか？
-    const hour = this.date.plus({ hour: 1 }).hour
+    const hour = this.solarTime.plus({ hour: 1 }).hour
 
     const index = (Math.trunc(hour / 2) + this.日干index * 12) % 60
 

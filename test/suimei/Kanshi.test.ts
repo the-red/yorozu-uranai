@@ -1,6 +1,7 @@
 import { DateTime } from 'luxon'
 import { Kanshi, get十二支五行, get十干五行 } from '../../src/suimei/models/Kanshi'
 import { getSekkiPair } from '../../src/suimei/models/SekkiUtil'
+import { toSolarTime } from '../../src/suimei/models/SolarTime'
 import { getKanshiInstance } from './test-util'
 
 describe('六十干支', () => {
@@ -189,6 +190,36 @@ describe('日本生まれは実行環境のタイムゾーンに依らず同じ�
     const sekkiPair = await getSekkiPair(dateTime)
     expect(sekkiPair).toEqual({ today: '立秋', endOfMonth: '白露' })
     const kanshi = new Kanshi(dateTime, sekkiPair)
+    expect(kanshi.月柱).toEqual('戊申')
+    expect(kanshi.日柱).toEqual('癸丑')
+  })
+})
+
+describe('真太陽時で計算', () => {
+  // 札幌生まれ。地方時差 25.4分 + 均時差 2.05分 で、27分ほど進む
+  const getSapporoKanshi = async (iso: string) => {
+    const dateTime = DateTime.fromISO(iso, { zone: 'Asia/Tokyo' })
+    const solarTime = toSolarTime(dateTime, 141.35, 2.05)
+    return new Kanshi(dateTime, await getSekkiPair(dateTime), solarTime.dateTime)
+  }
+
+  it('時柱: 真太陽時の時刻で決まる', async () => {
+    // 08:53 → 09:20 で、辰刻から巳刻になる
+    const kanshi = await getSapporoKanshi('1987-09-08T08:53:00')
+    expect(kanshi.年柱).toEqual('丁卯')
+    expect(kanshi.月柱).toEqual('戊申')
+    expect(kanshi.日柱).toEqual('庚申')
+    expect(kanshi.時柱).toEqual('辛巳')
+  })
+  it('日柱: 真太陽時の日付で決まる', async () => {
+    // 09-08 23:50 → 09-09 00:17
+    const kanshi = await getSapporoKanshi('1987-09-08T23:50:00')
+    expect(kanshi.日柱).toEqual('辛酉')
+    expect(kanshi.時柱).toEqual('戊子')
+  })
+  it('月柱: 真太陽時で月をまたいでも変わらない', async () => {
+    // 08-31 23:50 → 09-01 00:17。節入りは絶対時刻で決まるので、月柱は立秋からの戊申のまま
+    const kanshi = await getSapporoKanshi('1987-08-31T23:50:00')
     expect(kanshi.月柱).toEqual('戊申')
     expect(kanshi.日柱).toEqual('癸丑')
   })

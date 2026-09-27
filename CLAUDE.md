@@ -38,8 +38,7 @@ yarn deploy production    # GCPプロジェクト yorozu-uranai-production
 
 ## テストの注意点
 
-- **四柱推命とホロスコープの計算は、実行環境のタイムゾーンに依存させない**。本番サーバー（Cloud Run）は UTC で動く可能性があるため。日時を扱う変更をしたら `TZ=UTC yarn test` と `TZ=America/New_York yarn test` でも確認する
-  - 数秘術のテスト（`Numerology.test.ts`）だけは、UTC より西のタイムゾーンで3件失敗する（既知・未対応）
+- **計算結果は、実行環境のタイムゾーンに依存させない**。本番サーバー（Cloud Run）は UTC で動く可能性があり、利用者のブラウザも日本時間とは限らないため。日時を扱う変更をしたら `TZ=UTC yarn test` と `TZ=America/New_York yarn test` でも確認する
 - 小数の比較は `toBeCloseTo()` を使う。桁数は `test/test-util.ts` の `NUM_DIGITS`。オブジェクトや配列は同ファイルの `expectToBeCloseTo()` でまとめて比較する（Jest 27.4 には `expect.closeTo()` が無い）
 - `swisseph` はネイティブアドオンなので、Node.js のバージョンを変えたら `yarn install` し直す（リビルドが必要）
 - テスト対象は `src/*/models` と `src/astronomy` の計算ロジックが中心。コンポーネントのテストは無い
@@ -96,7 +95,7 @@ yarn deploy production    # GCPプロジェクト yorozu-uranai-production
 - 四柱ごとに使う時刻が違う
   - 年柱・月柱: 節入り（絶対時刻）で決まる。暦の年月は出生地のタイムゾーンで数える
   - 日柱・時柱: 真太陽時（`SolarTime.ts`）の日付と時刻で決まる。時計の時刻に、地方時差（出生地の経度）と均時差の両方を足したもの。片方だけの補正はしない
-- 日時は必ず出生地のタイムゾーンを持った luxon の `DateTime` で渡す。`Date` や、ゾーン指定なしの `DateTime.fromISO()` / `fromJSDate()` は実行環境のタイムゾーンになるので使わない（API では `{ setZone: true }` で受け取る）
+- 日時は必ず出生地のタイムゾーンを持った luxon の `DateTime` で渡す（数秘術の生年月日も同じ）。`Date` や、ゾーン指定なしの `DateTime.fromISO()` / `fromJSDate()` は実行環境のタイムゾーンになるので使わない（API では `{ setZone: true }` で受け取る）
 - 特殊星 (`models/tokushusei/`) はルール表をデータとして持つ。表は `scripts/generate-tokushusei.js` に TSV を貼って JSON 化したものを元にしている
 
 ### ホロスコープの描画

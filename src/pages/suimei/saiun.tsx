@@ -9,7 +9,6 @@ import { SekkiPair, Kanshi } from '../../suimei/models'
 import { Gender } from '../../suimei/models/Daiun'
 import { Saiun, generateSaiun } from '../../suimei/models/Saiun'
 import { toSolarTime } from '../../suimei/models/SolarTime'
-import { getThisYear } from '../../suimei/models/ThisYear'
 import { SaiunContent } from '../../suimei/components/Saiun'
 
 export type OptionalQuery = Query
@@ -34,10 +33,13 @@ const SuimeiSaiunPage: NextPage = () => {
         dateTime: DateTime
         gender: Gender
         lng: number
+        thisYear: number
       } = {
         dateTime: DateTime.fromISO(`${date}T${time}`, { zone }),
         gender,
         lng,
+        // 閲覧者の現在地（ブラウザのタイムゾーン）での現在の年
+        thisYear: DateTime.now().year,
       }
       const res = await fetch('/api/suimei-props', {
         method: 'POST',
@@ -53,7 +55,7 @@ const SuimeiSaiunPage: NextPage = () => {
       const solarTime = toSolarTime(suimeiSeed.dateTime, suimeiSeed.lng, json.equationOfTime as number)
       const kanshi = new Kanshi(suimeiSeed.dateTime, sekkiPair, solarTime.dateTime)
 
-      const thisYear = getThisYear(suimeiSeed.dateTime)
+      const { thisYear } = suimeiSeed
       const saiun = generateSaiun(
         kanshi,
         suimeiSeed.dateTime,

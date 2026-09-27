@@ -96,7 +96,7 @@ yarn deploy production    # GCPプロジェクト yorozu-uranai-production
   - 年柱・月柱: 節入り（絶対時刻）で決まる。暦の年月は出生地のタイムゾーンで数える
   - 日柱・時柱: 真太陽時（`SolarTime.ts`）の日付と時刻で決まる。時計の時刻に、地方時差（出生地の経度）と均時差の両方を足したもの。片方だけの補正はしない
 - 日時は必ず出生地のタイムゾーンを持った luxon の `DateTime` で渡す（数秘術の生年月日も同じ）。`Date` や、ゾーン指定なしの `DateTime.fromISO()` / `fromJSDate()` は実行環境のタイムゾーンになるので使わない（API では `{ setZone: true }` で受け取る）
-- 現在の年（大運・歳運の「現在」の行の判定）は `getThisYear()` で求める。`DateTime.now().year` はサーバーやブラウザのタイムゾーンに左右されるので直接使わない
+- 現在の年（大運・歳運の「現在」の行の判定）は、閲覧者の現在地を基準にする。ブラウザで `DateTime.now().year` を求めて API にも `thisYear` として送る。サーバー側では時計を使わない
 - 特殊星 (`models/tokushusei/`) はルール表をデータとして持つ。表は `scripts/generate-tokushusei.js` に TSV を貼って JSON 化したものを元にしている
 
 ### ホロスコープの描画

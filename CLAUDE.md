@@ -38,10 +38,12 @@ yarn deploy production    # GCPプロジェクト yorozu-uranai-production
 
 ## テストの注意点
 
-- **テストはローカルタイムゾーンが Asia/Tokyo である前提**。`TZ=UTC` で実行すると四柱推命系（Kanshi / Zoukan / Tsuhensei / Tokushusei）が失敗する。JST 以外の環境では `TZ=Asia/Tokyo yarn test` とする
+- **四柱推命とホロスコープの計算は、実行環境のタイムゾーンに依存させない**。本番サーバー（Cloud Run）は UTC で動く可能性があるため。日時を扱う変更をしたら `TZ=UTC yarn test` と `TZ=America/New_York yarn test` でも確認する
+  - 数秘術のテスト（`Numerology.test.ts`）だけは、UTC より西のタイムゾーンで3件失敗する（既知・未対応）
+- 小数の比較は `toBeCloseTo()` を使う。桁数は `test/test-util.ts` の `NUM_DIGITS`。オブジェクトや配列は同ファイルの `expectToBeCloseTo()` でまとめて比較する（Jest 27.4 には `expect.closeTo()` が無い）
 - `swisseph` はネイティブアドオンなので、Node.js のバージョンを変えたら `yarn install` し直す（リビルドが必要）
 - テスト対象は `src/*/models` と `src/astronomy` の計算ロジックが中心。コンポーネントのテストは無い
-- 期待値は実在の生年月日に対する計算結果をハードコードしている。天文計算の結果は処理系による誤差を避けるため `src/astronomy` 側で小数第6位に切り捨てている
+- 期待値は実在の生年月日に対する計算結果をハードコードしている。天文計算の結果は `src/astronomy` 側で小数第6位に切り捨てている
 
 ## アーキテクチャ
 
@@ -61,7 +63,7 @@ yarn deploy production    # GCPプロジェクト yorozu-uranai-production
 | API | 返すもの | クライアント側での復元 |
 | --- | --- | --- |
 | `POST /api/horoscope-props` | 惑星の黄道座標とハウス（プレーンな JSON） | `new Horoscope(props)` |
-| `POST /api/suimei-props` | 節気ペア (`SekkiPair`) と大運 | `new Kanshi(dateTime, sekkiPair)` を起点に `Zoukan` / `Tsuhensei` / `Juuniun` / `tokushusei` / `generateSaiun` をクライアントで計算 |
+| `POST /api/suimei-props` | 節気ペア (`SekkiPair`)・均時差・大運 | `toSolarTime()` で真太陽時を求め、`new Kanshi(dateTime, sekkiPair, solarTime)` を起点に `Zoukan` / `Tsuhensei` / `Juuniun` / `tokushusei` / `generateSaiun` をクライアントで計算 |
 | `POST /api/geocode` | 緯度経度 → 住所（逆ジオコーディング） | — |
 
 つまり「天文計算が必要な部分だけサーバー、そこから先の導出はクライアント」という分担。新しい計算を追加するときは、`astronomy` に依存するかどうかで置き場所が決まる。数秘術は天文計算が不要なので API を使わず完全にクライアントで完結する。
@@ -91,6 +93,10 @@ yarn deploy production    # GCPプロジェクト yorozu-uranai-production
 - 識別子に日本語（漢字）を使っている: `年柱` / `日干` / `十二支list` / `節` など。ファイル名はローマ字（`Kanshi`, `Zoukan`, `Tsuhensei`, `Juuniun`, `Daiun`, `Saiun`）。既存の命名に合わせること
 - 月の区切りは暦月ではなく節入り（太陽黄経）で決まる。`Sekki.ts` は立春 = 黄経315° を基準に 30° 刻みで節を求め、`SekkiUtil.getSetsuIri` は `astronomy.longitudeToDate` で節入り日時を反復計算で求める
 - `Kanshi` は「当日の節」と「月末の節」のペア (`SekkiPair`) を受け取り、節入りの前後で年柱・月柱を補正する
+- 四柱ごとに使う時刻が違う
+  - 年柱・月柱: 節入り（絶対時刻）で決まる。暦の年月は出生地のタイムゾーンで数える
+  - 日柱・時柱: 真太陽時（`SolarTime.ts`）の日付と時刻で決まる。時計の時刻に、地方時差（出生地の経度）と均時差の両方を足したもの。片方だけの補正はしない
+- 日時は必ず出生地のタイムゾーンを持った luxon の `DateTime` で渡す。`Date` や、ゾーン指定なしの `DateTime.fromISO()` / `fromJSDate()` は実行環境のタイムゾーンになるので使わない（API では `{ setZone: true }` で受け取る）
 - 特殊星 (`models/tokushusei/`) はルール表をデータとして持つ。表は `scripts/generate-tokushusei.js` に TSV を貼って JSON 化したものを元にしている
 
 ### ホロスコープの描画

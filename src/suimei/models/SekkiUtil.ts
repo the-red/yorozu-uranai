@@ -12,11 +12,11 @@ const getSekki = async (date: Date): Promise<節> => {
   return sekki(longitude)
 }
 
-export const getSekkiPair = async (date: Date): Promise<SekkiPair> => {
-  const dateTime = DateTime.fromJSDate(date)
-
+export const getSekkiPair = async (
+  dateTime: DateTime // 月末は出生地の暦で判定するので、出生地のタイムゾーンで渡す
+): Promise<SekkiPair> => {
   return {
-    today: await getSekki(date),
+    today: await getSekki(dateTime.toJSDate()),
     endOfMonth: await getSekki(dateTime.endOf('month').toJSDate()),
   }
 }

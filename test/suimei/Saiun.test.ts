@@ -5,10 +5,10 @@ import { getSekkiPair } from '../../src/suimei/models/SekkiUtil'
 
 describe('Daiun', () => {
   it('1983-05-17T18:15.000+9:00の歳運', async () => {
-    const dateTime = DateTime.fromISO('1983-05-17T18:15:00+09:00')
+    const dateTime = DateTime.fromISO('1983-05-17T18:15:00+09:00', { setZone: true })
     const date = dateTime.toJSDate()
     const kanshi = await getKanshiInstance(date)
-    const sekki = await getSekkiPair(date)
+    const sekki = await getSekkiPair(dateTime)
     const thisYear = 2023
     const saiunDetail = generateSaiun(kanshi, dateTime, sekki, thisYear, thisYear - 5, thisYear + 10)
     expect(saiunDetail[3]).toEqual({

@@ -57,10 +57,9 @@ export const generateDaiun = async (
   sekkiPair: SekkiPair,
   thisYear: number
 ) => {
-  const baseDate = DateTime.fromJSDate(date)
   const sekki = sekkiPair
   // 干支
-  const kanshi = new Kanshi(baseDate, sekki)
+  const kanshi = new Kanshi(datetime, sekki)
   // 順行か逆行か
   const forward = isForward(kanshi.年干, gender)
   // 初運
@@ -69,7 +68,7 @@ export const generateDaiun = async (
   // 月柱の干支の順行 / 逆行早見表でのindex
   const gecchuIndex = forward ? junkou.indexOf(kanshi.月柱) : gyakkou.indexOf(kanshi.月柱)
 
-  const age = thisYear - baseDate.year
+  const age = thisYear - datetime.year
   const daiun: Daiun[] = []
 
   for (let i = 0; ; i++) {

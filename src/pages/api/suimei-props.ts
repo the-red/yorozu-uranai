@@ -18,9 +18,10 @@ const suimeiProps = async (req: NextApiRequest, res: NextApiResponse<Data>) => {
     return res.status(400).json({ errorMessage: 'Invalid birthday' })
   }
 
-  const dateTime = DateTime.fromISO(req.body.dateTime)
+  // 出生地の暦で計算するので、サーバーのタイムゾーンに変換せず、送られてきたオフセットのまま扱う
+  const dateTime = DateTime.fromISO(req.body.dateTime, { setZone: true })
 
-  const sekkiPair = await getSekkiPair(birthday)
+  const sekkiPair = await getSekkiPair(dateTime)
   const daiunDetail = await generateDaiun(birthday, dateTime, req.body.gender, sekkiPair, DateTime.now().year)
   res.status(200).json({
     sekkiPair: sekkiPair,

@@ -161,7 +161,7 @@ describe('海外生まれは出生地の暦で計算', () => {
   // ニューヨークで 1987-09-08 20:00 生まれ（日本時間では 09-09 09:00）
   const getNewYorkKanshi = async () => {
     const dateTime = DateTime.fromISO('1987-09-08T20:00:00', { zone: 'America/New_York' })
-    return new Kanshi(dateTime, await getSekkiPair(dateTime.toJSDate()))
+    return new Kanshi(dateTime, await getSekkiPair(dateTime))
   }
 
   it('日柱は現地の日付で決まる', async () => {
@@ -171,6 +171,26 @@ describe('海外生まれは出生地の暦で計算', () => {
   it('時柱は現地の時刻で決まる', async () => {
     const kanshi = await getNewYorkKanshi()
     expect(kanshi.時柱).toEqual('丙戌')
+  })
+  it('月柱は現地の月末までに節入りするかで決まる', async () => {
+    // ニューヨークで 1987-08-31 20:00 生まれ（日本時間では 09-01 09:00）
+    // 現地の8月は立秋を過ぎていて、月末まで次の節（白露）は来ない
+    const dateTime = DateTime.fromISO('1987-08-31T20:00:00', { zone: 'America/New_York' })
+    const sekkiPair = await getSekkiPair(dateTime)
+    expect(sekkiPair).toEqual({ today: '立秋', endOfMonth: '立秋' })
+    expect(new Kanshi(dateTime, sekkiPair).月柱).toEqual('戊申')
+  })
+})
+
+describe('日本生まれは実行環境のタイムゾーンに依らず同じ結果', () => {
+  it('月初の早朝生まれ（UTCではまだ前月）', async () => {
+    // 1987-09-01 05:00 生まれ。白露（09-08）の前なので、月柱は立秋からの戊申
+    const dateTime = DateTime.fromISO('1987-09-01T05:00:00', { zone: 'Asia/Tokyo' })
+    const sekkiPair = await getSekkiPair(dateTime)
+    expect(sekkiPair).toEqual({ today: '立秋', endOfMonth: '白露' })
+    const kanshi = new Kanshi(dateTime, sekkiPair)
+    expect(kanshi.月柱).toEqual('戊申')
+    expect(kanshi.日柱).toEqual('癸丑')
   })
 })
 

@@ -80,14 +80,12 @@ export class Kanshi {
   }
 
   get 月柱(): 干支 {
-    const BASE = DateTime.fromISO('2019-01-01T00:00:00+09:00') // 月柱が甲子の元旦
-    let monthsDiff = Math.trunc(this.date.diff(BASE, 'months').months)
+    // 月初の月柱が甲子になる2019年1月からの月数（出生地の暦で数える）
+    let monthsDiff = (this.date.year - 2019) * 12 + (this.date.month - 1)
 
-    // 節入日の前後によって調整
-    if (this.date > BASE && this.sekki.today === this.sekki.endOfMonth) {
+    // その月の節入りを過ぎていたら、次の干支に進める
+    if (this.sekki.today === this.sekki.endOfMonth) {
       monthsDiff++
-    } else if (this.date < BASE && this.sekki.today !== this.sekki.endOfMonth) {
-      monthsDiff--
     }
     const index = monthsDiff % 60
 

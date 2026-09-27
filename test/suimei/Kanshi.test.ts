@@ -1,4 +1,6 @@
+import { DateTime } from 'luxon'
 import { Kanshi, get十二支五行, get十干五行 } from '../../src/suimei/models/Kanshi'
+import { getSekkiPair } from '../../src/suimei/models/SekkiUtil'
 import { getKanshiInstance } from './test-util'
 
 describe('六十干支', () => {
@@ -147,6 +149,28 @@ describe('日柱を計算', () => {
   it('1909-01-03（基準日より前）', async () => {
     const kanshi = await getKanshiInstance(new Date('1909-01-03T00:00:00+09:00'))
     expect(kanshi.日柱).toEqual('癸亥')
+  })
+  it('1909-01-03 12:00（基準日より前・0時以外）', async () => {
+    const kanshi = await getKanshiInstance(new Date('1909-01-03T12:00:00+09:00'))
+    expect(kanshi.日柱).toEqual('癸亥')
+    expect(kanshi.時柱).toEqual('戊午')
+  })
+})
+
+describe('海外生まれは出生地の暦で計算', () => {
+  // ニューヨークで 1987-09-08 20:00 生まれ（日本時間では 09-09 09:00）
+  const getNewYorkKanshi = async () => {
+    const dateTime = DateTime.fromISO('1987-09-08T20:00:00', { zone: 'America/New_York' })
+    return new Kanshi(dateTime, await getSekkiPair(dateTime.toJSDate()))
+  }
+
+  it('日柱は現地の日付で決まる', async () => {
+    const kanshi = await getNewYorkKanshi()
+    expect(kanshi.日柱).toEqual('庚申')
+  })
+  it('時柱は現地の時刻で決まる', async () => {
+    const kanshi = await getNewYorkKanshi()
+    expect(kanshi.時柱).toEqual('丙戌')
   })
 })
 

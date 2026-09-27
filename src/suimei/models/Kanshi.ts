@@ -95,11 +95,17 @@ export class Kanshi {
   }
 
   // 日柱が甲子(index:0)となる基準日
-  private static BASE = DateTime.fromISO('1909-01-04')
+  private static BASE = DateTime.utc(1909, 1, 4)
+
+  // 基準日からの日数
+  // 出生地の暦の日付だけで数える（実行環境のタイムゾーンや時刻に左右されないよう、日付をUTCに置き換えて差を取る）
+  private get daysFromBase(): number {
+    const { year, month, day } = this.date
+    return DateTime.utc(year, month, day).diff(Kanshi.BASE, 'days').days
+  }
 
   get 日柱(): 干支 {
-    const diff = this.date.diff(Kanshi.BASE, 'days').days
-    const index = diff % 60
+    const index = this.daysFromBase % 60
 
     return Kanshi.六十干支.at(index)!
   }
@@ -161,8 +167,6 @@ export class Kanshi {
   }
 
   private get 日干index(): number {
-    const diff = this.date.diff(Kanshi.BASE, 'days').days
-    const index = Math.trunc(diff % 10)
-    return index
+    return this.daysFromBase % 10
   }
 }

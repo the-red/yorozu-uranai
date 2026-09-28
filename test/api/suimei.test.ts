@@ -200,7 +200,7 @@ describe('/suimei.json', () => {
       expect(status).toEqual(400)
       // ライブラリのエラーメッセージ（内部のファイル名やパスを含む）を、そのまま返さない
       expect(json).toEqual({
-        error: { code: 'calculation_failed', message: 'This date cannot be calculated', params: [] },
+        error: { code: 'calculation_failed', message: 'This date cannot be calculated', params: ['date'] },
       })
       expect(consoleError).toHaveBeenCalledTimes(1)
       consoleError.mockRestore()

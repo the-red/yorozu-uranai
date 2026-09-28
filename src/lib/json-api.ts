@@ -22,7 +22,7 @@ export type ErrorJson = {
   error: {
     code: ErrorCode
     message: string
-    params: string[] // 問題のあるパラメータ。invalid_query 以外では空
+    params: string[] // 問題のあるパラメータ。直す場所が分からないときは空
   }
 }
 
@@ -59,12 +59,15 @@ export const sendCalculationFailed = (res: NextApiResponse<ErrorJson>, e: unknow
   // NOTE: ライブラリのメッセージは、内部のファイル名やパスを含むので返さない。原因はログに残す
   console.error(e)
 
+  // ハウスは緯度が高いと計算できない。ほかの失敗は、天体暦の範囲外の日付
   const isHousesError = e instanceof Error && e.message === HOUSES_ERROR
-  sendError(res, 400, {
-    code: 'calculation_failed',
-    message: isHousesError ? 'Houses cannot be calculated at this latitude' : 'This date cannot be calculated',
-    params: [],
-  })
+  sendError(
+    res,
+    400,
+    isHousesError
+      ? { code: 'calculation_failed', message: 'Houses cannot be calculated at this latitude', params: ['lat'] }
+      : { code: 'calculation_failed', message: 'This date cannot be calculated', params: ['date'] }
+  )
 }
 
 // 同じ結果を表示するページのURL

@@ -113,7 +113,11 @@ describe('/horoscope.json', () => {
       const { status, json } = await get(horoscope, { ...query, lat: '80' })
       expect(status).toEqual(400)
       expect(json).toEqual({
-        error: { code: 'calculation_failed', message: 'Houses cannot be calculated at this latitude', params: [] },
+        error: {
+          code: 'calculation_failed',
+          message: 'Houses cannot be calculated at this latitude',
+          params: ['lat'],
+        },
       })
     })
     it('天体の位置を計算できない年', async () => {
@@ -121,7 +125,7 @@ describe('/horoscope.json', () => {
       expect(status).toEqual(400)
       // ライブラリのエラーメッセージ（内部のファイル名やパスを含む）を、そのまま返さない
       expect(json).toEqual({
-        error: { code: 'calculation_failed', message: 'This date cannot be calculated', params: [] },
+        error: { code: 'calculation_failed', message: 'This date cannot be calculated', params: ['date'] },
       })
     })
     it('計算できなかった原因を、ログに残す', async () => {

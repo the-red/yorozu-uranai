@@ -225,20 +225,20 @@ GET 以外は 405 を返す。
 | code | ステータス | 場面 |
 | --- | --- | --- |
 | `invalid_query` | 400 | 必須のパラメータが無い、形式や範囲が正しくない。`params` に該当する名前をすべて入れる |
-| `calculation_failed` | 400 | 入力は正しいが計算できない。`params` は空 |
+| `calculation_failed` | 400 | 入力は正しいが計算できない。`params` に、直す場所のパラメータを入れる |
 | `method_not_allowed` | 405 | GET 以外 |
 
-`params` は、どのエラーにも付ける（`invalid_query` 以外では空の配列）。
+`params` は、どのエラーにも付ける。直す場所が分からないとき（`method_not_allowed`）は、空の配列。
 
 `message` は英語。ページは `code` と `params` で分岐して、日本語の案内を出す。
 今のページは `errorMessage` の文言で分岐しているので、これを置き換える。
 
 `calculation_failed` になる入力（Docker の `node:24` で確認）:
 
-| 入力 | `message` |
-| --- | --- |
-| 緯度の絶対値が約 66.56 度（極圏）以上。プラシーダスのハウスを計算できない（66.5 度は計算できる） | `Houses cannot be calculated at this latitude` |
-| 天体暦の範囲外の年。3000 年は計算できるが、5400 年と 9999 年は計算できない | `This date cannot be calculated` |
+| 入力 | `message` | `params` |
+| --- | --- | --- |
+| 緯度の絶対値が約 66.56 度（極圏）以上。プラシーダスのハウスを計算できない（66.5 度は計算できる） | `Houses cannot be calculated at this latitude` | `["lat"]` |
+| 天体暦の範囲外の年。3000 年は計算できるが、5400 年と 9999 年は計算できない | `This date cannot be calculated` | `["date"]` |
 
 - `message` は固定の文言にする。ライブラリのエラーメッセージは、内部のファイル名やパスを含むので返さない。元のエラーは `console.error` で記録する
 - `calculation_failed` にするのは、天文計算の失敗だけ。それ以外の例外（プログラムの不具合）は、そのまま 500 にする。400 を返すと、利用者は入力を直そうとするが、直しようがない

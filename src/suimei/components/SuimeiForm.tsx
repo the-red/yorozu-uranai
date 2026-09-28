@@ -1,5 +1,6 @@
 import { FC } from 'react'
 import { FormProps, useYorozuUranaiForm } from '../../hooks/useYorozuUranaiForm'
+import { buildMapQuery } from '../../lib/map-return'
 import Link from 'next/link'
 import { pagesPath } from '../../lib/$path'
 
@@ -28,7 +29,11 @@ export const SuimeiForm: FC<FormProps> = (props) => {
             <dt>出生場所</dt>
             <dd className="location">
               <div className="map_link">
-                <Link href={pagesPath.map.$url({ query: { lat: lat, lng: lng } })} target="_blank" rel="opener">
+                <Link
+                  href={pagesPath.map.$url({ query: buildMapQuery('suimei', watch()) })}
+                  target="_blank"
+                  rel="opener"
+                >
                   地図から検索
                 </Link>
               </div>

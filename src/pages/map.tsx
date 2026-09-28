@@ -3,6 +3,7 @@
 import * as React from 'react'
 import { Wrapper, Status } from '@googlemaps/react-wrapper'
 import { deepCompareEqualsForMaps } from '../lib/maps-equal'
+import { MapQuery, buildReturnUrl } from '../lib/map-return'
 import { NextPage } from 'next'
 import { TOKYO_STATION } from '../lib/location'
 import { roundLatLng } from '../lib/math'
@@ -13,7 +14,7 @@ import Image from 'next/image'
 import { fetchAddressFromLatLng } from '../lib/fetch-geocode'
 
 type LatLng = { lat: number; lng: number }
-export type OptionalQuery = Partial<LatLng>
+export type OptionalQuery = MapQuery
 
 const render = (status: Status) => {
   return <h1>{status}</h1>
@@ -231,10 +232,19 @@ const MapPage: NextPage = () => {
             const setLocation = window?.opener?.setLocation
             if (setLocation && setLocation(pinned.lat, pinned.lng)) {
               window.close()
-            } else {
-              console.error({ opener: window?.opener, setLocation })
-              alert('緯度経度が確定できませんでした。')
+              return
             }
+
+            // 開いた元のページに値を返せない場合は、緯度経度をURLに付けて、元のページに移動する
+            // NOTE: LINEなどのアプリ内ブラウザは、別タブで開いても元のページとつながらない
+            const returnUrl = buildReturnUrl(router.query, pinned)
+            if (returnUrl) {
+              router.replace(returnUrl)
+              return
+            }
+
+            console.error({ opener: window?.opener, setLocation })
+            alert('緯度経度が確定できませんでした。')
           }}
         >
           確定して戻る

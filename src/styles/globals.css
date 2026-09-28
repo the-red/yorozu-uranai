@@ -95,6 +95,24 @@ Note: Beware of modifying this element as it can break the animations - you shou
   list-style: none;
   margin-bottom: 1em;
 }
+.bm-menu ul li a {
+  display: flex;
+  align-items: center;
+  gap: 0.6em;
+}
+/* リンクの先頭に付けるアイコン */
+.bm-icon {
+  flex: none;
+  width: 1.1em;
+  height: 1.1em;
+  background-color: currentColor;
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+  -webkit-mask-position: center;
+  mask-position: center;
+  -webkit-mask-size: contain;
+  mask-size: contain;
+}
 /* Morph shape necessary with bubble or elastic */
 .bm-morph-shape {
   fill: #373a47;

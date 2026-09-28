@@ -46,6 +46,14 @@ $sp_width: 375;
 @mixin right($right_position) {
   right: math.div($right_position, $sp_width) * 100vw;
 }
+// 日付と時刻の入力欄の大きさ
+// iOSのSafariは、この2種類の入力欄にbox-sizing: content-boxを強制する（border-boxを指定しても効かない）。
+// どのブラウザでも同じ大きさになるよう、content-boxを明示して、余白と枠線のぶんを引いた大きさを指定する
+@mixin date_time_input_size($width, $height, $padding_x, $border: 1px) {
+  box-sizing: content-box;
+  width: calc(#{$width} - #{($padding_x + $border) * 2});
+  height: $height - $border * 2;
+}
 @mixin table_data_width($table_width, $row_header_width, $data_columns_number) {
   width: math.div(100% - (math.div($row_header_width, $table_width) * 100%), $data_columns_number);
 }
@@ -212,6 +220,10 @@ $sp_width: 375;
                 padding: 0 16px 0;
                 border: 1px solid $form_line_gray;
                 border-radius: 3px;
+              }
+              &[type='date'],
+              &[type='time'] {
+                @include date_time_input_size(100%, 48px, 16px);
               }
             }
             &.date_time {
@@ -484,10 +496,10 @@ $sp_width: 375;
               }
               &.date_time {
                 input[type='date'] {
-                  width: 132px;
+                  @include date_time_input_size(132px, 28px, 7px);
                 }
                 input[type='time'] {
-                  width: 84px;
+                  @include date_time_input_size(84px, 28px, 7px);
                 }
               }
               &.location {

@@ -40,7 +40,8 @@ export const generateSaiun = (
       continue
     }
 
-    const saiunTargetDate = DateTime.fromISO(`${saiunTargetYear}-12-31`)
+    // NOTE: ISO形式の文字列から作ると、4桁でない年（西暦1000年より前など）が不正な日時になる
+    const saiunTargetDate = DateTime.utc(saiunTargetYear, 12, 31)
     const yearKanshi = new Kanshi(saiunTargetDate, sekki)
     const tenkan = yearKanshi.年干
     const tishi = yearKanshi.年支

@@ -4,7 +4,7 @@
 const fs = require('fs')
 const path = require('path')
 
-const APIS = ['horoscope-props', 'suimei-props']
+const APIS = ['horoscope', 'suimei']
 const REQUIRED_FILE = 'node_modules/swisseph/build/Release/swisseph.node'
 
 const errors = []

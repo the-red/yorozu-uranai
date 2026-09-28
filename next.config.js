@@ -6,6 +6,14 @@ module.exports = {
   outputFileTracingIncludes: {
     '/api/*': ['./node_modules/swisseph/build/Release/swisseph.node'],
   },
+  // 占い結果のJSON。ページのURLに .json を付けると、同じ入力に対する結果を返す
+  async rewrites() {
+    return [
+      { source: '/horoscope.json', destination: '/api/horoscope' },
+      { source: '/suimei.json', destination: '/api/suimei' },
+      { source: '/numerology.json', destination: '/api/numerology' },
+    ]
+  },
   turbopack: {
     rules: {
       // SVGをReactコンポーネントとして読み込む

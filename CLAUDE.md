@@ -45,7 +45,7 @@ yarn path         # src/lib/$path.ts を再生成
 - 小数の比較は `toBeCloseTo()` を使う。桁数は `test/test-util.ts` の `NUM_DIGITS`。オブジェクトや配列は同ファイルの `expectToBeCloseTo()` でまとめて比較する
 - `swisseph` はネイティブアドオンなので、Node.js のバージョンを変えたら `yarn install` し直す（リビルドが必要）
   - `swisseph` が依存する `nan` と `node-gyp` は古いままだと Node.js 24 でビルドできないので、`package.json` の `resolutions` で新しいバージョンに固定している
-- テスト対象は `src/*/models` と `src/astronomy` の計算ロジックが中心。コンポーネントのテストは無い
+- テスト対象は `src/*/models` と `src/astronomy` の計算ロジックが中心。API（`test/api`。ハンドラーを直接呼ぶ）と `src/lib` のテストもある。コンポーネントのテストは無い
 - Vitest はテストコードの型チェックをしないので、`yarn test` の中で `tsc -p test` を先に実行している（`test/` はルートの `tsconfig.json` の対象外）
 - 期待値は実在の生年月日に対する計算結果をハードコードしている。天文計算の結果は `src/astronomy` 側で小数第6位に切り捨てている
 
@@ -64,15 +64,30 @@ yarn path         # src/lib/$path.ts を再生成
 - `src/horoscope/models/horoscopeFactory.ts`
 - `src/suimei/models/SekkiUtil.ts`（と、それを使う `Daiun.ts` の `generateDaiun`）
 
-これらはクライアントバンドルに含めてはいけない。そのため各 `models/index.ts` はこれらを **意図的に re-export していない**（`src/astronomy/types` は型のみなので export している）。ページ側からは API Route 経由で使う:
+これらはクライアントバンドルに含めてはいけない。そのため各 `models/index.ts` はこれらを **意図的に re-export していない**（`src/astronomy/types` は型のみなので export している）。ページ側からは API 経由で使う:
 
 | API | 返すもの | クライアント側での復元 |
 | --- | --- | --- |
-| `POST /api/horoscope-props` | 惑星の黄道座標とハウス（プレーンな JSON） | `new Horoscope(props)` |
-| `POST /api/suimei-props` | 節気ペア (`SekkiPair`)・均時差・大運 | `toSolarTime()` で真太陽時を求め、`new Kanshi(dateTime, sekkiPair, solarTime)` を起点に `Zoukan` / `Tsuhensei` / `Juuniun` / `tokushusei` / `generateSaiun` をクライアントで計算 |
+| `GET /horoscope.json` | 惑星の黄道座標とハウス（`raw`）と、そこから求めた結果（`result`） | `new Horoscope(json.raw)` |
+| `GET /suimei.json` | 節気ペア (`SekkiPair`)・均時差（`raw`）と、命式・大運・歳運（`result`） | `restoreKanshi()` で真太陽時と `Kanshi` を復元し、`Zoukan` / `Tsuhensei` / `Juuniun` / `tokushusei` / `generateSaiun` をクライアントで計算。大運は `result.大運` を `toDaiun()` で読み替える |
+| `GET /numerology.json` | コアナンバー（`result`） | ページは使わない |
 | `POST /api/geocode` | 緯度経度 → 住所（逆ジオコーディング） | — |
 
-つまり「天文計算が必要な部分だけサーバー、そこから先の導出はクライアント」という分担。新しい計算を追加するときは、`astronomy` に依存するかどうかで置き場所が決まる。数秘術は天文計算が不要なので API を使わず完全にクライアントで完結する。
+つまり「天文計算が必要な部分だけサーバー、そこから先の導出はクライアント」という分担。新しい計算を追加するときは、`astronomy` に依存するかどうかで置き場所が決まる。数秘術は天文計算が不要なので、ページは API を使わず完全にクライアントで完結する。
+
+### 占い結果の JSON
+
+ページの URL に `.json` を付けると、同じ入力に対する結果を JSON で返す。ページも同じ JSON を取得して描画する。生成 AI などの外部からも使える。形式は試験的なもので、今後変わることがある。
+
+- `/horoscope.json` などのパスは、`next.config.js` の `rewrites` で `/api/horoscope` などに流している
+- `raw` は天文計算の結果、`result` はモデルから求めた結果。`result` は、`raw` から復元したモデルを変換して作る（各 `models/json.ts`）。画面と JSON が同じモデルから作られるので、結果がずれない
+- サーバーは既定値を補わず、時計も使わない。必須のパラメータが無ければ 400 を返す（`src/lib/json-query.ts`）。現在日時や東京駅の緯度経度を補うのは、ページの役割
+- 四柱推命の `result` のキーは、占いの用語を漢字にしている（`命式` / `年柱` / `通変星` / `大運`）。年齢や年などの一般的な項目は英語
+- `thisYear` が無いときは、大運と歳運に `current` を付けない（キーごと省く）
+- エラーは `{ error: { code, message, params } }`。ページは文言ではなく、`code` と `params` で分岐する
+  - `calculation_failed`（400）にするのは、天文計算の失敗だけ。`message` は固定の文言にして、ライブラリのエラーメッセージは返さない（`console.error` で記録する）。それ以外の例外は、そのまま 500 にする
+- `gender` は `man` と `woman` だけを受け付ける。ページは「`man` でなければ `woman`」として読むが（以前の URL の `gender=on` も女性）、JSON では推測しない
+- 設計の経緯は `docs/superpowers/specs/2026-09-28-json-api-design.md`
 
 ### ネイティブバイナリとデプロイ
 
@@ -113,7 +128,7 @@ Vercel は、ビルド時に「各 API の実行に必要なファイル」を�
 - 四柱ごとに使う時刻が違う
   - 年柱・月柱: 節入り（絶対時刻）で決まる。暦の年月は出生地のタイムゾーンで数える
   - 日柱・時柱: 真太陽時（`SolarTime.ts`）の日付と時刻で決まる。時計の時刻に、地方時差（出生地の経度）と均時差の両方を足したもの。片方だけの補正はしない
-- 日時は必ず出生地のタイムゾーンを持った luxon の `DateTime` で渡す（数秘術の生年月日も同じ）。`Date` や、ゾーン指定なしの `DateTime.fromISO()` / `fromJSDate()` は実行環境のタイムゾーンになるので使わない（API では `{ setZone: true }` で受け取る）
+- 日時は必ず出生地のタイムゾーンを持った luxon の `DateTime` で渡す（数秘術の生年月日も同じ）。`Date` や、ゾーン指定なしの `DateTime.fromISO()` / `fromJSDate()` は実行環境のタイムゾーンになるので使わない（API では、クエリの `zone` を `toDateTime()` に渡して作る）
 - 現在の年（大運・歳運の「現在」の行の判定）は、閲覧者の現在地を基準にする。ブラウザで `DateTime.now().year` を求めて API にも `thisYear` として送る。サーバー側では時計を使わない
 - 特殊星 (`models/tokushusei/`) はルール表をデータとして持つ。表は `scripts/generate-tokushusei.js` に TSV を貼って JSON 化したものを元にしている
 

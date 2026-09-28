@@ -1,6 +1,6 @@
 import { DateTime } from 'luxon'
 
-type Gender = 'man' | 'woman'
+export type Gender = 'man' | 'woman'
 export type FormValuesBase = {
   name?: string
   date?: string
@@ -12,7 +12,7 @@ export type FormValuesBase = {
   gender?: Gender
 }
 
-type QueryValue = string | string[] | undefined
+export type QueryValue = string | string[] | undefined
 export type Query = Partial<{
   name: QueryValue
   date: QueryValue
@@ -23,15 +23,21 @@ export type Query = Partial<{
   gender: QueryValue
 }>
 
-const QUERY_DATE_FORMAT = 'yyyyMMdd' as const
-const QUERY_TIME_FORMAT = 'HHmm' as const
-const QUERY_TIME_UNKNOWN = 'unknown' as const
+export const QUERY_DATE_FORMAT = 'yyyyMMdd' as const
+export const QUERY_TIME_FORMAT = 'HHmm' as const
+export const QUERY_TIME_UNKNOWN = 'unknown' as const
 export const FORM_DATE_FORMAT = 'yyyy-MM-dd' as const
 export const FORM_TIME_FORMAT = 'HH:mm' as const
 
-export const queryToFormValues = (q: Query): FormValuesBase => {
-  const singleValue = (value: string | string[] | undefined) => (Array.isArray(value) ? value[0] : value)
+// 同じパラメータが複数あるときは、最初の値を使う
+export const singleValue = (value: QueryValue) => (Array.isArray(value) ? value[0] : value)
 
+// NOTE: 以前は「女性」のラジオボタンに値が無く、URLが gender=on になっていた。
+// 計算は「男性でなければ女性」として扱っているので、男性以外の値は女性として読み取る
+export const toGender = (value: string | undefined): Gender | undefined =>
+  value === undefined ? undefined : value === 'man' ? 'man' : 'woman'
+
+export const queryToFormValues = (q: Query): FormValuesBase => {
   const name = singleValue(q.name)
 
   const _date = singleValue(q.date)
@@ -52,10 +58,7 @@ export const queryToFormValues = (q: Query): FormValuesBase => {
   const lat = singleValue(q.lat)
   const lng = singleValue(q.lng)
 
-  // NOTE: 以前は「女性」のラジオボタンに値が無く、URLが gender=on になっていた。
-  // 計算は「男性でなければ女性」として扱っているので、男性以外の値は女性として読み取る
-  const _gender = singleValue(q.gender)
-  const gender: Gender | undefined = _gender === undefined ? undefined : _gender === 'man' ? 'man' : 'woman'
+  const gender = toGender(singleValue(q.gender))
 
   return {
     name,

@@ -89,7 +89,7 @@
 }
 .map .search_area .search_area_inner .confirm_button::before {
   content: '';
-  background-image: url(../../public/images/map/back_blue.svg);
+  background-image: url('/images/map/back_blue.svg');
   display: inline-block;
   width: 16px;
   height: 16px;
@@ -163,7 +163,7 @@
     color: #fff;
   }
   .map .search_area .search_area_inner .confirm_button::before {
-    background-image: url(../../public/images/map/back_white.svg);
+    background-image: url('/images/map/back_white.svg');
   }
   .map .search_area .search_area_inner .search_result {
     width: 100%;

@@ -11,8 +11,8 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 パッケージマネージャは yarn (v1)、Node.js は 24（`.tool-versions` と `package.json` の `engines`）。
 
 ```sh
-yarn dev          # next dev --webpack と pathpida --watch を並列起動
-yarn build        # pathpida 生成 → next build --webpack
+yarn dev          # next dev と pathpida --watch を並列起動
+yarn build        # pathpida 生成 → next build → ビルド結果の確認
 yarn test         # テストコードの型チェック → vitest 全件（1回実行）
 yarn vitest       # 変更を監視して再実行
 yarn test test/suimei/Kanshi.test.ts   # 単一ファイル
@@ -38,8 +38,6 @@ yarn path         # src/lib/$path.ts を再生成
 | --- | --- | --- |
 | TypeScript | 6.0 系 | `eslint-config-next` が使う `typescript-eslint` の対応範囲が 6.1 未満。7 系にすると ESLint が動かない |
 | ESLint | 9 系 | `eslint-config-next` が使う `eslint-plugin-react` などが 10 系に未対応 |
-
-Next.js 16 は Turbopack が既定だが、webpack の設定（SVGR）を使っているので、`next dev` と `next build` には `--webpack` を付けている。
 
 ## テストの注意点
 
@@ -73,6 +71,14 @@ Next.js 16 は Turbopack が既定だが、webpack の設定（SVGR）を使っ�
 | `POST /api/geocode` | 緯度経度 → 住所（逆ジオコーディング） | — |
 
 つまり「天文計算が必要な部分だけサーバー、そこから先の導出はクライアント」という分担。新しい計算を追加するときは、`astronomy` に依存するかどうかで置き場所が決まる。数秘術は天文計算が不要なので API を使わず完全にクライアントで完結する。
+
+### ネイティブバイナリとデプロイ
+
+Vercel は、ビルド時に「各 API の実行に必要なファイル」を調べて、それだけを切り出して動かす。`swisseph` のネイティブバイナリ（`swisseph.node`）は、実行時に組み立てたパスで読み込まれるので、Turbopack では自動で検出されない。
+
+- `next.config.js` の `outputFileTracingIncludes` で、バイナリを明示的に含めている
+- `yarn build` の最後に `scripts/check-file-tracing.js` が、バイナリが含まれているかを確認する。含まれていなければビルドが失敗する
+- **`yarn start` で動いても、Vercel で動くとは限らない**（`yarn start` は `node_modules` が丸ごとある状態で動くため）。ビルドやライブラリの構成を変えたら、`output: 'standalone'` を一時的に指定してビルドし、`.next/standalone/server.js` を起動して API を確認する
 
 ### URL クエリ ⇄ フォーム値
 
@@ -119,7 +125,9 @@ Next.js 16 は Turbopack が既定だが、webpack の設定（SVGR）を使っ�
   - 四柱推命と地図のスマホ版は、デザイン上の横幅 375px を基準に `calc(343 / var(--sp-width) * 100vw)` の形で大きさを指定している
   - クラス名の書き方はファイルごとに違う（ホロスコープは `kebab-case`、数秘術と四柱推命は `snake_case`）。編集するファイルに合わせる
 
-SVG は `import X from './x.svg'` で React コンポーネント（SVGR）、`'./x.svg?url'` で URL として読み込める（`next.config.js`）。
+SVG は `import X from './x.svg'` で React コンポーネントとして読み込める（SVGR。`next.config.js` の `turbopack.rules`）。
+
+CSS から画像を参照するときは、`url('/images/map/back_blue.svg')` のように `public/` からの絶対パスで書く。相対パスで書くとビルドの対象になり、SVG は React コンポーネントに変換されて表示されなくなる。
 
 ## コーディング規約
 

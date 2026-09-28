@@ -3,9 +3,9 @@
   "private": true,
   "scripts": {
     "dev": "run-p dev:*",
-    "dev:next": "next dev --webpack",
+    "dev:next": "next dev",
     "dev:path": "yarn path --watch",
-    "build": "yarn path && next build --webpack",
+    "build": "yarn path && next build && node scripts/check-file-tracing.js",
     "start": "next start",
     "path": "pathpida --ignorePath .gitignore --enableStatic",
     "lint": "eslint --fix \"src/**/*.{js,ts,jsx,tsx}\"",

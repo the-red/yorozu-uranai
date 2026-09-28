@@ -1,5 +1,5 @@
-import { describe, it, expect } from 'vitest'
-import { JsonApiError, toErrorGuide, toJsonUrl } from '../src/lib/fetch-json'
+import { describe, it, expect, vi, afterEach } from 'vitest'
+import { JsonApiError, fetchJson, toErrorGuide, toJsonUrl } from '../src/lib/fetch-json'
 import { parseHoroscopeQuery, parseSuimeiQuery } from '../src/lib/json-query'
 import type { FormValues } from '../src/hooks/useYorozuUranaiForm'
 
@@ -45,6 +45,81 @@ describe('フォームの値 → JSONのURL', () => {
       ok: true,
       input: { ...suimei, thisYear: 2026 },
     })
+  })
+})
+
+describe('JSONの取得', () => {
+  // NOTE: 実際の Response を返す。本文を2回読むと、実際と同じように例外になる
+  const stubFetch = (response: () => Response) => {
+    const fetch = vi.fn(async (_url: string) => response())
+    vi.stubGlobal('fetch', fetch)
+    return fetch
+  }
+  const catchError = (promise: Promise<unknown>) =>
+    promise.then(
+      () => {
+        throw new Error('例外にならなかった')
+      },
+      (e: unknown) => e
+    )
+
+  afterEach(() => {
+    vi.unstubAllGlobals()
+  })
+
+  it('ページのURLに .json を付けて、1回だけ取得する', async () => {
+    const fetch = stubFetch(() => Response.json({ type: 'horoscope', raw: { positions: [] } }))
+    expect(await fetchJson('/horoscope', formValues)).toEqual({ type: 'horoscope', raw: { positions: [] } })
+    expect(fetch.mock.calls).toEqual([[toJsonUrl('/horoscope', formValues)]])
+  })
+  it('追加のパラメータを付けて取得する', async () => {
+    const fetch = stubFetch(() => Response.json({}))
+    await fetchJson('/suimei', formValues, { thisYear: '2026' })
+    expect(fetch.mock.calls[0][0]).toContain('/suimei.json?')
+    expect(fetch.mock.calls[0][0]).toContain('thisYear=2026')
+  })
+
+  describe('エラーの応答', () => {
+    const error = { code: 'invalid_query', message: 'date is invalid', params: ['date'] }
+
+    it('APIのエラーは、内容を持った例外にする', async () => {
+      stubFetch(() => Response.json({ error }, { status: 400 }))
+      const e = await catchError(fetchJson('/horoscope', formValues))
+      expect(e).toBeInstanceOf(JsonApiError)
+      expect((e as JsonApiError).error).toEqual(error)
+      expect(toErrorGuide(e)).toEqual('生年月日を修正してください。')
+    })
+    it('JSONでない応答は、本文をメッセージにする', async () => {
+      stubFetch(() => new Response('Internal Server Error', { status: 500 }))
+      const e = await catchError(fetchJson('/horoscope', formValues))
+      expect(e).not.toBeInstanceOf(JsonApiError)
+      expect((e as Error).message).toEqual('Internal Server Error')
+      expect(toErrorGuide(e)).toEqual('時間をおいて、もう一度お試しください。')
+    })
+    it('error の無いJSONも、APIのエラーとして扱わない', async () => {
+      stubFetch(() => Response.json({ message: 'Not Found' }, { status: 404 }))
+      const e = await catchError(fetchJson('/horoscope', formValues))
+      expect(e).not.toBeInstanceOf(JsonApiError)
+      expect((e as Error).message).toEqual('{"message":"Not Found"}')
+    })
+    it('本文が空でも、例外にする', async () => {
+      stubFetch(() => new Response(null, { status: 502 }))
+      const e = await catchError(fetchJson('/horoscope', formValues))
+      expect(e).toBeInstanceOf(Error)
+      expect(e).not.toBeInstanceOf(JsonApiError)
+    })
+  })
+
+  it('通信に失敗したら、その例外をそのまま投げる', async () => {
+    vi.stubGlobal(
+      'fetch',
+      vi.fn(async () => {
+        throw new TypeError('Failed to fetch')
+      })
+    )
+    const e = await catchError(fetchJson('/horoscope', formValues))
+    expect(e).toBeInstanceOf(TypeError)
+    expect(toErrorGuide(e)).toEqual('時間をおいて、もう一度お試しください。')
   })
 })
 

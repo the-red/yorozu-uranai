@@ -1,4 +1,4 @@
-import { describe, it, expect, afterEach } from 'vitest'
+import { describe, it, expect, afterEach, vi } from 'vitest'
 import { Settings } from 'luxon'
 import suimei from '../../src/pages/api/suimei'
 import { restoreKanshi, toDaiun, toSuimeiResult } from '../../src/suimei/models'
@@ -174,9 +174,20 @@ describe('/suimei.json', () => {
       expect(json.error).toMatchObject({ code: 'invalid_query', params: ['thisYear'] })
     })
     it('節入りを計算できない年', async () => {
+      const consoleError = vi.spyOn(console, 'error').mockImplementation(() => {})
       const { status, json } = await get(suimei, { ...query, date: '99991231' })
       expect(status).toEqual(400)
-      expect(json.error.code).toEqual('calculation_failed')
+      // ライブラリのエラーメッセージ（内部のファイル名やパスを含む）を、そのまま返さない
+      expect(json).toEqual({
+        error: { code: 'calculation_failed', message: 'This date cannot be calculated', params: [] },
+      })
+      expect(consoleError).toHaveBeenCalledTimes(1)
+      consoleError.mockRestore()
+    })
+    it('性別を推測で読まない', async () => {
+      const { status, json } = await get(suimei, { ...query, gender: 'male' })
+      expect(status).toEqual(400)
+      expect(json).toEqual({ error: { code: 'invalid_query', message: 'gender is invalid', params: ['gender'] } })
     })
     it('GET以外', async () => {
       const { status, json } = await get(suimei, query, { method: 'POST' })

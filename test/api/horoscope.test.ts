@@ -1,4 +1,4 @@
-import { describe, it, expect } from 'vitest'
+import { describe, it, expect, vi, beforeEach, afterEach, MockInstance } from 'vitest'
 import horoscope from '../../src/pages/api/horoscope'
 import { Horoscope, ORB, toHoroscopeResult } from '../../src/horoscope/models'
 import { NUM_DIGITS } from '../test-util'
@@ -78,6 +78,11 @@ describe('/horoscope.json', () => {
       const { json } = await get(horoscope, query, { headers })
       expect(json.page.startsWith('http://localhost:3000/horoscope?')).toEqual(true)
     })
+    it.each(['javascript', 'ftp', ''])('プロトコルが %j なら、https にする', async (proto) => {
+      const headers = { 'host': 'yorozu-uranai.com', 'x-forwarded-proto': proto }
+      const { json } = await get(horoscope, query, { headers })
+      expect(json.page.startsWith('https://yorozu-uranai.com/horoscope?')).toEqual(true)
+    })
     it('ホストが分からなければ、パスだけにする', async () => {
       const { json } = await get(horoscope, query, { headers: {} })
       expect(json.page.startsWith('/horoscope?')).toEqual(true)
@@ -85,6 +90,14 @@ describe('/horoscope.json', () => {
   })
 
   describe('エラー', () => {
+    let consoleError: MockInstance
+    beforeEach(() => {
+      consoleError = vi.spyOn(console, 'error').mockImplementation(() => {})
+    })
+    afterEach(() => {
+      consoleError.mockRestore()
+    })
+
     it('必須のパラメータが無い', async () => {
       const { status, json } = await get(horoscope, { date: '19870908' })
       expect(status).toEqual(400)
@@ -99,12 +112,22 @@ describe('/horoscope.json', () => {
     it('極地ではハウスを計算できない', async () => {
       const { status, json } = await get(horoscope, { ...query, lat: '80' })
       expect(status).toEqual(400)
-      expect(json).toEqual({ error: { code: 'calculation_failed', message: `Can't calculate houses.`, params: [] } })
+      expect(json).toEqual({
+        error: { code: 'calculation_failed', message: 'Houses cannot be calculated at this latitude', params: [] },
+      })
     })
     it('天体の位置を計算できない年', async () => {
       const { status, json } = await get(horoscope, { ...query, date: '99991231' })
       expect(status).toEqual(400)
-      expect(json.error.code).toEqual('calculation_failed')
+      // ライブラリのエラーメッセージ（内部のファイル名やパスを含む）を、そのまま返さない
+      expect(json).toEqual({
+        error: { code: 'calculation_failed', message: 'This date cannot be calculated', params: [] },
+      })
+    })
+    it('計算できなかった原因を、ログに残す', async () => {
+      await get(horoscope, { ...query, date: '99991231' })
+      expect(consoleError).toHaveBeenCalledTimes(1)
+      expect(String(consoleError.mock.calls[0][0])).toContain('SwissEph file')
     })
     it('GET以外', async () => {
       const { status, json, headers } = await get(horoscope, query, { method: 'POST' })

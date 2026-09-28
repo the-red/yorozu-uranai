@@ -51,18 +51,29 @@ export const sendError = (res: NextApiResponse<ErrorJson>, status: number, error
 
 export const sendInvalidQuery = (res: NextApiResponse<ErrorJson>, error: InvalidQuery) => sendError(res, 400, error)
 
-export const sendCalculationFailed = (res: NextApiResponse<ErrorJson>, e: unknown) =>
+// ハウスを計算できなかったときに、src/astronomy が投げるエラーのメッセージ
+const HOUSES_ERROR = `Can't calculate houses.`
+
+// 天文計算の失敗。それ以外の例外には使わない（入力を直しても解決しないので、500にする）
+export const sendCalculationFailed = (res: NextApiResponse<ErrorJson>, e: unknown) => {
+  // NOTE: ライブラリのメッセージは、内部のファイル名やパスを含むので返さない。原因はログに残す
+  console.error(e)
+
+  const isHousesError = e instanceof Error && e.message === HOUSES_ERROR
   sendError(res, 400, {
     code: 'calculation_failed',
-    message: e instanceof Error ? e.message : String(e),
+    message: isHousesError ? 'Houses cannot be calculated at this latitude' : 'This date cannot be calculated',
     params: [],
   })
+}
 
 // 同じ結果を表示するページのURL
 export const pageUrl = (req: NextApiRequest, pathname: string, input: Parameters<typeof toPageQuery>[0]): string => {
   const { host } = req.headers
   // NOTE: Vercelでは、利用者が使ったプロトコルが x-forwarded-proto で届く
-  const proto = [req.headers['x-forwarded-proto']].flat()[0]?.split(',')[0] ?? 'https'
+  // ヘッダーの値をそのままURLに入れないように、http でなければ https にする
+  const forwarded = [req.headers['x-forwarded-proto']].flat()[0]?.split(',')[0]
+  const proto = forwarded === 'http' ? 'http' : 'https'
   const origin = host ? `${proto}://${host}` : ''
   return `${origin}${pathname}?${new URLSearchParams(toPageQuery(input))}`
 }

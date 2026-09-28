@@ -1,4 +1,3 @@
-import 'windi.css'
 import '../styles/globals.css'
 import '../styles/horoscope.css'
 import '../styles/numerology.css'

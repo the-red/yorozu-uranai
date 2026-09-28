@@ -47,14 +47,11 @@ const NumerologyPage: NextPage = () => {
 
   return (
     <div className="numerology">
-      <div
-        className="tw-min-h-screen tw-pb-8 tw-flex tw-flex-col tw-items-center tw-space-y-4"
-        style={{ backgroundColor: '#EBEBC1', fontFamily: 'Lato Regular, Noto Sans JP Regular' }}
-      >
+      <div className="wrapper" style={{ backgroundColor: '#EBEBC1', fontFamily: 'Lato Regular, Noto Sans JP Regular' }}>
         <Menu />
         <Header />
-        <div className="tw-w-full tw-max-w-screen-md tw-px-4 tw-mx-auto tw-space-y-8">
-          <div style={{ fontFamily: 'MTF Wildflower' }} className="tw-text-center tw-text-7xl sm:tw-text-10xl">
+        <div className="contents">
+          <div style={{ fontFamily: 'MTF Wildflower' }} className="page_title">
             numerology
           </div>
           <NumerologyForm onSubmit={handleSubmit} defaultValues={formValues} />

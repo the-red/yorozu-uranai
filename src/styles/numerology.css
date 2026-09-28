@@ -49,3 +49,118 @@
   bottom: 10px;
   right: 20px;
 }
+
+/* ページ全体 */
+.numerology .wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-height: 100vh;
+  padding-bottom: 2rem;
+}
+/* 子要素の間隔 */
+.numerology .wrapper > :not([hidden]) ~ :not([hidden]) {
+  margin-top: 1rem;
+  margin-bottom: 0;
+}
+.numerology .contents {
+  width: 100%;
+  max-width: 768px;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 1rem;
+  padding-right: 1rem;
+}
+.numerology .contents > :not([hidden]) ~ :not([hidden]) {
+  margin-top: 2rem;
+  margin-bottom: 0;
+}
+.numerology .page_title {
+  font-size: 4.5rem;
+  line-height: 1;
+  text-align: center;
+}
+.numerology .section_title {
+  margin-bottom: 0.5rem;
+  font-size: 1.125rem;
+  line-height: 1.75rem;
+  text-align: center;
+}
+
+/* 情報入力とコアナンバーの枠 */
+.numerology .card {
+  position: relative;
+  padding: 2rem;
+  border-width: 2px;
+  border-style: solid;
+  border-radius: 1rem 2.5rem;
+  background-color: #fff;
+}
+
+/* 情報入力 */
+.numerology .form_outer form {
+  padding-top: 4rem;
+  padding-bottom: 4rem;
+}
+.numerology .kana_to_romaji {
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  text-decoration-line: underline;
+  cursor: pointer;
+}
+.numerology .submit_button {
+  width: 100%;
+  padding: 0.5rem 0.75rem;
+  border-radius: 0.375rem;
+  font-weight: 700;
+}
+
+/* コアナンバー */
+.numerology .core_numbers {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+  margin-left: auto;
+  margin-right: auto;
+  padding-top: 3rem;
+  padding-bottom: 3rem;
+}
+.numerology .core_number_item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.numerology .core_number_item > :not([hidden]) ~ :not([hidden]) {
+  margin-top: 1rem;
+  margin-bottom: 0;
+}
+.numerology .core_number_value {
+  font-size: 3rem;
+  font-weight: 100;
+  line-height: 1;
+}
+
+@media (min-width: 640px) {
+  .numerology .page_title {
+    font-size: 10rem;
+    line-height: 1;
+  }
+  .numerology .section_title {
+    font-size: 1.25rem;
+    line-height: 1.75rem;
+  }
+  .numerology .form_outer form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-top: 0;
+    padding-bottom: 0;
+  }
+  .numerology .core_numbers {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 2rem;
+    width: 28rem;
+    padding-top: 0;
+    padding-bottom: 0;
+  }
+}

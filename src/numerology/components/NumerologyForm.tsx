@@ -45,7 +45,7 @@ export const NumerologyForm: FC<NumerologyFormProps> = ({ onSubmit, defaultValue
       <div style={{ width: '200px' }}>
         <input type="text" required style={{ width: '100%' }} {...register('name', { pattern: REGX_NAME_PATTERN })} />
         <div
-          className="tw-text-sm tw-underline tw-cursor-pointer"
+          className="kana_to_romaji"
           onClick={() => {
             const romajiName = convertKanaToRomaji(name)
             setValue('name', romajiName)
@@ -78,7 +78,7 @@ export const NumerologyForm: FC<NumerologyFormProps> = ({ onSubmit, defaultValue
         appearance: 'none',
         color: '#BA6F87',
       }}
-      className="tw-px-3 tw-py-2 tw-w-full tw-rounded-md tw-font-bold"
+      className="submit_button"
     >
       計算する
     </button>
@@ -86,13 +86,10 @@ export const NumerologyForm: FC<NumerologyFormProps> = ({ onSubmit, defaultValue
 
   return (
     <div>
-      <div className="tw-text-center tw-text-lg sm:tw-text-xl tw-mb-2">情報入力</div>
+      <div className="section_title">情報入力</div>
 
-      <div className="tw-relative tw-bg-white tw-p-8 tw-rounded-tl-2xl tw-rounded-tr-5xl tw-rounded-br-2xl tw-rounded-bl-5xl tw-border-2 tw-border-solid form_outer">
-        <form
-          onSubmit={handleSubmit(onSubmit)}
-          className="tw-py-16 sm:tw-py-0 sm:tw-flex sm:tw-flex-col sm:tw-items-center"
-        >
+      <div className="card form_outer">
+        <form onSubmit={handleSubmit(onSubmit)}>
           {dateInput}
           {nameInput}
           <div className="">{submitButton}</div>

@@ -9,26 +9,39 @@ import { HoroscopeForm } from './HoroscopeForm'
 import { FormProps } from '../../hooks/useYorozuUranaiForm'
 const HoroscopeCircle = dynamic(() => import('./HoroscopeCircle'), { ssr: false })
 
-type Props = { horoscope: Horoscope; orb: number } & FormProps
+// horoscope は、まだ求まっていないときと、求められなかったときは無い
+type Props = { horoscope?: Horoscope; orb: number; loading: boolean } & FormProps
 
-const HoroscopeDetailPage: FC<Props> = ({ horoscope, orb, onSubmit, defaultValues }) => {
+const HoroscopeDetailPage: FC<Props> = ({ horoscope, orb, loading, onSubmit, defaultValues, errorMessage }) => {
   return (
     <div>
       <div className="content-row">
         <div className="content form">
           <div className="content-inner">
-            <HoroscopeForm onSubmit={onSubmit} defaultValues={defaultValues} />
+            <HoroscopeForm onSubmit={onSubmit} defaultValues={defaultValues} errorMessage={errorMessage} />
           </div>
         </div>
-        <>
-          <div className="content circle pc">
-            <HoroscopeCircle horoscope={horoscope} radius={220} orb={orb} />
-          </div>
-          <div className="content circle sp">
-            <HoroscopeCircle horoscope={horoscope} radius={170} orb={orb} />
-          </div>
-        </>
+        {horoscope ? (
+          <>
+            <div className="content circle pc">
+              <HoroscopeCircle horoscope={horoscope} radius={220} orb={orb} />
+            </div>
+            <div className="content circle sp">
+              <HoroscopeCircle horoscope={horoscope} radius={170} orb={orb} />
+            </div>
+          </>
+        ) : (
+          loading && <div className="content loading">読み込み中…</div>
+        )}
       </div>
+      {horoscope && <HoroscopeTables horoscope={horoscope} orb={orb} />}
+    </div>
+  )
+}
+
+const HoroscopeTables: FC<{ horoscope: Horoscope; orb: number }> = ({ horoscope, orb }) => {
+  return (
+    <>
       <div className="content-row">
         <div className="content">
           <div className="content-inner">
@@ -53,7 +66,7 @@ const HoroscopeDetailPage: FC<Props> = ({ horoscope, orb, onSubmit, defaultValue
           </div>
         </div>
       </div>
-    </div>
+    </>
   )
 }
 

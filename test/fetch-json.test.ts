@@ -49,29 +49,37 @@ describe('フォームの値 → JSONのURL', () => {
 })
 
 describe('エラーの案内', () => {
-  it('日時のパラメータ', () => {
-    const e = new JsonApiError({ code: 'invalid_query', message: 'date is invalid', params: ['date'] })
-    expect(toErrorGuide(e)).toEqual('date is invalid\n生年月日を修正してください。')
+  const error = (code: 'invalid_query' | 'calculation_failed', params: string[]) =>
+    new JsonApiError({ code, message: 'message in English', params })
+
+  it.each([['date'], ['time'], ['zone']])('%s なら、生年月日', (param) => {
+    expect(toErrorGuide(error('invalid_query', [param]))).toEqual('生年月日を修正してください。')
   })
-  it('緯度と経度', () => {
-    const e = new JsonApiError({ code: 'invalid_query', message: 'lat is invalid', params: ['lat'] })
-    expect(toErrorGuide(e)).toEqual('lat is invalid\n出生場所を修正してください。')
+  it.each([['lat'], ['lng']])('%s なら、出生場所', (param) => {
+    expect(toErrorGuide(error('invalid_query', [param]))).toEqual('出生場所を修正してください。')
   })
-  it('両方', () => {
-    const e = new JsonApiError({
-      code: 'invalid_query',
-      message: 'date is invalid, lng is required',
-      params: ['date', 'lng'],
-    })
-    expect(toErrorGuide(e)).toEqual(
-      'date is invalid, lng is required\n生年月日を修正してください。\n出生場所を修正してください。'
+  it('性別', () => {
+    expect(toErrorGuide(error('invalid_query', ['gender']))).toEqual('性別を選択してください。')
+  })
+  it('複数あれば、すべて案内する', () => {
+    expect(toErrorGuide(error('invalid_query', ['date', 'time', 'lng', 'gender']))).toEqual(
+      '生年月日を修正してください。\n出生場所を修正してください。\n性別を選択してください。'
     )
   })
-  it('計算できない', () => {
-    const e = new JsonApiError({ code: 'calculation_failed', message: `Can't calculate houses.`, params: [] })
-    expect(toErrorGuide(e)).toEqual(`Can't calculate houses.\n生年月日か出生場所を修正してください。`)
+  it('計算できないときも、原因のパラメータで案内する', () => {
+    expect(toErrorGuide(error('calculation_failed', ['lat']))).toEqual('出生場所を修正してください。')
+    expect(toErrorGuide(error('calculation_failed', ['date']))).toEqual('生年月日を修正してください。')
   })
-  it('JSONでない応答', () => {
-    expect(toErrorGuide(new Error('Internal Server Error'))).toEqual('Internal Server Error')
+  it('フォームに無いパラメータ', () => {
+    expect(toErrorGuide(error('invalid_query', ['thisYear']))).toEqual('入力を確認してください。')
+    expect(toErrorGuide(error('calculation_failed', []))).toEqual('入力を確認してください。')
+  })
+  it('APIの英語のメッセージは出さない', () => {
+    expect(toErrorGuide(error('invalid_query', ['date']))).not.toContain('English')
+  })
+  it('通信の失敗や、サーバーの障害', () => {
+    expect(toErrorGuide(new Error('Internal Server Error'))).toEqual('時間をおいて、もう一度お試しください。')
+    expect(toErrorGuide(new TypeError('Failed to fetch'))).toEqual('時間をおいて、もう一度お試しください。')
+    expect(toErrorGuide('unknown')).toEqual('時間をおいて、もう一度お試しください。')
   })
 })

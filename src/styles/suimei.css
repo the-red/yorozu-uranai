@@ -26,6 +26,7 @@
   --table-header-gray: #8a8a8a;
   --table-data-gray: #e6e6e6;
   --accent-yellow-light: #f8e2a0;
+  --error-background: #f6e3e2;
   /* 端末の横幅サイズ */
   --sp-width: 375;
 }
@@ -238,6 +239,24 @@
   font-family: var(--text-bold);
   letter-spacing: 0.1em;
   cursor: pointer;
+}
+/* 結果を求められなかったときの案内 */
+.suimei .main section.information_input form .form_error,
+.suimei .main .load_error {
+  padding: 12px 16px;
+  border-left: 4px solid var(--main-red);
+  background-color: var(--error-background);
+  color: var(--main-red);
+  font-family: var(--text-bold);
+  white-space: pre-line;
+}
+.suimei .main section.information_input form .form_error {
+  margin: 0 0 30px;
+}
+/* 読み込み中 */
+.suimei .main .loading {
+  padding: 80px 0;
+  text-align: center;
 }
 /* 計算結果の表の共通設定 */
 .suimei .main section.result h3 .heading_icon {
@@ -565,5 +584,19 @@
 }
 /* 歳運表だけを表示するページ */
 .suimei .main.saiun_page {
+  /* 表が無いとき（読み込み中、エラー）も、背景が画面の下まで届くようにする */
+  box-sizing: border-box;
+  min-height: 100vh;
   padding-top: 30px;
+}
+.suimei .main.saiun_page .load_error {
+  width: calc(315 / var(--sp-width) * 100vw);
+  max-width: 600px;
+  margin: 40px auto 0;
+}
+.suimei .main.saiun_page .load_error p {
+  margin: 0 0 12px;
+}
+.suimei .main.saiun_page .load_error a {
+  text-decoration: underline;
 }

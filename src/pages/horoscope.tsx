@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { useRouter } from 'next/router'
 
 import Menu from '../components/Menu'
@@ -10,36 +10,22 @@ import HoroscopeDetailPage from '../horoscope/components/HoroscopeDetailPage'
 import { Query, formValuesToQuery } from '../lib/params'
 import { FormProps, FormValues } from '../hooks/useYorozuUranaiForm'
 import { useFormValues } from '../hooks/useFormValues'
+import { useResult } from '../hooks/useResult'
 import { fetchJson, toErrorGuide } from '../lib/fetch-json'
 import type { HoroscopeJson } from '../lib/json-api'
 
 export type OptionalQuery = Query
 
+const loadHoroscope = async (formValues: FormValues) => {
+  const { raw } = await fetchJson<HoroscopeJson>('/horoscope', formValues)
+  return new Horoscope(raw)
+}
+
 function HoroscopePage() {
   const router = useRouter()
-  const [horoscope, setHoroscope] = useState<Horoscope>()
   const [formValues, setFormValues] = useState<FormValues>()
   useFormValues(setFormValues, router)
-
-  useEffect(() => {
-    const load = async () => {
-      if (!formValues) {
-        return
-      }
-
-      try {
-        const { raw } = await fetchJson<HoroscopeJson>('/horoscope', formValues)
-        setHoroscope(new Horoscope(raw))
-      } catch (e) {
-        // TODO: alertよりも、errorの内容をtoastで表示したい
-        alert(`ホロスコープを作成できませんでした。\n\n${toErrorGuide(e)}`)
-      }
-    }
-    load()
-  }, [formValues])
-
-  // TODO: loading時にヘッダー・タイトル・背景色くらいは出したい
-  if (!horoscope) return <div>loading...</div>
+  const { result: horoscope, error, loading } = useResult(formValues, loadHoroscope)
 
   const handleSubmit: FormProps['onSubmit'] = (formValues) => {
     router.push({
@@ -56,12 +42,20 @@ function HoroscopePage() {
       <Header whiteIcon={true} />
       <div className="container">
         <div className="title">Horoscope</div>
-        <HoroscopeDetailPage
-          horoscope={horoscope}
-          orb={ORB}
-          onSubmit={handleSubmit}
-          defaultValues={formValues}
-        ></HoroscopeDetailPage>
+        {formValues ? (
+          <HoroscopeDetailPage
+            horoscope={horoscope}
+            orb={ORB}
+            loading={loading}
+            onSubmit={handleSubmit}
+            defaultValues={formValues}
+            errorMessage={
+              error === undefined ? undefined : `ホロスコープを作成できませんでした。\n${toErrorGuide(error)}`
+            }
+          ></HoroscopeDetailPage>
+        ) : (
+          <div className="loading">読み込み中…</div>
+        )}
       </div>
       <Footer />
     </div>

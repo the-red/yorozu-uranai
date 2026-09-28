@@ -69,6 +69,11 @@ export const SuimeiForm: FC<FormProps> = (props) => {
               </ul>
             </dd>
           </dl>
+          {props.errorMessage && (
+            <p className="form_error" role="alert">
+              {props.errorMessage}
+            </p>
+          )}
           <div className="create_meisiki_button">
             <button type="submit">命式を作成する</button>
           </div>

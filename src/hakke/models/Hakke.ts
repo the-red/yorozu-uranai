@@ -34,10 +34,10 @@ export const 四維list = ['乾', '艮', '巽', '坤'] as const satisfies readon
 export type 四維 = (typeof 四維list)[number]
 
 const 四維読みtable = {
-  乾: 'いぬい', // 北西。戌（いぬ）・亥（い）
-  艮: 'うしとら', // 北東。丑（うし）・寅（とら）
-  巽: 'たつみ', // 南東。辰（たつ）・巳（み）
-  坤: 'ひつじさる', // 南西。未（ひつじ）・申（さる）
+  乾: 'いぬい', // 北西。戌・亥
+  艮: 'うしとら', // 北東。丑・寅
+  巽: 'たつみ', // 南東。辰・巳
+  坤: 'ひつじさる', // 南西。未・申
 } as const satisfies Record<四維, string>
 
 export type 四維読み = (typeof 四維読みtable)[四維]

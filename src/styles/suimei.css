@@ -1,0 +1,546 @@
+@font-face {
+  font-family: 'YujiSyuku-Regular';
+  src: url('/fonts/YujiSyuku-Regular.ttf');
+}
+@font-face {
+  font-family: 'ZenOldMincho-Regular';
+  src: url('/fonts/ZenOldMincho-Regular.ttf');
+}
+@font-face {
+  font-family: 'ZenOldMincho-Bold';
+  src: url('/fonts/ZenOldMincho-Bold.ttf');
+}
+.suimei {
+  /* フォント */
+  --heading: 'YujiSyuku-Regular';
+  --text-regular: 'ZenOldMincho-Regular';
+  --text-bold: 'ZenOldMincho-Bold';
+  /* 基本の色 */
+  --base-white: #f7f7f7;
+  --text-black: #191919;
+  --main-red: #b53935;
+  --accent-yellow: #f2c641;
+  /* その他の色 */
+  --white: #fff;
+  --form-line-gray: #adadad;
+  --table-header-gray: #8a8a8a;
+  --table-data-gray: #e6e6e6;
+  --accent-yellow-light: #f8e2a0;
+  /* 端末の横幅サイズ */
+  --sp-width: 375;
+}
+.suimei .header {
+  background-color: var(--accent-yellow-light);
+}
+.suimei .twitter-logo {
+  fill: #4b4b4b;
+}
+.suimei .main {
+  /* global.cssでmargin-top設定されているので打ち消す */
+  margin-top: 0;
+  /* 全体共通スタイル */
+  font-size: 16px;
+  color: var(--text-black);
+  background: var(--base-white);
+  line-height: 1.5;
+  font-family: var(--text-regular), serif;
+  letter-spacing: 0.05em;
+}
+.suimei .main img {
+  vertical-align: bottom;
+  max-width: 100%;
+  height: auto;
+}
+.suimei .main a {
+  text-decoration: none;
+}
+.suimei .main dl,
+.suimei .main ul {
+  margin: 0;
+  padding: 0;
+}
+.suimei .main ul li {
+  list-style-type: none;
+}
+.suimei .main h1,
+.suimei .main h2,
+.suimei .main h3 {
+  margin: 0;
+  padding: 0;
+  font-weight: normal;
+}
+/* iPhoneのSafariで角丸にならないようにする */
+.suimei .main input[type='button'],
+.suimei .main input[type='text'],
+.suimei .main input[type='submit'],
+.suimei .main input[type='image'],
+.suimei .main input[type='email'],
+.suimei .main textarea {
+  -webkit-appearance: none;
+  border-radius: 0;
+}
+/* タイトル表示エリア */
+.suimei .main .title_area {
+  position: relative;
+  height: calc(137 / var(--sp-width) * 100vw);
+  overflow: hidden;
+}
+.suimei .main .title_area .lantern_outer {
+  position: absolute;
+}
+.suimei .main .title_area .lantern_outer .lantern_inner {
+  position: relative;
+}
+.suimei .main .title_area .lantern_outer.yellow .lantern_inner {
+  width: calc(50 / var(--sp-width) * 100vw);
+  height: calc(151 / var(--sp-width) * 100vw);
+}
+.suimei .main .title_area .lantern_outer.yellow.left {
+  top: calc(-18 / var(--sp-width) * 100vw);
+  left: calc(16 / var(--sp-width) * 100vw);
+}
+.suimei .main .title_area .lantern_outer.yellow.right {
+  top: calc(-18 / var(--sp-width) * 100vw);
+  right: calc(16 / var(--sp-width) * 100vw);
+}
+.suimei .main .title_area .lantern_outer.red .lantern_inner {
+  width: calc(31 / var(--sp-width) * 100vw);
+  height: calc(91 / var(--sp-width) * 100vw);
+}
+.suimei .main .title_area .lantern_outer.red.left {
+  top: calc(-11 / var(--sp-width) * 100vw);
+  left: calc(59 / var(--sp-width) * 100vw);
+}
+.suimei .main .title_area .lantern_outer.red.right {
+  top: calc(-11 / var(--sp-width) * 100vw);
+  right: calc(59 / var(--sp-width) * 100vw);
+}
+.suimei .main .title_area h2 {
+  position: absolute;
+  top: calc(34 / var(--sp-width) * 100vw);
+  left: 50%;
+  transform: translateX(-50%);
+}
+.suimei .main .title_area h2 .title_logo {
+  position: relative;
+  width: calc(163 / var(--sp-width) * 100vw);
+  height: calc(69 / var(--sp-width) * 100vw);
+}
+.suimei .main section {
+  /* セクション共通設定 */
+  padding: 0 0 80px;
+}
+.suimei .main section .inner {
+  width: calc(343 / var(--sp-width) * 100vw);
+  margin: 0 auto;
+}
+.suimei .main section h3 {
+  margin-bottom: 30px;
+  font-family: var(--heading);
+  font-size: 24px;
+  text-align: center;
+  letter-spacing: 0.25em;
+}
+/* 情報入力欄 */
+.suimei .main section.information_input {
+  background-color: var(--main-red);
+  padding: 40px 0;
+  margin-bottom: 80px;
+}
+.suimei .main section.information_input .inner {
+  background-color: var(--base-white);
+  padding: 40px 0 60px;
+  border-radius: 10px;
+}
+.suimei .main section.information_input form {
+  width: calc(315 / var(--sp-width) * 100vw);
+  margin: 0 auto;
+}
+.suimei .main section.information_input form dl {
+  display: flex;
+  flex-wrap: wrap;
+  margin-bottom: 40px;
+}
+.suimei .main section.information_input form dl dt,
+.suimei .main section.information_input form dl dd {
+  width: 100%;
+}
+.suimei .main section.information_input form dl dt {
+  margin-bottom: 10px;
+}
+.suimei .main section.information_input form dl dd {
+  margin-inline-start: 0;
+  margin-bottom: 40px;
+}
+.suimei .main section.information_input form dl dd:last-of-type {
+  margin-bottom: 0;
+}
+.suimei .main section.information_input form dl dd input {
+  font-family: var(--text-regular);
+  font-size: 14px;
+}
+.suimei .main section.information_input form dl dd input[type='date'],
+.suimei .main section.information_input form dl dd input[type='time'],
+.suimei .main section.information_input form dl dd input[type='text'] {
+  width: 100%;
+  height: 48px;
+  padding: 0 16px 0;
+  border: 1px solid var(--form-line-gray);
+  border-radius: 3px;
+}
+.suimei .main section.information_input form dl dd input[type='date'],
+.suimei .main section.information_input form dl dd input[type='time'] {
+  /* 日付と時刻の入力欄の大きさ（全体で幅100%・高さ48pxになる） */
+  /* iOSのSafariは、この2種類の入力欄にbox-sizing: content-boxを強制する（border-boxを指定しても効かない）。 */
+  /* どのブラウザでも同じ大きさになるよう、content-boxを明示して、余白と枠線のぶんを引いた大きさを指定する */
+  box-sizing: content-box;
+  width: calc(100% - 34px);
+  height: 46px;
+}
+.suimei .main section.information_input form dl dd.date_time input[type='date'] {
+  margin-bottom: 5px;
+}
+.suimei .main section.information_input form dl dd.location .lat span,
+.suimei .main section.information_input form dl dd.location .lng span {
+  display: block;
+  font-size: 14px;
+  margin-bottom: 5px;
+}
+.suimei .main section.information_input form dl dd.location .lat {
+  margin-bottom: 10px;
+}
+.suimei .main section.information_input form dl dd.gender ul {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 34px;
+}
+.suimei .main section.information_input form dl dd.gender ul li label {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  font-size: 14px;
+}
+.suimei .main section.information_input form dl dd.gender ul li label input {
+  width: 14px;
+  height: 14px;
+}
+.suimei .main section.information_input form .create_meisiki_button {
+  text-align: center;
+}
+.suimei .main section.information_input form .create_meisiki_button button {
+  margin: 0 auto;
+  width: calc(189 / var(--sp-width) * 100vw);
+  height: 44px;
+  border-radius: 24px;
+  border: none;
+  background-color: var(--accent-yellow);
+  font-size: 14px;
+  font-family: var(--text-bold);
+  letter-spacing: 0.1em;
+  cursor: pointer;
+}
+/* 計算結果の表の共通設定 */
+.suimei .main section.result h3 .heading_icon {
+  margin: 0 auto;
+  position: relative;
+  margin-bottom: 3px;
+  width: 40px;
+  height: 20px;
+}
+.suimei .main section.result table {
+  text-align: center;
+  width: 100%;
+  font-family: var(--text-bold);
+}
+.suimei .main section.result table thead tr th {
+  background-color: var(--main-red);
+  color: var(--white);
+  border-radius: 7px 7px 0 0;
+}
+.suimei .main section.result table thead tr th:first-of-type {
+  background-color: transparent;
+}
+.suimei .main section.result table tbody tr th {
+  background-color: var(--table-header-gray);
+  color: var(--white);
+}
+.suimei .main section.result table tbody tr td {
+  background-color: var(--table-data-gray);
+}
+/* 命式と五行バランスの共通設定 */
+.suimei .main section.meisiki table thead tr th,
+.suimei .main section.gogyo_balance table thead tr th {
+  padding: 10px 0;
+}
+.suimei .main section.meisiki table tbody tr th,
+.suimei .main section.meisiki table tbody tr td,
+.suimei .main section.gogyo_balance table tbody tr th,
+.suimei .main section.gogyo_balance table tbody tr td {
+  padding: 16px 0;
+}
+/* 命式 */
+.suimei .main section.meisiki table {
+  font-size: 14px;
+}
+.suimei .main section.meisiki table tbody tr td {
+  width: calc((100% - 74 / 343 * 100%) / 4);
+}
+.suimei .main section.meisiki .solar_time {
+  margin-top: 12px;
+  font-size: 12px;
+  text-align: right;
+}
+/* 五行バランス */
+.suimei .main section.gogyo_balance table {
+  font-size: 14px;
+}
+.suimei .main section.gogyo_balance table thead tr th:first-of-type {
+  background-color: var(--main-red);
+}
+/* 大運、歳運の共通設定 */
+.suimei .main section.daiun table thead tr th,
+.suimei .main section.saiun table thead tr th {
+  font-size: 10px;
+  padding: 6px 0;
+}
+.suimei .main section.daiun table tbody tr th,
+.suimei .main section.saiun table tbody tr th {
+  font-size: 10px;
+}
+.suimei .main section.daiun table tbody tr td,
+.suimei .main section.saiun table tbody tr td {
+  font-size: 12px;
+  font-family: var(--text-regular);
+  width: calc((100% - 45 / 343 * 100%) / 5);
+}
+.suimei .main section.daiun table tbody tr.current th,
+.suimei .main section.saiun table tbody tr.current th {
+  background-color: var(--accent-yellow);
+  color: var(--text-black);
+}
+.suimei .main section.daiun table tbody tr.current th span::after,
+.suimei .main section.saiun table tbody tr.current th span::after {
+  background-color: var(--text-black);
+}
+.suimei .main section.daiun table tbody tr.current td,
+.suimei .main section.saiun table tbody tr.current td {
+  background-color: var(--accent-yellow-light);
+}
+/* 大運 */
+.suimei .main section.daiun table tbody tr th,
+.suimei .main section.daiun table tbody tr td {
+  padding: 7px 0;
+}
+/* 歳運 */
+.suimei .main section.saiun table tbody tr th,
+.suimei .main section.saiun table tbody tr td {
+  padding: 4px 0;
+}
+.suimei .main section.saiun table tbody tr th span {
+  display: block;
+  position: relative;
+  margin-bottom: 6px;
+}
+.suimei .main section.saiun table tbody tr th span::after {
+  content: '';
+  width: 26px;
+  height: 0.5px;
+  background-color: var(--white);
+  position: absolute;
+  bottom: -3px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+/* PC用スタイル */
+@media screen and (min-width: 980px) {
+  .suimei .main .title_area {
+    height: 330px;
+    width: 886px;
+    margin: 0 auto;
+  }
+  .suimei .main .title_area .lantern_outer.yellow .lantern_inner {
+    width: 74px;
+    height: 225px;
+  }
+  .suimei .main .title_area .lantern_outer.yellow.left {
+    top: -17px;
+    left: 0;
+  }
+  .suimei .main .title_area .lantern_outer.yellow.right {
+    top: -15px;
+    right: 111px;
+  }
+  .suimei .main .title_area .lantern_outer.red .lantern_inner {
+    width: 74px;
+    height: 219.8px;
+  }
+  .suimei .main .title_area .lantern_outer.red.left {
+    top: 0;
+    left: 111px;
+  }
+  .suimei .main .title_area .lantern_outer.red.right {
+    top: -33px;
+    right: 0;
+  }
+  .suimei .main .title_area h2 {
+    top: 75px;
+  }
+  .suimei .main .title_area h2 .title_logo {
+    width: 414px;
+    height: 180px;
+  }
+  .suimei .main section {
+    /* セクション共通設定 */
+    padding-bottom: 120px;
+  }
+  .suimei .main section .inner {
+    width: 980px;
+  }
+  .suimei .main section h3 {
+    margin-bottom: 40px;
+    font-size: 30px;
+  }
+  /* 情報入力欄 */
+  .suimei .main section.information_input {
+    margin-bottom: 90px;
+  }
+  .suimei .main section.information_input .inner {
+    padding-top: 50px;
+  }
+  .suimei .main section.information_input form {
+    width: 306px;
+  }
+  .suimei .main section.information_input form dl {
+    margin-bottom: 50px;
+  }
+  .suimei .main section.information_input form dl dt {
+    width: 90px;
+    margin-bottom: 0;
+  }
+  .suimei .main section.information_input form dl dd {
+    width: calc(306px - 90px);
+    margin-bottom: 25px;
+  }
+  .suimei .main section.information_input form dl dd input[type='date'],
+  .suimei .main section.information_input form dl dd input[type='time'],
+  .suimei .main section.information_input form dl dd input[type='text'] {
+    height: 28px;
+    padding: 0 7px 0;
+  }
+  .suimei .main section.information_input form dl dd.date_time input[type='date'] {
+    /* 全体で幅132px・高さ28pxになるように、余白と枠線のぶんを引いている */
+    box-sizing: content-box;
+    width: calc(132px - 16px);
+    height: 26px;
+  }
+  .suimei .main section.information_input form dl dd.date_time input[type='time'] {
+    /* 全体で幅84px・高さ28pxになるように、余白と枠線のぶんを引いている */
+    box-sizing: content-box;
+    width: calc(84px - 16px);
+    height: 26px;
+  }
+  .suimei .main section.information_input form dl dd.location .lat span,
+  .suimei .main section.information_input form dl dd.location .lng span {
+    display: inline;
+    margin-bottom: 0px;
+    margin-right: 8px;
+  }
+  .suimei .main section.information_input form dl dd.location .lat input,
+  .suimei .main section.information_input form dl dd.location .lng input {
+    width: 107px;
+  }
+  .suimei .main section.information_input form dl dd.location .lat {
+    margin-bottom: 4px;
+  }
+  .suimei .main section.information_input form dl dd.gender ul {
+    gap: 14px;
+  }
+  .suimei .main section.information_input form dl dd.gender ul li label {
+    margin-right: 0;
+  }
+  .suimei .main section.information_input form dl dd.gender ul li label input {
+    width: 16px;
+    height: 16px;
+  }
+  .suimei .main section.information_input form .create_meisiki_button button {
+    width: 185px;
+  }
+  /* 見出しの共通スタイル */
+  .suimei .main section.result h3 .heading_icon {
+    margin-bottom: 6px;
+    width: 39.78px;
+    height: 24px;
+  }
+  .suimei .main section.result .header_br_sp {
+    display: none;
+  }
+  /* 命式 */
+  .suimei .main section.meisiki table {
+    font-size: 16px;
+  }
+  .suimei .main section.meisiki table tbody tr td {
+    font-size: 20px;
+    width: calc((100% - 143 / 980 * 100%) / 4);
+  }
+  .suimei .main section.meisiki table .exist-help {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 4px;
+  }
+  /* 五行バランス */
+  .suimei .main section.gogyo_balance table {
+    width: 646px;
+    margin: 0 auto;
+  }
+  .suimei .main section.gogyo_balance table thead tr th {
+    font-size: 16px;
+  }
+  .suimei .main section.gogyo_balance table thead tr th:first-of-type {
+    background-color: var(--main-red);
+  }
+  .suimei .main section.gogyo_balance table tbody tr td {
+    font-size: 20px;
+    padding: 10px 0;
+  }
+  /* 大運、歳運の共通設定 */
+  .suimei .main section.daiun table thead tr th,
+  .suimei .main section.saiun table thead tr th {
+    font-size: 16px;
+    padding: 10px 0;
+  }
+  .suimei .main section.daiun table tbody tr th,
+  .suimei .main section.saiun table tbody tr th {
+    font-size: 14px;
+  }
+  .suimei .main section.daiun table tbody tr td,
+  .suimei .main section.saiun table tbody tr td {
+    font-size: 14px;
+    width: 139.5px;
+    width: calc((100% - 143 / 980 * 100%) / 5);
+  }
+  /* 大運 */
+  .suimei .main section.daiun tbody tr th,
+  .suimei .main section.daiun tbody tr td {
+    padding: 8px 0;
+  }
+  /* 歳運 */
+  .suimei .main section.saiun table tbody tr th,
+  .suimei .main section.saiun table tbody tr td {
+    padding: 8px 0;
+  }
+  .suimei .main section.saiun table tbody tr th span {
+    display: inline;
+    margin-bottom: 0;
+    margin-right: 16px;
+  }
+  .suimei .main section.saiun table tbody tr th span::after {
+    width: 1px;
+    height: 19px;
+    bottom: auto;
+    left: auto;
+    right: -8px;
+    top: 0;
+    transform: none;
+  }
+}

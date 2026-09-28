@@ -3,37 +3,13 @@ import { Numerology } from '../models/Numerology'
 
 const CoreNumber: FC<{ children: ReactNode }> = ({ children }) => {
   return (
-    <div
-      style={{
-        position: 'relative',
-        width: 'calc(120px * 1.05)',
-        height: '120px',
-        background: '#9A8EB6',
-        clipPath: 'polygon( 50% 0, 100% 38%, 81% 100%, 19% 100%, 0 38%)',
-      }}
-    >
-      <div
-        style={{
-          position: 'absolute',
-          top: '50%',
-          left: '50%',
-          transform: 'translate(-50%, -50%)',
-        }}
-      >
-        <div
-          style={{
-            width: 'calc(114px * 1.05)',
-            height: '114px',
-            background: '#fff',
-            clipPath: 'polygon( 50% 0, 100% 38%, 81% 100%, 19% 100%, 0 38%)',
-          }}
-        />
+    <div className="core_number">
+      <div className="core_number_inner_position">
+        <div className="core_number_inner" />
       </div>
 
-      <div style={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -35%)' }}>
-        <div className="core_number_value" style={{ color: '#9A8EB6' }}>
-          {children}
-        </div>
+      <div className="core_number_value_position">
+        <div className="core_number_value">{children}</div>
       </div>
     </div>
   )

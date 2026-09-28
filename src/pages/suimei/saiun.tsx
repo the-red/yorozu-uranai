@@ -75,7 +75,7 @@ const SuimeiSaiunPage: NextPage = () => {
 
   return (
     <div className="suimei">
-      <div className="main" style={{ paddingTop: '30px' }}>
+      <div className="main saiun_page">
         <SaiunContent saiun={saiun} />
       </div>
     </div>

@@ -19,7 +19,7 @@ export const SuimeiForm: FC<FormProps> = (props) => {
               <input type="time" {...register('time')} disabled={isTimeUnknownChecked} />
               <div>
                 <span>{zone}</span>
-                <span style={{ marginLeft: '12px' }}>
+                <span className="time_unknown">
                   <input id="horoscope[time_unknown]" type="checkbox" {...register('timeUnknown')} />
                   <label htmlFor="horoscope[time_unknown]">時刻不明</label>
                 </span>
@@ -27,7 +27,7 @@ export const SuimeiForm: FC<FormProps> = (props) => {
             </dd>
             <dt>出生場所</dt>
             <dd className="location">
-              <div style={{ textDecoration: 'underline', marginBottom: '5px' }}>
+              <div className="map_link">
                 <Link href={pagesPath.map.$url({ query: { lat: lat, lng: lng } })} target="_blank" rel="opener">
                   地図から検索
                 </Link>

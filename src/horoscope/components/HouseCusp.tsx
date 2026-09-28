@@ -6,9 +6,9 @@ type Props = {
 
 export default function HouseCusp({ horoscope }: Props) {
   return (
-    <div style={{ width: '100%' }}>
+    <div className="list-container">
       <div className="list">House Cusps</div>
-      <table style={{ width: '100%' }}>
+      <table className="list-table">
         <tbody>
           {horoscope.house.cusps.map((cusp, i) => (
             <tr key={i}>

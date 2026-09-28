@@ -18,7 +18,7 @@ export default function SignTable({ planets }: Props) {
   }
 
   return (
-    <div style={{ width: '100%' }}>
+    <div className="list-container">
       <div className="list">Sign Classification</div>
       <table className="sign-classification-list">
         <tbody>

@@ -160,3 +160,52 @@
 .horoscope .twitter-logo {
   fill: #fff;
 }
+
+/* 入力フォーム */
+.horoscope .horoscope-form {
+  width: 100%;
+}
+.horoscope .horoscope-form hr {
+  margin: 20px 0;
+}
+.horoscope .horoscope-form .form-row {
+  display: flex;
+}
+.horoscope .horoscope-form .form-label {
+  width: 100px;
+}
+.horoscope .horoscope-form .time-unknown {
+  margin-left: 12px;
+}
+.horoscope .horoscope-form .lat-lng-label {
+  margin-right: 8px;
+}
+.horoscope .horoscope-form .lat-lng-input {
+  width: 110px;
+}
+.horoscope .horoscope-form .map-link {
+  margin-bottom: 5px;
+  text-decoration: underline;
+}
+.horoscope .horoscope-form .submit-row {
+  display: flex;
+  justify-content: center;
+}
+.horoscope .horoscope-form .submit-button {
+  padding: 16px 20px;
+  border: none;
+  border-radius: 3px;
+  outline: none;
+  background-color: #918879;
+  color: #fff;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+/* 惑星やハウスの一覧 */
+.horoscope .list-container {
+  width: 100%;
+}
+.horoscope .list-table {
+  width: 100%;
+}

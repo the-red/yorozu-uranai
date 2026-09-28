@@ -8,9 +8,9 @@ export const HoroscopeForm: FC<FormProps> = (props) => {
     useYorozuUranaiForm(props)
 
   return (
-    <form onSubmit={hookFormHandleSubmit(handleSubmit)} style={{ width: '100%' }}>
-      <div style={{ display: 'flex' }}>
-        <label style={{ width: '100px' }}>生年月日</label>
+    <form onSubmit={hookFormHandleSubmit(handleSubmit)} className="horoscope-form">
+      <div className="form-row">
+        <label className="form-label">生年月日</label>
         <div>
           <div>
             <input type="date" {...register('date')} />
@@ -18,7 +18,7 @@ export const HoroscopeForm: FC<FormProps> = (props) => {
           </div>
           <div>
             <span>{zone}</span>
-            <span style={{ marginLeft: '12px' }}>
+            <span className="time-unknown">
               <input id="horoscope[time_unknown]" type="checkbox" {...register('timeUnknown')} />
               <label htmlFor="horoscope[time_unknown]">時刻不明</label>
             </span>
@@ -26,34 +26,20 @@ export const HoroscopeForm: FC<FormProps> = (props) => {
         </div>
       </div>
 
-      <hr style={{ margin: '20px 0' }} />
+      <hr />
 
-      <div style={{ display: 'flex' }}>
-        <label style={{ width: 100 }}>出生場所</label>
+      <div className="form-row">
+        <label className="form-label">出生場所</label>
         <div>
           <div>
-            <label style={{ marginRight: '8px' }}>緯度</label>
-            <input
-              disabled
-              type="text"
-              {...register('lat', { valueAsNumber: true })}
-              style={{
-                width: 110,
-              }}
-            />
+            <label className="lat-lng-label">緯度</label>
+            <input disabled type="text" className="lat-lng-input" {...register('lat', { valueAsNumber: true })} />
           </div>
           <div>
-            <label style={{ marginRight: '8px' }}>経度</label>
-            <input
-              disabled
-              type="text"
-              {...register('lng', { valueAsNumber: true })}
-              style={{
-                width: 110,
-              }}
-            />
+            <label className="lat-lng-label">経度</label>
+            <input disabled type="text" className="lat-lng-input" {...register('lng', { valueAsNumber: true })} />
           </div>
-          <div style={{ textDecoration: 'underline', marginBottom: '5px' }}>
+          <div className="map-link">
             <Link href={pagesPath.map.$url({ query: { lat: lat, lng: lng } })} target="_blank" rel="opener">
               地図から検索
             </Link>
@@ -62,22 +48,10 @@ export const HoroscopeForm: FC<FormProps> = (props) => {
         </div>
       </div>
 
-      <hr style={{ margin: '20px 0' }} />
+      <hr />
 
-      <div style={{ display: 'flex', justifyContent: 'center' }}>
-        <button
-          type="submit"
-          style={{
-            padding: '16px 20px',
-            backgroundColor: '#918879',
-            color: '#fff',
-            fontWeight: 'bold',
-            border: 'none',
-            borderRadius: '3px',
-            cursor: 'pointer',
-            outline: 'none',
-          }}
-        >
+      <div className="submit-row">
+        <button type="submit" className="submit-button">
           ホロスコープを作成する
         </button>
       </div>

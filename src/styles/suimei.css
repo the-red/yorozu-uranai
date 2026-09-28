@@ -544,3 +544,26 @@
     transform: none;
   }
 }
+
+/* 時刻不明のチェックボックス */
+.suimei .main .time_unknown {
+  margin-left: 12px;
+}
+/* 地図から検索 */
+.suimei .main .map_link {
+  margin-bottom: 5px;
+  text-decoration: underline;
+}
+/* 歳運表へのリンク */
+.suimei .main .saiun_link {
+  margin-bottom: 5px;
+  text-align: right;
+  text-decoration: underline;
+}
+.suimei .main .saiun_link .open_icon {
+  vertical-align: text-bottom;
+}
+/* 歳運表だけを表示するページ */
+.suimei .main.saiun_page {
+  padding-top: 30px;
+}

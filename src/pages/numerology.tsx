@@ -47,13 +47,11 @@ const NumerologyPage: NextPage = () => {
 
   return (
     <div className="numerology">
-      <div className="wrapper" style={{ backgroundColor: '#EBEBC1', fontFamily: 'Lato Regular, Noto Sans JP Regular' }}>
+      <div className="wrapper">
         <Menu />
         <Header />
         <div className="contents">
-          <div style={{ fontFamily: 'MTF Wildflower' }} className="page_title">
-            numerology
-          </div>
+          <div className="page_title">numerology</div>
           <NumerologyForm onSubmit={handleSubmit} defaultValues={formValues} />
           {numerology && <CoreNumbers numerology={numerology} />}
         </div>

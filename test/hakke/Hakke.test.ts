@@ -53,6 +53,9 @@ describe('Hakke', () => {
     expect(八卦list).toEqual(['乾', '兌', '離', '震', '巽', '坎', '艮', '坤'])
     expect(table.map(({ 卦 }) => 卦)).toEqual(八卦list)
   })
+  it('記号は、UnicodeのU+2630から先天八卦の順に並ぶ', () => {
+    expect(八卦list.map((卦) => get記号(卦).codePointAt(0))).toEqual(八卦list.map((卦) => 0x2630 + toBits(卦)))
+  })
 
   describe.each(table)('$卦（$象）', (row) => {
     const { 卦 } = row

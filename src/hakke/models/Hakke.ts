@@ -6,15 +6,16 @@ import type { 陰陽 } from './Kou'
 // 並び順は先天八卦（伏羲）の順。indexがそのまま3ビットの値になる（ビット列の決まりは Kou.ts を参照）
 export const 八卦list = ['乾', '兌', '離', '震', '巽', '坎', '艮', '坤'] as const
 export const 象list = ['天', '沢', '火', '雷', '風', '水', '山', '地'] as const // 八卦listと同じ順
+export const 記号list = ['☰', '☱', '☲', '☳', '☴', '☵', '☶', '☷'] as const // 八卦listと同じ順。Unicodeでも U+2630 からこの順に並ぶ
 export const 方位list = ['北', '北東', '東', '南東', '南', '南西', '西', '北西'] as const // 北から時計回り
 
 export type 八卦 = (typeof 八卦list)[number]
 export type 象 = (typeof 象list)[number]
+export type 記号 = (typeof 記号list)[number]
 export type 方位 = (typeof 方位list)[number]
 export type 九星数 = 1 | 2 | 3 | 4 | 6 | 7 | 8 | 9 // 5（中宮）には卦が無い
 
 const 爻数 = 3
-const 乾のコードポイント = 0x2630 // ☰。Unicodeも先天八卦の順に並んでいる
 
 const 読みtable: Record<八卦, string> = {
   乾: 'けん',
@@ -57,7 +58,7 @@ const validate = (卦: 八卦): 八卦 => fromBits(toBits(卦))
 
 export const get読み = (卦: 八卦): string => 読みtable[validate(卦)]
 export const get象 = (卦: 八卦): 象 => 象list[toBits(卦)]
-export const get記号 = (卦: 八卦): string => String.fromCodePoint(乾のコードポイント + toBits(卦))
+export const get記号 = (卦: 八卦): 記号 => 記号list[toBits(卦)]
 
 // 初爻 → 上爻の順
 export const get爻 = (卦: 八卦): 陰陽[] => get爻list(toBits(卦), 爻数)

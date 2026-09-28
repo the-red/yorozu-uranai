@@ -13,7 +13,8 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 ```sh
 yarn dev          # next dev と pathpida --watch を並列起動
 yarn build        # pathpida 生成 → next build
-yarn test         # jest 全件
+yarn test         # テストコードの型チェック → vitest 全件（1回実行）
+yarn vitest       # 変更を監視して再実行
 yarn test test/suimei/Kanshi.test.ts   # 単一ファイル
 yarn test -t '六十干支'                  # テスト名で絞り込み
 yarn lint         # eslint --fix（自動修正が走る）
@@ -39,10 +40,11 @@ yarn deploy production    # GCPプロジェクト yorozu-uranai-production
 ## テストの注意点
 
 - **計算結果は、実行環境のタイムゾーンに依存させない**。本番サーバー（Cloud Run）は UTC で動く可能性があり、利用者のブラウザも日本時間とは限らないため。日時を扱う変更をしたら `TZ=UTC yarn test` と `TZ=America/New_York yarn test` でも確認する
-- 小数の比較は `toBeCloseTo()` を使う。桁数は `test/test-util.ts` の `NUM_DIGITS`。オブジェクトや配列は同ファイルの `expectToBeCloseTo()` でまとめて比較する（Jest 27.4 には `expect.closeTo()` が無い）
+- 小数の比較は `toBeCloseTo()` を使う。桁数は `test/test-util.ts` の `NUM_DIGITS`。オブジェクトや配列は同ファイルの `expectToBeCloseTo()` でまとめて比較する
 - `swisseph` はネイティブアドオンなので、Node.js のバージョンを変えたら `yarn install` し直す（リビルドが必要）
   - `swisseph` が依存する `nan` と `node-gyp` は古いままだと Node.js 24 でビルドできないので、`package.json` の `resolutions` で新しいバージョンに固定している
 - テスト対象は `src/*/models` と `src/astronomy` の計算ロジックが中心。コンポーネントのテストは無い
+- Vitest はテストコードの型チェックをしないので、`yarn test` の中で `tsc -p test` を先に実行している（`test/` はルートの `tsconfig.json` の対象外）
 - 期待値は実在の生年月日に対する計算結果をハードコードしている。天文計算の結果は `src/astronomy` 側で小数第6位に切り捨てている
 
 ## アーキテクチャ

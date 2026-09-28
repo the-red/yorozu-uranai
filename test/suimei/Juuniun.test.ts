@@ -1,3 +1,4 @@
+import { describe, it, expect } from 'vitest'
 import { juuniun } from '../../src/suimei/models/Juuniun'
 
 describe('Juuniun', () => {

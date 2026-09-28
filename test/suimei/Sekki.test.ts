@@ -1,3 +1,4 @@
+import { describe, it, expect } from 'vitest'
 import { sekkiIndex, sekki } from '../../src/suimei/models/Sekki'
 import { getSetsuIri } from '../../src/suimei/models/SekkiUtil'
 import { getEclipticLongitude } from '../../src/astronomy'

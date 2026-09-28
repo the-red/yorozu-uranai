@@ -1,3 +1,4 @@
+import { describe, it, expect } from 'vitest'
 import { convertKanaToRomaji } from '../../src/numerology/models/romajiKana'
 
 describe('convertHiraganaToRomagi', () => {

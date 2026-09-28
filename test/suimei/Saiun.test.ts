@@ -1,3 +1,4 @@
+import { describe, it, expect } from 'vitest'
 import { DateTime } from 'luxon'
 import { getKanshiInstance } from './test-util'
 import { generateSaiun } from '../../src/suimei/models/Saiun'

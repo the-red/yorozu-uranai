@@ -90,7 +90,10 @@ Vercel は、ビルド時に「各 API の実行に必要なファイル」を�
 
 ### 地図ページとの連携
 
-出生地の選択は `/map` を別タブで開く方式（`target="_blank" rel="opener"`）。フォーム側が `window.setLocation` を定義し（`useYorozuUranaiForm.ts`）、地図側が `window.opener.setLocation(lat, lng)` を呼んで値を返す。`rel="opener"` を外すと動かなくなる。
+出生地の選択は `/map` を別タブで開く方式（`target="_blank" rel="opener"`）。値の返し方は2通りある。
+
+- **通常のブラウザ**: フォーム側が `window.setLocation` を定義し（`useYorozuUranaiForm.ts`）、地図側が `window.opener.setLocation(lat, lng)` を呼んで値を返し、地図のタブを閉じる。`rel="opener"` を外すと動かなくなる
+- **開いた元のページとつながらない場合**（LINE などのアプリ内ブラウザ）: 地図側が、緯度経度を URL に付けて元のページに移動する。そのために、地図へのリンクには戻り先（`returnTo`）と入力中のフォームの内容を付けている（`src/lib/map-return.ts`）。戻れるページは `horoscope` と `suimei` に限定している
 
 ### 型付きルーティング (pathpida)
 

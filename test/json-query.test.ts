@@ -124,6 +124,7 @@ describe('四柱推命のクエリ', () => {
         time: '08:53',
         timeUnknown: false,
         zone: 'Asia/Tokyo',
+        lat: null,
         lng: 141.35,
         gender: 'woman',
         thisYear: null,
@@ -131,8 +132,18 @@ describe('四柱推命のクエリ', () => {
     })
   })
 
-  it('緯度は使わない。不正な値でも無視する', () => {
-    expect(parseSuimeiQuery({ ...suimeiQuery, lat: 'abc' })).toEqual(parseSuimeiQuery(suimeiQuery))
+  describe('緯度', () => {
+    // 計算には使わない。同じ結果を表示するページのURLに入れるために受け取る
+    it('付いていれば、数値にする', () => {
+      expect(parseSuimeiQuery({ ...suimeiQuery, lat: '43.06' })).toMatchObject({ input: { lat: 43.06 } })
+      expect(parseSuimeiQuery({ ...suimeiQuery, lat: '0' })).toMatchObject({ input: { lat: 0 } })
+    })
+    it('無くてもよい', () => {
+      expect(parseSuimeiQuery({ ...suimeiQuery, lat: '' })).toMatchObject({ input: { lat: null } })
+    })
+    it.each(['abc', '90.1', '-90.1'])('%j はエラー', (lat) => {
+      expect(parseSuimeiQuery({ ...suimeiQuery, lat })).toEqual(invalid('lat is invalid', ['lat']))
+    })
   })
 
   describe('性別', () => {
@@ -203,6 +214,10 @@ describe('入力 → ページのクエリ', () => {
     const parsed = parseSuimeiQuery({ ...suimeiQuery, time: 'unknown', thisYear: '2026' })
     // 現在の年は、ページがブラウザで求めるので付けない
     expect(parsed.ok && toPageQuery(parsed.input)).toEqual({ ...suimeiQuery, time: 'unknown' })
+  })
+  it('四柱推命の緯度', () => {
+    const parsed = parseSuimeiQuery({ ...suimeiQuery, lat: '43.06' })
+    expect(parsed.ok && toPageQuery(parsed.input)).toEqual({ ...suimeiQuery, lat: '43.06' })
   })
   it('数秘術', () => {
     const parsed = parseNumerologyQuery(numerologyQuery)

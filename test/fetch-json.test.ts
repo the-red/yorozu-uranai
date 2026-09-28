@@ -40,7 +40,7 @@ describe('フォームの値 → JSONのURL', () => {
     const { address, gender, ...rest } = formValues
     expect(parseHoroscopeQuery(toQuery(toJsonUrl('/horoscope', formValues)))).toEqual({ ok: true, input: rest })
 
-    const { address: _, lat, ...suimei } = formValues
+    const { address: _, ...suimei } = formValues
     expect(parseSuimeiQuery(toQuery(toJsonUrl('/suimei', formValues, { thisYear: '2026' })))).toEqual({
       ok: true,
       input: { ...suimei, thisYear: 2026 },

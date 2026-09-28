@@ -19,14 +19,39 @@ describe('/suimei.json', () => {
       time: '08:53',
       timeUnknown: false,
       zone: 'Asia/Tokyo',
+      lat: 43.06,
       lng: 141.35,
       gender: 'woman',
       thisYear: 2023,
     })
     // 現在の年は、ページがブラウザで求めるので付けない
     expect(json.page).toEqual(
-      'https://yorozu-uranai.com/suimei?date=19870908&time=0853&zone=Asia%2FTokyo&lng=141.35&gender=woman'
+      'https://yorozu-uranai.com/suimei?date=19870908&time=0853&zone=Asia%2FTokyo&lat=43.06&lng=141.35&gender=woman'
     )
+  })
+
+  describe('緯度', () => {
+    it('無ければ、ページのURLにも付けない', async () => {
+      const { json } = await get(suimei, query)
+      expect(json.input.lat).toBeNull()
+      expect(json.page).toEqual(
+        'https://yorozu-uranai.com/suimei?date=19870908&time=0853&zone=Asia%2FTokyo&lng=141.35&gender=woman'
+      )
+    })
+    it('計算には使わない', async () => {
+      const sapporo = await get(suimei, { ...query, lat: '43.06' })
+      const equator = await get(suimei, { ...query, lat: '0' })
+      const none = await get(suimei, query)
+      expect(equator.json.page).toContain('lat=0&')
+      expect(equator.json.result).toEqual(sapporo.json.result)
+      expect(none.json.result).toEqual(sapporo.json.result)
+      expect(none.json.raw).toEqual(sapporo.json.raw)
+    })
+    it('不正な値はエラー', async () => {
+      const { status, json } = await get(suimei, { ...query, lat: '90.1' })
+      expect(status).toEqual(400)
+      expect(json).toEqual({ error: { code: 'invalid_query', message: 'lat is invalid', params: ['lat'] } })
+    })
   })
 
   it('日本生まれ: サーバーのタイムゾーンに依らず、日本の暦で計算する', async () => {

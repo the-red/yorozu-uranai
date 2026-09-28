@@ -110,7 +110,13 @@ class Parser {
   }
 
   gender() {
-    return toGender(this.required('gender'))
+    const value = this.required('gender')
+    if (value === undefined) return undefined
+
+    // 以前のURLの on は、女性として読む
+    // NOTE: ページと違って、ほかの値は推測しない。male などを女性として計算すると、大運の向きが逆でも気づけない
+    if (!['man', 'woman', 'on'].includes(value)) return this.invalid('gender')
+    return toGender(value)
   }
 
   thisYear() {

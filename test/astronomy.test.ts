@@ -18,6 +18,18 @@ describe('astronomy', () => {
     it('ユリウス日', async () => {
       expect(await julday(funadyBirthday)).toBeCloseTo(2447046.4951388887, NUM_DIGITS)
     })
+    it('J2000.0（2000年1月1日 正午）', async () => {
+      expect(await julday(new Date('2000-01-01T12:00:00Z'))).toEqual(2451545)
+    })
+    it('秒とミリ秒', async () => {
+      // 12時間30秒500ミリ秒 = 0.5 + 30.5 / 86400 日
+      expect(await julday(new Date('2000-01-01T00:00:30.500Z'))).toBeCloseTo(2451544.5 + 30.5 / 86400, 8)
+    })
+    it('標準時が制定される前の日付も、実行環境のタイムゾーンに依らない', async () => {
+      // NOTE: 標準時の制定より前は、タイムゾーンのオフセットに秒の端数がある（東京は +9:18:59）
+      expect(await julday(new Date('1880-01-01T03:00:00Z'))).toEqual(2407715.625)
+      expect(await julday(new Date('1700-06-15T18:00:00Z'))).toEqual(2342138.25)
+    })
   })
 
   describe('黄道座標', () => {

@@ -26,6 +26,7 @@ export type SuimeiInput = {
   time: string
   timeUnknown: boolean
   zone: string
+  lat: number | null // 計算には使わない。ページのURLに入れるために受け取る
   lng: number
   gender: Gender
   thisYear: number | null
@@ -101,8 +102,16 @@ class Parser {
   // 緯度・経度。maxは絶対値の上限
   degrees(name: 'lat' | 'lng', max: number) {
     const value = this.required(name)
-    if (value === undefined) return undefined
+    return value === undefined ? undefined : this.toDegrees(name, value, max)
+  }
 
+  // 任意の緯度・経度。無ければnull
+  optionalDegrees(name: 'lat' | 'lng', max: number) {
+    const value = this.value(name)
+    return value === undefined ? null : (this.toDegrees(name, value, max) ?? null)
+  }
+
+  private toDegrees(name: string, value: string, max: number) {
     const degrees = Number(value)
     if (value.trim() === '' || !Number.isFinite(degrees) || Math.abs(degrees) > max) return this.invalid(name)
     return degrees
@@ -166,6 +175,7 @@ export const parseSuimeiQuery = (query: JsonQuery): Parsed<SuimeiInput> => {
   const date = parser.date()
   const time = parser.time()
   const zone = parser.zone()
+  const lat = parser.optionalDegrees('lat', 90)
   const lng = parser.degrees('lng', 180)
   const gender = parser.gender()
   const thisYear = parser.thisYear()
@@ -174,6 +184,7 @@ export const parseSuimeiQuery = (query: JsonQuery): Parsed<SuimeiInput> => {
     time: time?.time,
     timeUnknown: time?.timeUnknown,
     zone,
+    lat,
     lng,
     gender,
     thisYear,
@@ -195,14 +206,14 @@ export const toDateTime = ({ date, time, zone }: { date: string; time: string; z
 export const toDate = ({ date }: { date: string }): DateTime => DateTime.fromISO(date, { zone: 'utc' })
 
 // 同じ結果を表示するページのクエリ
-export const toPageQuery = (
-  input: Partial<HoroscopeInput & SuimeiInput & NumerologyInput>
-): Record<string, string> => ({
+type PageInput = Partial<Omit<HoroscopeInput & SuimeiInput & NumerologyInput, 'lat'>> & { lat?: number | null }
+
+export const toPageQuery = (input: PageInput): Record<string, string> => ({
   ...(input.name !== undefined && { name: input.name }),
   ...(input.date !== undefined && { date: input.date.replaceAll('-', '') }),
   ...(input.time !== undefined && { time: input.timeUnknown ? QUERY_TIME_UNKNOWN : input.time.replace(':', '') }),
   ...(input.zone !== undefined && { zone: input.zone }),
-  ...(input.lat !== undefined && { lat: String(input.lat) }),
+  ...(input.lat != null && { lat: String(input.lat) }),
   ...(input.lng !== undefined && { lng: String(input.lng) }),
   ...(input.gender !== undefined && { gender: input.gender }),
 })

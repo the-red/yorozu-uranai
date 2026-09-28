@@ -37,20 +37,26 @@ export const singleValue = (value: QueryValue) => (Array.isArray(value) ? value[
 export const toGender = (value: string | undefined): Gender | undefined =>
   value === undefined ? undefined : value === 'man' ? 'man' : 'woman'
 
+// 形式を変えるためだけに、日付や時刻を読む
+// NOTE: タイムゾーンを指定しないと、「閲覧者のタイムゾーンの、今日の、その時刻」として読まれる。
+// 閲覧者の地域が夏時間に切り替わる日は、存在しない時刻（02:30 など）が1時間ずれるので、夏時間の無いUTCで読む
+const convert = (value: string, from: string, to: string) =>
+  DateTime.fromFormat(value, from, { zone: 'utc' }).toFormat(to)
+
 export const queryToFormValues = (q: Query): FormValuesBase => {
   const name = singleValue(q.name)
 
   const _date = singleValue(q.date)
   let date: string | undefined
   if (_date) {
-    date = DateTime.fromFormat(_date, QUERY_DATE_FORMAT).toFormat(FORM_DATE_FORMAT)
+    date = convert(_date, QUERY_DATE_FORMAT, FORM_DATE_FORMAT)
   }
 
   const _time = singleValue(q.time)
   const timeUnknown = _time === QUERY_TIME_UNKNOWN
   let time: string | undefined
   if (_time && !timeUnknown) {
-    time = DateTime.fromFormat(_time, QUERY_TIME_FORMAT).toFormat(FORM_TIME_FORMAT)
+    time = convert(_time, QUERY_TIME_FORMAT, FORM_TIME_FORMAT)
   }
 
   const zone = singleValue(q.zone)
@@ -75,8 +81,8 @@ export const queryToFormValues = (q: Query): FormValuesBase => {
 export const formValuesToQuery = (f: Partial<FormValuesBase>): Query => {
   return {
     ...(f.name && { name: f.name }),
-    ...(f.date && { date: DateTime.fromFormat(f.date, FORM_DATE_FORMAT).toFormat(QUERY_DATE_FORMAT) }),
-    ...(f.time && { time: DateTime.fromFormat(f.time, FORM_TIME_FORMAT).toFormat(QUERY_TIME_FORMAT) }),
+    ...(f.date && { date: convert(f.date, FORM_DATE_FORMAT, QUERY_DATE_FORMAT) }),
+    ...(f.time && { time: convert(f.time, FORM_TIME_FORMAT, QUERY_TIME_FORMAT) }),
     ...(f.zone && { zone: f.zone }),
     ...(f.timeUnknown && { time: QUERY_TIME_UNKNOWN }),
     ...(f.lat && { lat: f.lat.toString() }),

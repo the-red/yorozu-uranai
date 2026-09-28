@@ -12,7 +12,8 @@ const reverseGeocode = async (props: ReverseGeocodeProps) => {
   const client = new Client()
   const { data } = await client.reverseGeocode({
     params: {
-      key: process.env.NEXT_PUBLIC_GOOGLE_GEOCODING_API_KEY!,
+      // NOTE: サーバーだけで使うキーなので、環境変数の名前に NEXT_PUBLIC_ を付けない
+      key: process.env.GOOGLE_GEOCODING_API_KEY!,
       language: Language.ja,
       ...props,
     },

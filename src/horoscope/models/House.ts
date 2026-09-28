@@ -18,16 +18,23 @@ export class House {
     return this.raw.house.map((_) => new Position(_))
   }
 
+  // 惑星が入っているハウス
+  // NOTE: カスプとちょうど同じ黄経は、サインの境界（Position.sign）と同じく、手前のハウスに入れる
   where(longitude: number): number | undefined {
-    for (let i = 0; i < this.cusps.length; i++) {
-      const start = this.cusps[i].longitude
-      let end = this.cusps[i + 1]?.longitude || this.cusps[0].longitude
-      if (start > end) {
-        end += 360
-      }
-      if (start < longitude && longitude <= end) {
+    const { cusps } = this
+    for (let i = 0; i < cusps.length; i++) {
+      const start = cusps[i].longitude
+      const end = (cusps[i + 1] ?? cusps[0]).longitude
+
+      // 黄経0度をまたぐハウスでも比べられるように、ハウスの始まりからの角度に直す
+      const width = angleFrom(start, end)
+      const angle = angleFrom(start, longitude)
+      if (0 < angle && angle <= width) {
         return i + 1
       }
     }
   }
 }
+
+// start から longitude までの、黄経が増える向きの角度（0〜360度）
+const angleFrom = (start: number, longitude: number) => (((longitude - start) % 360) + 360) % 360

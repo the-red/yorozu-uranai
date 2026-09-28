@@ -323,6 +323,67 @@ describe('Planet', () => {
         expect(planet1.majorAspect(planet2, orb)).toEqual({ degrees: 180, name: 'opposition', type: 'hard' })
       })
     })
+
+    describe('黄経0度をまたぐ組み合わせ', () => {
+      // 黄経の差は、円周の短いほうで測る。358度と2度の差は、356度ではなく4度
+      const aspect = (longitude1: number, longitude2: number) =>
+        new Planet(new Position(longitude1), 'sun', false, house).majorAspect(
+          new Planet(new Position(longitude2), 'moon', false, house),
+          orb
+        )
+
+      it('コンジャクション', () => {
+        expect(aspect(358, 2)).toEqual({ degrees: 0, name: 'conjunction', type: 'hard' })
+        expect(aspect(2, 358)).toEqual({ degrees: 0, name: 'conjunction', type: 'hard' })
+      })
+      it('セクスタイル', () => {
+        expect(aspect(340, 40)).toEqual({ degrees: 60, name: 'sextile', type: 'soft' })
+        expect(aspect(40, 340)).toEqual({ degrees: 60, name: 'sextile', type: 'soft' })
+      })
+      it('スクエア', () => {
+        expect(aspect(300, 30)).toEqual({ degrees: 90, name: 'square', type: 'hard' })
+        expect(aspect(30, 300)).toEqual({ degrees: 90, name: 'square', type: 'hard' })
+      })
+      it('トライン', () => {
+        expect(aspect(300, 60)).toEqual({ degrees: 120, name: 'trine', type: 'soft' })
+        expect(aspect(60, 300)).toEqual({ degrees: 120, name: 'trine', type: 'soft' })
+      })
+      it('オポジション', () => {
+        expect(aspect(275, 90)).toEqual({ degrees: 180, name: 'opposition', type: 'hard' })
+        expect(aspect(90, 275)).toEqual({ degrees: 180, name: 'opposition', type: 'hard' })
+      })
+      it('許容範囲の境界', () => {
+        expect(aspect(357, 3)).toEqual({ degrees: 0, name: 'conjunction', type: 'hard' })
+        expect(aspect(357, 3.5)).toEqual(undefined)
+        expect(aspect(300, 54)).toEqual({ degrees: 120, name: 'trine', type: 'soft' })
+        expect(aspect(300, 53.5)).toEqual(undefined)
+      })
+      it('アスペクトが無い組み合わせ', () => {
+        // 差は 41度
+        expect(aspect(348, 29)).toEqual(undefined)
+      })
+    })
+  })
+
+  describe('黄経の差', () => {
+    const diff = (longitude1: number, longitude2: number) =>
+      new Planet(new Position(longitude1), 'sun', false, house).diffLongitude(longitude2)
+
+    it('0度をまたがない', () => {
+      expect(diff(10, 130)).toEqual(120)
+      expect(diff(130, 10)).toEqual(120)
+    })
+    it('0度をまたぐ', () => {
+      expect(diff(358, 2)).toEqual(4)
+      expect(diff(2, 358)).toEqual(4)
+    })
+    it('ちょうど反対側', () => {
+      expect(diff(0, 180)).toEqual(180)
+      expect(diff(270, 90)).toEqual(180)
+    })
+    it('同じ位置', () => {
+      expect(diff(123.4, 123.4)).toEqual(0)
+    })
   })
 
   describe('マイナーアスペクト', () => {
@@ -367,6 +428,21 @@ describe('Planet', () => {
         const planet1 = new Planet(new Position(10), 'sun', false, house)
         const sign150 = new Planet(new Position(160), 'sun', false, house)
         expect(planet1.minorAspect(sign150, orb)).toEqual({ degrees: 150, name: 'quincunx' })
+      })
+    })
+
+    describe('黄経0度をまたぐ組み合わせ', () => {
+      const aspect = (longitude1: number, longitude2: number) =>
+        new Planet(new Position(longitude1), 'sun', false, house).minorAspect(
+          new Planet(new Position(longitude2), 'moon', false, house),
+          orb
+        )
+
+      it('セミセクスタイル', () => {
+        expect(aspect(345, 15)).toEqual({ degrees: 30, name: 'semi-sextile' })
+      })
+      it('クインカンクス', () => {
+        expect(aspect(300, 90)).toEqual({ degrees: 150, name: 'quincunx' })
       })
     })
   })

@@ -5,15 +5,16 @@ const round6 = (num: number) => Math.trunc(num * 10 ** 6) / 10 ** 6
 
 // ユリウス日の計算
 export const julday = (date: Date): Promise<number> => {
-  const year = date.getFullYear()
-  const month = date.getMonth() + 1
-  const day = date.getDate()
+  // NOTE: 実行環境のタイムゾーンに依らないように、UTCの値から求める。
+  // ローカルの値と getTimezoneOffset() から求めると、オフセットに秒の端数がある古い日付でずれる
+  const year = date.getUTCFullYear()
+  const month = date.getUTCMonth() + 1
+  const day = date.getUTCDate()
 
-  const hour = date.getHours()
-  const minute = date.getMinutes()
-  const second = date.getSeconds() + date.getMilliseconds() / 1000
-  const offset = date.getTimezoneOffset()
-  const utcHourMinuteSecond = hour + (minute + second / 60 + offset) / 60
+  const hour = date.getUTCHours()
+  const minute = date.getUTCMinutes()
+  const second = date.getUTCSeconds() + date.getUTCMilliseconds() / 1000
+  const utcHourMinuteSecond = hour + (minute + second / 60) / 60
 
   return new Promise((resolve) =>
     swisseph.swe_julday(year, month, day, utcHourMinuteSecond, swisseph.SE_GREG_CAL, (julday_ut: number) =>

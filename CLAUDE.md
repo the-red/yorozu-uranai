@@ -27,7 +27,8 @@ yarn path         # src/lib/$path.ts を再生成
 
 ### 環境変数
 
-- `.env.local`（`.env.local.example` 参照）: `NEXT_PUBLIC_GOOGLE_MAPS_API_KEY` / `NEXT_PUBLIC_GOOGLE_GEOCODING_API_KEY`。未設定だと地図と住所の逆ジオコーディングが動かない
+- `.env.local`（`.env.local.example` 参照）: `NEXT_PUBLIC_GOOGLE_MAPS_API_KEY` / `GOOGLE_GEOCODING_API_KEY`。未設定だと地図と住所の逆ジオコーディングが動かない
+  - `NEXT_PUBLIC_` で始まる環境変数は、ブラウザ側のコードで参照すると、配信する JavaScript に値が入る。サーバーだけで使うキー（Geocoding）には付けない
 - `.env.example`: デプロイ先に設定する環境変数の雛形
 
 ## ライブラリのバージョンの制約

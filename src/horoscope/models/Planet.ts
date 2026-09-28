@@ -116,8 +116,10 @@ export class Planet {
     return PLANET_ICONS[this.name]
   }
 
+  // 黄経の差。円周の短いほうで測る（0〜180度）
   diffLongitude(targetLongitude: number): number {
-    return Math.abs(targetLongitude - this.longitude)
+    const diff = Math.abs(targetLongitude - this.longitude) % 360
+    return diff > 180 ? 360 - diff : diff
   }
 
   majorAspect(target: Planet, orb: number): MajorAspect | undefined {

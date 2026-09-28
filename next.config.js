@@ -1,6 +1,8 @@
 /** @type {import('next').NextConfig} */
 module.exports = {
   reactStrictMode: true,
+  // Vercelと同じように、必要なファイルだけを切り出した形で動かして確かめるときに指定する（CIと、手元での確認用）
+  output: process.env.NEXT_OUTPUT === 'standalone' ? 'standalone' : undefined,
   // swissephのネイティブバイナリは、実行時に組み立てたパスで読み込まれるので、ビルド時に自動では検出されない。
   // Vercelなど、必要なファイルだけを切り出して動かす環境に含まれるように、明示しておく
   outputFileTracingIncludes: {

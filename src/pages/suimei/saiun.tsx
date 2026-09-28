@@ -1,14 +1,12 @@
 import { NextPage } from 'next'
 
 import { Query } from '../../lib/params'
-import { DateTime } from 'luxon'
 import { useRouter } from 'next/router'
 import { useState, useEffect } from 'react'
 import { useFormValues } from '../../hooks/useFormValues'
-import { SekkiPair, Kanshi } from '../../suimei/models'
-import { Gender } from '../../suimei/models/Daiun'
 import { Saiun, generateSaiun } from '../../suimei/models/Saiun'
-import { toSolarTime } from '../../suimei/models/SolarTime'
+import { fetchSuimei } from '../../lib/fetch-suimei'
+import { toErrorGuide } from '../../lib/fetch-json'
 import { SaiunContent } from '../../suimei/components/Saiun'
 
 export type OptionalQuery = Query
@@ -28,49 +26,17 @@ const SuimeiSaiunPage: NextPage = () => {
         return
       }
 
-      const { date, time, zone, gender, lng } = formValues
-      const suimeiSeed: {
-        dateTime: DateTime
-        gender: Gender
-        lng: number
-        thisYear: number
-      } = {
-        dateTime: DateTime.fromISO(`${date}T${time}`, { zone }),
-        gender,
-        lng,
-        // 閲覧者の現在地（ブラウザのタイムゾーン）での現在の年
-        thisYear: DateTime.now().year,
+      try {
+        const { dateTime, thisYear, sekkiPair, kanshi } = await fetchSuimei(formValues)
+        setSaiun(generateSaiun(kanshi, dateTime, sekkiPair, thisYear, dateTime.year, dateTime.year + 120))
+      } catch (e) {
+        setErrorMessage(toErrorGuide(e))
       }
-      const res = await fetch('/api/suimei-props', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(suimeiSeed),
-      })
-      if (!res.ok) {
-        const { errorMessage } = await res.json()
-        setErrorMessage(errorMessage)
-      }
-      const json = await res.json()
-      const sekkiPair = json.sekkiPair as SekkiPair
-      const solarTime = toSolarTime(suimeiSeed.dateTime, suimeiSeed.lng, json.equationOfTime as number)
-      const kanshi = new Kanshi(suimeiSeed.dateTime, sekkiPair, solarTime.dateTime)
-
-      const { thisYear } = suimeiSeed
-      const saiun = generateSaiun(
-        kanshi,
-        suimeiSeed.dateTime,
-        sekkiPair,
-        thisYear,
-        suimeiSeed.dateTime.year,
-        suimeiSeed.dateTime.year + 120
-      )
-
-      setSaiun(saiun)
     }
     load()
   }, [formValues])
 
-  if (errorMessage) return <div>failed to load: {JSON.stringify(errorMessage)}</div>
+  if (errorMessage) return <div>failed to load: {errorMessage}</div>
   if (!saiun) return <div>loading...</div>
 
   return (

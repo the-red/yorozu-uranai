@@ -52,7 +52,10 @@ export const queryToFormValues = (q: Query): FormValuesBase => {
   const lat = singleValue(q.lat)
   const lng = singleValue(q.lng)
 
-  const gender = singleValue(q.gender) as Gender
+  // NOTE: 以前は「女性」のラジオボタンに値が無く、URLが gender=on になっていた。
+  // 計算は「男性でなければ女性」として扱っているので、男性以外の値は女性として読み取る
+  const _gender = singleValue(q.gender)
+  const gender: Gender | undefined = _gender === undefined ? undefined : _gender === 'man' ? 'man' : 'woman'
 
   return {
     name,

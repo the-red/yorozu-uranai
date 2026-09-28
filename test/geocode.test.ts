@@ -1,3 +1,4 @@
+import { describe, it, expect } from 'vitest'
 import { formatAddress } from '../src/pages/api/geocode'
 import { GeocodeResult } from '@googlemaps/google-maps-services-js'
 

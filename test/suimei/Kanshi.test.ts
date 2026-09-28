@@ -1,3 +1,4 @@
+import { describe, it, expect } from 'vitest'
 import { DateTime } from 'luxon'
 import { Kanshi, get十二支五行, get十干五行 } from '../../src/suimei/models/Kanshi'
 import { getSekkiPair } from '../../src/suimei/models/SekkiUtil'

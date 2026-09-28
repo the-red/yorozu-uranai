@@ -1,3 +1,4 @@
+import { describe, it, expect } from 'vitest'
 import { getKanshiInstance } from './test-util'
 import { tokushusei } from '../../src/suimei/models'
 

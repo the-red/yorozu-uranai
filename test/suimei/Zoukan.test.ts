@@ -1,3 +1,4 @@
+import { describe, it, expect } from 'vitest'
 import { Zoukan, ZoukanTsuhensei, calcZoukan } from '../../src/suimei/models/Zoukan'
 import { getKanshiInstance } from './test-util'
 

@@ -1,12 +1,15 @@
+import { expect } from 'vitest'
 // 小数を比較するときの桁数（toBeCloseToのnumDigits）
 // 差が 0.000005 未満なら一致とみなす
 export const NUM_DIGITS = 5
 
 // オブジェクトや配列に含まれる数値を、まとめてtoBeCloseToで比較する
-// NOTE: Jest 27.4 には expect.closeTo() が無いので独自に用意している
+// NOTE: expect.closeTo() だと数値ごとに書く必要があるので、期待値をそのまま渡せるように用意している
 export const expectToBeCloseTo = (received: unknown, expected: unknown, path: string = 'received') => {
   if (typeof expected === 'number') {
     try {
+      // NOTE: VitestのtoBeCloseToは、数値に変換できる文字列を渡しても失敗しないので、先に型を確認する
+      expect(typeof received).toEqual('number')
       expect(received).toBeCloseTo(expected, NUM_DIGITS)
     } catch (e) {
       // どの項目で失敗したか分かるようにする

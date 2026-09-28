@@ -2,8 +2,7 @@
 // https://developers.google.com/maps/documentation/javascript/react-map?hl=ja
 import * as React from 'react'
 import { Wrapper, Status } from '@googlemaps/react-wrapper'
-import { createCustomEqual } from 'fast-equals'
-import { isLatLngLiteral } from '@googlemaps/typescript-guards'
+import { deepCompareEqualsForMaps } from '../lib/maps-equal'
 import { NextPage } from 'next'
 import { TOKYO_STATION } from '../lib/location'
 import { roundLatLng } from '../lib/math'
@@ -102,21 +101,8 @@ const Marker: React.FC<google.maps.MarkerOptions> = (options) => {
   return null
 }
 
-// @ts-expect-error
-const deepCompareEqualsForMaps = createCustomEqual((deepEqual) => (a: any, b: any) => {
-  if (isLatLngLiteral(a) || a instanceof google.maps.LatLng || isLatLngLiteral(b) || b instanceof google.maps.LatLng) {
-    return new google.maps.LatLng(a).equals(new google.maps.LatLng(b))
-  }
-
-  // TODO extend to other types
-
-  // use fast-equals for other objects
-  // @ts-expect-error
-  return deepEqual(a, b)
-})
-
 function useDeepCompareMemoize(value: any) {
-  const ref = React.useRef()
+  const ref = React.useRef<any>(undefined)
 
   if (!deepCompareEqualsForMaps(value, ref.current)) {
     ref.current = value

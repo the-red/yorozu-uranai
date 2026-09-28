@@ -1,2 +1,3 @@
 tsconfig.json
 *.md
+src/lib/$path.ts

@@ -55,6 +55,8 @@ GET 以外は 405 を返す。
 - 「—」のパラメータは、付いていても無視する。ページの URL に `.json` を付けただけで動くようにするため
 - `time` が無い、または `unknown` のときは、ページと同じく 12:00 で計算して、`input.timeUnknown` を `true` にする
 - `gender` は、ページと同じく「`man` でなければ `woman`」として読む（以前の URL に `gender=on` があるため）
+  - `/suimei.json` の `input.gender` は、必ず `man` か `woman` のどちらかになる。`gender=on` は `woman` として返す
+  - `gender` が無いときは、補わずに `invalid_query` を返す
 - `zone` は必須。緯度経度からは推定しない
 - 同じパラメータが複数あるときは、最初の値を使う（ページと同じ）
 

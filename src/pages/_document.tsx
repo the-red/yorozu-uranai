@@ -1,6 +1,7 @@
 import Document, { DocumentContext, Head, Html, Main, NextScript, DocumentInitialProps } from 'next/document'
 import React from 'react'
 import { googleTagManagerId } from '../lib/gtm'
+import { staticPath } from '../lib/$path'
 
 export default class CustomDocument extends Document {
   static async getInitialProps(ctx: DocumentContext): Promise<DocumentInitialProps> {
@@ -14,7 +15,10 @@ export default class CustomDocument extends Document {
   render(): JSX.Element {
     return (
       <Html prefix="og: https://ogp.me/ns#">
-        <Head />
+        <Head>
+          {/* 全ページ共通のファビコン */}
+          <link rel="icon" href={staticPath.images.index.logo_mark_svg} />
+        </Head>
         <body>
           <noscript
             dangerouslySetInnerHTML={{

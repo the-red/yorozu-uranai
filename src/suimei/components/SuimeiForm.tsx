@@ -5,7 +5,7 @@ import Link from 'next/link'
 import { pagesPath } from '../../lib/$path'
 
 export const SuimeiForm: FC<FormProps> = (props) => {
-  const { register, hookFormHandleSubmit, watch, handleSubmit, isTimeUnknownChecked, zone, lat, lng } =
+  const { register, hookFormHandleSubmit, values, handleSubmit, isTimeUnknownChecked, zone, lat, lng } =
     useYorozuUranaiForm(props)
 
   return (
@@ -30,7 +30,7 @@ export const SuimeiForm: FC<FormProps> = (props) => {
             <dd className="location">
               <div className="map_link">
                 <Link
-                  href={pagesPath.map.$url({ query: buildMapQuery('suimei', watch()) })}
+                  href={pagesPath.map.$url({ query: buildMapQuery('suimei', values) })}
                   target="_blank"
                   rel="opener"
                 >
@@ -49,7 +49,7 @@ export const SuimeiForm: FC<FormProps> = (props) => {
                   <input disabled type="text" {...register('lng', { valueAsNumber: true })} />
                 </label>
               </div>
-              <div>{watch('address')}</div>
+              <div>{values.address}</div>
             </dd>
             <dt>性別</dt>
             <dd className="gender">

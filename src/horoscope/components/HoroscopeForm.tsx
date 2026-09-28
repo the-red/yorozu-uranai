@@ -5,7 +5,7 @@ import { FormProps, useYorozuUranaiForm } from '../../hooks/useYorozuUranaiForm'
 import { buildMapQuery } from '../../lib/map-return'
 
 export const HoroscopeForm: FC<FormProps> = (props) => {
-  const { register, hookFormHandleSubmit, watch, handleSubmit, isTimeUnknownChecked, zone, lat, lng } =
+  const { register, hookFormHandleSubmit, values, handleSubmit, isTimeUnknownChecked, zone, lat, lng } =
     useYorozuUranaiForm(props)
 
   return (
@@ -41,15 +41,11 @@ export const HoroscopeForm: FC<FormProps> = (props) => {
             <input disabled type="text" className="lat-lng-input" {...register('lng', { valueAsNumber: true })} />
           </div>
           <div className="map-link">
-            <Link
-              href={pagesPath.map.$url({ query: buildMapQuery('horoscope', watch()) })}
-              target="_blank"
-              rel="opener"
-            >
+            <Link href={pagesPath.map.$url({ query: buildMapQuery('horoscope', values) })} target="_blank" rel="opener">
               地図から検索
             </Link>
           </div>
-          <div>{watch('address')}</div>
+          <div>{values.address}</div>
         </div>
       </div>
 

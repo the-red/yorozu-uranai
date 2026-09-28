@@ -1,4 +1,5 @@
-import { useForm } from 'react-hook-form'
+import { useEffect } from 'react'
+import { useForm, useWatch } from 'react-hook-form'
 import { FormValuesBase } from '../lib/params'
 import { fetchAddressFromLatLng } from '../lib/fetch-geocode'
 
@@ -11,12 +12,11 @@ export type FormProps = {
 }
 
 export const useYorozuUranaiForm = ({ onSubmit, defaultValues }: FormProps) => {
-  const { register, handleSubmit: hookFormHandleSubmit, watch, setValue } = useForm<FormValues>({ defaultValues })
+  const { register, handleSubmit: hookFormHandleSubmit, control, setValue } = useForm<FormValues>({ defaultValues })
 
-  const isTimeUnknownChecked = watch('timeUnknown')
-  const zone = watch('zone')
-  const lat = watch('lat')
-  const lng = watch('lng')
+  // 入力中のフォームの値
+  const values = useWatch({ control })
+  const { timeUnknown: isTimeUnknownChecked, zone, lat, lng } = values
 
   const handleSubmit = async ({ lat, lng, ...rest }: FormValues) => {
     lat = typeof lat === 'number' && !isNaN(lat) ? lat : 0
@@ -25,14 +25,17 @@ export const useYorozuUranaiForm = ({ onSubmit, defaultValues }: FormProps) => {
     onSubmit({ lat, lng, ...rest })
   }
 
-  // @ts-expect-error
-  window.setLocation = async (lat: number, lng: number) => {
-    setValue('lat', lat)
-    setValue('lng', lng)
-    const address = await fetchAddressFromLatLng(lat, lng)
-    setValue('address', address)
-    return true
-  }
+  // 地図のタブから呼ばれる。選んだ場所を、フォームに入れる
+  useEffect(() => {
+    // @ts-expect-error
+    window.setLocation = async (lat: number, lng: number) => {
+      setValue('lat', lat)
+      setValue('lng', lng)
+      const address = await fetchAddressFromLatLng(lat, lng)
+      setValue('address', address)
+      return true
+    }
+  }, [setValue])
 
-  return { register, hookFormHandleSubmit, watch, handleSubmit, isTimeUnknownChecked, zone, lat, lng }
+  return { register, hookFormHandleSubmit, values, handleSubmit, isTimeUnknownChecked, zone, lat, lng }
 }

@@ -5,9 +5,27 @@ import { pagesPath } from '../lib/$path'
 import type { PathpidaValue } from '../lib/$path.types'
 import { useRouter } from 'next/router'
 
-export default function Menu() {
-  const { query } = useRouter()
+type Icon = 'horoscope' | 'numerology' | 'suimei'
 
+type SideBarLinkProps = {
+  path: PathpidaValue
+  icon?: Icon
+  onClick: () => void
+  children: string
+}
+// 入力中の内容を引き継いで、ほかの占いに移動するリンク
+const SideBarLink = ({ path, icon, onClick, children }: SideBarLinkProps) => {
+  const { query } = useRouter()
+  return (
+    <Link href={path.$url({ query })} onClick={onClick}>
+      {/* アイコンが無い項目も、ラベルの位置を揃えるために同じ幅を空けておく */}
+      <span className={`bm-icon bm-icon-${icon ?? 'none'}`} aria-hidden="true" />
+      {children}
+    </Link>
+  )
+}
+
+export default function Menu() {
   const [isOpen, setOpen] = useState(false)
   const handleIsOpen = () => {
     setOpen(!isOpen)
@@ -15,33 +33,27 @@ export default function Menu() {
   const closeSideBar = () => {
     setOpen(false)
   }
-  type Icon = 'horoscope' | 'numerology' | 'suimei'
-  const SideBarLink = ({ path, icon, children }: { path: PathpidaValue; icon?: Icon; children: string }) => (
-    <Link href={path.$url({ query })} onClick={closeSideBar}>
-      {/* アイコンが無い項目も、ラベルの位置を揃えるために同じ幅を空けておく */}
-      <span className={`bm-icon bm-icon-${icon ?? 'none'}`} aria-hidden="true" />
-      {children}
-    </Link>
-  )
 
   return (
     <Burger right width={'100%'} isOpen={isOpen} onOpen={handleIsOpen} onClose={handleIsOpen}>
       <ul>
         <li>
-          <SideBarLink path={pagesPath}>HOME</SideBarLink>
+          <SideBarLink path={pagesPath} onClick={closeSideBar}>
+            HOME
+          </SideBarLink>
         </li>
         <li>
-          <SideBarLink path={pagesPath.horoscope} icon="horoscope">
+          <SideBarLink path={pagesPath.horoscope} icon="horoscope" onClick={closeSideBar}>
             西洋占星術
           </SideBarLink>
         </li>
         <li>
-          <SideBarLink path={pagesPath.numerology} icon="numerology">
+          <SideBarLink path={pagesPath.numerology} icon="numerology" onClick={closeSideBar}>
             数秘術
           </SideBarLink>
         </li>
         <li>
-          <SideBarLink path={pagesPath.suimei} icon="suimei">
+          <SideBarLink path={pagesPath.suimei} icon="suimei" onClick={closeSideBar}>
             四柱推命
           </SideBarLink>
         </li>

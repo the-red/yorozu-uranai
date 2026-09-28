@@ -20,7 +20,6 @@ export default function Home() {
           name="description"
           content="西洋占星術のホロスコープ、四柱推命の命式、数秘術のパーソナルチャートを無料で作成できます。"
         />
-        <link rel="icon" href={staticPath.images.index.logo_mark_svg} />
       </Head>
 
       <Menu />

@@ -64,15 +64,28 @@ yarn path         # src/lib/$path.ts を再生成
 - `src/horoscope/models/horoscopeFactory.ts`
 - `src/suimei/models/SekkiUtil.ts`（と、それを使う `Daiun.ts` の `generateDaiun`）
 
-これらはクライアントバンドルに含めてはいけない。そのため各 `models/index.ts` はこれらを **意図的に re-export していない**（`src/astronomy/types` は型のみなので export している）。ページ側からは API Route 経由で使う:
+これらはクライアントバンドルに含めてはいけない。そのため各 `models/index.ts` はこれらを **意図的に re-export していない**（`src/astronomy/types` は型のみなので export している）。ページ側からは API 経由で使う:
 
 | API | 返すもの | クライアント側での復元 |
 | --- | --- | --- |
-| `POST /api/horoscope-props` | 惑星の黄道座標とハウス（プレーンな JSON） | `new Horoscope(props)` |
-| `POST /api/suimei-props` | 節気ペア (`SekkiPair`)・均時差・大運 | `toSolarTime()` で真太陽時を求め、`new Kanshi(dateTime, sekkiPair, solarTime)` を起点に `Zoukan` / `Tsuhensei` / `Juuniun` / `tokushusei` / `generateSaiun` をクライアントで計算 |
+| `GET /horoscope.json` | 惑星の黄道座標とハウス（`raw`）と、そこから求めた結果（`result`） | `new Horoscope(json.raw)` |
+| `GET /suimei.json` | 節気ペア (`SekkiPair`)・均時差（`raw`）と、命式・大運・歳運（`result`） | `restoreKanshi()` で真太陽時と `Kanshi` を復元し、`Zoukan` / `Tsuhensei` / `Juuniun` / `tokushusei` / `generateSaiun` をクライアントで計算。大運は `result.大運` を `toDaiun()` で読み替える |
+| `GET /numerology.json` | コアナンバー（`result`） | ページは使わない |
 | `POST /api/geocode` | 緯度経度 → 住所（逆ジオコーディング） | — |
 
-つまり「天文計算が必要な部分だけサーバー、そこから先の導出はクライアント」という分担。新しい計算を追加するときは、`astronomy` に依存するかどうかで置き場所が決まる。数秘術は天文計算が不要なので API を使わず完全にクライアントで完結する。
+つまり「天文計算が必要な部分だけサーバー、そこから先の導出はクライアント」という分担。新しい計算を追加するときは、`astronomy` に依存するかどうかで置き場所が決まる。数秘術は天文計算が不要なので、ページは API を使わず完全にクライアントで完結する。
+
+### 占い結果の JSON
+
+ページの URL に `.json` を付けると、同じ入力に対する結果を JSON で返す。ページも同じ JSON を取得して描画する。生成 AI などの外部からも使える。形式は試験的なもので、今後変わることがある。
+
+- `/horoscope.json` などのパスは、`next.config.js` の `rewrites` で `/api/horoscope` などに流している
+- `raw` は天文計算の結果、`result` はモデルから求めた結果。`result` は、`raw` から復元したモデルを変換して作る（各 `models/json.ts`）。画面と JSON が同じモデルから作られるので、結果がずれない
+- サーバーは既定値を補わず、時計も使わない。必須のパラメータが無ければ 400 を返す（`src/lib/json-query.ts`）。現在日時や東京駅の緯度経度を補うのは、ページの役割
+- 四柱推命の `result` のキーは、占いの用語を漢字にしている（`命式` / `年柱` / `通変星` / `大運`）。年齢や年などの一般的な項目は英語
+- `thisYear` が無いときは、大運と歳運に `current` を付けない（キーごと省く）
+- エラーは `{ error: { code, message, params } }`。ページは文言ではなく、`code` と `params` で分岐する
+- 設計の経緯は `docs/superpowers/specs/2026-09-28-json-api-design.md`
 
 ### ネイティブバイナリとデプロイ
 

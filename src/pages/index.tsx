@@ -46,7 +46,7 @@ export default function Home() {
                 <div className="menu-link">
                   <div className="menu-link-block-1">
                     <h2 className="menu-title">数秘術</h2>
-                    <NumerologyIcon width={40} height={40} alt="数秘術" />
+                    <NumerologyIcon className="menu-icon" width={40} height={40} alt="数秘術" />
                     <p className="menu-text">数字を計算する</p>
                   </div>
                 </div>

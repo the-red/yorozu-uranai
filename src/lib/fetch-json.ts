@@ -41,17 +41,19 @@ export const fetchJson = async <T>(
   throw error ? new JsonApiError(error) : new Error(text)
 }
 
-// エラーの内容と、利用者への案内
+// 利用者への案内。どこを直せばよいかを、フォームの項目の名前で伝える
+// NOTE: APIのメッセージは英語なので、画面には出さない
 export const toErrorGuide = (e: unknown): string => {
   if (!(e instanceof JsonApiError)) {
-    return e instanceof Error ? e.message : String(e)
+    // 通信の失敗や、サーバーの障害。入力を直しても解決しない
+    return '時間をおいて、もう一度お試しください。'
   }
 
-  const { code, message, params } = e.error
+  const { params } = e.error
   const guides = [
     params.some((_) => ['date', 'time', 'zone'].includes(_)) && '生年月日を修正してください。',
     params.some((_) => ['lat', 'lng'].includes(_)) && '出生場所を修正してください。',
-    code === 'calculation_failed' && '生年月日か出生場所を修正してください。',
+    params.includes('gender') && '性別を選択してください。',
   ].filter(Boolean)
-  return [message, ...guides].join('\n')
+  return guides.length > 0 ? guides.join('\n') : '入力を確認してください。'
 }

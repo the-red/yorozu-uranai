@@ -1,0 +1,51 @@
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+# 同じブランチに続けて push したら、古い実行を止める
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  check:
+    name: 型チェック・ESLint・Prettier
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
+        with:
+          node-version-file: .tool-versions
+          cache: yarn
+      # NOTE: swisseph はネイティブアドオンなので、ここでビルドが走る
+      - run: yarn install --frozen-lockfile
+      - run: yarn tsc --noEmit
+      - run: yarn lint:check
+      - run: yarn format:check
+
+  test:
+    name: テスト（${{ matrix.tz }}）
+    runs-on: ubuntu-latest
+    strategy:
+      # 1つのタイムゾーンで失敗しても、ほかの結果を見られるようにする
+      fail-fast: false
+      matrix:
+        # 本番のサーバーは UTC で動き、利用者のブラウザは日本時間とは限らない
+        tz: [Asia/Tokyo, UTC, America/New_York]
+    env:
+      TZ: ${{ matrix.tz }}
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
+        with:
+          node-version-file: .tool-versions
+          cache: yarn
+      - run: yarn install --frozen-lockfile
+      # テストコードの型チェックを含む
+      - run: yarn test

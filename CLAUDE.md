@@ -18,12 +18,23 @@ yarn vitest       # 変更を監視して再実行
 yarn test test/suimei/Kanshi.test.ts   # 単一ファイル
 yarn test -t '六十干支'                  # テスト名で絞り込み
 yarn lint         # eslint --fix（自動修正が走る）
+yarn lint:check   # eslint（修正しない。警告が増えたら失敗する）
 yarn format       # prettier --write
+yarn format:check # prettier --check（修正しない。test/ も対象）
 yarn tsc --noEmit # 型チェック（専用scriptは無い。test/ は tsconfig の対象外）
 yarn path         # src/lib/$path.ts を再生成
 ```
 
 デプロイは Vercel が行う。プルリクエストを作るとプレビュー環境が作られる（認証で保護されている）。
+
+### CI
+
+プルリクエストと main への push で、GitHub Actions（`.github/workflows/ci.yml`）が次を実行する。
+
+- 型チェック、`yarn lint:check`、`yarn format:check`
+- `yarn test` を、3つのタイムゾーン（`Asia/Tokyo` / `UTC` / `America/New_York`）で
+
+`yarn lint:check` は、ESLint の警告が今の件数（21 件）を超えると失敗する。警告を減らしたら、`package.json` の `--max-warnings` の値も下げる。
 
 ### 環境変数
 

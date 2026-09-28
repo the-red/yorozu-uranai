@@ -1,6 +1,6 @@
 import { NextPage } from 'next'
 import { useRouter } from 'next/router'
-import { useEffect, useState } from 'react'
+import { useMemo } from 'react'
 import { DateTime } from 'luxon'
 
 import Menu from '../components/Menu'
@@ -16,25 +16,22 @@ export type OptionalQuery = Query
 
 const NumerologyPage: NextPage = () => {
   const router = useRouter()
-  const [formValues, setFormValues] = useState<Partial<NumerologyFormValues>>()
-  const [numerology, setNumerology] = useState<Numerology>()
 
-  useEffect(() => {
-    if (router.isReady) {
-      const f = queryToFormValues(router.query)
-      setFormValues(f)
-
-      if (f.name && f.date) {
-        setNumerology(
-          new Numerology({
-            birthDate: DateTime.fromFormat(f.date, FORM_DATE_FORMAT),
-            fullName: f.name,
-            maxSameNumber: 22,
-          })
-        )
-      }
+  // NOTE: クエリは、ブラウザで表示してからでないと読めない（router.isReady）
+  const formValues = useMemo(
+    () => (router.isReady ? queryToFormValues(router.query) : undefined),
+    [router.isReady, router.query]
+  )
+  const numerology = useMemo(() => {
+    if (!formValues?.name || !formValues.date) {
+      return undefined
     }
-  }, [router])
+    return new Numerology({
+      birthDate: DateTime.fromFormat(formValues.date, FORM_DATE_FORMAT),
+      fullName: formValues.name,
+      maxSameNumber: 22,
+    })
+  }, [formValues])
 
   const handleSubmit: NumerologyFormProps['onSubmit'] = (formValues) => {
     router.push({

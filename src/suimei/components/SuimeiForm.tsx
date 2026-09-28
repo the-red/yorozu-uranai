@@ -28,7 +28,6 @@ export const SuimeiForm: FC<FormProps> = (props) => {
             <dt>出生場所</dt>
             <dd className="location">
               <div style={{ textDecoration: 'underline', marginBottom: '5px' }}>
-                {/* eslint-disable-next-line react/jsx-no-target-blank */}
                 <Link href={pagesPath.map.$url({ query: { lat: lat, lng: lng } })} target="_blank" rel="opener">
                   地図から検索
                 </Link>

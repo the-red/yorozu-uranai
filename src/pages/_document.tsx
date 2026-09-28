@@ -12,7 +12,7 @@ export default class CustomDocument extends Document {
     }
   }
 
-  render(): JSX.Element {
+  render(): React.JSX.Element {
     return (
       <Html prefix="og: https://ogp.me/ns#">
         <Head>

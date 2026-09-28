@@ -11,8 +11,8 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 パッケージマネージャは yarn (v1)、Node.js は 24（`.tool-versions` と `package.json` の `engines`）。
 
 ```sh
-yarn dev          # next dev と pathpida --watch を並列起動
-yarn build        # pathpida 生成 → next build
+yarn dev          # next dev --webpack と pathpida --watch を並列起動
+yarn build        # pathpida 生成 → next build --webpack
 yarn test         # テストコードの型チェック → vitest 全件（1回実行）
 yarn vitest       # 変更を監視して再実行
 yarn test test/suimei/Kanshi.test.ts   # 単一ファイル
@@ -36,6 +36,17 @@ yarn deploy production    # GCPプロジェクト yorozu-uranai-production
 
 - `.env.local`（`.env.local.example` 参照）: `NEXT_PUBLIC_GOOGLE_MAPS_API_KEY` / `NEXT_PUBLIC_GOOGLE_GEOCODING_API_KEY`。未設定だと地図と住所の逆ジオコーディングが動かない
 - `.env.{development,production}.deploy`（`.env.example` 参照）: デプロイ時のみ使用
+
+## ライブラリのバージョンの制約
+
+基本は最新に追従するが、次のものは意図して最新より古いバージョンにしている。上げるときは制約が解消されたか確認する。
+
+| ライブラリ | 現在 | 理由 |
+| --- | --- | --- |
+| TypeScript | 6.0 系 | `eslint-config-next` が使う `typescript-eslint` の対応範囲が 6.1 未満。7 系にすると ESLint が動かない |
+| ESLint | 9 系 | `eslint-config-next` が使う `eslint-plugin-react` などが 10 系に未対応 |
+
+Next.js 16 は Turbopack が既定だが、webpack の設定（Windi CSS と SVGR）を使っているので、`next dev` と `next build` には `--webpack` を付けている。Windi CSS は開発が終了しており、Turbopack には対応していない。
 
 ## テストの注意点
 
@@ -120,6 +131,7 @@ SVG は `import X from './x.svg'` で React コンポーネント（SVGR）、`'
 
 - Prettier: セミコロンなし、シングルクォート、120桁
 - ESLint: `console.log` は禁止（`console.info` / `warn` / `error` は可）、`==` は禁止（`== null` のみ可）
+  - `react-hooks/refs` / `set-state-in-effect` / `static-components` は、既存コードが該当するので警告にとどめている（`eslint.config.mjs`）
 - コメントは日本語
 - コミットメッセージは Conventional Commits 形式 + 日本語の説明（例: `fix: 未入力の状態でローマ字変換を押しても落ちないように`）
 

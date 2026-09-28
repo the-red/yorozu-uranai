@@ -1,10 +1,12 @@
+@use 'sass:math';
+
 // デザインカンプ上の端末の横幅サイズ
 $sp_width: 375;
 // 検索エリアの高さ
 $sp_search_area_height: 235px;
 // レスポンシブ計算用
 @mixin width($target_width) {
-  width: ($target_width / $sp_width) * 100vw;
+  width: math.div($target_width, $sp_width) * 100vw;
 }
 
 .map {

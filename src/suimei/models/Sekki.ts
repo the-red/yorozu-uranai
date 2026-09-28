@@ -12,7 +12,7 @@ export const 節list = [
   '大雪',
   '小寒',
 ] as const
-export type 節 = typeof 節list[number]
+export type 節 = (typeof 節list)[number]
 
 // 立春が黄経315度(-45度)なので、四柱推命の計算時にはこの値を足しておく
 export const adjustment = 45 as const

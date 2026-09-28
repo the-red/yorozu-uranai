@@ -1,3 +1,5 @@
+@use 'sass:math';
+
 @font-face {
   font-family: 'YujiSyuku-Regular';
   src: url('/fonts/YujiSyuku-Regular.ttf');
@@ -30,22 +32,22 @@ $accent_yellow_light: #f8e2a0;
 $sp_width: 375;
 
 @mixin width($target_width) {
-  width: ($target_width / $sp_width) * 100vw;
+  width: math.div($target_width, $sp_width) * 100vw;
 }
 @mixin height($target_height) {
-  height: ($target_height / $sp_width) * 100vw;
+  height: math.div($target_height, $sp_width) * 100vw;
 }
 @mixin top($top_position) {
-  top: ($top_position / $sp_width) * 100vw;
+  top: math.div($top_position, $sp_width) * 100vw;
 }
 @mixin left($left_position) {
-  left: ($left_position / $sp_width) * 100vw;
+  left: math.div($left_position, $sp_width) * 100vw;
 }
 @mixin right($right_position) {
-  right: ($right_position / $sp_width) * 100vw;
+  right: math.div($right_position, $sp_width) * 100vw;
 }
 @mixin table_data_width($table_width, $row_header_width, $data_columns_number) {
-  width: (100% - ($row_header_width / $table_width * 100%)) / $data_columns_number;
+  width: math.div(100% - (math.div($row_header_width, $table_width) * 100%), $data_columns_number);
 }
 
 .suimei {

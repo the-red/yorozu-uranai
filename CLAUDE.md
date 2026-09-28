@@ -45,7 +45,7 @@ yarn path         # src/lib/$path.ts を再生成
 - 小数の比較は `toBeCloseTo()` を使う。桁数は `test/test-util.ts` の `NUM_DIGITS`。オブジェクトや配列は同ファイルの `expectToBeCloseTo()` でまとめて比較する
 - `swisseph` はネイティブアドオンなので、Node.js のバージョンを変えたら `yarn install` し直す（リビルドが必要）
   - `swisseph` が依存する `nan` と `node-gyp` は古いままだと Node.js 24 でビルドできないので、`package.json` の `resolutions` で新しいバージョンに固定している
-- テスト対象は `src/*/models` と `src/astronomy` の計算ロジックが中心。コンポーネントのテストは無い
+- テスト対象は `src/*/models` と `src/astronomy` の計算ロジックが中心。API（`test/api`。ハンドラーを直接呼ぶ）と `src/lib` のテストもある。コンポーネントのテストは無い
 - Vitest はテストコードの型チェックをしないので、`yarn test` の中で `tsc -p test` を先に実行している（`test/` はルートの `tsconfig.json` の対象外）
 - 期待値は実在の生年月日に対する計算結果をハードコードしている。天文計算の結果は `src/astronomy` 側で小数第6位に切り捨てている
 
@@ -85,6 +85,8 @@ yarn path         # src/lib/$path.ts を再生成
 - 四柱推命の `result` のキーは、占いの用語を漢字にしている（`命式` / `年柱` / `通変星` / `大運`）。年齢や年などの一般的な項目は英語
 - `thisYear` が無いときは、大運と歳運に `current` を付けない（キーごと省く）
 - エラーは `{ error: { code, message, params } }`。ページは文言ではなく、`code` と `params` で分岐する
+  - `calculation_failed`（400）にするのは、天文計算の失敗だけ。`message` は固定の文言にして、ライブラリのエラーメッセージは返さない（`console.error` で記録する）。それ以外の例外は、そのまま 500 にする
+- `gender` は `man` / `woman` / `on`（以前の URL。女性として読む）だけを受け付ける。ページは「`man` でなければ `woman`」として読むが、JSON では推測しない
 - 設計の経緯は `docs/superpowers/specs/2026-09-28-json-api-design.md`
 
 ### ネイティブバイナリとデプロイ
@@ -126,7 +128,7 @@ Vercel は、ビルド時に「各 API の実行に必要なファイル」を�
 - 四柱ごとに使う時刻が違う
   - 年柱・月柱: 節入り（絶対時刻）で決まる。暦の年月は出生地のタイムゾーンで数える
   - 日柱・時柱: 真太陽時（`SolarTime.ts`）の日付と時刻で決まる。時計の時刻に、地方時差（出生地の経度）と均時差の両方を足したもの。片方だけの補正はしない
-- 日時は必ず出生地のタイムゾーンを持った luxon の `DateTime` で渡す（数秘術の生年月日も同じ）。`Date` や、ゾーン指定なしの `DateTime.fromISO()` / `fromJSDate()` は実行環境のタイムゾーンになるので使わない（API では `{ setZone: true }` で受け取る）
+- 日時は必ず出生地のタイムゾーンを持った luxon の `DateTime` で渡す（数秘術の生年月日も同じ）。`Date` や、ゾーン指定なしの `DateTime.fromISO()` / `fromJSDate()` は実行環境のタイムゾーンになるので使わない（API では、クエリの `zone` を `toDateTime()` に渡して作る）
 - 現在の年（大運・歳運の「現在」の行の判定）は、閲覧者の現在地を基準にする。ブラウザで `DateTime.now().year` を求めて API にも `thisYear` として送る。サーバー側では時計を使わない
 - 特殊星 (`models/tokushusei/`) はルール表をデータとして持つ。表は `scripts/generate-tokushusei.js` に TSV を貼って JSON 化したものを元にしている
 

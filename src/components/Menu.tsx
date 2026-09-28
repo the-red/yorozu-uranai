@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { slide as Burger } from 'react-burger-menu'
 import Link from 'next/link'
-import { pagesPath, staticPath } from '../lib/$path'
+import { pagesPath } from '../lib/$path'
 import type { PathpidaValue } from '../lib/$path.types'
 import { useRouter } from 'next/router'
 
@@ -15,20 +15,14 @@ export default function Menu() {
   const closeSideBar = () => {
     setOpen(false)
   }
-  const SideBarLink = ({ path, icon, children }: { path: PathpidaValue; icon?: string; children: string }) => (
+  type Icon = 'horoscope' | 'numerology' | 'suimei'
+  const SideBarLink = ({ path, icon, children }: { path: PathpidaValue; icon?: Icon; children: string }) => (
     <Link href={path.$url({ query })} onClick={closeSideBar}>
-      {/* NOTE: アイコンを文字と同じ色にするため、画像をマスクとして使い、背景色で塗っている */}
       {/* アイコンが無い項目も、ラベルの位置を揃えるために同じ幅を空けておく */}
-      <span
-        className="bm-icon"
-        style={icon ? { maskImage: `url(${icon})`, WebkitMaskImage: `url(${icon})` } : { visibility: 'hidden' }}
-        aria-hidden="true"
-      />
+      <span className={`bm-icon bm-icon-${icon ?? 'none'}`} aria-hidden="true" />
       {children}
     </Link>
   )
-
-  const icons = staticPath.images.index
 
   return (
     <Burger right width={'100%'} isOpen={isOpen} onOpen={handleIsOpen} onClose={handleIsOpen}>
@@ -37,17 +31,17 @@ export default function Menu() {
           <SideBarLink path={pagesPath}>HOME</SideBarLink>
         </li>
         <li>
-          <SideBarLink path={pagesPath.horoscope} icon={icons.horoscope_svg}>
+          <SideBarLink path={pagesPath.horoscope} icon="horoscope">
             西洋占星術
           </SideBarLink>
         </li>
         <li>
-          <SideBarLink path={pagesPath.numerology} icon={icons.numerology_svg}>
+          <SideBarLink path={pagesPath.numerology} icon="numerology">
             数秘術
           </SideBarLink>
         </li>
         <li>
-          <SideBarLink path={pagesPath.suimei} icon={icons.suimei_svg}>
+          <SideBarLink path={pagesPath.suimei} icon="suimei">
             四柱推命
           </SideBarLink>
         </li>

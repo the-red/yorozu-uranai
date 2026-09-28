@@ -6,9 +6,9 @@ type Props = {
 
 export default function PlanetPositions({ horoscope }: Props) {
   return (
-    <div style={{ width: '100%' }}>
+    <div className="list-container">
       <div className="list">Planet Positions</div>
-      <table style={{ width: '100%' }}>
+      <table className="list-table">
         <tbody>
           {Object.values(horoscope.planets).map((planet, i) => (
             <tr key={i}>

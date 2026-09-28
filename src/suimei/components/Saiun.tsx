@@ -17,10 +17,10 @@ export const SaiunContent = ({ saiun, query }: Props) => (
         <div>歳運</div>
       </h3>
       {query && (
-        <div style={{ textAlign: 'right', textDecoration: 'underline', marginBottom: '5px' }}>
+        <div className="saiun_link">
           <Link href={pagesPath.suimei.saiun.$url({ query })} target="_blank">
             0〜120歳の歳運表を表示する
-            <OpenIcon style={{ verticalAlign: 'text-bottom' }} height={20} width={20} />
+            <OpenIcon className="open_icon" height={20} width={20} />
           </Link>
         </div>
       )}

@@ -33,19 +33,19 @@ export const NumerologyForm: FC<NumerologyFormProps> = ({ onSubmit, defaultValue
   const name = watch('name')
 
   const dateInput = (
-    <div style={{ display: 'flex', marginBottom: '32px' }}>
-      <label style={{ width: '180px' }}>生年月日</label>
-      <input type="date" required style={{ width: '200px' }} {...register('date')} />
+    <div className="form_row">
+      <label className="form_label">生年月日</label>
+      <input type="date" required className="form_input" {...register('date')} />
     </div>
   )
 
   const nameInput = (
-    <div style={{ display: 'flex', marginBottom: '32px' }}>
-      <label style={{ width: '180px' }}>名前（ローマ字）</label>
-      <div style={{ width: '200px' }}>
-        <input type="text" required style={{ width: '100%' }} {...register('name', { pattern: REGX_NAME_PATTERN })} />
+    <div className="form_row">
+      <label className="form_label">名前（ローマ字）</label>
+      <div className="form_input">
+        <input type="text" required {...register('name', { pattern: REGX_NAME_PATTERN })} />
         <div
-          className="tw-text-sm tw-underline tw-cursor-pointer"
+          className="kana_to_romaji"
           onClick={() => {
             const romajiName = convertKanaToRomaji(name)
             setValue('name', romajiName)
@@ -68,31 +68,17 @@ export const NumerologyForm: FC<NumerologyFormProps> = ({ onSubmit, defaultValue
   )
 
   const submitButton = (
-    <button
-      type="submit"
-      style={{
-        backgroundColor: 'transparent',
-        border: 'solid 2px #BA6F87',
-        cursor: 'pointer',
-        outline: 'none',
-        appearance: 'none',
-        color: '#BA6F87',
-      }}
-      className="tw-px-3 tw-py-2 tw-w-full tw-rounded-md tw-font-bold"
-    >
+    <button type="submit" className="submit_button">
       計算する
     </button>
   )
 
   return (
     <div>
-      <div className="tw-text-center tw-text-lg sm:tw-text-xl tw-mb-2">情報入力</div>
+      <div className="section_title">情報入力</div>
 
-      <div className="tw-relative tw-bg-white tw-p-8 tw-rounded-tl-2xl tw-rounded-tr-5xl tw-rounded-br-2xl tw-rounded-bl-5xl tw-border-2 tw-border-solid form_outer">
-        <form
-          onSubmit={handleSubmit(onSubmit)}
-          className="tw-py-16 sm:tw-py-0 sm:tw-flex sm:tw-flex-col sm:tw-items-center"
-        >
+      <div className="card form_outer">
+        <form onSubmit={handleSubmit(onSubmit)}>
           {dateInput}
           {nameInput}
           <div className="">{submitButton}</div>

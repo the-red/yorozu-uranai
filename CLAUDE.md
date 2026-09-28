@@ -39,7 +39,7 @@ yarn path         # src/lib/$path.ts を再生成
 | TypeScript | 6.0 系 | `eslint-config-next` が使う `typescript-eslint` の対応範囲が 6.1 未満。7 系にすると ESLint が動かない |
 | ESLint | 9 系 | `eslint-config-next` が使う `eslint-plugin-react` などが 10 系に未対応 |
 
-Next.js 16 は Turbopack が既定だが、webpack の設定（Windi CSS と SVGR）を使っているので、`next dev` と `next build` には `--webpack` を付けている。Windi CSS は開発が終了しており、Turbopack には対応していない。
+Next.js 16 は Turbopack が既定だが、webpack の設定（SVGR）を使っているので、`next dev` と `next build` には `--webpack` を付けている。
 
 ## テストの注意点
 
@@ -112,11 +112,12 @@ Next.js 16 は Turbopack が既定だが、webpack の設定（Windi CSS と SVG
 
 ### スタイリング
 
-3種類が混在している。編集対象のページの流儀に合わせること。
+スタイルは、すべて通常の CSS で書く。Sass、CSS フレームワーク、インラインの `style` は使わない。
 
-- グローバル CSS / SCSS（`src/styles/*`、すべて `_app.tsx` で読み込み）: ページのルート要素のクラス（`.horoscope`, `.suimei` など）でスコープしている。ホロスコープと四柱推命はこちらが中心
-- Windi CSS: プレフィックス `tw-` 付き、preflight は無効。主に数秘術ページで使用
-- インライン style: フォント指定など
+- グローバル CSS（`src/styles/*`、すべて `_app.tsx` で読み込み）: ページのルート要素のクラス（`.horoscope`, `.suimei` など）でスコープしている
+  - Sass や CSS の入れ子は使わない。色やフォントなどの共通の値は、ページのルート要素に CSS 変数（`--main-red` など）として定義している
+  - 四柱推命と地図のスマホ版は、デザイン上の横幅 375px を基準に `calc(343 / var(--sp-width) * 100vw)` の形で大きさを指定している
+  - クラス名の書き方はファイルごとに違う（ホロスコープは `kebab-case`、数秘術と四柱推命は `snake_case`）。編集するファイルに合わせる
 
 SVG は `import X from './x.svg'` で React コンポーネント（SVGR）、`'./x.svg?url'` で URL として読み込める（`next.config.js`）。
 

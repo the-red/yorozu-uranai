@@ -1,4 +1,6 @@
 .horoscope {
+  /* 結果が無いとき（読み込み中、エラー）も、背景が画面の下まで届くようにする */
+  min-height: 100vh;
   background-image: url('/images/horoscope/starry-sky.jpeg');
   background-repeat: repeat-y;
   background-attachment: fixed;
@@ -200,6 +202,23 @@
   color: #fff;
   font-weight: bold;
   cursor: pointer;
+}
+/* 結果を求められなかったときの案内 */
+.horoscope .horoscope-form .form-error {
+  margin: 0 0 20px;
+  padding: 12px 16px;
+  border-left: 4px solid #ff8a80;
+  background-color: rgba(255, 138, 128, 0.16);
+  color: #ffdad6;
+  line-height: 1.6;
+  white-space: pre-line;
+}
+
+/* 読み込み中 */
+.horoscope .loading {
+  justify-content: center;
+  padding: 40px 0;
+  text-align: center;
 }
 
 /* 惑星やハウスの一覧 */

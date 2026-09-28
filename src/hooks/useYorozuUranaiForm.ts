@@ -7,6 +7,7 @@ export type FormValues = Required<Omit<FormValuesBase, 'name'>> & { address: str
 export type FormProps = {
   onSubmit: (formValues: FormValues) => void
   defaultValues?: Partial<FormValues>
+  errorMessage?: string // 結果を求められなかったときの案内
 }
 
 export const useYorozuUranaiForm = ({ onSubmit, defaultValues }: FormProps) => {

@@ -86,6 +86,7 @@ yarn path         # src/lib/$path.ts を再生成
 - 四柱推命の `result` のキーは、占いの用語を漢字にしている（`命式` / `年柱` / `通変星` / `大運`）。年齢や年などの一般的な項目は英語
 - `thisYear` が無いときは、大運と歳運に `current` を付けない（キーごと省く）
 - エラーは `{ error: { code, message, params } }`。ページは文言ではなく、`code` と `params` で分岐する
+  - `params` には、直す場所のパラメータを入れる（`calculation_failed` でも、`lat` か `date` を入れる）
   - `calculation_failed`（400）にするのは、天文計算の失敗だけ。`message` は固定の文言にして、ライブラリのエラーメッセージは返さない（`console.error` で記録する）。それ以外の例外は、そのまま 500 にする
 - `gender` は `man` と `woman` だけを受け付ける。ページは「`man` でなければ `woman`」として読むが（以前の URL の `gender=on` も女性）、JSON では推測しない
 - 設計の経緯は `docs/superpowers/specs/2026-09-28-json-api-design.md`
@@ -105,6 +106,17 @@ Vercel は、ビルド時に「各 API の実行に必要なファイル」を�
 - `src/lib/params.ts`: クエリ形式（`date=yyyyMMdd`, `time=HHmm` または `unknown`）とフォーム形式（`yyyy-MM-dd`, `HH:mm`）の相互変換
 - `src/hooks/useFormValues.ts`: クエリにデフォルト値を補完（現在日時、東京駅の緯度経度、性別など）。時刻不明の場合は `12:00` として計算する
 - `src/hooks/useYorozuUranaiForm.ts`: ホロスコープと四柱推命で共通のフォームロジック（react-hook-form）
+- `src/hooks/useResult.ts`: フォームの値から結果を求めて、取得の状態（結果・エラー・読み込み中）を返す
+
+### 結果を求められなかったとき
+
+ホロスコープと四柱推命のページは、結果が無くてもフォームを表示する。利用者が入力を直せるようにするため。
+
+- エラーの文章は、フォームの中（送信ボタンの上）に出す。`alert` は使わない
+- エラーになったら、前の結果を消す。入力と結果が食い違ったまま表示しないため。読み込み中は、前の結果を表示したままにする
+- 文章は日本語だけ。API の `params` から、直す場所をフォームの項目の名前で案内する（`src/lib/fetch-json.ts` の `toErrorGuide`）
+- `/suimei/saiun` にはフォームが無いので、四柱推命のページへのリンクを出す
+- Next.js は、画面遷移の読み上げ用に、`role="alert"` の空の要素を常に置いている。エラーの要素を探すときは、クラス名（`.form-error` / `.form_error` / `.load_error`）を使う
 
 ### 地図ページとの連携
 

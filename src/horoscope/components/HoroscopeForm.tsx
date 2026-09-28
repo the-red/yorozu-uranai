@@ -55,6 +55,12 @@ export const HoroscopeForm: FC<FormProps> = (props) => {
 
       <hr />
 
+      {props.errorMessage && (
+        <p className="form-error" role="alert">
+          {props.errorMessage}
+        </p>
+      )}
+
       <div className="submit-row">
         <button type="submit" className="submit-button">
           ホロスコープを作成する

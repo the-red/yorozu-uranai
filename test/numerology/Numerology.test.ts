@@ -1,8 +1,13 @@
+import { DateTime } from 'luxon'
 import { Numerology } from '../../src/numerology/models/Numerology'
 
 describe('Numerology', () => {
   describe('通常のテスト', () => {
-    const numerology = new Numerology({ birthDate: new Date('1970-10-31'), fullName: 'SUHI KAZUYA', maxSameNumber: 22 })
+    const numerology = new Numerology({
+      birthDate: DateTime.fromISO('1970-10-31'),
+      fullName: 'SUHI KAZUYA',
+      maxSameNumber: 22,
+    })
     it('life path number', () => {
       expect(numerology.lifePathNumber).toEqual(22)
     })
@@ -22,6 +27,20 @@ describe('Numerology', () => {
       expect(numerology.birthdayNumber).toEqual(4)
     })
   })
+  describe('生年月日は実行環境のタイムゾーンに依らず、渡された暦の日付で計算する', () => {
+    it('日本時間の日付', () => {
+      const birthDate = DateTime.fromISO('1970-10-31', { zone: 'Asia/Tokyo' })
+      const numerology = new Numerology({ birthDate, fullName: 'SUHI KAZUYA', maxSameNumber: 22 })
+      expect(numerology.lifePathNumber).toEqual(22)
+      expect(numerology.birthdayNumber).toEqual(4)
+    })
+    it('ニューヨーク時間の日付', () => {
+      const birthDate = DateTime.fromISO('1970-10-31', { zone: 'America/New_York' })
+      const numerology = new Numerology({ birthDate, fullName: 'SUHI KAZUYA', maxSameNumber: 22 })
+      expect(numerology.lifePathNumber).toEqual(22)
+      expect(numerology.birthdayNumber).toEqual(4)
+    })
+  })
   describe('ゾロの最大値設定のテスト', () => {
     // MEMO:
     // 初回の合計値が 1, 2, 100 になる文字列を使って、fullName から計算される destinyNumber でテストをする
@@ -30,29 +49,32 @@ describe('Numerology', () => {
     const hundred = ten.repeat(10)
 
     it('ゾロ目なし', () => {
-      expect(new Numerology({ birthDate: new Date(), fullName: one + ten }).destinyNumber).toEqual(2)
+      expect(new Numerology({ birthDate: DateTime.now(), fullName: one + ten }).destinyNumber).toEqual(2)
     })
     describe('最大値: 22', () => {
       it('22 = 22', () => {
         expect(
-          new Numerology({ birthDate: new Date(), fullName: (one + ten).repeat(2), maxSameNumber: 22 }).destinyNumber
+          new Numerology({ birthDate: DateTime.now(), fullName: (one + ten).repeat(2), maxSameNumber: 22 })
+            .destinyNumber
         ).toEqual(22)
       })
       it('33 = 6', () => {
         expect(
-          new Numerology({ birthDate: new Date(), fullName: (one + ten).repeat(3), maxSameNumber: 22 }).destinyNumber
+          new Numerology({ birthDate: DateTime.now(), fullName: (one + ten).repeat(3), maxSameNumber: 22 })
+            .destinyNumber
         ).toEqual(6)
       })
     })
     describe('最大値: 99', () => {
       it('99 = 99', () => {
         expect(
-          new Numerology({ birthDate: new Date(), fullName: (one + ten).repeat(9), maxSameNumber: 99 }).destinyNumber
+          new Numerology({ birthDate: DateTime.now(), fullName: (one + ten).repeat(9), maxSameNumber: 99 })
+            .destinyNumber
         ).toEqual(99)
       })
       it('111 = 3', () => {
         expect(
-          new Numerology({ birthDate: new Date(), fullName: one + ten + hundred, maxSameNumber: 99 }).destinyNumber
+          new Numerology({ birthDate: DateTime.now(), fullName: one + ten + hundred, maxSameNumber: 99 }).destinyNumber
         ).toEqual(3)
       })
     })

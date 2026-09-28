@@ -1,6 +1,7 @@
 import { Planet } from '../../src/horoscope/models/Planet'
 import { House } from '../../src/horoscope/models/House'
 import { Position } from '../../src/horoscope/models/Position'
+import { NUM_DIGITS } from '../test-util'
 
 describe('Planet', () => {
   const house = new House({
@@ -24,18 +25,18 @@ describe('Planet', () => {
     it('0.5: 牡羊座', () => {
       const planet = new Planet(new Position(0.5), 'sun', false, house)
       expect(planet.sign).toEqual('牡羊座')
-      expect(planet.position.degrees).toEqual(0.5)
+      expect(planet.position.degrees).toBeCloseTo(0.5, NUM_DIGITS)
     })
     it('60.0: 牡牛座', () => {
       const planet = new Planet(new Position(60), 'sun', false, house)
       expect(planet.sign).toEqual('牡牛座')
-      expect(planet.position.degrees).toEqual(0)
+      expect(planet.position.degrees).toBeCloseTo(0, NUM_DIGITS)
     })
     it('61.89: 双子座', () => {
       const planet = new Planet(new Position(61.89), 'sun', false, house)
-      expect(planet.longitude).toEqual(61.89)
+      expect(planet.longitude).toBeCloseTo(61.89, NUM_DIGITS)
       expect(planet.sign).toEqual('双子座')
-      expect(planet.position.degrees).toEqual(1.8900000000000006)
+      expect(planet.position.degrees).toBeCloseTo(1.89, NUM_DIGITS)
     })
     it('120.0: 蟹座', () => {
       const planet = new Planet(new Position(120), 'sun', false, house)
@@ -72,17 +73,17 @@ describe('Planet', () => {
     it('360.0: 魚座', () => {
       const planet = new Planet(new Position(360), 'sun', false, house)
       expect(planet.sign).toEqual('魚座')
-      expect(planet.position.degrees).toEqual(0)
+      expect(planet.position.degrees).toBeCloseTo(0, NUM_DIGITS)
     })
     it('360.5: 牡羊座', () => {
       const planet = new Planet(new Position(360.5), 'sun', false, house)
       expect(planet.sign).toEqual('牡羊座')
-      expect(planet.position.degrees).toEqual(0.5)
+      expect(planet.position.degrees).toBeCloseTo(0.5, NUM_DIGITS)
     })
     it('3600270.0: 射手座', () => {
       const planet = new Planet(new Position(3600270), 'sun', false, house)
       expect(planet.sign).toEqual('射手座')
-      expect(planet.position.degrees).toEqual(0)
+      expect(planet.position.degrees).toBeCloseTo(0, NUM_DIGITS)
     })
   })
 

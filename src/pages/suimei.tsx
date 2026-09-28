@@ -14,6 +14,7 @@ import { useFormValues } from '../hooks/useFormValues'
 import { FormProps } from '../hooks/useYorozuUranaiForm'
 import { Juuniun } from '../suimei/models/Juuniun'
 import { generateSaiun } from '../suimei/models/Saiun'
+import { toSolarTime } from '../suimei/models/SolarTime'
 
 export type OptionalQuery = Query
 
@@ -32,13 +33,18 @@ const SuimeiPage: NextPage = () => {
         return
       }
 
-      const { date, time, zone, gender } = formValues
+      const { date, time, zone, gender, lng } = formValues
       const suimeiSeed: {
         dateTime: DateTime
         gender: Gender
+        lng: number
+        thisYear: number
       } = {
         dateTime: DateTime.fromISO(`${date}T${time}`, { zone }),
         gender,
+        lng,
+        // 閲覧者の現在地（ブラウザのタイムゾーン）での現在の年
+        thisYear: DateTime.now().year,
       }
       const res = await fetch('/api/suimei-props', {
         method: 'POST',
@@ -51,17 +57,19 @@ const SuimeiPage: NextPage = () => {
       }
       const json = await res.json()
       const sekkiPair = json.sekkiPair as SekkiPair
-      const kanshi = new Kanshi(suimeiSeed.dateTime, sekkiPair)
+      const solarTime = toSolarTime(suimeiSeed.dateTime, suimeiSeed.lng, json.equationOfTime as number)
+      const kanshi = new Kanshi(suimeiSeed.dateTime, sekkiPair, solarTime.dateTime)
       const zoukan = new Zoukan(kanshi)
       const daiunDetail = json.daiun as Daiun[]
 
-      const thisYear = DateTime.now().year
+      const { thisYear } = suimeiSeed
       const saiun1stYear = Math.max(thisYear - 5, suimeiSeed.dateTime.year)
       const saiunLastYear = Math.max(thisYear, suimeiSeed.dateTime.year) + 10
       const saiun = generateSaiun(kanshi, suimeiSeed.dateTime, sekkiPair, thisYear, saiun1stYear, saiunLastYear)
 
       setSuimei({
         sekki: sekkiPair.today,
+        solarTime,
         kanshi,
         tenkanTsuhensei: new TenkanTsuhensei(kanshi),
         zoukan,

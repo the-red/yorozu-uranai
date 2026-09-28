@@ -1,7 +1,10 @@
+import { DateTime } from 'luxon'
+
 export type MaxSameNumber = 22 | 33 | 44 | 99
 
 export class Numerology {
-  birthDate: Date
+  // NOTE: Dateだと実行環境のタイムゾーンによって日付がずれるので、暦の日付をそのまま持てるDateTimeを使う
+  birthDate: DateTime
   fullName: string
   maxSameNumber?: MaxSameNumber
 
@@ -12,7 +15,7 @@ export class Numerology {
     fullName,
     maxSameNumber,
   }: {
-    birthDate: Date
+    birthDate: DateTime
     fullName: string
     maxSameNumber?: MaxSameNumber
   }) {
@@ -22,15 +25,15 @@ export class Numerology {
   }
 
   private get YYYY() {
-    return String(this.birthDate.getFullYear()).padStart(4, '0')
+    return String(this.birthDate.year).padStart(4, '0')
   }
 
   private get MM() {
-    return String(this.birthDate.getMonth() + 1).padStart(2, '0')
+    return String(this.birthDate.month).padStart(2, '0')
   }
 
   private get DD() {
-    return String(this.birthDate.getDate()).padStart(2, '0')
+    return String(this.birthDate.day).padStart(2, '0')
   }
 
   // 生年月日が対象

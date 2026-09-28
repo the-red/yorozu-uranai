@@ -64,7 +64,12 @@ export type SekkiPair = {
 export class Kanshi {
   static readonly 六十干支 = get六十干支()
 
-  constructor(private readonly date: DateTime, private readonly sekki: SekkiPair) {}
+  constructor(
+    private readonly date: DateTime, // 出生地のタイムゾーンで渡す
+    private readonly sekki: SekkiPair,
+    // 真太陽時。日柱と時柱はこちらで決まる。年柱と月柱は節入り（絶対時刻）で決まるので使わない
+    private readonly solarTime: DateTime = date
+  ) {}
 
   get 年柱(): 干支 {
     let { year } = this.date
@@ -80,14 +85,12 @@ export class Kanshi {
   }
 
   get 月柱(): 干支 {
-    const BASE = DateTime.fromISO('2019-01-01T00:00:00+09:00') // 月柱が甲子の元旦
-    let monthsDiff = Math.trunc(this.date.diff(BASE, 'months').months)
+    // 月初の月柱が甲子になる2019年1月からの月数（出生地の暦で数える）
+    let monthsDiff = (this.date.year - 2019) * 12 + (this.date.month - 1)
 
-    // 節入日の前後によって調整
-    if (this.date > BASE && this.sekki.today === this.sekki.endOfMonth) {
+    // その月の節入りを過ぎていたら、次の干支に進める
+    if (this.sekki.today === this.sekki.endOfMonth) {
       monthsDiff++
-    } else if (this.date < BASE && this.sekki.today !== this.sekki.endOfMonth) {
-      monthsDiff--
     }
     const index = monthsDiff % 60
 
@@ -95,20 +98,23 @@ export class Kanshi {
   }
 
   // 日柱が甲子(index:0)となる基準日
-  private static BASE = DateTime.fromISO('1909-01-04')
+  private static BASE = DateTime.utc(1909, 1, 4)
+
+  // 基準日からの日数
+  // 出生地の暦の日付だけで数える（実行環境のタイムゾーンや時刻に左右されないよう、日付をUTCに置き換えて差を取る）
+  private get daysFromBase(): number {
+    const { year, month, day } = this.solarTime
+    return DateTime.utc(year, month, day).diff(Kanshi.BASE, 'days').days
+  }
 
   get 日柱(): 干支 {
-    const diff = this.date.diff(Kanshi.BASE, 'days').days
-    const index = diff % 60
+    const index = this.daysFromBase % 60
 
     return Kanshi.六十干支.at(index)!
   }
 
   get 時柱(): 干支 {
-    // TODO: 位置情報を考慮して時刻を微調整する
-    // 四柱推命の本P22を参照
-    // ホロスコープも同じ調整を入れるべきか？
-    const hour = this.date.plus({ hour: 1 }).hour
+    const hour = this.solarTime.plus({ hour: 1 }).hour
 
     const index = (Math.trunc(hour / 2) + this.日干index * 12) % 60
 
@@ -161,8 +167,6 @@ export class Kanshi {
   }
 
   private get 日干index(): number {
-    const diff = this.date.diff(Kanshi.BASE, 'days').days
-    const index = Math.trunc(diff % 10)
-    return index
+    return this.daysFromBase % 10
   }
 }

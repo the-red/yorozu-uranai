@@ -3,12 +3,14 @@ import type { Juuniun } from './Juuniun'
 import type { Kanshi } from './Kanshi'
 import { Saiun } from './Saiun'
 import type { 節 } from './Sekki'
+import type { SolarTime } from './SolarTime'
 import type { TenkanTsuhensei } from './Tsuhensei'
 import type { Zoukan, ZoukanTsuhensei } from './Zoukan'
 import type { Tokushusei } from './tokushusei'
 
 export type Suimei = {
   sekki: 節
+  solarTime: SolarTime
   kanshi: Kanshi
   tenkanTsuhensei: TenkanTsuhensei
   zoukan: Zoukan

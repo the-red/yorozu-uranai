@@ -17,10 +17,10 @@ export const 十干list = ['甲', '乙', '丙', '丁', '戊', '己', '庚', '辛
 export const 十二支list = ['子', '丑', '寅', '卯', '辰', '巳', '午', '未', '申', '酉', '戌', '亥'] as const
 const 五行list = ['木', '火', '土', '金', '水'] as const // 読み方: もく, か, ど, こん, すい
 
-export type 十干 = typeof 十干list[number]
-export type 十二支 = typeof 十二支list[number]
+export type 十干 = (typeof 十干list)[number]
+export type 十二支 = (typeof 十二支list)[number]
 export type 干支 = `${十干}${十二支}`
-type 五行 = typeof 五行list[number]
+type 五行 = (typeof 五行list)[number]
 
 export const get六十干支 = (): 干支[] => {
   const 干支list: 干支[] = []

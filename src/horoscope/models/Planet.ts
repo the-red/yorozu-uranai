@@ -14,7 +14,7 @@ export const PLANET_ICONS = {
   neptune: '♆',
   pluto: '♇',
 } as const
-export type PlanetIcon = typeof PLANET_ICONS[PlanetName]
+export type PlanetIcon = (typeof PLANET_ICONS)[PlanetName]
 
 export const PLANET_NAMES_JA = {
   sun: '太陽',
@@ -36,7 +36,7 @@ const ALL_MAJOR_ASPECTS = [
   { degrees: 120, name: 'trine', type: 'soft' },
   { degrees: 180, name: 'opposition', type: 'hard' },
 ] as const
-export type MajorAspect = typeof ALL_MAJOR_ASPECTS[number]
+export type MajorAspect = (typeof ALL_MAJOR_ASPECTS)[number]
 
 const ALL_MINOR_ASPECTS = [
   { degrees: 30, name: 'semi-sextile' },
@@ -46,7 +46,7 @@ const ALL_MINOR_ASPECTS = [
   { degrees: 144, name: 'biquintile' },
   { degrees: 150, name: 'quincunx' },
 ] as const
-type MinorAspect = typeof ALL_MINOR_ASPECTS[number]
+type MinorAspect = (typeof ALL_MINOR_ASPECTS)[number]
 
 export class Planet {
   static ALL_SIGNS = Position.ALL_SIGNS

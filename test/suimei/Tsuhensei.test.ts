@@ -1,3 +1,4 @@
+import { describe, it, expect } from 'vitest'
 import { calcTsuhensei, TenkanTsuhensei } from '../../src/suimei/models/Tsuhensei'
 import { getKanshiInstance } from './test-util'
 

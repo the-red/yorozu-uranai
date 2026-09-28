@@ -1,3 +1,4 @@
+import { describe, it, expect } from 'vitest'
 import { getHoroscopeInstance, getHoroscopeProps } from '../../src/horoscope/models/horoscopeFactory'
 import { NUM_DIGITS, expectToBeCloseTo } from '../test-util'
 

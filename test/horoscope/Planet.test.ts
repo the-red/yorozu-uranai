@@ -1,3 +1,4 @@
+import { describe, it, expect } from 'vitest'
 import { Planet } from '../../src/horoscope/models/Planet'
 import { House } from '../../src/horoscope/models/House'
 import { Position } from '../../src/horoscope/models/Position'

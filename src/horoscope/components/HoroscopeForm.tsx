@@ -54,7 +54,6 @@ export const HoroscopeForm: FC<FormProps> = (props) => {
             />
           </div>
           <div style={{ textDecoration: 'underline', marginBottom: '5px' }}>
-            {/* eslint-disable-next-line react/jsx-no-target-blank */}
             <Link href={pagesPath.map.$url({ query: { lat: lat, lng: lng } })} target="_blank" rel="opener">
               地図から検索
             </Link>

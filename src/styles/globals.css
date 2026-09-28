@@ -218,6 +218,10 @@ Note: Beware of modifying this element as it can break the animations - you shou
 .menu-text {
   font-size: 10px;
 }
+/* 画像の中に色の指定が無いアイコンを、他のアイコンと同じ色にする */
+.menu-icon {
+  fill: #4b4b4b;
+}
 .menu-horoscope {
   background-color: #6399d6;
 }

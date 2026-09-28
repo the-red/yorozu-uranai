@@ -7,8 +7,7 @@ https://yorozu-uranai.com
 git clone https://github.com/the-red/yorozu-uranai.git
 cd yorozu-uranai
 yarn install
-cp .env.example .env.development.deploy # 開発デプロイ向け環境変数
-cp .env.example .env.production.deploy # 本番デプロイ向け環境変数
+cp .env.local.example .env.local # Google MapsのAPIキーを設定
 ```
 
 テスト
@@ -28,14 +27,8 @@ yarn start
 ```
 
 デプロイ
-```
-# 開発（ステージング）環境
-yarn deploy development
 
-# 本番環境
-## sg-ops-firebaseで権限昇格してから
-yarn deploy production
-```
+Vercelにデプロイしています。プルリクエストを作ると、プレビュー環境が作られます。
 
 以下、create-next-appで生成れたREADME
 

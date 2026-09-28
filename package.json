@@ -10,8 +10,7 @@
     "path": "pathpida --ignorePath .gitignore --enableStatic",
     "lint": "eslint --fix \"src/**/*.{js,ts,jsx,tsx}\"",
     "format": "prettier --write \"src/**/*.{js,ts,jsx,tsx,json}\"",
-    "test": "tsc --noEmit -p test && vitest run",
-    "deploy": "./cloudrun-deploy.sh"
+    "test": "tsc --noEmit -p test && vitest run"
   },
   "license": "UNLICENSED",
   "engines": {

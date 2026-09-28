@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## 概要
 
-「よろず占い」(https://yorozu-uranai.com) — ホロスコープ（西洋占星術）・四柱推命・数秘術を提供する Next.js (Pages Router) + TypeScript アプリ。Google Cloud Run にデプロイしている。
+「よろず占い」(https://yorozu-uranai.com) — ホロスコープ（西洋占星術）・四柱推命・数秘術を提供する Next.js (Pages Router) + TypeScript アプリ。Vercel にデプロイしている。
 
 ## コマンド
 
@@ -23,19 +23,12 @@ yarn tsc --noEmit # 型チェック（専用scriptは無い。test/ は tsconfig
 yarn path         # src/lib/$path.ts を再生成
 ```
 
-デプロイ（`gcloud` が必要。本番は権限昇格が必要なので、明示的に依頼されない限り実行しない）:
-
-```sh
-yarn deploy development   # GCPプロジェクト yorozu-uranai-development
-yarn deploy production    # GCPプロジェクト yorozu-uranai-production
-```
-
-`cloudrun-deploy.sh` は `.env.<環境>.deploy` を一時的に `.env.production.local` にコピーして Cloud Build に渡し、終了後に削除する。
+デプロイは Vercel が行う。プルリクエストを作るとプレビュー環境が作られる（認証で保護されている）。
 
 ### 環境変数
 
 - `.env.local`（`.env.local.example` 参照）: `NEXT_PUBLIC_GOOGLE_MAPS_API_KEY` / `NEXT_PUBLIC_GOOGLE_GEOCODING_API_KEY`。未設定だと地図と住所の逆ジオコーディングが動かない
-- `.env.{development,production}.deploy`（`.env.example` 参照）: デプロイ時のみ使用
+- `.env.example`: デプロイ先に設定する環境変数の雛形
 
 ## ライブラリのバージョンの制約
 
@@ -50,7 +43,7 @@ Next.js 16 は Turbopack が既定だが、webpack の設定（Windi CSS と SVG
 
 ## テストの注意点
 
-- **計算結果は、実行環境のタイムゾーンに依存させない**。本番サーバー（Cloud Run）は UTC で動く可能性があり、利用者のブラウザも日本時間とは限らないため。日時を扱う変更をしたら `TZ=UTC yarn test` と `TZ=America/New_York yarn test` でも確認する
+- **計算結果は、実行環境のタイムゾーンに依存させない**。本番サーバー（Vercel）は UTC で動き、利用者のブラウザも日本時間とは限らないため。日時を扱う変更をしたら `TZ=UTC yarn test` と `TZ=America/New_York yarn test` でも確認する
 - 小数の比較は `toBeCloseTo()` を使う。桁数は `test/test-util.ts` の `NUM_DIGITS`。オブジェクトや配列は同ファイルの `expectToBeCloseTo()` でまとめて比較する
 - `swisseph` はネイティブアドオンなので、Node.js のバージョンを変えたら `yarn install` し直す（リビルドが必要）
   - `swisseph` が依存する `nan` と `node-gyp` は古いままだと Node.js 24 でビルドできないので、`package.json` の `resolutions` で新しいバージョンに固定している

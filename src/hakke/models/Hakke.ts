@@ -28,6 +28,20 @@ const 読みtable: Record<八卦, string> = {
   坤: 'こん',
 }
 
+// 四維（しい）：後天八卦で、四隅の方位にある卦。
+// 読みは、その方位を挟む十二支から来ている（北西は戌と亥の間なので「いぬい」）
+export const 四維list = ['乾', '艮', '巽', '坤'] as const satisfies readonly 八卦[]
+export type 四維 = (typeof 四維list)[number]
+
+const 四維読みtable = {
+  乾: 'いぬい', // 北西。戌（いぬ）・亥（い）
+  艮: 'うしとら', // 北東。丑（うし）・寅（とら）
+  巽: 'たつみ', // 南東。辰（たつ）・巳（み）
+  坤: 'ひつじさる', // 南西。未（ひつじ）・申（さる）
+} as const satisfies Record<四維, string>
+
+export type 四維読み = (typeof 四維読みtable)[四維]
+
 // 後天八卦の配置。ビット列からは計算できないので、表で持つ
 const 後天table: Record<八卦, { 方位: 方位; 九星数: 九星数; 五行: 五行 }> = {
   乾: { 方位: '北西', 九星数: 6, 五行: '金' },
@@ -76,6 +90,10 @@ const get後天 = (卦: 八卦) => 後天table[validate(卦)]
 export const get方位 = (卦: 八卦): 方位 => get後天(卦).方位
 export const get九星数 = (卦: 八卦): 九星数 => get後天(卦).九星数
 export const get五行 = (卦: 八卦): 五行 => get後天(卦).五行
+
+export const is四維 = (卦: 八卦): 卦 is 四維 => (四維list as readonly 八卦[]).includes(validate(卦))
+// 四維の卦だけが持つ読み（いぬい・うしとら・たつみ・ひつじさる）。それ以外の卦は undefined
+export const get四維読み = (卦: 八卦): 四維読み | undefined => (is四維(卦) ? 四維読みtable[卦] : undefined)
 
 export const from九星数 = (n: number): 八卦 | undefined => {
   assertIntegerInRange('九星の数', n, 1, 9)

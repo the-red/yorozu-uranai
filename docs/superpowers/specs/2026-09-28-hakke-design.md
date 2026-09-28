@@ -59,7 +59,8 @@
 src/hakke/models/
   Kou.ts      爻（ビット列）の操作
   Hakke.ts    八卦
-  index.ts    上の2つを re-export
+  assert.ts   値の範囲の検査（index.ts からは出さない）
+  index.ts    Hakke.ts と Kou.ts を re-export
 test/hakke/
   Kou.test.ts
   Hakke.test.ts
@@ -68,6 +69,15 @@ test/hakke/
 天文計算（`src/astronomy`）には依存しない。クライアントだけで動く。
 
 `Hakke.ts` は `Kou.ts` に依存する。逆向きの依存は作らない。
+
+`change爻` は `Kou.ts`（ビット列用）と `Hakke.ts`（卦用）の両方にある。
+`index.ts` では、`Kou.ts` の関数を名前空間にまとめて出す（`Kou.change爻(bits, 6, 1)`）。
+
+```ts
+export * from './Hakke'
+export * as Kou from './Kou'
+export type { 陰陽, 爻数 } from './Kou'
+```
 
 ## Kou.ts
 
@@ -92,7 +102,10 @@ export type 爻数 = 3 | 6
 
 - `bits` が整数でない、または `0` 〜 `2 ** 爻数 − 1` の範囲にない
 - `位置` が整数でない、または `1` 〜 `爻数` の範囲にない
-- `from爻list` に渡した配列の長さが 3 でも 6 でもない
+- `爻数` が 3 でも 6 でもない（`from爻list` では、配列の長さ）
+- `from爻list` に渡した配列に、`'陽'` でも `'陰'` でもない要素がある
+
+型の上では起きない値も検査する。JSON や URL クエリから来た値が、そのまま渡されることがあるため。
 
 ## Hakke.ts
 
@@ -101,9 +114,16 @@ export type 爻数 = 3 | 6
 export const 八卦list = ['乾', '兌', '離', '震', '巽', '坎', '艮', '坤'] as const
 export type 八卦 = (typeof 八卦list)[number]
 
+export const 象list = ['天', '沢', '火', '雷', '風', '水', '山', '地'] as const
+export type 象 = (typeof 象list)[number]
+
 export const 方位list = ['北', '北東', '東', '南東', '南', '南西', '西', '北西'] as const
 export type 方位 = (typeof 方位list)[number]
+
+export type 九星数 = 1 | 2 | 3 | 4 | 6 | 7 | 8 | 9
 ```
+
+卦を受け取る関数は、八卦でない文字列（`'天'`、`'乾 '` など）を渡すと `RangeError` を投げる。
 
 ### 基本
 
@@ -130,7 +150,7 @@ export type 方位 = (typeof 方位list)[number]
 | `get綜卦(卦)` | 上下を逆に | 兌↔巽、震↔艮。乾・離・坎・坤は自分自身 |
 | `change爻(卦, 位置)` | 指定した爻を反転 | `'震'`, 位置 1 → `'坤'` |
 
-`change爻` は `Kou.ts` にも同じ名前の関数がある。`Hakke.ts` の中では別名で import する。
+`change爻` は `Kou.ts` にも同じ名前の関数がある。`Hakke.ts` の中では別名（`changeBits`）で import する。
 
 ### 後天八卦
 

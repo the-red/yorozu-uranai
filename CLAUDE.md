@@ -57,6 +57,8 @@ Next.js 16 は Turbopack が既定だが、webpack の設定（SVGR）を使っ�
 
 占術ごとに `src/<占術>/{models,components}` に分割している（`horoscope` / `suimei` / `numerology`）。`models` は React に依存しない純粋な計算ロジック、`components` はその表示。`src/pages` は薄く、クエリ → フォーム値 → モデル生成 → コンポーネントへの受け渡しを担う。
 
+`src/hakke/models` は占術ではなく、複数の占術（易占・九星気学）が共有する八卦のモデル。
+
 ### サーバー／クライアントの境界（重要）
 
 `swisseph`（Swiss Ephemeris のネイティブバインディング）はサーバーでしか動かない。これを import しているのは `src/astronomy/index.ts` のみで、そこに依存するのは次の2つ:
@@ -105,6 +107,15 @@ Next.js 16 は Turbopack が既定だが、webpack の設定（SVGR）を使っ�
 - 日時は必ず出生地のタイムゾーンを持った luxon の `DateTime` で渡す（数秘術の生年月日も同じ）。`Date` や、ゾーン指定なしの `DateTime.fromISO()` / `fromJSDate()` は実行環境のタイムゾーンになるので使わない（API では `{ setZone: true }` で受け取る）
 - 現在の年（大運・歳運の「現在」の行の判定）は、閲覧者の現在地を基準にする。ブラウザで `DateTime.now().year` を求めて API にも `thisYear` として送る。サーバー側では時計を使わない
 - 特殊星 (`models/tokushusei/`) はルール表をデータとして持つ。表は `scripts/generate-tokushusei.js` に TSV を貼って JSON 化したものを元にしている
+
+### 八卦モデル
+
+- 卦は漢字の文字列リテラル（`'震'` など）で受け渡す。3ビットの値は `八卦list` の index で、`toBits` / `fromBits` でだけ変換する
+- ビット列の決まり: 陽 = 0、陰 = 1。上位ビットが初爻（一番下の線）。震 ☳ = `011` は、下から陽・陰・陰
+  - 一般的な対応（陽 = 1）とは逆。先天八卦の順（乾1〜坤8）と Unicode（☰〜☷）の並びに一致させている
+- 爻の位置（1始まり、1 が初爻）とビット位置の変換は `Kou.ts` の中だけで行う。線の本数（3 か 6）で位置が変わるため
+- 後天八卦の属性（方位・九星の数・五行）はビット列から計算できないので、表で持つ
+- 設計の経緯は `docs/superpowers/specs/2026-09-28-hakke-design.md`
 
 ### ホロスコープの描画
 

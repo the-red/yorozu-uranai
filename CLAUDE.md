@@ -11,8 +11,8 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 パッケージマネージャは yarn (v1)、Node.js は 24（`.tool-versions` と `package.json` の `engines`）。
 
 ```sh
-yarn dev          # next dev --webpack と pathpida --watch を並列起動
-yarn build        # pathpida 生成 → next build --webpack
+yarn dev          # next dev と pathpida --watch を並列起動
+yarn build        # pathpida 生成 → next build
 yarn test         # テストコードの型チェック → vitest 全件（1回実行）
 yarn vitest       # 変更を監視して再実行
 yarn test test/suimei/Kanshi.test.ts   # 単一ファイル
@@ -38,8 +38,6 @@ yarn path         # src/lib/$path.ts を再生成
 | --- | --- | --- |
 | TypeScript | 6.0 系 | `eslint-config-next` が使う `typescript-eslint` の対応範囲が 6.1 未満。7 系にすると ESLint が動かない |
 | ESLint | 9 系 | `eslint-config-next` が使う `eslint-plugin-react` などが 10 系に未対応 |
-
-Next.js 16 は Turbopack が既定だが、webpack の設定（SVGR）を使っているので、`next dev` と `next build` には `--webpack` を付けている。
 
 ## テストの注意点
 
@@ -119,7 +117,9 @@ Next.js 16 は Turbopack が既定だが、webpack の設定（SVGR）を使っ�
   - 四柱推命と地図のスマホ版は、デザイン上の横幅 375px を基準に `calc(343 / var(--sp-width) * 100vw)` の形で大きさを指定している
   - クラス名の書き方はファイルごとに違う（ホロスコープは `kebab-case`、数秘術と四柱推命は `snake_case`）。編集するファイルに合わせる
 
-SVG は `import X from './x.svg'` で React コンポーネント（SVGR）、`'./x.svg?url'` で URL として読み込める（`next.config.js`）。
+SVG は `import X from './x.svg'` で React コンポーネントとして読み込める（SVGR。`next.config.js` の `turbopack.rules`）。
+
+CSS から画像を参照するときは、`url('/images/map/back_blue.svg')` のように `public/` からの絶対パスで書く。相対パスで書くとビルドの対象になり、SVG は React コンポーネントに変換されて表示されなくなる。
 
 ## コーディング規約
 

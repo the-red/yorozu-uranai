@@ -143,13 +143,12 @@ describe('四柱推命のクエリ', () => {
     it.each([
       ['man', 'man'],
       ['woman', 'woman'],
-      // 以前のURLの on は、女性として読む
-      ['on', 'woman'],
     ])('%j は %j', (gender, expected) => {
       expect(parseSuimeiQuery({ ...suimeiQuery, gender })).toMatchObject({ input: { gender: expected } })
     })
     // 推測で計算すると、大運の向きが逆になっても気づけない
-    it.each(['male', 'female', 'MAN', 'Woman', 'man ', 'M', '男', 'unknown'])('%j はエラー', (gender) => {
+    // NOTE: ページは、以前のURLの on を女性として読む。JSONでは受け付けない
+    it.each(['male', 'female', 'MAN', 'Woman', 'man ', 'M', '男', 'unknown', 'on'])('%j はエラー', (gender) => {
       expect(parseSuimeiQuery({ ...suimeiQuery, gender })).toEqual(invalid('gender is invalid', ['gender']))
     })
   })

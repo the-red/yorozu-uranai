@@ -8,7 +8,6 @@ import {
   QUERY_TIME_UNKNOWN,
   QueryValue,
   singleValue,
-  toGender,
 } from './params'
 
 // JSON APIが受け取るクエリ。値はすべて文字列で届く
@@ -113,10 +112,10 @@ class Parser {
     const value = this.required('gender')
     if (value === undefined) return undefined
 
-    // 以前のURLの on は、女性として読む
-    // NOTE: ページと違って、ほかの値は推測しない。male などを女性として計算すると、大運の向きが逆でも気づけない
-    if (!['man', 'woman', 'on'].includes(value)) return this.invalid('gender')
-    return toGender(value)
+    // NOTE: ページと違って、値を推測しない（以前のURLの on も受け付けない）。
+    // male などを女性として計算すると、大運の向きが逆でも気づけない
+    if (value !== 'man' && value !== 'woman') return this.invalid('gender')
+    return value
   }
 
   thisYear() {

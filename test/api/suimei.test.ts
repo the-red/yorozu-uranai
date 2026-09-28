@@ -64,12 +64,8 @@ describe('/suimei.json', () => {
   it('性別で大運の向きが変わる', async () => {
     const woman = await get(suimei, { ...query, gender: 'woman' })
     const man = await get(suimei, { ...query, gender: 'man' })
-    const on = await get(suimei, { ...query, gender: 'on' })
     expect(woman.json.result.大運[1].干支).toEqual('己酉')
     expect(man.json.result.大運[1].干支).toEqual('丁未')
-    // 以前のURLの on は、女性として返す
-    expect(on.json.input.gender).toEqual('woman')
-    expect(on.json.result).toEqual(woman.json.result)
   })
 
   it('材料からモデルを復元して変換し直すと、結果と一致する', async () => {
@@ -184,8 +180,8 @@ describe('/suimei.json', () => {
       expect(consoleError).toHaveBeenCalledTimes(1)
       consoleError.mockRestore()
     })
-    it('性別を推測で読まない', async () => {
-      const { status, json } = await get(suimei, { ...query, gender: 'male' })
+    it.each(['male', 'on'])('性別を推測で読まない: %j', async (gender) => {
+      const { status, json } = await get(suimei, { ...query, gender })
       expect(status).toEqual(400)
       expect(json).toEqual({ error: { code: 'invalid_query', message: 'gender is invalid', params: ['gender'] } })
     })

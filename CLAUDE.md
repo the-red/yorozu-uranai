@@ -86,7 +86,7 @@ yarn path         # src/lib/$path.ts を再生成
 - `thisYear` が無いときは、大運と歳運に `current` を付けない（キーごと省く）
 - エラーは `{ error: { code, message, params } }`。ページは文言ではなく、`code` と `params` で分岐する
   - `calculation_failed`（400）にするのは、天文計算の失敗だけ。`message` は固定の文言にして、ライブラリのエラーメッセージは返さない（`console.error` で記録する）。それ以外の例外は、そのまま 500 にする
-- `gender` は `man` / `woman` / `on`（以前の URL。女性として読む）だけを受け付ける。ページは「`man` でなければ `woman`」として読むが、JSON では推測しない
+- `gender` は `man` と `woman` だけを受け付ける。ページは「`man` でなければ `woman`」として読むが（以前の URL の `gender=on` も女性）、JSON では推測しない
 - 設計の経緯は `docs/superpowers/specs/2026-09-28-json-api-design.md`
 
 ### ネイティブバイナリとデプロイ

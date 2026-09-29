@@ -137,7 +137,7 @@ GET 以外は 405 を返す。
 
 #### 感受点（2026-09-29 に追加）
 
-感受点は、天体ではなく、計算で求める点。ヘッドとテイル（ドラゴンヘッド、ドラゴンテイル）、リリス、PoF（パート・オブ・フォーチュン）、VX（バーテックス）の5つがある。
+感受点は、天体ではなく、計算で求める点。ヘッドとテイル（ドラゴンヘッド、ドラゴンテイル）、リリス、PoF（パート・オブ・フォーチュン）、Vx（バーテックス）の5つがある。
 
 `raw` に、ヘッドの位置（`node`）と、リリスの位置（`lilith`）を足す。バーテックスの位置は、`raw.houses.vertex` に入っている。`result` には、次の項目を足す。
 
@@ -148,7 +148,7 @@ GET 以外は 405 を返す。
     { "name": "southNode", "nameJa": "テイル", "type": "node", "variant": "true", "sign": "天秤座", "degrees": 2.374847, "longitude": 182.374847, "isRetrograde": true, "house": 11 },
     { "name": "lilith", "nameJa": "リリス", "type": "apogee", "variant": "mean", "sign": "獅子座", "degrees": 2.301895, "longitude": 122.301895, "isRetrograde": false, "house": 9 },
     { "name": "partOfFortune", "nameJa": "PoF", "type": "lot", "variant": "day", "sign": "牡牛座", "degrees": 1.153606, "longitude": 31.153606, "isRetrograde": false, "house": 7 },
-    { "name": "vertex", "nameJa": "VX", "type": "angle", "variant": null, "sign": "双子座", "degrees": 1.847894, "longitude": 61.847894, "isRetrograde": false, "house": 8 }
+    { "name": "vertex", "nameJa": "Vx", "type": "angle", "variant": null, "sign": "双子座", "degrees": 1.847894, "longitude": 61.847894, "isRetrograde": false, "house": 8 }
   ],
   "aspects": {
     "pointOrb": 3,
@@ -165,7 +165,7 @@ GET 以外は 405 を返す。
 - `variant` は、求め方が複数あるものについて、どれで求めたかを示す。求め方が1つのものは `null`
   - ヘッドとテイルは、真位置（`true`）
   - リリスは、平均の位置（`mean`）
-  - PoF は、昼生まれの式（`day`。ASC + 月 − 太陽）か、夜生まれの式（`night`。ASC + 太陽 − 月）
+  - PoF は、昼生まれの式（`day`。Asc + 月 − 太陽）か、夜生まれの式（`night`。Asc + 太陽 − 月）
 - バーテックスと PoF は、進む向きが無いので、`isRetrograde` は常に `false`
 - 天体ではないので、四元素などの分類（`element` / `quality` / `polarity`）は持たない
 - 惑星とのアスペクトは、コンジャンクションだけを求める。オーブは 3 度

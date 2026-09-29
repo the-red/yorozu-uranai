@@ -52,7 +52,7 @@ describe('/horoscope.json', () => {
       ['southNode', 'テイル', 'node', 'true', '天秤座', 11],
       ['lilith', 'リリス', 'apogee', 'mean', '獅子座', 9],
       ['partOfFortune', 'PoF', 'lot', 'day', '牡牛座', 7],
-      ['vertex', 'VX', 'angle', null, '双子座', 8],
+      ['vertex', 'Vx', 'angle', null, '双子座', 8],
     ])
     expect(json.result.points.map((_: any) => _.longitude)).toEqual([
       expect.closeTo(2.374847, NUM_DIGITS),

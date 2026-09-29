@@ -5,7 +5,7 @@ type Props = {
 }
 
 // 記号と名前
-// NOTE: 記号が無いもの（VX、ASC、MC）も、記号の幅を空けて、名前の位置をそろえる
+// NOTE: 記号が無いもの（Vx、Asc、Mc）も、記号の幅を空けて、名前の位置をそろえる
 const NameCell = ({ icon, name }: { icon?: string; name: string }) => (
   <td>
     <span className="list-icon">{icon !== name && icon}</span>
@@ -36,12 +36,12 @@ export default function PlanetPositions({ horoscope }: Props) {
             </tr>
           ))}
           <tr>
-            <NameCell name="ASC" />
+            <NameCell name="Asc" />
             <td>{horoscope.house.ascendant.sign}</td>
             <td>{horoscope.house.ascendant.formattedDegrees}</td>
           </tr>
           <tr>
-            <NameCell name="MC" />
+            <NameCell name="Mc" />
             <td>{horoscope.house.mc.sign}</td>
             <td>{horoscope.house.mc.formattedDegrees}</td>
           </tr>

@@ -4,15 +4,15 @@ import type { Horoscope } from './Horoscope'
 import { angleFrom } from './House'
 
 // 感受点。天体ではなく、計算で求める点
-// NOTE: ASCとMCも感受点だが、ハウスの起点なので、House で扱う
+// NOTE: AscとMcも感受点だが、ハウスの起点なので、House で扱う
 //
 // どれも、サインとハウスを読むので、惑星と同じ形（Planet）で扱う
 // - ヘッドとテイル（ドラゴンヘッド、ドラゴンテイル）: 月の軌道と、太陽の通り道（黄道）が交わる2つの点
 // - リリス: 月の軌道の上で、地球から一番遠い点（遠地点）
-// - PoF（パート・オブ・フォーチュン）: ASC・太陽・月の位置から求める点
-// - VX（バーテックス）: 真東・天頂・真西を通る円と、黄道が、西側で交わる点
+// - PoF（パート・オブ・フォーチュン）: Asc・太陽・月の位置から求める点
+// - Vx（バーテックス）: 真東・天頂・真西を通る円と、黄道が、西側で交わる点
 //
-// 並び順は、表示の順番。記号が無いもの（VX）を、最後に置く
+// 並び順は、表示の順番。記号が無いもの（Vx）を、最後に置く
 export const POINT_NAMES = ['northNode', 'southNode', 'lilith', 'partOfFortune', 'vertex'] as const
 export type PointName = (typeof POINT_NAMES)[number]
 
@@ -22,7 +22,7 @@ export const POINT_ICONS = {
   southNode: '☋',
   lilith: '⚸',
   partOfFortune: '⊗',
-  vertex: 'VX',
+  vertex: 'Vx',
 } as const
 
 export const POINT_NAMES_JA = {
@@ -30,7 +30,7 @@ export const POINT_NAMES_JA = {
   southNode: 'テイル',
   lilith: 'リリス',
   partOfFortune: 'PoF',
-  vertex: 'VX',
+  vertex: 'Vx',
 } as const
 
 // 種類
@@ -43,15 +43,15 @@ export const POINT_TYPES = {
 } as const
 
 // 昼生まれ（太陽が、地平線より上にある）かどうか
-// NOTE: ASC から、黄経が増える向きに 180度までが、地平線の下（1〜6ハウス）。
-// 境界は、ハウスの決め方（House.where）に合わせる。ASC と同じ黄経は 12ハウス、DSC と同じ黄経は 6ハウス
+// NOTE: Asc から、黄経が増える向きに 180度までが、地平線の下（1〜6ハウス）。
+// 境界は、ハウスの決め方（House.where）に合わせる。Asc と同じ黄経は 12ハウス、Dsc と同じ黄経は 6ハウス
 export const isDayBirth = (ascendant: number, sun: number): boolean => {
   const angle = angleFrom(ascendant, sun)
   return angle === 0 || angle > 180
 }
 
 // パート・オブ・フォーチュンの黄経
-// 昼生まれは「ASC + 月 − 太陽」、夜生まれは、太陽と月を入れ替えて「ASC + 太陽 − 月」
+// 昼生まれは「Asc + 月 − 太陽」、夜生まれは、太陽と月を入れ替えて「Asc + 太陽 − 月」
 export const getPartOfFortune = ({ ascendant, sun, moon }: { ascendant: number; sun: number; moon: number }): number =>
   angleFrom(0, isDayBirth(ascendant, sun) ? ascendant + moon - sun : ascendant + sun - moon)
 

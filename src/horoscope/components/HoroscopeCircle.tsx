@@ -208,7 +208,7 @@ const SignIcons = ({ frame }: { frame: Frame }) => (
 const PlanetIcons = ({ frame, planets }: { frame: Frame; planets: Planet<PlanetName | PointName>[] }) => (
   <>
     {planets.map((planet, i) => {
-      // 記号が1文字でないもの（VX）は、ほかの記号と大きさがそろうように、小さくする
+      // 記号が1文字でないもの（Vx）は、ほかの記号と大きさがそろうように、小さくする
       const isText = planet.icon.length > 1
       return (
         <ScaledText

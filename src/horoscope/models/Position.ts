@@ -25,14 +25,20 @@ export class Position {
     return this.longitude % this.INTERVAL
   }
 
-  get formattedDegrees() {
-    const degreesInt = Math.trunc(this.degrees)
-    const degreesStr = `${String(degreesInt).padStart(2)}°`
+  // サインの中での度数の、度の部分
+  get degreesInt() {
+    return Math.trunc(this.degrees)
+  }
 
+  // サインの中での度数の、分の部分
+  get minutes() {
     const MINUTE = 60
-    const degreesMin = (this.degrees - degreesInt) * MINUTE
-    const degreesMinInt = Math.round(degreesMin)
-    const degreesMinStr = `${String(degreesMinInt).padStart(2, '0')}′`
+    return Math.round((this.degrees - this.degreesInt) * MINUTE)
+  }
+
+  get formattedDegrees() {
+    const degreesStr = `${String(this.degreesInt).padStart(2)}°`
+    const degreesMinStr = `${String(this.minutes).padStart(2, '0')}′`
 
     // TODO:確認後、以下コメントは削除する
     // const degreesSec = (degreesMin - degreesMinInt) * MINUTE

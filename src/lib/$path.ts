@@ -62,7 +62,7 @@ export const staticPath = {
       'open_in_new_svg': '/images/index/open_in_new.svg',
       'suimei_svg': '/images/index/suimei.svg',
       'suimei_white_svg': '/images/index/suimei_white.svg',
-      'twitter_logo_svg': '/images/index/twitter-logo.svg'
+      'x_logo_svg': '/images/index/x-logo.svg'
     },
     'map': {
       'back_blue_svg': '/images/map/back_blue.svg',

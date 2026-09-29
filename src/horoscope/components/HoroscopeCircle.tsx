@@ -51,6 +51,9 @@ const TICKS = [
 // 惑星と感受点の記号のフォント。CSS の --symbol-font と同じ
 // NOTE: 指定しないと、端末が文字ごとに別のフォントを選んで、記号の位置がずれる
 const SYMBOL_FONT = "'Apple Symbols', 'Segoe UI Symbol', 'Noto Sans Symbols 2', 'Noto Sans Symbols', sans-serif"
+// 文字を下げる量。文字の大きさに対する割合
+// NOTE: 文字は、指定した位置より、少し上に描かれる。記号は約 5%、数字と英字は約 8%（Mac の Chrome で測った値）
+const LOWER = { symbol: 0.05, text: 0.08 }
 // 記号どうしの間隔（度）。記号の幅は、円周の約 9.8度にあたる
 const MIN_GAP = 10
 
@@ -107,6 +110,7 @@ const ScaledText = ({
   fill = 'black',
   outlined = false,
   fontFamily,
+  lower = 0,
 }: {
   frame: Frame
   text: string
@@ -116,6 +120,7 @@ const ScaledText = ({
   fill?: string
   outlined?: boolean // 文字の周りを、白く縁取る。線の上に重なっても、読めるようにする
   fontFamily?: string
+  lower?: number // 文字を下げる量。文字の大きさに対する割合
 }) => {
   const iconSize = radius * scales.size
   const coordinate = degreesToCoordinate(radius, {
@@ -130,7 +135,7 @@ const ScaledText = ({
       x={coordinate.x}
       y={coordinate.y}
       fontSize={iconSize}
-      offset={centered ? { x: width / 2, y: iconSize / 2 } : iconOffset(iconSize)}
+      offset={centered ? { x: width / 2, y: iconSize / 2 - iconSize * lower } : iconOffset(iconSize)}
       fill={fill}
       {...(fontFamily && { fontFamily })}
       {...(centered && { width, align: 'center' })}
@@ -293,15 +298,15 @@ const BodyIcons = ({ frame, bodies }: { frame: Frame; bodies: (Body & { shown: n
       // 度数は、度だけを表示する（分は切り捨てる）。逆行のときは、R を付ける
       const degrees = `${position.degreesInt}°${isRetrograde ? 'R' : ''}`
       const texts = [
-        { text: degrees, size: 0.045, coordinate: RINGS.degrees },
+        { text: degrees, size: 0.045, coordinate: RINGS.degrees, lower: LOWER.text },
         isText
-          ? { text: icon, size: 0.055, coordinate: RINGS.icon }
-          : { text: icon, size: 0.11, coordinate: RINGS.icon, fontFamily: SYMBOL_FONT },
+          ? { text: icon, size: 0.055, coordinate: RINGS.icon, lower: LOWER.text }
+          : { text: icon, size: 0.11, coordinate: RINGS.icon, lower: LOWER.symbol, fontFamily: SYMBOL_FONT },
       ]
       return (
         <Fragment key={name}>
           {hasLeader && <Line points={[from.x, from.y, to.x, to.y]} stroke="#352e2b" strokeWidth={0.75} />}
-          {texts.map(({ text, size, coordinate, fontFamily }) => (
+          {texts.map(({ text, size, coordinate, lower, fontFamily }) => (
             <ScaledText
               key={coordinate}
               frame={frame}
@@ -309,6 +314,7 @@ const BodyIcons = ({ frame, bodies }: { frame: Frame; bodies: (Body & { shown: n
               longitude={shown}
               scales={{ size, coordinate, degrees: 0 }}
               fontFamily={fontFamily}
+              lower={lower}
               centered
               outlined
             />

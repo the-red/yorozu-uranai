@@ -27,7 +27,10 @@ const AspectCell = ({ aspect }: AspectCellProps) => {
 type PlanetCellProps = {
   planetIcon: string
 }
-const PlanetCell = (props: PlanetCellProps) => <div className="inner-item planet-icon">{props.planetIcon}</div>
+// NOTE: 記号が1文字でないもの（Vx、PoF）は、マスに収まるように、文字を小さくする
+const PlanetCell = ({ planetIcon }: PlanetCellProps) => (
+  <div className={`inner-item planet-icon ${planetIcon.length > 1 ? 'text-icon' : ''}`}>{planetIcon}</div>
+)
 
 type AspectRowProps = Omit<Props, 'pointOrb'> & {
   targetPlanet: PlanetName

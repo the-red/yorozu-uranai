@@ -74,25 +74,30 @@ const ScaledText = ({
   text,
   longitude,
   scales,
+  centered = false,
 }: {
   frame: Frame
   text: string
   longitude: number
   scales: IconScales
+  centered?: boolean // 文字の幅の中央を、位置に合わせる
 }) => {
   const iconSize = radius * scales.size
   const coordinate = degreesToCoordinate(radius, {
     degrees: houseLongitude + longitude + 180 + scales.degrees,
     scale: scales.coordinate,
   })
+  // 中央に寄せるための枠の幅。文字が収まる大きさにする
+  const width = iconSize * 4
   return (
     <Text
       text={text}
       x={coordinate.x}
       y={coordinate.y}
       fontSize={iconSize}
-      offset={iconOffset(iconSize)}
+      offset={centered ? { x: width / 2, y: iconSize / 2 } : iconOffset(iconSize)}
       fill="black"
+      {...(centered && { width, align: 'center' })}
     />
   )
 }
@@ -202,15 +207,20 @@ const SignIcons = ({ frame }: { frame: Frame }) => (
 // 惑星と、感受点の記号
 const PlanetIcons = ({ frame, planets }: { frame: Frame; planets: Planet<PlanetName | PointName>[] }) => (
   <>
-    {planets.map((planet, i) => (
-      <ScaledText
-        key={i}
-        frame={frame}
-        text={planet.icon}
-        longitude={planet.longitude}
-        scales={{ size: 0.1, coordinate: 0.69, degrees: 0 }}
-      />
-    ))}
+    {planets.map((planet, i) => {
+      // 記号が1文字でないもの（Vx）は、ほかの記号と大きさがそろうように、小さくする
+      const isText = planet.icon.length > 1
+      return (
+        <ScaledText
+          key={i}
+          frame={frame}
+          text={planet.icon}
+          longitude={planet.longitude}
+          scales={{ size: isText ? 0.075 : 0.1, coordinate: 0.69, degrees: 0 }}
+          centered={isText}
+        />
+      )
+    })}
   </>
 )
 

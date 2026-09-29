@@ -72,7 +72,10 @@ const PointChart = ({ horoscope, pointOrb }: Omit<Props, 'orb'>) => {
         ))}
       </div>
       <div className="aspect-chart-note">
-        {POINT_NAMES.map((point) => `${POINT_ICONS[point]} ${POINT_NAMES_JA[point]}`).join('　')}
+        {/* 記号が名前と同じもの（Vx）は、説明しない */}
+        {POINT_NAMES.filter((point) => POINT_ICONS[point] !== POINT_NAMES_JA[point])
+          .map((point) => `${POINT_ICONS[point]} ${POINT_NAMES_JA[point]}`)
+          .join('　')}
         <br />
         コンジャンクション（0°）だけを表示。オーブ {pointOrb}°
       </div>

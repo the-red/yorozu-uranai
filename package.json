@@ -10,7 +10,8 @@
     "path": "pathpida --ignorePath .gitignore --enableStatic",
     "lint": "eslint --fix \"src/**/*.{js,ts,jsx,tsx}\"",
     "format": "prettier --write \"src/**/*.{js,ts,jsx,tsx,json}\"",
-    "test": "tsc --noEmit -p test && vitest run"
+    "test": "tsc --noEmit -p test && vitest run",
+    "staging": "sh scripts/staging.sh"
   },
   "license": "AGPL-3.0-or-later",
   "engines": {

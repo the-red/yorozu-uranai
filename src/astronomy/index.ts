@@ -3,9 +3,11 @@ import swisseph from 'swisseph'
 import type { AsteroidName, Body, EclipticPosition, HouseCusps, Houses } from './types'
 
 // 天体暦のファイルの場所。小惑星とキロンの計算に使う
-// NOTE: ファイルは、ライブラリに同梱されている。Vercelなど、必要なファイルだけを切り出して動かす環境に
-// 含まれるように、next.config.js の outputFileTracingIncludes にも指定している
-swisseph.swe_set_ephe_path(path.join(process.cwd(), 'node_modules', 'swisseph', 'ephe'))
+// NOTE: ファイルは、ライブラリに同梱されている。Vercelなど、必要なファイルだけを切り出して動かす環境には、
+// next.config.js の outputFileTracingIncludes で、必要なファイルだけを含めている。
+// ここでは、ビルドのときに、パスを調べられないようにする（turbopackIgnore）。
+// 調べられると、フォルダ全体（12MB。使わないファイルを含む）が、ビルド結果に入る
+swisseph.swe_set_ephe_path(path.join(/* turbopackIgnore: true */ process.cwd(), 'node_modules', 'swisseph', 'ephe'))
 
 const round6 = (num: number) => Math.trunc(num * 10 ** 6) / 10 ** 6
 

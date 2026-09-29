@@ -21,6 +21,7 @@ yarn lint         # eslint --fix（自動修正が走る）
 yarn format       # prettier --write
 yarn tsc --noEmit # 型チェック（専用scriptは無い。test/ は tsconfig の対象外）
 yarn path         # src/lib/$path.ts を再生成
+yarn staging      # 今のブランチを staging に載せる（固定のURLで確認する）
 ```
 
 デプロイは Vercel が行う。プルリクエストを作るとプレビュー環境が作られる（認証で保護されている）。
@@ -30,6 +31,17 @@ yarn path         # src/lib/$path.ts を再生成
 - `.env.local`（`.env.local.example` 参照）: `NEXT_PUBLIC_GOOGLE_MAPS_API_KEY` / `GOOGLE_GEOCODING_API_KEY`。未設定だと地図と住所の逆ジオコーディングが動かない
   - `NEXT_PUBLIC_` で始まる環境変数は、ブラウザ側のコードで参照すると、配信する JavaScript に値が入る。サーバーだけで使うキー（Geocoding）には付けない
 - `.env.example`: デプロイ先に設定する環境変数の雛形
+
+### staging
+
+`staging` ブランチは、Vercel のプレビューを、固定の URL で見るためのもの。
+
+- URL: https://yorozu-uranai-git-staging-the-red-creation.vercel.app （Vercel の認証で保護されている）
+- Google Maps のキーの参照元の制限に、この URL を登録している。地図のページは、ここで確かめる
+- `yarn staging` で、今のブランチを `staging` に載せる。手元のブランチは変わらない
+  - Vercel は、デプロイ済みのコミットを push しても、新しいデプロイを作らない。プルリクエストのあるブランチは、すでにデプロイ済みなので、そのまま push しても内容が変わらない。`yarn staging` は、空のコミットを1つ足して push する
+- 確認用の置き場。強制 push で上書きするので、`staging` にしか無いコミットは失われる。作業は、ほかのブランチで行う
+- GitHub の設定で、削除はできないようにしてある。強制 push は許可している
 
 ## ライブラリのバージョンの制約
 

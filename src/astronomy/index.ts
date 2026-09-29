@@ -37,6 +37,8 @@ const BODIES: Record<Body, number> = {
   pluto: swisseph.SE_PLUTO,
   // NOTE: 平均の位置にするなら、SE_MEAN_NODE
   trueNode: swisseph.SE_TRUE_NODE,
+  // NOTE: 真位置にするなら、SE_OSCU_APOG
+  meanApogee: swisseph.SE_MEAN_APOG,
 }
 
 // 黄道座標の計算

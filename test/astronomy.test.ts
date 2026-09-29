@@ -112,6 +112,50 @@ describe('astronomy', () => {
     })
   })
 
+  describe('リリス（月の遠地点）', () => {
+    // 平均の位置（Meeus, Astronomical Algorithms）。月の近地点の平均の位置の、反対側
+    const meanApogee = (julday_ut: number) => {
+      const t = (julday_ut - 2451545) / 36525
+      const perigee = 83.3532465 + 4069.0137287 * t - 0.01032 * t * t - (t * t * t) / 80053
+      return (((perigee + 180) % 360) + 360) % 360
+    }
+
+    it('平均の位置', async () => {
+      // 獅子座 2°18′
+      expectToBeCloseTo(await eclipticPosition(await julday(funadyBirthday), 'meanApogee'), {
+        latitude: 4.501169,
+        latitudeSpeed: -0.007147,
+        longitude: 122.301895,
+        longitudeSpeed: 0.111718,
+        distance: 0.00271,
+        distanceSpeed: 0,
+        rflag: 258,
+        isRetrograde: false,
+      })
+    })
+    it.each([
+      '1987-09-07T23:53:00Z',
+      '2000-01-01T00:00:00Z',
+      '2026-03-20T03:00:00Z',
+      '1950-06-15T12:00:00Z',
+      '1900-01-01T00:00:00Z',
+      '2050-12-31T00:00:00Z',
+    ])('%s: 別の式で求めた平均の位置から、0.5度以内にある', async (iso) => {
+      // NOTE: ライブラリは、月の軌道の傾きを計算に入れるので、0.1度ほどの差が出る。
+      // 真位置を計算していれば、1度から20度ほどずれる
+      const julday_ut = await julday(new Date(iso))
+      const { longitude } = await eclipticPosition(julday_ut, 'meanApogee')
+      const diff = Math.abs(longitude - meanApogee(julday_ut))
+      expect(Math.min(diff, 360 - diff)).toBeLessThan(0.5)
+    })
+    it('逆行しない', async () => {
+      // 平均の位置は、約9年で1周する速さで、順行を続ける
+      const days = Array.from({ length: 60 }, (_, i) => new Date(Date.UTC(2026, 0, 1 + i)))
+      const positions = await Promise.all(days.map(async (_) => eclipticPosition(await julday(_), 'meanApogee')))
+      expect(positions.filter((_) => _.isRetrograde)).toEqual([])
+    })
+  })
+
   describe('ハウス', () => {
     it('プラシーダス（デフォルト）', async () => {
       expectToBeCloseTo(await calcHouses(await julday(funadyBirthday), funadyBirthLat, funadyBirthLon), {

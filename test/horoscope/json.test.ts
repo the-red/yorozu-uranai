@@ -33,6 +33,7 @@ const props: HoroscopeProps = {
     munkaseyPolarAscendant: 57.939031,
   },
   node: position(2.374847, true),
+  lilith: position(122.301895),
 }
 
 describe('ホロスコープ → JSON', () => {
@@ -208,7 +209,7 @@ describe('ホロスコープ → JSON', () => {
     ])
   })
 
-  describe('感受点（ヘッドとテイル）', () => {
+  describe('感受点', () => {
     it('惑星とは別の項目にする', () => {
       expect(result.planets).toHaveLength(10)
       expect(result.planets.map((_) => _.name)).not.toContain('northNode')
@@ -238,14 +239,68 @@ describe('ホロスコープ → JSON', () => {
           isRetrograde: true,
           house: 11,
         },
+        {
+          name: 'lilith',
+          nameJa: 'リリス',
+          type: 'apogee',
+          variant: 'mean',
+          sign: '獅子座',
+          degrees: 2.301895,
+          longitude: 122.301895,
+          isRetrograde: false,
+          house: 9,
+        },
+        {
+          name: 'vertex',
+          nameJa: 'Vx',
+          type: 'angle',
+          variant: null,
+          sign: '双子座',
+          degrees: 1.847894,
+          longitude: 61.847894,
+          isRetrograde: false,
+          house: 8,
+        },
+        {
+          name: 'partOfFortune',
+          nameJa: 'PoF',
+          type: 'lot',
+          variant: 'day',
+          sign: '牡牛座',
+          degrees: 1.153606,
+          longitude: 31.153606,
+          isRetrograde: false,
+          house: 7,
+        },
       ])
+    })
+
+    it('夜生まれの PoF は、式を変える', () => {
+      // 太陽を 250度（2ハウス）に置く
+      const night: HoroscopeProps = {
+        ...props,
+        positions: props.positions.map(([name, current]) => [name, name === 'sun' ? position(250) : current]),
+      }
+      const { points } = toHoroscopeResult(new Horoscope(night), ORB, POINT_ORB)
+      expectToBeCloseTo(points[4], {
+        name: 'partOfFortune',
+        nameJa: 'PoF',
+        type: 'lot',
+        variant: 'night',
+        sign: '蟹座',
+        degrees: 19.846239,
+        longitude: 109.846239,
+        isRetrograde: false,
+        house: 9,
+      })
     })
 
     it('惑星とのコンジャンクション', () => {
       expect(result.aspects.pointOrb).toEqual(3)
-      // テイル（182.37度）と、水星（180.68度）
+      // テイル（182.37度）と水星（180.68度）、PoF（31.15度）と木星（29.13度）
       expect(result.aspects.points).toEqual([
         { point: 'southNode', planet: 'mercury', name: 'conjunction', degrees: 0 },
+        { point: 'partOfFortune', planet: 'jupiter', name: 'conjunction', degrees: 0 },
       ])
     })
 
@@ -253,6 +308,9 @@ describe('ホロスコープ → JSON', () => {
       const names = result.aspects.major.flatMap((_) => _.planets)
       expect(names).not.toContain('northNode')
       expect(names).not.toContain('southNode')
+      expect(names).not.toContain('lilith')
+      expect(names).not.toContain('vertex')
+      expect(names).not.toContain('partOfFortune')
       expect(result.aspects.major).toHaveLength(14)
     })
 
@@ -273,7 +331,7 @@ describe('ホロスコープ → JSON', () => {
     const noCusps: HoroscopeProps = { ...props, houses: { ...props.houses, house: [] } }
     const { planets, points } = toHoroscopeResult(new Horoscope(noCusps), ORB, POINT_ORB)
     expect(planets.map((_) => _.house)).toEqual(Array(10).fill(null))
-    expect(points.map((_) => _.house)).toEqual([null, null])
+    expect(points.map((_) => _.house)).toEqual(Array(5).fill(null))
   })
 
   it('JSONにしても値が変わらない', () => {

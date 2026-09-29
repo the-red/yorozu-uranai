@@ -1,7 +1,16 @@
 import type { PlanetName } from '../../astronomy/types'
 import { ALL_PLANETS } from './ALL_PLANETS'
 import type { Horoscope } from './Horoscope'
-import { POINT_NAMES, POINT_NAMES_JA, POINT_TYPES, PointConjunction, PointName, getPointConjunctions } from './Point'
+import {
+  POINT_NAMES,
+  POINT_NAMES_JA,
+  POINT_TYPES,
+  PointConjunction,
+  PointName,
+  PointVariant,
+  getPointConjunctions,
+  getPointVariant,
+} from './Point'
 import { MajorAspect, PLANET_NAMES_JA, Planet } from './Planet'
 import { Position } from './Position'
 
@@ -30,7 +39,7 @@ type PointJson = PositionJson & {
   name: PointName
   nameJa: (typeof POINT_NAMES_JA)[PointName]
   type: (typeof POINT_TYPES)[PointName]
-  variant: 'true' | null // 求め方が複数あるものは、どれで求めたか。ヘッドとテイルは、真位置（トゥルーノード）
+  variant: PointVariant | null // 求め方が複数あるものは、どれで求めたか
   isRetrograde: boolean
   house: number | null
 }
@@ -88,7 +97,7 @@ export const toHoroscopeResult = (horoscope: Horoscope, orb: number, pointOrb: n
         name,
         nameJa: POINT_NAMES_JA[name],
         type: POINT_TYPES[name],
-        variant: 'true' as const,
+        variant: getPointVariant(name, horoscope),
         ...toPositionJson(point.position),
         isRetrograde: point.isRetrograde,
         house: point.house ?? null,

@@ -51,7 +51,7 @@ type MinorAspect = (typeof ALL_MINOR_ASPECTS)[number]
 
 const ICONS = { ...PLANET_ICONS, ...POINT_ICONS }
 
-// 惑星。感受点（ヘッドとテイル）も、同じ形で扱う
+// 惑星。感受点も、同じ形で扱う
 export class Planet<Name extends PlanetName | PointName = PlanetName> {
   static ALL_SIGNS = Position.ALL_SIGNS
   static ALL_MAJOR_ASPECTS = ALL_MAJOR_ASPECTS

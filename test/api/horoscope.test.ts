@@ -39,19 +39,32 @@ describe('/horoscope.json', () => {
     expect(json.result.aspects.major).toHaveLength(14)
   })
 
-  it('感受点（ヘッドとテイル）', async () => {
+  it('感受点', async () => {
     const { json } = await get(horoscope, query)
     expect(json.raw.node.longitude).toBeCloseTo(2.374847, NUM_DIGITS)
     expect(json.raw.node.isRetrograde).toEqual(true)
+    expect(json.raw.lilith.longitude).toBeCloseTo(122.301895, NUM_DIGITS)
+    expect(json.raw.lilith.isRetrograde).toEqual(false)
+    expect(json.raw.houses.vertex).toBeCloseTo(61.847894, NUM_DIGITS)
 
     expect(json.result.points.map((_: any) => [_.name, _.nameJa, _.type, _.variant, _.sign, _.house])).toEqual([
       ['northNode', 'ヘッド', 'node', 'true', '牡羊座', 5],
       ['southNode', 'テイル', 'node', 'true', '天秤座', 11],
+      ['lilith', 'リリス', 'apogee', 'mean', '獅子座', 9],
+      ['vertex', 'Vx', 'angle', null, '双子座', 8],
+      ['partOfFortune', 'PoF', 'lot', 'day', '牡牛座', 7],
     ])
-    expect(json.result.points[1].longitude).toBeCloseTo(182.374847, NUM_DIGITS)
+    expect(json.result.points.map((_: any) => _.longitude)).toEqual([
+      expect.closeTo(2.374847, NUM_DIGITS),
+      expect.closeTo(182.374847, NUM_DIGITS),
+      expect.closeTo(122.301895, NUM_DIGITS),
+      expect.closeTo(61.847894, NUM_DIGITS),
+      expect.closeTo(31.153606, NUM_DIGITS),
+    ])
     expect(json.result.aspects.pointOrb).toEqual(3)
     expect(json.result.aspects.points).toEqual([
       { point: 'southNode', planet: 'mercury', name: 'conjunction', degrees: 0 },
+      { point: 'partOfFortune', planet: 'jupiter', name: 'conjunction', degrees: 0 },
     ])
     // 惑星は、10個のまま
     expect(json.result.planets).toHaveLength(10)

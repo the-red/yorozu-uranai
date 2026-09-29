@@ -162,7 +162,7 @@ describe('/horoscope.json', () => {
     it('計算できなかった原因を、ログに残す', async () => {
       await get(horoscope, { ...query, date: '99991231' })
       expect(consoleError).toHaveBeenCalledTimes(1)
-      expect(String(consoleError.mock.calls[0][0])).toContain('SwissEph file')
+      expect(String(consoleError.mock.calls[0][0])).toContain('outside Moshier planet range')
     })
     it('GET以外', async () => {
       const { status, json, headers } = await get(horoscope, query, { method: 'POST' })

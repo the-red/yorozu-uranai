@@ -96,6 +96,10 @@
   background-color: #e4e7e2;
   font-size: 18px;
 }
+/* 記号の代わりに、名前を表示するもの（Vx、PoF） */
+.horoscope .planet-icon.text-icon {
+  font-size: 13px;
+}
 .horoscope .soft-aspect {
   color: blue;
 }

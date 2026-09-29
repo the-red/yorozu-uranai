@@ -220,7 +220,8 @@ describe('パート・オブ・フォーチュン', () => {
     const horoscope = new Horoscope(props)
     const { partOfFortune } = horoscope.points
     expect(partOfFortune.name).toEqual('partOfFortune')
-    expect(partOfFortune.icon).toEqual('⨂')
+    // 記号は使わずに、名前をそのまま使う
+    expect(partOfFortune.icon).toEqual('PoF')
     expect(partOfFortune.longitude).toBeCloseTo(31.153606, NUM_DIGITS)
     expect(partOfFortune.sign).toEqual('牡牛座')
     expect(partOfFortune.formattedDegrees).toEqual(' 1°09′')

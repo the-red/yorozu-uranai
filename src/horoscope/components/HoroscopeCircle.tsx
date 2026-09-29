@@ -282,7 +282,7 @@ const BodyIcons = ({ frame, bodies }: { frame: Frame; bodies: (Body & { shown: n
         scale: leaderFrom,
       })
       const to = degreesToCoordinate(radius, { degrees: houseLongitude + shown + 180, scale: leaderTo })
-      // 記号が1文字でないもの（Vx、Asc、Mc）は、ほかの記号と大きさがそろうように、小さくする
+      // 記号が1文字でないもの（Asc、Mc、Vx、PoF）は、ほかの記号と大きさがそろうように、小さくする
       const isText = icon.length > 1
       // 度数は、度だけを表示する（分は切り捨てる）。逆行のときは、R を付ける
       const degrees = `${position.degreesInt}°${isRetrograde ? 'R' : ''}`

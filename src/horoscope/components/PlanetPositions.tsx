@@ -5,7 +5,7 @@ type Props = {
 }
 
 // 記号と名前
-// NOTE: 記号が無いもの（Asc、Mc、Vx）も、記号の幅を空けて、名前の位置をそろえる
+// NOTE: 記号が無いもの（Asc、Mc、Vx、PoF）も、記号の幅を空けて、名前の位置をそろえる
 const NameCell = ({ icon, name }: { icon?: string; name: string }) => (
   <td>
     <span className="list-icon">{icon !== name && icon}</span>

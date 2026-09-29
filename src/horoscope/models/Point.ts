@@ -16,13 +16,14 @@ import { angleFrom } from './House'
 export const POINT_NAMES = ['northNode', 'southNode', 'lilith', 'vertex', 'partOfFortune'] as const
 export type PointName = (typeof POINT_NAMES)[number]
 
-// NOTE: バーテックスには記号が無いので、名前をそのまま使う
+// NOTE: Vx には、記号が無い。PoF の記号（⊗ や ⨂）は、端末によって見た目が変わるので、使わない。
+// どちらも、名前をそのまま使う
 export const POINT_ICONS = {
   northNode: '☊',
   southNode: '☋',
   lilith: '⚸',
   vertex: 'Vx',
-  partOfFortune: '⨂',
+  partOfFortune: 'PoF',
 } as const
 
 export const POINT_NAMES_JA = {

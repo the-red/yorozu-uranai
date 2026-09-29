@@ -5,8 +5,9 @@ import {
   POINT_NAMES,
   POINT_NAMES_JA,
   PLANET_ICONS,
-  PLANET_NAMES_JA,
+  Planet,
   PlanetName,
+  PointName,
   ALL_PLANETS,
   getPointConjunctions,
 } from '../models'
@@ -42,26 +43,40 @@ const AspectRow = ({ horoscope: { planets }, orb, targetPlanet }: AspectRowProps
   </>
 )
 
-// 感受点と、コンジャンクションになっている惑星
-const PointConjunctions = ({ horoscope, pointOrb }: Omit<Props, 'orb'>) => {
+// コンジャンクション
+const [CONJUNCTION] = Planet.ALL_MAJOR_ASPECTS
+
+// 惑星と、感受点のアスペクト
+// NOTE: 感受点どうしのアスペクトは読まないので、三角の表には足さずに、惑星 × 感受点の四角い表にする
+const PointChart = ({ horoscope, pointOrb }: Omit<Props, 'orb'>) => {
   const conjunctions = getPointConjunctions(horoscope, pointOrb)
+  const isConjunction = (point: PointName, planet: PlanetName) =>
+    conjunctions.some((_) => _.point === point && _.planet === planet)
+
   return (
-    <table className="list-table point-conjunctions">
-      <caption>コンジャンクション（オーブ {pointOrb}°）</caption>
-      <tbody>
-        {POINT_NAMES.map((point) => {
-          const planets = conjunctions.filter((_) => _.point === point).map((_) => PLANET_NAMES_JA[_.planet])
-          return (
-            <tr key={point}>
-              <td>
-                {POINT_ICONS[point]} {POINT_NAMES_JA[point]}
-              </td>
-              <td>{planets.length > 0 ? planets.join(' / ') : 'なし'}</td>
-            </tr>
-          )
-        })}
-      </tbody>
-    </table>
+    <>
+      <div className="aspect-chart-container point-chart">
+        <div className="outer-item">
+          <div className="inner-item corner" />
+          {ALL_PLANETS.map((planet) => (
+            <PlanetCell key={planet} planetIcon={PLANET_ICONS[planet]} />
+          ))}
+        </div>
+        {POINT_NAMES.map((point) => (
+          <div key={point} className="outer-item">
+            <PlanetCell planetIcon={POINT_ICONS[point]} />
+            {ALL_PLANETS.map((planet) => (
+              <AspectCell key={planet} aspect={isConjunction(point, planet) ? CONJUNCTION : undefined} />
+            ))}
+          </div>
+        ))}
+      </div>
+      <div className="aspect-chart-note">
+        {POINT_NAMES.map((point) => `${POINT_ICONS[point]} ${POINT_NAMES_JA[point]}`).join('　')}
+        <br />
+        コンジャンクション（0°）だけを表示。オーブ {pointOrb}°
+      </div>
+    </>
   )
 }
 
@@ -76,7 +91,7 @@ export default function AspectChart({ horoscope, orb, pointOrb }: Props) {
           </div>
         ))}
       </div>
-      <PointConjunctions horoscope={horoscope} pointOrb={pointOrb} />
+      <PointChart horoscope={horoscope} pointOrb={pointOrb} />
     </div>
   )
 }

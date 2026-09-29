@@ -84,8 +84,9 @@
   background-color: white;
   color: black;
   margin: -1px -1px 0 0;
-  width: 35px;
-  height: 35px;
+  /* 惑星 × 感受点の表（横に11マス）が、幅に収まる大きさ */
+  width: 31px;
+  height: 31px;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -228,14 +229,18 @@
 .horoscope .list-table {
   width: 100%;
 }
-/* 感受点と、惑星のコンジャンクション */
-.horoscope .point-conjunctions {
-  margin-top: 20px;
+/* 惑星 × 感受点の表 */
+.horoscope .point-chart {
+  padding-top: 20px;
 }
-.horoscope .point-conjunctions caption {
-  padding-bottom: 4px;
-  text-align: left;
+/* 惑星 × 感受点の表の、左上の角 */
+.horoscope .inner-item.corner {
+  border-color: transparent;
+  background-color: transparent;
 }
-.horoscope .point-conjunctions td:first-child {
-  width: 11em;
+/* 表の説明 */
+.horoscope .aspect-chart-note {
+  padding-top: 8px;
+  font-size: 13px;
+  line-height: 1.6;
 }

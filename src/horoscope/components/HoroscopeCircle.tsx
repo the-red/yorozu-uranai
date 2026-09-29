@@ -1,8 +1,18 @@
+import { Fragment } from 'react'
 import useImage from 'use-image'
 // NOTE: Image はcanvasに描く部品。HTMLの画像（alt が要る）と区別できる名前で読み込む
-import { Stage, Layer, Circle, Line, Text, Image as KonvaImage } from 'react-konva'
+import { Stage, Layer, Circle, Line, Shape, Text, Image as KonvaImage } from 'react-konva'
 import { staticPath } from '../../lib/$path'
-import { Horoscope, PointName, PlanetsMap, Position, ALL_PLANETS, MajorAspect, Planet } from '../models'
+import {
+  Horoscope,
+  PointName,
+  PlanetsMap,
+  Position,
+  ALL_PLANETS,
+  MajorAspect,
+  Planet,
+  spreadLongitudes,
+} from '../models'
 import type { House } from '../models/House'
 import type { PlanetName } from '../../astronomy/types'
 
@@ -24,6 +34,26 @@ const signCoordinates = [
   { name: '魚座', icon: '♓', longitude: 330, url: images.astro_sign_12_png },
 ]
 const iconOffset = (iconSize: number) => ({ x: iconSize / 2, y: iconSize / 2 })
+
+// 輪の位置。外周の半径を 1 としたときの割合
+const RINGS = {
+  sign: 0.8, // サインの輪の内側。目盛りは、ここから内側に引く
+  leader: [0.765, 0.725], // 引き出し線。目盛りの内側の端から、記号の外側まで
+  icon: 0.67, // 惑星と、感受点の記号
+  degrees: 0.57, // 度数
+  aspect: 0.45, // アスペクトの線の端
+}
+// 目盛りの線の長さ。10度ごと、5度ごと、1度ごと
+const TICKS = [
+  { every: 10, length: 0.035 },
+  { every: 5, length: 0.025 },
+  { every: 1, length: 0.015 },
+]
+// 記号どうしの間隔（度）
+// NOTE: 記号の幅は、円周の約 8.6度。度数（2行）の高さは、円の左右では、約 8.1度にあたる
+const MIN_GAP = 10
+// 度数の行の高さ。数字だけなので、詰める
+const LINE_HEIGHT = 0.9
 
 // 円の大きさと向き。どの部品も、これを基準に位置を決める
 type Frame = {
@@ -75,12 +105,14 @@ const ScaledText = ({
   longitude,
   scales,
   centered = false,
+  fill = 'black',
 }: {
   frame: Frame
   text: string
   longitude: number
   scales: IconScales
   centered?: boolean // 文字の幅の中央を、位置に合わせる
+  fill?: string
 }) => {
   const iconSize = radius * scales.size
   const coordinate = degreesToCoordinate(radius, {
@@ -89,14 +121,17 @@ const ScaledText = ({
   })
   // 中央に寄せるための枠の幅。文字が収まる大きさにする
   const width = iconSize * 4
+  const lines = text.split('\n').length
+  const lineHeight = lines > 1 ? LINE_HEIGHT : 1
   return (
     <Text
       text={text}
       x={coordinate.x}
       y={coordinate.y}
       fontSize={iconSize}
-      offset={centered ? { x: width / 2, y: iconSize / 2 } : iconOffset(iconSize)}
-      fill="black"
+      lineHeight={lineHeight}
+      offset={centered ? { x: width / 2, y: (iconSize * lineHeight * lines) / 2 } : iconOffset(iconSize)}
+      fill={fill}
       {...(centered && { width, align: 'center' })}
     />
   )
@@ -177,15 +212,16 @@ const HouseLine = ({
 const HouseNumbers = ({ frame, house, scales }: { frame: Frame; house: House; scales: IconScales }) => (
   <>
     {house.cusps.map((cusp, i) => (
-      <ScaledText key={i} frame={frame} text={String(i + 1)} longitude={cusp.longitude} scales={scales} />
+      // 度数と見分けられるように、色を薄くする
+      <ScaledText key={i} frame={frame} text={String(i + 1)} longitude={cusp.longitude} scales={scales} fill="#777" />
     ))}
   </>
 )
 const HouseCircle = ({ frame, house }: { frame: Frame; house: House }) => (
   <>
-    <ScaledCircle radius={frame.radius} stroke="#352e2b" fill="white" scale={0.8} />
-    <ScaledCircle radius={frame.radius} stroke="#afb1b1" fill="#e4E7E2" scale={0.45} />
-    <HouseLine frame={frame} house={house} scale={0.8} />
+    <ScaledCircle radius={frame.radius} stroke="#352e2b" fill="white" scale={RINGS.sign} />
+    <ScaledCircle radius={frame.radius} stroke="#afb1b1" fill="#e4E7E2" scale={RINGS.aspect} />
+    <HouseLine frame={frame} house={house} scale={RINGS.sign} />
     <ScaledCircle radius={frame.radius} stroke="#afb1b1" fill="white" scale={0.37} />
     <HouseNumbers frame={frame} house={house} scales={{ size: 0.04, coordinate: 0.49, degrees: 5 }} />
   </>
@@ -204,21 +240,67 @@ const SignIcons = ({ frame }: { frame: Frame }) => (
     ))}
   </>
 )
+// 目盛り。サインの輪の内側に、1度ごとの線を引く
+const Ticks = ({ frame: { radius, houseLongitude } }: { frame: Frame }) => (
+  <Shape
+    stroke="#352e2b"
+    strokeWidth={0.75}
+    sceneFunc={(context, shape) => {
+      context.beginPath()
+      for (let longitude = 0; longitude < 360; longitude++) {
+        const { length } = TICKS.find(({ every }) => longitude % every === 0) ?? TICKS[TICKS.length - 1]
+        const degrees = houseLongitude + longitude + 180
+        const from = degreesToCoordinate(radius, { degrees, scale: RINGS.sign })
+        const to = degreesToCoordinate(radius, { degrees, scale: RINGS.sign - length })
+        context.moveTo(from.x, from.y)
+        context.lineTo(to.x, to.y)
+      }
+      context.strokeShape(shape)
+    }}
+  />
+)
+
 // 惑星と、感受点の記号
-const PlanetIcons = ({ frame, planets }: { frame: Frame; planets: Planet<PlanetName | PointName>[] }) => (
+// 記号は、重ならないようにずらした位置（shown）に置く。本当の位置は、目盛りから引き出し線を引いて示す
+const PlanetIcons = ({
+  frame,
+  planets,
+}: {
+  frame: Frame
+  planets: { planet: Planet<PlanetName | PointName>; shown: number }[]
+}) => (
   <>
-    {planets.map((planet, i) => {
+    {planets.map(({ planet, shown }) => {
+      const { radius, houseLongitude } = frame
+      const [leaderFrom, leaderTo] = RINGS.leader
+      const from = degreesToCoordinate(radius, {
+        degrees: houseLongitude + planet.longitude + 180,
+        scale: leaderFrom,
+      })
+      const to = degreesToCoordinate(radius, { degrees: houseLongitude + shown + 180, scale: leaderTo })
       // 記号が1文字でないもの（VX）は、ほかの記号と大きさがそろうように、小さくする
       const isText = planet.icon.length > 1
+      // 度数は、度と分を上下に並べる。円のどこにあっても、上から読めるようにするため
+      const { degreesInt, minutes } = planet.position
+      const degrees = `${degreesInt}\n${String(minutes).padStart(2, '0')}${planet.isRetrograde ? 'R' : ''}`
+      const texts = [
+        { text: planet.icon, size: isText ? 0.075 : 0.1, coordinate: RINGS.icon },
+        { text: degrees, size: 0.045, coordinate: RINGS.degrees },
+      ]
       return (
-        <ScaledText
-          key={i}
-          frame={frame}
-          text={planet.icon}
-          longitude={planet.longitude}
-          scales={{ size: isText ? 0.075 : 0.1, coordinate: 0.69, degrees: 0 }}
-          centered={isText}
-        />
+        <Fragment key={planet.name}>
+          <Line points={[from.x, from.y, to.x, to.y]} stroke="#352e2b" strokeWidth={0.75} />
+          {texts.map(({ text, size, coordinate }) => (
+            <ScaledText
+              key={coordinate}
+              frame={frame}
+              text={text}
+              longitude={shown}
+              scales={{ size, coordinate, degrees: 0 }}
+              centered
+            />
+          ))}
+        </Fragment>
       )
     })}
   </>
@@ -277,7 +359,7 @@ const AspectLines = ({ frame, planets, orb }: { frame: Frame; planets: PlanetsMa
           from={from.position}
           to={to.position}
           color={aspect.type === 'hard' ? 'red' : 'blue'}
-          scale={0.69}
+          scale={RINGS.aspect}
         />
       ))}
     </>
@@ -296,6 +378,12 @@ export default function HoroscopeCircle({
   const { planets, points, house } = horoscope
   const frame: Frame = { radius, houseLongitude: -house.ascendant.longitude }
 
+  const bodies = [...Object.values(planets), ...Object.values(points)]
+  const shown = spreadLongitudes(
+    bodies.map((_) => _.longitude),
+    MIN_GAP
+  )
+
   return (
     <Stage width={radius * 2} height={radius * 2}>
       <Layer>
@@ -305,9 +393,10 @@ export default function HoroscopeCircle({
 
         {/* ハウス */}
         <HouseCircle frame={frame} house={house} />
+        <Ticks frame={frame} />
 
         {/* 惑星 */}
-        <PlanetIcons frame={frame} planets={[...Object.values(planets), ...Object.values(points)]} />
+        <PlanetIcons frame={frame} planets={bodies.map((planet, i) => ({ planet, shown: shown[i] }))} />
         <AspectLines frame={frame} planets={planets} orb={orb} />
       </Layer>
     </Stage>

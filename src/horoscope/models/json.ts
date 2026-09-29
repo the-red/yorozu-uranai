@@ -1,5 +1,12 @@
-import type { PlanetName } from '../../astronomy/types'
+import type { AsteroidName, PlanetName } from '../../astronomy/types'
 import { ALL_PLANETS } from './ALL_PLANETS'
+import {
+  ASTEROID_NAMES,
+  ASTEROID_NAMES_JA,
+  ASTEROID_TYPES,
+  AsteroidConjunction,
+  getAsteroidConjunctions,
+} from './Asteroid'
 import type { Horoscope } from './Horoscope'
 import {
   POINT_NAMES,
@@ -44,6 +51,15 @@ type PointJson = PositionJson & {
   house: number | null
 }
 
+// 小惑星とキロン
+type AsteroidJson = PositionJson & {
+  name: AsteroidName
+  nameJa: (typeof ASTEROID_NAMES_JA)[AsteroidName]
+  type: (typeof ASTEROID_TYPES)[AsteroidName]
+  isRetrograde: boolean
+  house: number | null
+}
+
 type AspectJson = {
   planets: [PlanetName, PlanetName]
   name: MajorAspect['name']
@@ -57,8 +73,15 @@ type PointAspectJson = PointConjunction & {
   degrees: 0
 }
 
+// 小惑星と、惑星のコンジャンクション
+type AsteroidAspectJson = AsteroidConjunction & {
+  name: 'conjunction'
+  degrees: 0
+}
+
 export type HoroscopeResult = {
   planets: PlanetJson[]
+  asteroids: AsteroidJson[] | null // 計算できない日付（1800年より前、2400年より後）では null
   points: PointJson[]
   houses: {
     ascendant: PositionJson
@@ -68,15 +91,16 @@ export type HoroscopeResult = {
   aspects: {
     orb: number
     major: AspectJson[]
-    pointOrb: number
+    pointOrb: number // 感受点と、小惑星のオーブ
     points: PointAspectJson[]
+    asteroids: AsteroidAspectJson[]
   }
 }
 
 const toPositionJson = ({ sign, degrees, longitude }: Position): PositionJson => ({ sign, degrees, longitude })
 
 export const toHoroscopeResult = (horoscope: Horoscope, orb: number, pointOrb: number): HoroscopeResult => {
-  const { planets, points, house } = horoscope
+  const { planets, asteroids, points, house } = horoscope
   return {
     planets: ALL_PLANETS.map((name) => {
       const planet = planets[name]
@@ -91,6 +115,19 @@ export const toHoroscopeResult = (horoscope: Horoscope, orb: number, pointOrb: n
         polarity: planet.polarity ?? null,
       }
     }),
+    asteroids: asteroids
+      ? ASTEROID_NAMES.map((name) => {
+          const asteroid = asteroids[name]
+          return {
+            name,
+            nameJa: ASTEROID_NAMES_JA[name],
+            type: ASTEROID_TYPES[name],
+            ...toPositionJson(asteroid.position),
+            isRetrograde: asteroid.isRetrograde,
+            house: asteroid.house ?? null,
+          }
+        })
+      : null,
     points: POINT_NAMES.map((name) => {
       const point = points[name]
       return {
@@ -119,6 +156,11 @@ export const toHoroscopeResult = (horoscope: Horoscope, orb: number, pointOrb: n
       ),
       pointOrb,
       points: getPointConjunctions(horoscope, pointOrb).map((_) => ({
+        ..._,
+        name: 'conjunction' as const,
+        degrees: 0 as const,
+      })),
+      asteroids: getAsteroidConjunctions(horoscope, pointOrb).map((_) => ({
         ..._,
         name: 'conjunction' as const,
         degrees: 0 as const,

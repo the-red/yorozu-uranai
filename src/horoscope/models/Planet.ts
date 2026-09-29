@@ -1,4 +1,5 @@
-import type { PlanetName } from '../../astronomy/types'
+import type { AsteroidName, PlanetName } from '../../astronomy/types'
+import { ASTEROID_ICONS } from './Asteroid'
 import { Position } from './Position'
 import { House } from './House'
 import { POINT_ICONS, PointName } from './Point'
@@ -49,10 +50,10 @@ const ALL_MINOR_ASPECTS = [
 ] as const
 type MinorAspect = (typeof ALL_MINOR_ASPECTS)[number]
 
-const ICONS = { ...PLANET_ICONS, ...POINT_ICONS }
+const ICONS = { ...PLANET_ICONS, ...ASTEROID_ICONS, ...POINT_ICONS }
 
-// 惑星。感受点も、同じ形で扱う
-export class Planet<Name extends PlanetName | PointName = PlanetName> {
+// 惑星。小惑星と感受点も、同じ形で扱う
+export class Planet<Name extends PlanetName | AsteroidName | PointName = PlanetName> {
   static ALL_SIGNS = Position.ALL_SIGNS
   static ALL_MAJOR_ASPECTS = ALL_MAJOR_ASPECTS
   static ALL_MINOR_ASPECTS = ALL_MINOR_ASPECTS

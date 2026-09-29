@@ -34,6 +34,13 @@ const props: HoroscopeProps = {
   },
   node: position(2.374847, true),
   lilith: position(122.301895),
+  asteroids: [
+    ['chiron', position(88.267633)],
+    ['ceres', position(264.007846)],
+    ['pallas', position(234.541557)],
+    ['juno', position(326.419652, true)],
+    ['vesta', position(108.71123)],
+  ],
 }
 
 describe('ホロスコープ → JSON', () => {
@@ -321,6 +328,89 @@ describe('ホロスコープ → JSON', () => {
     })
   })
 
+  describe('小惑星とキロン', () => {
+    it('位置', () => {
+      expectToBeCloseTo(result.asteroids, [
+        {
+          name: 'chiron',
+          nameJa: 'キロン',
+          type: 'centaur',
+          sign: '双子座',
+          degrees: 28.267633,
+          longitude: 88.267633,
+          isRetrograde: false,
+          house: 8,
+        },
+        {
+          name: 'ceres',
+          nameJa: 'セレス',
+          type: 'asteroid',
+          sign: '射手座',
+          degrees: 24.007846,
+          longitude: 264.007846,
+          isRetrograde: false,
+          house: 2,
+        },
+        {
+          name: 'pallas',
+          nameJa: 'パラス',
+          type: 'asteroid',
+          sign: '蠍座',
+          degrees: 24.541557,
+          longitude: 234.541557,
+          isRetrograde: false,
+          house: 1,
+        },
+        {
+          name: 'juno',
+          nameJa: 'ジュノ',
+          type: 'asteroid',
+          sign: '水瓶座',
+          degrees: 26.419652,
+          longitude: 326.419652,
+          isRetrograde: true,
+          house: 4,
+        },
+        {
+          name: 'vesta',
+          nameJa: 'ベスタ',
+          type: 'asteroid',
+          sign: '蟹座',
+          degrees: 18.71123,
+          longitude: 108.71123,
+          isRetrograde: false,
+          house: 9,
+        },
+      ])
+    })
+
+    it('惑星とのコンジャンクション', () => {
+      // セレス（264.01度）と、天王星（262.74度）。オーブは、感受点と同じ
+      expect(result.aspects.asteroids).toEqual([
+        { asteroid: 'ceres', planet: 'uranus', name: 'conjunction', degrees: 0 },
+      ])
+    })
+
+    it('惑星と、感受点には、含めない', () => {
+      expect(result.planets).toHaveLength(10)
+      expect(result.points).toHaveLength(5)
+      expect([...result.planets, ...result.points].map((_) => _.name)).not.toContain('chiron')
+      expect(result.aspects.major).toHaveLength(14)
+    })
+
+    it('計算できない日付では、null にする', () => {
+      const { asteroids, aspects, planets, points } = toHoroscopeResult(
+        new Horoscope({ ...props, asteroids: null }),
+        ORB,
+        POINT_ORB
+      )
+      expect(asteroids).toBeNull()
+      expect(aspects.asteroids).toEqual([])
+      expect(planets).toHaveLength(10)
+      expect(points).toHaveLength(5)
+    })
+  })
+
   it('オーブを変えると、アスペクトが変わる', () => {
     const { aspects } = toHoroscopeResult(new Horoscope(props), 1, POINT_ORB)
     expect(aspects.orb).toEqual(1)
@@ -329,9 +419,10 @@ describe('ホロスコープ → JSON', () => {
 
   it('モデルがハウスを返さない惑星は、house を null にする', () => {
     const noCusps: HoroscopeProps = { ...props, houses: { ...props.houses, house: [] } }
-    const { planets, points } = toHoroscopeResult(new Horoscope(noCusps), ORB, POINT_ORB)
+    const { planets, points, asteroids } = toHoroscopeResult(new Horoscope(noCusps), ORB, POINT_ORB)
     expect(planets.map((_) => _.house)).toEqual(Array(10).fill(null))
     expect(points.map((_) => _.house)).toEqual(Array(5).fill(null))
+    expect(asteroids?.map((_) => _.house)).toEqual(Array(5).fill(null))
   })
 
   it('JSONにしても値が変わらない', () => {

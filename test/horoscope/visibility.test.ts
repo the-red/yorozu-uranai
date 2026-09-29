@@ -1,9 +1,11 @@
 import { describe, it, expect } from 'vitest'
 import {
+  ASTEROID_NAMES,
   DEFAULT_VISIBILITY,
   POINT_NAMES,
   VISIBILITY_KEYS,
   VISIBILITY_LABELS,
+  isAsteroidVisible,
   isPointVisible,
   parseVisibility,
   toggleVisibility,
@@ -12,8 +14,24 @@ import {
 describe('惑星以外のものを、表示するかどうか', () => {
   it('切り替えの単位と、並び順', () => {
     // ヘッドとテイルは、必ず正反対にあるので、まとめて切り替える。Asc と Mc も、まとめる
-    expect(VISIBILITY_KEYS).toEqual(['node', 'lilith', 'ascMc', 'vertex', 'partOfFortune'])
+    expect(VISIBILITY_KEYS).toEqual([
+      'chiron',
+      'ceres',
+      'pallas',
+      'juno',
+      'vesta',
+      'node',
+      'lilith',
+      'ascMc',
+      'vertex',
+      'partOfFortune',
+    ])
     expect(VISIBILITY_KEYS.map((_) => VISIBILITY_LABELS[_])).toEqual([
+      'キロン',
+      'セレス',
+      'パラス',
+      'ジュノ',
+      'ベスタ',
       'ヘッド・テイル',
       'リリス',
       'Asc・Mc',
@@ -22,8 +40,13 @@ describe('惑星以外のものを、表示するかどうか', () => {
     ])
   })
 
-  it('最初は、すべて表示する', () => {
+  it('最初は、小惑星とキロンを表示しない。ほかは、表示する', () => {
     expect(DEFAULT_VISIBILITY).toEqual({
+      chiron: false,
+      ceres: false,
+      pallas: false,
+      juno: false,
+      vesta: false,
       node: true,
       lilith: true,
       ascMc: true,
@@ -38,8 +61,13 @@ describe('惑星以外のものを、表示するかどうか', () => {
     })
 
     it('保存した内容', () => {
-      const saved = JSON.stringify({ node: false, lilith: true, ascMc: true, vertex: false, partOfFortune: true })
+      const saved = JSON.stringify({ chiron: true, node: false, lilith: true, ascMc: true, vertex: false })
       expect(parseVisibility(saved)).toEqual({
+        chiron: true,
+        ceres: false,
+        pallas: false,
+        juno: false,
+        vesta: false,
         node: false,
         lilith: true,
         ascMc: true,
@@ -119,8 +147,31 @@ describe('惑星以外のものを、表示するかどうか', () => {
     })
 
     it('すべて消す', () => {
-      const visibility = { node: false, lilith: false, ascMc: false, vertex: false, partOfFortune: false }
+      const visibility = {
+        ...DEFAULT_VISIBILITY,
+        node: false,
+        lilith: false,
+        ascMc: false,
+        vertex: false,
+        partOfFortune: false,
+      }
       expect(POINT_NAMES.filter((_) => isPointVisible(_, visibility))).toEqual([])
+    })
+  })
+
+  describe('小惑星とキロンを、表示するかどうか', () => {
+    it('最初は、表示しない', () => {
+      expect(ASTEROID_NAMES.filter((_) => isAsteroidVisible(_, DEFAULT_VISIBILITY))).toEqual([])
+    })
+
+    it('1つずつ切り替える', () => {
+      const visibility = { ...DEFAULT_VISIBILITY, chiron: true, juno: true }
+      expect(ASTEROID_NAMES.filter((_) => isAsteroidVisible(_, visibility))).toEqual(['chiron', 'juno'])
+    })
+
+    it('感受点は、変わらない', () => {
+      const visibility = { ...DEFAULT_VISIBILITY, chiron: true }
+      expect(POINT_NAMES.filter((_) => isPointVisible(_, visibility))).toEqual([...POINT_NAMES])
     })
   })
 })

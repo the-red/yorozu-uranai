@@ -70,6 +70,38 @@ describe('/horoscope.json', () => {
     expect(json.result.planets).toHaveLength(10)
   })
 
+  it('小惑星とキロン', async () => {
+    const { json } = await get(horoscope, query)
+    expect(json.raw.asteroids.map(([name]: [string]) => name)).toEqual(['chiron', 'ceres', 'pallas', 'juno', 'vesta'])
+    expect(json.raw.asteroids[0][1].longitude).toBeCloseTo(88.267633, NUM_DIGITS)
+    expect(json.raw.asteroids[3][1].isRetrograde).toEqual(true)
+
+    expect(json.result.asteroids.map((_: any) => [_.name, _.nameJa, _.type, _.sign, _.house, _.isRetrograde])).toEqual([
+      ['chiron', 'キロン', 'centaur', '双子座', 8, false],
+      ['ceres', 'セレス', 'asteroid', '射手座', 2, false],
+      ['pallas', 'パラス', 'asteroid', '蠍座', 1, false],
+      ['juno', 'ジュノ', 'asteroid', '水瓶座', 4, true],
+      ['vesta', 'ベスタ', 'asteroid', '蟹座', 9, false],
+    ])
+    expect(json.result.aspects.asteroids).toEqual([
+      { asteroid: 'ceres', planet: 'uranus', name: 'conjunction', degrees: 0 },
+    ])
+  })
+
+  it.each([
+    ['17000615', '1700年'],
+    ['24500615', '2450年'],
+  ])('小惑星を計算できない日付（%s）でも、ほかは返す', async (date) => {
+    // 天体暦のファイルは、1800年から 2399年まで
+    const { status, json } = await get(horoscope, { ...query, date })
+    expect(status).toEqual(200)
+    expect(json.raw.asteroids).toBeNull()
+    expect(json.result.asteroids).toBeNull()
+    expect(json.result.aspects.asteroids).toEqual([])
+    expect(json.result.planets).toHaveLength(10)
+    expect(json.result.points).toHaveLength(5)
+  })
+
   it('海外生まれ: 同じ瞬間なら、同じ結果になる', async () => {
     // 日本時間の 1987-09-08 08:53 は、ニューヨークでは前日の 19:53（サマータイム）
     const tokyo = await get(horoscope, query)

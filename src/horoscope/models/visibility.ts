@@ -1,15 +1,33 @@
+import type { AsteroidName } from '../../astronomy/types'
 import type { PointName } from './Point'
 
 // 惑星以外のものを、表示するかどうか。利用者が切り替える
 //
 // 切り替えの単位。並び順は、表示の順番
+// - 小惑星とキロンは、1つずつ切り替える
 // - ヘッドとテイルは、必ず正反対にあるので、まとめて切り替える
 // - Asc と Mc も、まとめて切り替える。消しても、ハウスの線は残る
-export const VISIBILITY_KEYS = ['node', 'lilith', 'ascMc', 'vertex', 'partOfFortune'] as const
+export const VISIBILITY_KEYS = [
+  'chiron',
+  'ceres',
+  'pallas',
+  'juno',
+  'vesta',
+  'node',
+  'lilith',
+  'ascMc',
+  'vertex',
+  'partOfFortune',
+] as const
 export type VisibilityKey = (typeof VISIBILITY_KEYS)[number]
 export type Visibility = Record<VisibilityKey, boolean>
 
 export const VISIBILITY_LABELS = {
+  chiron: 'キロン',
+  ceres: 'セレス',
+  pallas: 'パラス',
+  juno: 'ジュノ',
+  vesta: 'ベスタ',
   node: 'ヘッド・テイル',
   lilith: 'リリス',
   ascMc: 'Asc・Mc',
@@ -18,7 +36,13 @@ export const VISIBILITY_LABELS = {
 } as const
 
 // 最初の状態
+// NOTE: 小惑星とキロンは、読む人が選んで表示する。最初から表示すると、円が混み合う
 export const DEFAULT_VISIBILITY: Visibility = {
+  chiron: false,
+  ceres: false,
+  pallas: false,
+  juno: false,
+  vesta: false,
   node: true,
   lilith: true,
   ascMc: true,
@@ -61,6 +85,9 @@ const POINT_KEYS: Record<PointName, VisibilityKey> = {
   vertex: 'vertex',
   partOfFortune: 'partOfFortune',
 }
+
+// 小惑星とキロンを、表示するかどうか
+export const isAsteroidVisible = (name: AsteroidName, visibility: Visibility): boolean => visibility[name]
 
 // 感受点を、表示するかどうか
 export const isPointVisible = (name: PointName, visibility: Visibility): boolean => visibility[POINT_KEYS[name]]

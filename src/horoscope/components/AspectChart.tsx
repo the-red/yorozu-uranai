@@ -70,7 +70,11 @@ const PointChart = ({ horoscope, pointOrb }: Omit<Props, 'orb'>) => {
           </div>
         ))}
       </div>
-      <div className="aspect-chart-note">コンジャンクション（0°）だけを表示。オーブ {pointOrb}°</div>
+      <div className="aspect-chart-note">
+        オーブ {pointOrb}°
+        <br />
+        コンジャンクション（0°）だけを表示
+      </div>
     </>
   )
 }

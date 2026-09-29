@@ -1,5 +1,5 @@
 import swisseph from 'swisseph'
-import type { PlanetName, EclipticPosition, HouseCusps, Houses } from './types'
+import type { Body, EclipticPosition, HouseCusps, Houses } from './types'
 
 const round6 = (num: number) => Math.trunc(num * 10 ** 6) / 10 ** 6
 
@@ -23,36 +23,46 @@ export const julday = (date: Date): Promise<number> => {
   )
 }
 
+// Swiss Ephemeris での番号
+const BODIES: Record<Body, number> = {
+  sun: swisseph.SE_SUN,
+  moon: swisseph.SE_MOON,
+  mercury: swisseph.SE_MERCURY,
+  venus: swisseph.SE_VENUS,
+  mars: swisseph.SE_MARS,
+  jupiter: swisseph.SE_JUPITER,
+  saturn: swisseph.SE_SATURN,
+  uranus: swisseph.SE_URANUS,
+  neptune: swisseph.SE_NEPTUNE,
+  pluto: swisseph.SE_PLUTO,
+  // NOTE: 平均の位置にするなら、SE_MEAN_NODE
+  trueNode: swisseph.SE_TRUE_NODE,
+}
+
 // 黄道座標の計算
-export const eclipticPosition = (julday_ut: number, planet: PlanetName): Promise<EclipticPosition> =>
+export const eclipticPosition = (julday_ut: number, body: Body): Promise<EclipticPosition> =>
   new Promise((resolve, reject) =>
-    swisseph.swe_calc_ut(
-      julday_ut,
-      // @ts-expect-error
-      swisseph[`SE_${planet.toUpperCase()}`],
-      swisseph.SEFLG_SPEED,
-      (result) => {
-        if ('error' in result) {
-          return reject(new Error(result.error))
-        }
-        if (!('latitude' in result)) {
-          return reject(new Error('ERROR!' + JSON.stringify(result)))
-        }
-
-        // 処理系が変わると少し誤差が出るので丸めておく
-        result.latitude = round6(result.latitude)
-        result.longitude = round6(result.longitude)
-        result.distance = round6(result.distance)
-        result.latitudeSpeed = round6(result.latitudeSpeed)
-        result.longitudeSpeed = round6(result.longitudeSpeed)
-        result.distanceSpeed = round6(result.distanceSpeed)
-
-        resolve({
-          ...result,
-          isRetrograde: result.longitudeSpeed < 0,
-        })
+    swisseph.swe_calc_ut(julday_ut, BODIES[body], swisseph.SEFLG_SPEED, (result) => {
+      if ('error' in result) {
+        return reject(new Error(result.error))
       }
-    )
+      if (!('latitude' in result)) {
+        return reject(new Error('ERROR!' + JSON.stringify(result)))
+      }
+
+      // 処理系が変わると少し誤差が出るので丸めておく
+      result.latitude = round6(result.latitude)
+      result.longitude = round6(result.longitude)
+      result.distance = round6(result.distance)
+      result.latitudeSpeed = round6(result.latitudeSpeed)
+      result.longitudeSpeed = round6(result.longitudeSpeed)
+      result.distanceSpeed = round6(result.distanceSpeed)
+
+      resolve({
+        ...result,
+        isRetrograde: result.longitudeSpeed < 0,
+      })
+    })
   )
 
 // 日付から黄経だけを算出

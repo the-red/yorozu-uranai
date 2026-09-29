@@ -37,8 +37,8 @@ const iconOffset = (iconSize: number) => ({ x: iconSize / 2, y: iconSize / 2 })
 // 輪の位置。外周の半径を 1 としたときの割合
 const RINGS = {
   sign: 0.8, // サインの輪の内側。目盛りは、ここから内側に引く
-  leader: [0.765, 0.73], // 引き出し線。目盛りの内側の端から、度数の外側まで
-  degrees: 0.69, // 度数
+  leader: 0.765, // 引き出し線の始まり。目盛りの内側の端
+  degrees: 0.69, // 度数。引き出し線は、ここを目指す
   icon: 0.585, // 惑星と、感受点の記号
   aspect: 0.45, // アスペクトの線の端
 }
@@ -283,29 +283,57 @@ type Body = {
 
 // 惑星、感受点、Asc、Mc の記号
 // 記号は、重ならないようにずらした位置（shown）に置く。本当の位置は、目盛りから引き出し線を引いて示す
+// 度数の文字。度だけを表示する（分は切り捨てる）。逆行のときは、R を付ける
+const DEGREES_SIZE = 0.045
+const toDegreesText = ({ position, isRetrograde }: Body) => `${position.degreesInt}°${isRetrograde ? 'R' : ''}`
+
+// 引き出し線。目盛りの上の本当の位置から、度数の中心を目指して引き、度数の枠の手前で止める
+// NOTE: 度数の外側の端を目指すと、記号が大きく動いたときに、線が円周に沿って寝てしまう
+const LeaderLine = ({ frame: { radius, houseLongitude }, body }: { frame: Frame; body: Body & { shown: number } }) => {
+  const from = degreesToCoordinate(radius, {
+    degrees: houseLongitude + body.position.longitude + 180,
+    scale: RINGS.leader,
+  })
+  const center = degreesToCoordinate(radius, { degrees: houseLongitude + body.shown + 180, scale: RINGS.degrees })
+
+  // 度数の枠の大きさ（半分）。文字の幅は、数字が 0.56、° が 0.4、R が 0.72（文字の大きさに対する割合。Arial）
+  const size = radius * DEGREES_SIZE
+  const text = toDegreesText(body)
+  const width = [...text].reduce((sum, _) => sum + (_ === '°' ? 0.4 : _ === 'R' ? 0.72 : 0.56), 0) * size
+  const margin = size * 0.3
+  const half = { x: width / 2 + margin, y: size * 0.36 + margin }
+
+  // 中心から、線の向きに進んで、枠の端に届くまでの距離
+  const length = Math.hypot(from.x - center.x, from.y - center.y)
+  const direction = { x: (from.x - center.x) / length, y: (from.y - center.y) / length }
+  const toEdge = Math.min(half.x / Math.abs(direction.x), half.y / Math.abs(direction.y))
+  if (toEdge >= length) {
+    return null
+  }
+  const to = { x: center.x + direction.x * toEdge, y: center.y + direction.y * toEdge }
+  return <Line points={[from.x, from.y, to.x, to.y]} stroke="#352e2b" strokeWidth={0.75} />
+}
+
 const BodyIcons = ({ frame, bodies }: { frame: Frame; bodies: (Body & { shown: number })[] }) => (
   <>
-    {bodies.map(({ name, icon, position, isRetrograde, hasLeader, shown }) => {
-      const { radius, houseLongitude } = frame
-      const [leaderFrom, leaderTo] = RINGS.leader
-      const from = degreesToCoordinate(radius, {
-        degrees: houseLongitude + position.longitude + 180,
-        scale: leaderFrom,
-      })
-      const to = degreesToCoordinate(radius, { degrees: houseLongitude + shown + 180, scale: leaderTo })
+    {/* 線を先に描いて、文字を上に重ねる */}
+    {bodies
+      .filter((_) => _.hasLeader)
+      .map((body) => (
+        <LeaderLine key={body.name} frame={frame} body={body} />
+      ))}
+    {bodies.map((body) => {
+      const { name, icon, shown } = body
       // 記号が1文字でないもの（Asc、Mc、Vx、PoF）は、ほかの記号と大きさがそろうように、小さくする
       const isText = icon.length > 1
-      // 度数は、度だけを表示する（分は切り捨てる）。逆行のときは、R を付ける
-      const degrees = `${position.degreesInt}°${isRetrograde ? 'R' : ''}`
       const texts = [
-        { text: degrees, size: 0.045, coordinate: RINGS.degrees, lower: LOWER.text },
+        { text: toDegreesText(body), size: DEGREES_SIZE, coordinate: RINGS.degrees, lower: LOWER.text },
         isText
           ? { text: icon, size: 0.055, coordinate: RINGS.icon, lower: LOWER.text }
           : { text: icon, size: 0.11, coordinate: RINGS.icon, lower: LOWER.symbol, fontFamily: SYMBOL_FONT },
       ]
       return (
         <Fragment key={name}>
-          {hasLeader && <Line points={[from.x, from.y, to.x, to.y]} stroke="#352e2b" strokeWidth={0.75} />}
           {texts.map(({ text, size, coordinate, lower, fontFamily }) => (
             <ScaledText
               key={coordinate}

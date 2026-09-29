@@ -4,6 +4,15 @@ type Props = {
   horoscope: Horoscope
 }
 
+// 記号と名前
+// NOTE: 記号が無いもの（VX、ASC、MC）も、記号の幅を空けて、名前の位置をそろえる
+const NameCell = ({ icon, name }: { icon?: string; name: string }) => (
+  <td>
+    <span className="list-icon">{icon !== name && icon}</span>
+    {name}
+  </td>
+)
+
 export default function PlanetPositions({ horoscope }: Props) {
   return (
     <div className="list-container">
@@ -12,7 +21,7 @@ export default function PlanetPositions({ horoscope }: Props) {
         <tbody>
           {Object.values(horoscope.planets).map((planet, i) => (
             <tr key={i}>
-              <td>{PLANET_NAMES_JA[planet.name]}</td>
+              <NameCell icon={planet.icon} name={PLANET_NAMES_JA[planet.name]} />
               <td>{planet.sign}</td>
               <td>{planet.formattedDegrees}</td>
               <td>{planet.house}ハウス</td>
@@ -20,19 +29,19 @@ export default function PlanetPositions({ horoscope }: Props) {
           ))}
           {Object.values(horoscope.points).map((point) => (
             <tr key={point.name}>
-              <td>{POINT_NAMES_JA[point.name]}</td>
+              <NameCell icon={point.icon} name={POINT_NAMES_JA[point.name]} />
               <td>{point.sign}</td>
               <td>{point.formattedDegrees}</td>
               <td>{point.house}ハウス</td>
             </tr>
           ))}
           <tr>
-            <td>ASC</td>
+            <NameCell name="ASC" />
             <td>{horoscope.house.ascendant.sign}</td>
             <td>{horoscope.house.ascendant.formattedDegrees}</td>
           </tr>
           <tr>
-            <td>MC</td>
+            <NameCell name="MC" />
             <td>{horoscope.house.mc.sign}</td>
             <td>{horoscope.house.mc.formattedDegrees}</td>
           </tr>

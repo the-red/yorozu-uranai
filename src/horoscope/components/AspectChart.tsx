@@ -3,7 +3,6 @@ import {
   MajorAspect,
   POINT_ICONS,
   POINT_NAMES,
-  POINT_NAMES_JA,
   PLANET_ICONS,
   Planet,
   PlanetName,
@@ -71,14 +70,7 @@ const PointChart = ({ horoscope, pointOrb }: Omit<Props, 'orb'>) => {
           </div>
         ))}
       </div>
-      <div className="aspect-chart-note">
-        {/* 記号が名前と同じもの（Vx）は、説明しない */}
-        {POINT_NAMES.filter((point) => POINT_ICONS[point] !== POINT_NAMES_JA[point])
-          .map((point) => `${POINT_ICONS[point]} ${POINT_NAMES_JA[point]}`)
-          .join('　')}
-        <br />
-        コンジャンクション（0°）だけを表示。オーブ {pointOrb}°
-      </div>
+      <div className="aspect-chart-note">コンジャンクション（0°）だけを表示。オーブ {pointOrb}°</div>
     </>
   )
 }
@@ -94,6 +86,7 @@ export default function AspectChart({ horoscope, orb, pointOrb }: Props) {
           </div>
         ))}
       </div>
+      <div className="aspect-chart-note">オーブ {orb}°</div>
       <PointChart horoscope={horoscope} pointOrb={pointOrb} />
     </div>
   )

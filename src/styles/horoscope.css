@@ -229,6 +229,11 @@
 .horoscope .list-table {
   width: 100%;
 }
+/* 惑星の位置の表の、記号。幅を決めて、名前の位置をそろえる */
+.horoscope .list-icon {
+  display: inline-block;
+  width: 1.4em;
+}
 /* 惑星 × 感受点の表 */
 .horoscope .point-chart {
   padding-top: 20px;

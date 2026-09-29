@@ -64,13 +64,14 @@ const getNodeConjunctions = (horoscope: Horoscope, orb: number) =>
 
 describe('感受点', () => {
   it('並び順', () => {
-    expect(POINT_NAMES).toEqual(['northNode', 'southNode', 'lilith', 'vertex', 'partOfFortune'])
+    // 記号が無いもの（VX）を、最後に置く
+    expect(POINT_NAMES).toEqual(['northNode', 'southNode', 'lilith', 'partOfFortune', 'vertex'])
     expect(Object.keys(new Horoscope(props).points)).toEqual([...POINT_NAMES])
   })
 
   it('求め方', () => {
     const horoscope = new Horoscope(props)
-    expect(POINT_NAMES.map((_) => getPointVariant(_, horoscope))).toEqual(['true', 'true', 'mean', null, 'day'])
+    expect(POINT_NAMES.map((_) => getPointVariant(_, horoscope))).toEqual(['true', 'true', 'mean', 'day', null])
   })
 })
 
@@ -146,7 +147,8 @@ describe('バーテックス', () => {
   it('位置は、ハウスの計算結果から取る', () => {
     const { vertex } = new Horoscope(props).points
     expect(vertex.name).toEqual('vertex')
-    expect(vertex.icon).toEqual('Vx')
+    // 記号は無いので、名前をそのまま使う
+    expect(vertex.icon).toEqual('VX')
     expect(vertex.longitude).toBeCloseTo(61.847894, NUM_DIGITS)
     expect(vertex.sign).toEqual('双子座')
     expect(vertex.formattedDegrees).toEqual(' 1°51′')

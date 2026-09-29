@@ -9,25 +9,28 @@ import { angleFrom } from './House'
 // どれも、サインとハウスを読むので、惑星と同じ形（Planet）で扱う
 // - ヘッドとテイル（ドラゴンヘッド、ドラゴンテイル）: 月の軌道と、太陽の通り道（黄道）が交わる2つの点
 // - リリス: 月の軌道の上で、地球から一番遠い点（遠地点）
-// - Vx（バーテックス）: 真東・天頂・真西を通る円と、黄道が、西側で交わる点
 // - PoF（パート・オブ・フォーチュン）: ASC・太陽・月の位置から求める点
-export const POINT_NAMES = ['northNode', 'southNode', 'lilith', 'vertex', 'partOfFortune'] as const
+// - VX（バーテックス）: 真東・天頂・真西を通る円と、黄道が、西側で交わる点
+//
+// 並び順は、表示の順番。記号が無いもの（VX）を、最後に置く
+export const POINT_NAMES = ['northNode', 'southNode', 'lilith', 'partOfFortune', 'vertex'] as const
 export type PointName = (typeof POINT_NAMES)[number]
 
+// NOTE: バーテックスには記号が無いので、名前をそのまま使う
 export const POINT_ICONS = {
   northNode: '☊',
   southNode: '☋',
   lilith: '⚸',
-  vertex: 'Vx',
   partOfFortune: '⊗',
+  vertex: 'VX',
 } as const
 
 export const POINT_NAMES_JA = {
   northNode: 'ヘッド',
   southNode: 'テイル',
   lilith: 'リリス',
-  vertex: 'Vx',
   partOfFortune: 'PoF',
+  vertex: 'VX',
 } as const
 
 // 種類
@@ -35,8 +38,8 @@ export const POINT_TYPES = {
   northNode: 'node',
   southNode: 'node',
   lilith: 'apogee',
-  vertex: 'angle',
   partOfFortune: 'lot',
+  vertex: 'angle',
 } as const
 
 // 昼生まれ（太陽が、地平線より上にある）かどうか
@@ -64,10 +67,10 @@ export const getPointVariant = (name: PointName, { planets, house }: Horoscope):
       return 'true'
     case 'lilith':
       return 'mean'
-    case 'vertex':
-      return null
     case 'partOfFortune':
       return isDayBirth(house.ascendant.longitude, planets.sun.longitude) ? 'day' : 'night'
+    case 'vertex':
+      return null
   }
 }
 

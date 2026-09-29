@@ -37,9 +37,9 @@ export class Horoscope {
       // テイルは、ヘッドのちょうど反対側
       southNode: point('southNode', node.longitude + 180, node.isRetrograde),
       lilith: point('lilith', lilith.longitude, lilith.isRetrograde),
-      // NOTE: バーテックスと PoF は、その瞬間の位置だけが決まる点で、進む向きが無い。逆行はしないものとして扱う
-      vertex: point('vertex', houses.vertex, false),
+      // NOTE: PoF とバーテックスは、その瞬間の位置だけが決まる点で、進む向きが無い。逆行はしないものとして扱う
       partOfFortune: point('partOfFortune', fortune, false),
+      vertex: point('vertex', houses.vertex, false),
     }
   }
 }

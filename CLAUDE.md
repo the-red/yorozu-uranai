@@ -18,13 +18,27 @@ yarn vitest       # 変更を監視して再実行
 yarn test test/suimei/Kanshi.test.ts   # 単一ファイル
 yarn test -t '六十干支'                  # テスト名で絞り込み
 yarn lint         # eslint --fix（自動修正が走る）
+yarn lint:check   # eslint（修正しない。警告が増えたら失敗する）
 yarn format       # prettier --write
+yarn format:check # prettier --check（修正しない。test/ も対象）
 yarn tsc --noEmit # 型チェック（専用scriptは無い。test/ は tsconfig の対象外）
 yarn path         # src/lib/$path.ts を再生成
 yarn staging      # 今のブランチを staging に載せる（固定のURLで確認する）
 ```
 
 デプロイは Vercel が行う。プルリクエストを作るとプレビュー環境が作られる（認証で保護されている）。
+
+### CI
+
+プルリクエストと main への push で、GitHub Actions（`.github/workflows/ci.yml`）が次を実行する。
+
+- 型チェック、`yarn lint:check`、`yarn format:check`
+- `yarn test` を、3つのタイムゾーン（`Asia/Tokyo` / `UTC` / `America/New_York`）で
+- Vercel と同じ形（`NEXT_OUTPUT=standalone`）でビルドして、サーバーを起動し、`scripts/check-server.js` で確認する
+  - `next.config.js` の `rewrites`、ヘッダー、ビルド結果に含めるファイルは、ハンドラーを直接呼ぶテストでは確かめられない
+  - ページを追加・削除して `yarn path` を実行し忘れていると、ここで失敗する
+
+`yarn lint:check` は、ESLint の警告が今の件数（21 件）を超えると失敗する。警告を減らしたら、`package.json` の `--max-warnings` の値も下げる。
 
 ### 環境変数
 
@@ -72,6 +86,8 @@ AGPL-3.0-or-later で公開している（`LICENSE`）。
 - `swisseph` はネイティブアドオンなので、Node.js のバージョンを変えたら `yarn install` し直す（リビルドが必要）
   - `swisseph` が依存する `nan` と `node-gyp` は古いままだと Node.js 24 でビルドできないので、`package.json` の `resolutions` で新しいバージョンに固定している
 - テスト対象は `src/*/models` と `src/astronomy` の計算ロジックが中心。API（`test/api`。ハンドラーを直接呼ぶ）と `src/lib` のテストもある。コンポーネントのテストは無い
+- `test/client-bundle.test.ts` は、ページから import をたどって、サーバーでしか動かないもの（`swisseph` など）に届かないことを確かめる。型だけを使うときは `import type` と書く（型しか使っていなくても、`import { … }` は読み込むものとして数える）
+- 既存のコードにテストを足すときは、コードをわざと壊して、テストが失敗することを確かめる
 - Vitest はテストコードの型チェックをしないので、`yarn test` の中で `tsc -p test` を先に実行している（`test/` はルートの `tsconfig.json` の対象外）
 - 期待値は実在の生年月日に対する計算結果をハードコードしている。天文計算の結果は `src/astronomy` 側で小数第6位に切り捨てている
 
@@ -122,7 +138,7 @@ Vercel は、ビルド時に「各 API の実行に必要なファイル」を�
 
 - `next.config.js` の `outputFileTracingIncludes` で、バイナリを明示的に含めている
 - `yarn build` の最後に `scripts/check-file-tracing.js` が、バイナリが含まれているかを確認する。含まれていなければビルドが失敗する
-- **`yarn start` で動いても、Vercel で動くとは限らない**（`yarn start` は `node_modules` が丸ごとある状態で動くため）。ビルドやライブラリの構成を変えたら、`output: 'standalone'` を一時的に指定してビルドし、`.next/standalone/server.js` を起動して API を確認する
+- **`yarn start` で動いても、Vercel で動くとは限らない**（`yarn start` は `node_modules` が丸ごとある状態で動くため）。ビルドやライブラリの構成を変えたら、`NEXT_OUTPUT=standalone yarn build` でビルドし、`.next/standalone/server.js` を起動して、`node scripts/check-server.js http://localhost:3000` で確認する（CI でも実行している）
 
 ### URL クエリ ⇄ フォーム値
 

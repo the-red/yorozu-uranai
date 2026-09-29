@@ -1,6 +1,6 @@
 import { describe, it, expect, vi, beforeEach, afterEach, MockInstance } from 'vitest'
 import horoscope from '../../src/pages/api/horoscope'
-import { Horoscope, ORB, toHoroscopeResult } from '../../src/horoscope/models'
+import { Horoscope, NODE_ORB, ORB, toHoroscopeResult } from '../../src/horoscope/models'
 import { NUM_DIGITS } from '../test-util'
 import { get } from './test-util'
 
@@ -39,6 +39,25 @@ describe('/horoscope.json', () => {
     expect(json.result.aspects.major).toHaveLength(14)
   })
 
+  it('ドラゴンヘッドとドラゴンテイル', async () => {
+    const { json } = await get(horoscope, query)
+    expect(json.raw.node.longitude).toBeCloseTo(2.374847, NUM_DIGITS)
+    expect(json.raw.node.isRetrograde).toEqual(true)
+
+    expect(json.result.nodeType).toEqual('true')
+    expect(json.result.nodes.map((_: any) => [_.name, _.nameJa, _.sign, _.house])).toEqual([
+      ['northNode', 'ドラゴンヘッド', '牡羊座', 5],
+      ['southNode', 'ドラゴンテイル', '天秤座', 11],
+    ])
+    expect(json.result.nodes[1].longitude).toBeCloseTo(182.374847, NUM_DIGITS)
+    expect(json.result.aspects.nodeOrb).toEqual(3)
+    expect(json.result.aspects.nodes).toEqual([
+      { node: 'southNode', planet: 'mercury', name: 'conjunction', degrees: 0 },
+    ])
+    // 惑星は、10個のまま
+    expect(json.result.planets).toHaveLength(10)
+  })
+
   it('海外生まれ: 同じ瞬間なら、同じ結果になる', async () => {
     // 日本時間の 1987-09-08 08:53 は、ニューヨークでは前日の 19:53（サマータイム）
     const tokyo = await get(horoscope, query)
@@ -49,7 +68,7 @@ describe('/horoscope.json', () => {
 
   it('材料からモデルを復元して変換し直すと、結果と一致する', async () => {
     const { json } = await get(horoscope, query)
-    const restored = toHoroscopeResult(new Horoscope(json.raw), ORB)
+    const restored = toHoroscopeResult(new Horoscope(json.raw), ORB, NODE_ORB)
     expect(JSON.parse(JSON.stringify(restored))).toEqual(json.result)
   })
 

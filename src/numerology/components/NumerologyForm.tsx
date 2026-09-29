@@ -18,7 +18,7 @@ export const NumerologyForm: FC<NumerologyFormProps> = ({ onSubmit, defaultValue
   const {
     register,
     formState: { errors },
-    watch,
+    getValues,
     setValue,
     handleSubmit,
     reset,
@@ -29,8 +29,6 @@ export const NumerologyForm: FC<NumerologyFormProps> = ({ onSubmit, defaultValue
   useEffect(() => {
     reset(defaultValues)
   }, [reset, defaultValues])
-
-  const name = watch('name')
 
   const dateInput = (
     <div className="form_row">
@@ -47,7 +45,7 @@ export const NumerologyForm: FC<NumerologyFormProps> = ({ onSubmit, defaultValue
         <div
           className="kana_to_romaji"
           onClick={() => {
-            const romajiName = convertKanaToRomaji(name)
+            const romajiName = convertKanaToRomaji(getValues('name'))
             setValue('name', romajiName)
             if (!REGX_NAME_PATTERN.test(romajiName)) {
               alert('ひらがな・カタカナで入力してください。')

@@ -38,7 +38,9 @@ yarn staging      # 今のブランチを staging に載せる（固定のURLで
   - `next.config.js` の `rewrites`、ヘッダー、ビルド結果に含めるファイルは、ハンドラーを直接呼ぶテストでは確かめられない
   - ページを追加・削除して `yarn path` を実行し忘れていると、ここで失敗する
 
-`yarn lint:check` は、ESLint の警告が今の件数（21 件）を超えると失敗する。警告を減らしたら、`package.json` の `--max-warnings` の値も下げる。
+`yarn lint:check` は、ESLint の警告が今の件数（6 件）を超えると失敗する。警告を減らしたら、`package.json` の `--max-warnings` の値も下げる。
+
+残っている 6 件は、すべて地図のページ（`src/pages/map.tsx`）のもの。手元には Google Maps のキーが無く、地図の操作を確かめられないので、書き換えていない。
 
 ### 環境変数
 
@@ -217,7 +219,9 @@ CSS から画像を参照するときは、`url('/images/map/back_blue.svg')` �
 
 - Prettier: セミコロンなし、シングルクォート、120桁
 - ESLint: `console.log` は禁止（`console.info` / `warn` / `error` は可）、`==` は禁止（`== null` のみ可）
-  - `react-hooks/refs` / `set-state-in-effect` / `static-components` は、既存コードが該当するので警告にとどめている（`eslint.config.mjs`）
+  - `react-hooks/refs` / `set-state-in-effect` は、地図のページが該当するので警告にとどめている（`eslint.config.mjs`）
+  - コンポーネントの中で、コンポーネントを定義しない（描画のたびに作り直される）。外に出して、必要な値は引数で渡す
+  - `react-hook-form` の `watch` は使わない（React Compiler が対応していない）。値を表示に使うときは `useWatch`、操作のときに読むだけなら `getValues` を使う
 - コメントは日本語
 - コミットメッセージは Conventional Commits 形式 + 日本語の説明（例: `fix: 未入力の状態でローマ字変換を押しても落ちないように`）
 

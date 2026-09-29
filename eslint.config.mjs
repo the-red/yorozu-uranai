@@ -20,10 +20,9 @@ const config = [
       'prefer-const': 'error',
       'spaced-comment': 'error',
 
-      // eslint-plugin-react-hooks v7で追加されたルール。既存コードが該当するので、ひとまず警告にとどめる
+      // eslint-plugin-react-hooks v7で追加されたルール。地図のページ（src/pages/map.tsx）が該当するので、警告にとどめる
       'react-hooks/refs': 'warn',
       'react-hooks/set-state-in-effect': 'warn',
-      'react-hooks/static-components': 'warn',
     },
   },
   {

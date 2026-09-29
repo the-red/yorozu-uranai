@@ -49,5 +49,5 @@ export const useFormValues = (setFormValues: Dispatch<SetStateAction<FormValues 
       }
     }
     setDefaultFormValues()
-  }, [router])
+  }, [router, setFormValues])
 }

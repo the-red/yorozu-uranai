@@ -9,7 +9,7 @@
     "start": "next start",
     "path": "pathpida --ignorePath .gitignore --enableStatic",
     "lint": "eslint --fix \"src/**/*.{js,ts,jsx,tsx}\"",
-    "lint:check": "eslint --max-warnings 21 \"src/**/*.{js,ts,jsx,tsx}\"",
+    "lint:check": "eslint --max-warnings 6 \"src/**/*.{js,ts,jsx,tsx}\"",
     "format": "prettier --write \"src/**/*.{js,ts,jsx,tsx,json}\"",
     "format:check": "prettier --check \"src/**/*.{js,ts,jsx,tsx,json}\" \"test/**/*.ts\"",
     "test": "tsc --noEmit -p test && vitest run",

@@ -36,10 +36,13 @@ yarn staging      # 今のブランチを staging に載せる（固定のURLで
 
 `staging` ブランチは、Vercel のプレビューを、固定の URL で見るためのもの。
 
-- URL: https://yorozu-uranai-git-staging-the-red-creation.vercel.app （Vercel の認証で保護されている）
+- URL: https://staging.yorozu-uranai.com （Vercel の認証で保護されている）
 - Google Maps のキーの参照元の制限に、この URL を登録している。地図のページは、ここで確かめる
 - `yarn staging` で、今のブランチを `staging` に載せる。手元のブランチは変わらない
-  - Vercel は、デプロイ済みのコミットを push しても、新しいデプロイを作らない。プルリクエストのあるブランチは、すでにデプロイ済みなので、そのまま push しても内容が変わらない。`yarn staging` は、空のコミットを1つ足して push する
+  - Vercel は、デプロイ済みのコミットを push しても、新しいデプロイを作らないことがある。そのときは、エラーにならず、URL の内容が前のままになる
+    - `staging` で以前にデプロイしたコミットを、もう一度 push したとき（A → B → A と載せ替えたとき）
+    - デプロイ済みのコミットで、新しいブランチを作ったとき
+  - `yarn staging` は、空のコミットを1つ足して push するので、必ずデプロイされる
 - 確認用の置き場。強制 push で上書きするので、`staging` にしか無いコミットは失われる。作業は、ほかのブランチで行う
 - GitHub の設定で、削除はできないようにしてある。強制 push は許可している
 

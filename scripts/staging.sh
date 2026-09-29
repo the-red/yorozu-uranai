@@ -2,12 +2,15 @@
 # 今のブランチを、staging に載せる
 #
 # staging は、Vercel のプレビューを、固定のURLで見るためのブランチ。
-# Vercel は、デプロイ済みのコミットを push しても、新しいデプロイを作らない。
-# プルリクエストのあるブランチは、すでにデプロイ済みなので、そのまま push しても内容が変わらない。
-# そのため、空のコミットを1つ足して push する。手元のブランチは変わらない
+#
+# Vercel は、デプロイ済みのコミットを push しても、新しいデプロイを作らないことがある。
+# そのときは、エラーにならず、URLの内容が前のままになる。
+#   - staging で以前にデプロイしたコミットを、もう一度 push したとき（A → B → A と載せ替えたとき）
+#   - デプロイ済みのコミットで、新しいブランチを作ったとき
+# 空のコミットを1つ足して push すると、必ずデプロイされる。手元のブランチは変わらない
 set -e
 
-URL=https://yorozu-uranai-git-staging-the-red-creation.vercel.app
+URL=https://staging.yorozu-uranai.com
 
 if [ -n "$(git status --porcelain)" ]; then
   echo '注意: コミットしていない変更があります。staging に載るのは、コミット済みの内容だけです。' >&2

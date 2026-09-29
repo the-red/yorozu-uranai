@@ -3,7 +3,16 @@ import useImage from 'use-image'
 // NOTE: Image はcanvasに描く部品。HTMLの画像（alt が要る）と区別できる名前で読み込む
 import { Stage, Layer, Circle, Line, Shape, Text, Image as KonvaImage } from 'react-konva'
 import { staticPath } from '../../lib/$path'
-import { Horoscope, PlanetsMap, Position, ALL_PLANETS, MajorAspect, Planet, spreadLongitudes } from '../models'
+import {
+  Horoscope,
+  PlanetsMap,
+  Position,
+  ALL_PLANETS,
+  MajorAspect,
+  POINT_NEEDS_BIRTH_TIME,
+  Planet,
+  spreadLongitudes,
+} from '../models'
 import type { House } from '../models/House'
 
 const images = staticPath.images.horoscope
@@ -373,18 +382,24 @@ export default function HoroscopeCircle({
   const { planets, points, house } = horoscope
   const frame: Frame = { radius, houseLongitude: -house.ascendant.longitude }
 
+  // NOTE: icon は、クラスのゲッター。オブジェクトを展開（...）すると落ちるので、値を取り出しておく
+  const toBody = ({ name, icon, position, isRetrograde }: Omit<Body, 'hasLeader'>): Body => ({
+    name,
+    icon,
+    position,
+    isRetrograde,
+    hasLeader: true,
+  })
+  const localPoints = Object.values(points).filter((_) => POINT_NEEDS_BIRTH_TIME[_.name])
+  const otherPoints = Object.values(points).filter((_) => !POINT_NEEDS_BIRTH_TIME[_.name])
+  // 並び順は、惑星の位置の表と同じ。同じ黄経のものは、この順に並ぶ
   const bodies: Body[] = [
-    // NOTE: icon は、クラスのゲッター。オブジェクトを展開（...）すると落ちるので、値を取り出しておく
-    ...[...Object.values(planets), ...Object.values(points)].map(({ name, icon, position, isRetrograde }) => ({
-      name,
-      icon,
-      position,
-      isRetrograde,
-      hasLeader: true,
-    })),
+    ...Object.values(planets).map(toBody),
+    ...otherPoints.map(toBody),
     // NOTE: Asc と Mc は、ハウスの線が位置を示しているので、引き出し線は引かない
     { name: 'ascendant', icon: 'Asc', position: house.ascendant, isRetrograde: false, hasLeader: false },
     { name: 'mc', icon: 'Mc', position: house.mc, isRetrograde: false, hasLeader: false },
+    ...localPoints.map(toBody),
   ]
   const shown = spreadLongitudes(
     bodies.map((_) => _.position.longitude),

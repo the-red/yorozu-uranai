@@ -48,6 +48,9 @@ const TICKS = [
   { every: 5, length: 0.025 },
   { every: 1, length: 0.015 },
 ]
+// 惑星と感受点の記号のフォント。CSS の --symbol-font と同じ
+// NOTE: 指定しないと、端末が文字ごとに別のフォントを選んで、記号の位置がずれる
+const SYMBOL_FONT = "'Apple Symbols', 'Segoe UI Symbol', 'Noto Sans Symbols 2', 'Noto Sans Symbols', sans-serif"
 // 記号どうしの間隔（度）。記号の幅は、円周の約 9.8度にあたる
 const MIN_GAP = 10
 
@@ -103,6 +106,7 @@ const ScaledText = ({
   centered = false,
   fill = 'black',
   outlined = false,
+  fontFamily,
 }: {
   frame: Frame
   text: string
@@ -111,6 +115,7 @@ const ScaledText = ({
   centered?: boolean // 文字の幅の中央を、位置に合わせる
   fill?: string
   outlined?: boolean // 文字の周りを、白く縁取る。線の上に重なっても、読めるようにする
+  fontFamily?: string
 }) => {
   const iconSize = radius * scales.size
   const coordinate = degreesToCoordinate(radius, {
@@ -127,6 +132,7 @@ const ScaledText = ({
       fontSize={iconSize}
       offset={centered ? { x: width / 2, y: iconSize / 2 } : iconOffset(iconSize)}
       fill={fill}
+      {...(fontFamily && { fontFamily })}
       {...(centered && { width, align: 'center' })}
       {...(outlined && {
         stroke: 'white',
@@ -288,18 +294,21 @@ const BodyIcons = ({ frame, bodies }: { frame: Frame; bodies: (Body & { shown: n
       const degrees = `${position.degreesInt}°${isRetrograde ? 'R' : ''}`
       const texts = [
         { text: degrees, size: 0.045, coordinate: RINGS.degrees },
-        { text: icon, size: isText ? 0.055 : 0.1, coordinate: RINGS.icon },
+        isText
+          ? { text: icon, size: 0.055, coordinate: RINGS.icon }
+          : { text: icon, size: 0.11, coordinate: RINGS.icon, fontFamily: SYMBOL_FONT },
       ]
       return (
         <Fragment key={name}>
           {hasLeader && <Line points={[from.x, from.y, to.x, to.y]} stroke="#352e2b" strokeWidth={0.75} />}
-          {texts.map(({ text, size, coordinate }) => (
+          {texts.map(({ text, size, coordinate, fontFamily }) => (
             <ScaledText
               key={coordinate}
               frame={frame}
               text={text}
               longitude={shown}
               scales={{ size, coordinate, degrees: 0 }}
+              fontFamily={fontFamily}
               centered
               outlined
             />

@@ -208,7 +208,9 @@ Vercel は、ビルド時に「各 API の実行に必要なファイル」を�
   - 三角の表は、左に 1 マス空けて、惑星の記号の横の位置を、下の表とそろえる
   - それぞれの表の下に、オーブを表示する。説明は、太陽の列から書き始める
   - 1マスの大きさ（31px）は、横に 11 マス（感受点の記号 + 惑星 10 個）が、幅に収まるように決めている
-- リリスの記号（⚸）は、端末のフォントに無いと表示されない。手元で確かめたのは、macOS の Chrome だけ
+- 記号には、記号用のフォントを指定する（CSS の `--symbol-font`。円の中は、`HoroscopeCircle.tsx` の `SYMBOL_FONT`）。指定しないと、端末が文字ごとに別のフォントを選ぶ。♀ と ♂ は、日本語のフォントにも入っているので、ほかの記号と別のフォントで描かれて、上下の位置がずれる（iPhone で起きた）
+  - どのフォントで描かれているかは、Chrome の DevTools Protocol の `CSS.getPlatformFontsForNode` で調べられる
+- リリスの記号（⚸）は、端末のフォントに無いと表示されない。macOS の Chrome と、iPhone の Safari では、表示された
 - JSON では、`result.points` と `result.aspects.points` として、惑星とは別に返す。種類は `type`（`node` / `apogee` / `angle` / `lot`）、求め方は `variant`（`true` / `mean` / `day` / `night` / `null`）で区別する。感受点を増やすときは、配列の要素を足す
 
 ### ホロスコープの描画

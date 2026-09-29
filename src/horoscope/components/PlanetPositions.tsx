@@ -1,4 +1,4 @@
-import { Horoscope, PLANET_NAMES_JA } from '../models'
+import { Horoscope, NODE_NAMES_JA, PLANET_NAMES_JA } from '../models'
 
 type Props = {
   horoscope: Horoscope
@@ -16,6 +16,14 @@ export default function PlanetPositions({ horoscope }: Props) {
               <td>{planet.sign}</td>
               <td>{planet.formattedDegrees}</td>
               <td>{planet.house}ハウス</td>
+            </tr>
+          ))}
+          {Object.values(horoscope.nodes).map((node) => (
+            <tr key={node.name}>
+              <td>{NODE_NAMES_JA[node.name]}</td>
+              <td>{node.sign}</td>
+              <td>{node.formattedDegrees}</td>
+              <td>{node.house}ハウス</td>
             </tr>
           ))}
           <tr>

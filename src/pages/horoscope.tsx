@@ -5,7 +5,7 @@ import Menu from '../components/Menu'
 import Header from '../components/Header'
 import Footer from '../components/Footer'
 
-import { Horoscope, ORB } from '../horoscope/models'
+import { Horoscope, NODE_ORB, ORB } from '../horoscope/models'
 import HoroscopeDetailPage from '../horoscope/components/HoroscopeDetailPage'
 import { Query, formValuesToQuery } from '../lib/params'
 import { FormProps, FormValues } from '../hooks/useYorozuUranaiForm'
@@ -46,6 +46,7 @@ function HoroscopePage() {
           <HoroscopeDetailPage
             horoscope={horoscope}
             orb={ORB}
+            nodeOrb={NODE_ORB}
             loading={loading}
             onSubmit={handleSubmit}
             defaultValues={formValues}

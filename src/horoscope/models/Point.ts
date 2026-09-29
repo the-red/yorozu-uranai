@@ -21,7 +21,7 @@ export const POINT_ICONS = {
   northNode: '☊',
   southNode: '☋',
   lilith: '⚸',
-  partOfFortune: '⊗',
+  partOfFortune: '⨂',
   vertex: 'Vx',
 } as const
 

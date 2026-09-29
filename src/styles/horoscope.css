@@ -257,6 +257,15 @@
   gap: 4px;
   cursor: pointer;
 }
+/* 計算できなかったもの */
+.horoscope .display-option.disabled {
+  opacity: 0.5;
+  cursor: default;
+}
+.horoscope .display-options-note {
+  padding-top: 8px;
+  font-size: 13px;
+}
 /* 惑星の位置の表の、記号。幅を決めて、名前の位置をそろえる。
    記号ごとに幅が違うので、枠の中央に置く */
 .horoscope .list-icon {

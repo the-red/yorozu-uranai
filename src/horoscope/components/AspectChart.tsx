@@ -1,4 +1,6 @@
 import {
+  ASTEROID_ICONS,
+  ASTEROID_NAMES,
   Horoscope,
   MajorAspect,
   POINT_ICONS,
@@ -9,7 +11,9 @@ import {
   PointName,
   ALL_PLANETS,
   Visibility,
+  getAsteroidConjunctions,
   getPointConjunctions,
+  isAsteroidVisible,
   isPointVisible,
 } from '../models'
 type Props = { horoscope: Horoscope; orb: number; pointOrb: number; visibility: Visibility }
@@ -52,17 +56,21 @@ const AspectRow = ({ horoscope: { planets }, orb, targetPlanet }: AspectRowProps
 // コンジャンクション
 const [CONJUNCTION] = Planet.ALL_MAJOR_ASPECTS
 
-// 惑星と、感受点のアスペクト
+// 惑星と、惑星以外のもの（小惑星、感受点）のアスペクト
 // NOTE: 感受点どうしのアスペクトは読まないので、三角の表には足さずに、惑星 × 感受点の四角い表にする
 const PointChart = ({ horoscope, pointOrb, visibility }: Omit<Props, 'orb'>) => {
+  const asteroids = horoscope.asteroids ? ASTEROID_NAMES.filter((_) => isAsteroidVisible(_, visibility)) : []
   const points = POINT_NAMES.filter((_) => isPointVisible(_, visibility))
-  if (points.length === 0) {
+  if (asteroids.length + points.length === 0) {
     return null
   }
 
+  const asteroidConjunctions = getAsteroidConjunctions(horoscope, pointOrb)
   const conjunctions = getPointConjunctions(horoscope, pointOrb)
   const isConjunction = (point: PointName, planet: PlanetName) =>
     conjunctions.some((_) => _.point === point && _.planet === planet)
+  const isAsteroidConjunction = (asteroid: (typeof asteroids)[number], planet: PlanetName) =>
+    asteroidConjunctions.some((_) => _.asteroid === asteroid && _.planet === planet)
 
   return (
     <>
@@ -73,6 +81,14 @@ const PointChart = ({ horoscope, pointOrb, visibility }: Omit<Props, 'orb'>) => 
             <PlanetCell key={planet} planetIcon={PLANET_ICONS[planet]} />
           ))}
         </div>
+        {asteroids.map((asteroid) => (
+          <div key={asteroid} className="outer-item">
+            <PlanetCell planetIcon={ASTEROID_ICONS[asteroid]} />
+            {ALL_PLANETS.map((planet) => (
+              <AspectCell key={planet} aspect={isAsteroidConjunction(asteroid, planet) ? CONJUNCTION : undefined} />
+            ))}
+          </div>
+        ))}
         {points.map((point) => (
           <div key={point} className="outer-item">
             <PlanetCell planetIcon={POINT_ICONS[point]} />

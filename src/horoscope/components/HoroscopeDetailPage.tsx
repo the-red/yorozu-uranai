@@ -73,7 +73,11 @@ const HoroscopeTables: FC<TablesProps> = ({ horoscope, orb, pointOrb, visibility
       <div className="content-row">
         <div className="content">
           <div className="content-inner">
-            <DisplayOptions visibility={visibility} onChange={onChangeVisibility} />
+            <DisplayOptions
+              visibility={visibility}
+              onChange={onChangeVisibility}
+              hasAsteroids={horoscope.asteroids !== undefined}
+            />
           </div>
         </div>
       </div>

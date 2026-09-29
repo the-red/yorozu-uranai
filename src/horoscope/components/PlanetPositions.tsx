@@ -1,9 +1,11 @@
 import {
+  ASTEROID_NAMES_JA,
   Horoscope,
   POINT_NAMES_JA,
   POINT_NEEDS_BIRTH_TIME,
   PLANET_NAMES_JA,
   Visibility,
+  isAsteroidVisible,
   isPointVisible,
 } from '../models'
 
@@ -23,6 +25,8 @@ const NameCell = ({ icon, name }: { icon?: string; name: string }) => (
 
 export default function PlanetPositions({ horoscope, visibility }: Props) {
   const { ascendant, mc } = horoscope.house
+  // NOTE: 小惑星とキロンは、計算できない日付（1800年より前、2400年より後）では、無い
+  const asteroids = Object.values(horoscope.asteroids ?? {}).filter((_) => isAsteroidVisible(_.name, visibility))
   const points = Object.values(horoscope.points).filter((point) => isPointVisible(point.name, visibility))
   const toRow = (point: (typeof points)[number]) => (
     <tr key={point.name}>
@@ -46,7 +50,15 @@ export default function PlanetPositions({ horoscope, visibility }: Props) {
               <td>{planet.house}ハウス</td>
             </tr>
           ))}
-          {/* 日時だけで決まるもの（惑星、ヘッド、テイル、リリス）の後に、出生時刻と場所で決まるものを並べる */}
+          {asteroids.map((asteroid) => (
+            <tr key={asteroid.name}>
+              <NameCell icon={asteroid.icon} name={ASTEROID_NAMES_JA[asteroid.name]} />
+              <td>{asteroid.sign}</td>
+              <td>{asteroid.formattedDegrees}</td>
+              <td>{asteroid.house}ハウス</td>
+            </tr>
+          ))}
+          {/* 日時だけで決まるもの（惑星、小惑星、ヘッド、テイル、リリス）の後に、出生時刻と場所で決まるものを並べる */}
           {points.filter((_) => !POINT_NEEDS_BIRTH_TIME[_.name]).map(toRow)}
           {visibility.ascMc && (
             <>

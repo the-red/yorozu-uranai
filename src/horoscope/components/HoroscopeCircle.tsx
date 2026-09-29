@@ -38,9 +38,9 @@ const iconOffset = (iconSize: number) => ({ x: iconSize / 2, y: iconSize / 2 })
 // 輪の位置。外周の半径を 1 としたときの割合
 const RINGS = {
   sign: 0.8, // サインの輪の内側。目盛りは、ここから内側に引く
-  leader: [0.765, 0.725], // 引き出し線。目盛りの内側の端から、記号の外側まで
-  icon: 0.67, // 惑星と、感受点の記号
-  degrees: 0.57, // 度数
+  leader: [0.765, 0.73], // 引き出し線。目盛りの内側の端から、度数の外側まで
+  degrees: 0.69, // 度数
+  icon: 0.6, // 惑星と、感受点の記号
   aspect: 0.45, // アスペクトの線の端
 }
 // 目盛りの線の長さ。10度ごと、5度ごと、1度ごと
@@ -49,11 +49,8 @@ const TICKS = [
   { every: 5, length: 0.025 },
   { every: 1, length: 0.015 },
 ]
-// 記号どうしの間隔（度）
-// NOTE: 記号の幅は、円周の約 8.6度。度数（2行）の高さは、円の左右では、約 8.1度にあたる
+// 記号どうしの間隔（度）。記号の幅は、円周の約 9.5度にあたる
 const MIN_GAP = 10
-// 度数の行の高さ。数字だけなので、詰める
-const LINE_HEIGHT = 0.9
 
 // 円の大きさと向き。どの部品も、これを基準に位置を決める
 type Frame = {
@@ -121,16 +118,13 @@ const ScaledText = ({
   })
   // 中央に寄せるための枠の幅。文字が収まる大きさにする
   const width = iconSize * 4
-  const lines = text.split('\n').length
-  const lineHeight = lines > 1 ? LINE_HEIGHT : 1
   return (
     <Text
       text={text}
       x={coordinate.x}
       y={coordinate.y}
       fontSize={iconSize}
-      lineHeight={lineHeight}
-      offset={centered ? { x: width / 2, y: (iconSize * lineHeight * lines) / 2 } : iconOffset(iconSize)}
+      offset={centered ? { x: width / 2, y: iconSize / 2 } : iconOffset(iconSize)}
       fill={fill}
       {...(centered && { width, align: 'center' })}
     />
@@ -280,12 +274,11 @@ const PlanetIcons = ({
       const to = degreesToCoordinate(radius, { degrees: houseLongitude + shown + 180, scale: leaderTo })
       // 記号が1文字でないもの（VX）は、ほかの記号と大きさがそろうように、小さくする
       const isText = planet.icon.length > 1
-      // 度数は、度と分を上下に並べる。円のどこにあっても、上から読めるようにするため
-      const { degreesInt, minutes } = planet.position
-      const degrees = `${degreesInt}\n${String(minutes).padStart(2, '0')}${planet.isRetrograde ? 'R' : ''}`
+      // 度数は、度だけを表示する（分は切り捨てる）。逆行のときは、R を付ける
+      const degrees = `${planet.position.degreesInt}${planet.isRetrograde ? 'R' : ''}`
       const texts = [
-        { text: planet.icon, size: isText ? 0.075 : 0.1, coordinate: RINGS.icon },
         { text: degrees, size: 0.045, coordinate: RINGS.degrees },
+        { text: planet.icon, size: isText ? 0.075 : 0.1, coordinate: RINGS.icon },
       ]
       return (
         <Fragment key={planet.name}>

@@ -263,7 +263,7 @@ describe('ホロスコープ → JSON', () => {
         },
         {
           name: 'vertex',
-          nameJa: 'VX',
+          nameJa: 'Vx',
           type: 'angle',
           variant: null,
           sign: '双子座',

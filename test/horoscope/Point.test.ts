@@ -64,7 +64,7 @@ const getNodeConjunctions = (horoscope: Horoscope, orb: number) =>
 
 describe('感受点', () => {
   it('並び順', () => {
-    // 記号が無いもの（VX）を、最後に置く
+    // 記号が無いもの（Vx）を、最後に置く
     expect(POINT_NAMES).toEqual(['northNode', 'southNode', 'lilith', 'partOfFortune', 'vertex'])
     expect(Object.keys(new Horoscope(props).points)).toEqual([...POINT_NAMES])
   })
@@ -148,7 +148,7 @@ describe('バーテックス', () => {
     const { vertex } = new Horoscope(props).points
     expect(vertex.name).toEqual('vertex')
     // 記号は無いので、名前をそのまま使う
-    expect(vertex.icon).toEqual('VX')
+    expect(vertex.icon).toEqual('Vx')
     expect(vertex.longitude).toBeCloseTo(61.847894, NUM_DIGITS)
     expect(vertex.sign).toEqual('双子座')
     expect(vertex.formattedDegrees).toEqual(' 1°51′')
@@ -160,18 +160,18 @@ describe('バーテックス', () => {
 
 describe('パート・オブ・フォーチュン', () => {
   describe('昼生まれかどうか', () => {
-    // ASC から、黄経が増える向きに 180度までが、地平線の下（1〜6ハウス）
+    // Asc から、黄経が増える向きに 180度までが、地平線の下（1〜6ハウス）
     it.each([
       [207.908591, 164.817337, true], // 基準の生年月日。太陽は 11ハウス
       [207.908591, 250, false],
       [10, 300, true],
       [350, 100, false],
-    ])('ASC が %d度、太陽が %d度なら %j', (ascendant, sun, expected) => {
+    ])('Asc が %d度、太陽が %d度なら %j', (ascendant, sun, expected) => {
       expect(isDayBirth(ascendant, sun)).toEqual(expected)
     })
 
     it('境界は、ハウスの決め方に合わせる', () => {
-      // カスプとちょうど同じ黄経は、手前のハウスに入る。ASC と同じなら 12ハウス（昼）、DSC と同じなら 6ハウス（夜）
+      // カスプとちょうど同じ黄経は、手前のハウスに入る。Asc と同じなら 12ハウス（昼）、Dsc と同じなら 6ハウス（夜）
       expect(isDayBirth(100, 100)).toEqual(true)
       expect(isDayBirth(100, 100.000001)).toEqual(false)
       expect(isDayBirth(100, 280)).toEqual(false)
@@ -180,14 +180,14 @@ describe('パート・オブ・フォーチュン', () => {
   })
 
   describe('黄経', () => {
-    it('昼生まれは、ASC + 月 − 太陽', () => {
+    it('昼生まれは、Asc + 月 − 太陽', () => {
       // 207.908591 + 348.062352 − 164.817337 = 391.153606
       expect(getPartOfFortune({ ascendant: 207.908591, sun: 164.817337, moon: 348.062352 })).toBeCloseTo(
         31.153606,
         NUM_DIGITS
       )
     })
-    it('夜生まれは、ASC + 太陽 − 月', () => {
+    it('夜生まれは、Asc + 太陽 − 月', () => {
       // 207.908591 + 250 − 348.062352
       expect(getPartOfFortune({ ascendant: 207.908591, sun: 250, moon: 348.062352 })).toBeCloseTo(
         109.846239,

@@ -272,7 +272,7 @@ const PlanetIcons = ({
         scale: leaderFrom,
       })
       const to = degreesToCoordinate(radius, { degrees: houseLongitude + shown + 180, scale: leaderTo })
-      // 記号が1文字でないもの（VX）は、ほかの記号と大きさがそろうように、小さくする
+      // 記号が1文字でないもの（Vx）は、ほかの記号と大きさがそろうように、小さくする
       const isText = planet.icon.length > 1
       // 度数は、度だけを表示する（分は切り捨てる）。逆行のときは、R を付ける
       const degrees = `${planet.position.degreesInt}°${planet.isRetrograde ? 'R' : ''}`

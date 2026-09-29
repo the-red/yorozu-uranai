@@ -3,18 +3,8 @@ import useImage from 'use-image'
 // NOTE: Image はcanvasに描く部品。HTMLの画像（alt が要る）と区別できる名前で読み込む
 import { Stage, Layer, Circle, Line, Shape, Text, Image as KonvaImage } from 'react-konva'
 import { staticPath } from '../../lib/$path'
-import {
-  Horoscope,
-  PointName,
-  PlanetsMap,
-  Position,
-  ALL_PLANETS,
-  MajorAspect,
-  Planet,
-  spreadLongitudes,
-} from '../models'
+import { Horoscope, PlanetsMap, Position, ALL_PLANETS, MajorAspect, Planet, spreadLongitudes } from '../models'
 import type { House } from '../models/House'
-import type { PlanetName } from '../../astronomy/types'
 
 const images = staticPath.images.horoscope
 
@@ -103,6 +93,7 @@ const ScaledText = ({
   scales,
   centered = false,
   fill = 'black',
+  outlined = false,
 }: {
   frame: Frame
   text: string
@@ -110,6 +101,7 @@ const ScaledText = ({
   scales: IconScales
   centered?: boolean // 文字の幅の中央を、位置に合わせる
   fill?: string
+  outlined?: boolean // 文字の周りを、白く縁取る。線の上に重なっても、読めるようにする
 }) => {
   const iconSize = radius * scales.size
   const coordinate = degreesToCoordinate(radius, {
@@ -127,6 +119,12 @@ const ScaledText = ({
       offset={centered ? { x: width / 2, y: iconSize / 2 } : iconOffset(iconSize)}
       fill={fill}
       {...(centered && { width, align: 'center' })}
+      {...(outlined && {
+        stroke: 'white',
+        strokeWidth: iconSize * 0.3,
+        fillAfterStrokeEnabled: true,
+        lineJoin: 'round',
+      })}
     />
   )
 }
@@ -254,34 +252,36 @@ const Ticks = ({ frame: { radius, houseLongitude } }: { frame: Frame }) => (
   />
 )
 
-// 惑星と、感受点の記号
+// 円の中に置くもの。惑星、感受点、Asc、Mc
+type Body = {
+  name: string
+  icon: string
+  position: Position
+  isRetrograde: boolean
+}
+
+// 惑星、感受点、Asc、Mc の記号
 // 記号は、重ならないようにずらした位置（shown）に置く。本当の位置は、目盛りから引き出し線を引いて示す
-const PlanetIcons = ({
-  frame,
-  planets,
-}: {
-  frame: Frame
-  planets: { planet: Planet<PlanetName | PointName>; shown: number }[]
-}) => (
+const BodyIcons = ({ frame, bodies }: { frame: Frame; bodies: (Body & { shown: number })[] }) => (
   <>
-    {planets.map(({ planet, shown }) => {
+    {bodies.map(({ name, icon, position, isRetrograde, shown }) => {
       const { radius, houseLongitude } = frame
       const [leaderFrom, leaderTo] = RINGS.leader
       const from = degreesToCoordinate(radius, {
-        degrees: houseLongitude + planet.longitude + 180,
+        degrees: houseLongitude + position.longitude + 180,
         scale: leaderFrom,
       })
       const to = degreesToCoordinate(radius, { degrees: houseLongitude + shown + 180, scale: leaderTo })
-      // 記号が1文字でないもの（Vx）は、ほかの記号と大きさがそろうように、小さくする
-      const isText = planet.icon.length > 1
+      // 記号が1文字でないもの（Vx、Asc、Mc）は、ほかの記号と大きさがそろうように、小さくする
+      const isText = icon.length > 1
       // 度数は、度だけを表示する（分は切り捨てる）。逆行のときは、R を付ける
-      const degrees = `${planet.position.degreesInt}°${planet.isRetrograde ? 'R' : ''}`
+      const degrees = `${position.degreesInt}°${isRetrograde ? 'R' : ''}`
       const texts = [
         { text: degrees, size: 0.045, coordinate: RINGS.degrees },
-        { text: planet.icon, size: isText ? 0.075 : 0.1, coordinate: RINGS.icon },
+        { text: icon, size: isText ? 0.065 : 0.1, coordinate: RINGS.icon },
       ]
       return (
-        <Fragment key={planet.name}>
+        <Fragment key={name}>
           <Line points={[from.x, from.y, to.x, to.y]} stroke="#352e2b" strokeWidth={0.75} />
           {texts.map(({ text, size, coordinate }) => (
             <ScaledText
@@ -291,6 +291,7 @@ const PlanetIcons = ({
               longitude={shown}
               scales={{ size, coordinate, degrees: 0 }}
               centered
+              outlined
             />
           ))}
         </Fragment>
@@ -371,9 +372,19 @@ export default function HoroscopeCircle({
   const { planets, points, house } = horoscope
   const frame: Frame = { radius, houseLongitude: -house.ascendant.longitude }
 
-  const bodies = [...Object.values(planets), ...Object.values(points)]
+  const bodies: Body[] = [
+    // NOTE: icon は、クラスのゲッター。オブジェクトを展開（...）すると落ちるので、値を取り出しておく
+    ...[...Object.values(planets), ...Object.values(points)].map(({ name, icon, position, isRetrograde }) => ({
+      name,
+      icon,
+      position,
+      isRetrograde,
+    })),
+    { name: 'ascendant', icon: 'Asc', position: house.ascendant, isRetrograde: false },
+    { name: 'mc', icon: 'Mc', position: house.mc, isRetrograde: false },
+  ]
   const shown = spreadLongitudes(
-    bodies.map((_) => _.longitude),
+    bodies.map((_) => _.position.longitude),
     MIN_GAP
   )
 
@@ -388,8 +399,8 @@ export default function HoroscopeCircle({
         <HouseCircle frame={frame} house={house} />
         <Ticks frame={frame} />
 
-        {/* 惑星 */}
-        <PlanetIcons frame={frame} planets={bodies.map((planet, i) => ({ planet, shown: shown[i] }))} />
+        {/* 惑星、感受点、Asc、Mc */}
+        <BodyIcons frame={frame} bodies={bodies.map((body, i) => ({ ...body, shown: shown[i] }))} />
         <AspectLines frame={frame} planets={planets} orb={orb} />
       </Layer>
     </Stage>

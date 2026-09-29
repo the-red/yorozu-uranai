@@ -1,6 +1,7 @@
 import type { PlanetName } from '../../astronomy/types'
 import { Position } from './Position'
 import { House } from './House'
+import { NODE_ICONS, NodeName } from './Node'
 
 export const PLANET_ICONS = {
   sun: '☉',
@@ -48,14 +49,17 @@ const ALL_MINOR_ASPECTS = [
 ] as const
 type MinorAspect = (typeof ALL_MINOR_ASPECTS)[number]
 
-export class Planet {
+const ICONS = { ...PLANET_ICONS, ...NODE_ICONS }
+
+// 惑星。ドラゴンヘッドとドラゴンテイルも、同じ形で扱う
+export class Planet<Name extends PlanetName | NodeName = PlanetName> {
   static ALL_SIGNS = Position.ALL_SIGNS
   static ALL_MAJOR_ASPECTS = ALL_MAJOR_ASPECTS
   static ALL_MINOR_ASPECTS = ALL_MINOR_ASPECTS
 
   constructor(
     readonly position: Position,
-    readonly name: PlanetName,
+    readonly name: Name,
     readonly isRetrograde: boolean,
     private _house: House
   ) {}
@@ -113,7 +117,7 @@ export class Planet {
   }
 
   get icon() {
-    return PLANET_ICONS[this.name]
+    return ICONS[this.name]
   }
 
   // 黄経の差。円周の短いほうで測る（0〜180度）

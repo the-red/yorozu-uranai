@@ -33,7 +33,8 @@
 .suimei .header {
   background-color: var(--accent-yellow-light);
 }
-.suimei .twitter-logo {
+.suimei .x-logo,
+.suimei .github-logo {
   fill: #4b4b4b;
 }
 .suimei .main {

@@ -159,7 +159,8 @@
   fill: #fff;
 }
 
-.horoscope .twitter-logo {
+.horoscope .x-logo,
+.horoscope .github-logo {
   fill: #fff;
 }
 

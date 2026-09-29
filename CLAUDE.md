@@ -23,6 +23,7 @@ yarn format       # prettier --write
 yarn format:check # prettier --check（修正しない。test/ も対象）
 yarn tsc --noEmit # 型チェック（専用scriptは無い。test/ は tsconfig の対象外）
 yarn path         # src/lib/$path.ts を再生成
+yarn staging      # 今のブランチを staging に載せる（固定のURLで確認する）
 ```
 
 デプロイは Vercel が行う。プルリクエストを作るとプレビュー環境が作られる（認証で保護されている）。
@@ -45,6 +46,22 @@ yarn path         # src/lib/$path.ts を再生成
   - `NEXT_PUBLIC_` で始まる環境変数は、ブラウザ側のコードで参照すると、配信する JavaScript に値が入る。サーバーだけで使うキー（Geocoding）には付けない
 - `.env.example`: デプロイ先に設定する環境変数の雛形
 
+### staging
+
+`staging` ブランチは、Vercel のプレビューを、固定の URL で見るためのもの。
+
+- URL: https://staging.yorozu-uranai.com （Vercel の認証で保護されている）
+- Google Maps のキーの参照元の制限に、この URL を登録している。地図のページは、ここで確かめる
+- `yarn staging` で、今のブランチを `staging` に載せる。手元のブランチは変わらない
+  - Vercel は、デプロイ済みのコミットを push しても、新しいデプロイを作らないことがある。そのときは、エラーにならず、URL の内容が前のままになる
+    - `staging` で以前にデプロイしたコミットを、もう一度 push したとき（A → B → A と載せ替えたとき）
+    - デプロイ済みのコミットで、新しいブランチを作ったとき
+  - `yarn staging` は、空のコミットを1つ足して push するので、必ずデプロイされる
+  - push のあと、デプロイの結果を待って表示する（GitHub CLI が要る）。ビルドに失敗すると、URL の内容は前のままになるので、成功を確かめてから確認を始める
+  - 載るのは、コミット済みの内容だけ
+- 確認用の置き場。強制 push で上書きするので、`staging` にしか無いコミットは失われる。作業は、ほかのブランチで行う
+- GitHub の設定で、削除はできないようにしてある。強制 push は許可している
+
 ## ライブラリのバージョンの制約
 
 基本は最新に追従するが、次のものは意図して最新より古いバージョンにしている。上げるときは制約が解消されたか確認する。
@@ -53,6 +70,14 @@ yarn path         # src/lib/$path.ts を再生成
 | --- | --- | --- |
 | TypeScript | 6.0 系 | `eslint-config-next` が使う `typescript-eslint` の対応範囲が 6.1 未満。7 系にすると ESLint が動かない |
 | ESLint | 9 系 | `eslint-config-next` が使う `eslint-plugin-react` などが 10 系に未対応 |
+
+## ライセンス
+
+AGPL-3.0-or-later で公開している（`LICENSE`）。
+
+- `swisseph` が使っている Swiss Ephemeris は、オープンソースのライセンスか、有償のライセンスかを選ぶ仕組み。オープンソースのライセンスは、今使っている版（2.09.03）が GPL バージョン 2 以降、最新の版が AGPL。最新の版に合わせて、AGPL にしている
+- AGPL は、ネットワーク越しに使う人にも、ソースコードを受け取る権利を保証する。このリポジトリは公開しているので、条件を満たしている。リポジトリを非公開にすると、満たせなくなる
+- ライブラリを追加するときは、ライセンスが AGPL のバージョン 3 と組み合わせられるかを確かめる。MIT、BSD、Apache-2.0、GPL バージョン 3（バージョン 2 以降を含む）は組み合わせられる。GPL バージョン 2 だけ（以降を含まない）は、組み合わせられない
 
 ## テストの注意点
 

@@ -244,6 +244,19 @@
 .horoscope .list-table {
   width: 100%;
 }
+/* 惑星以外のものを、表示するかどうかの切り替え */
+.horoscope .display-options {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 16px;
+  padding-top: 4px;
+}
+.horoscope .display-option {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  cursor: pointer;
+}
 /* 惑星の位置の表の、記号。幅を決めて、名前の位置をそろえる。
    記号ごとに幅が違うので、枠の中央に置く */
 .horoscope .list-icon {

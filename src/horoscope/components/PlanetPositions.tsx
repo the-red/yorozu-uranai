@@ -1,7 +1,15 @@
-import { Horoscope, POINT_NAMES_JA, POINT_NEEDS_BIRTH_TIME, PLANET_NAMES_JA } from '../models'
+import {
+  Horoscope,
+  POINT_NAMES_JA,
+  POINT_NEEDS_BIRTH_TIME,
+  PLANET_NAMES_JA,
+  Visibility,
+  isPointVisible,
+} from '../models'
 
 type Props = {
   horoscope: Horoscope
+  visibility: Visibility
 }
 
 // 記号と名前
@@ -13,18 +21,17 @@ const NameCell = ({ icon, name }: { icon?: string; name: string }) => (
   </td>
 )
 
-export default function PlanetPositions({ horoscope }: Props) {
+export default function PlanetPositions({ horoscope, visibility }: Props) {
   const { ascendant, mc } = horoscope.house
-  const points = Object.values(horoscope.points).map((point) => (
+  const points = Object.values(horoscope.points).filter((point) => isPointVisible(point.name, visibility))
+  const toRow = (point: (typeof points)[number]) => (
     <tr key={point.name}>
       <NameCell icon={point.icon} name={POINT_NAMES_JA[point.name]} />
       <td>{point.sign}</td>
       <td>{point.formattedDegrees}</td>
       <td>{point.house}ハウス</td>
     </tr>
-  ))
-  // 感受点のうち、出生時刻と場所で決まるもの（Vx、PoF）が始まる位置
-  const local = Object.values(horoscope.points).findIndex((point) => POINT_NEEDS_BIRTH_TIME[point.name])
+  )
 
   return (
     <div className="list-container">
@@ -40,18 +47,22 @@ export default function PlanetPositions({ horoscope }: Props) {
             </tr>
           ))}
           {/* 日時だけで決まるもの（惑星、ヘッド、テイル、リリス）の後に、出生時刻と場所で決まるものを並べる */}
-          {points.slice(0, local)}
-          <tr>
-            <NameCell name="Asc" />
-            <td>{ascendant.sign}</td>
-            <td>{ascendant.formattedDegrees}</td>
-          </tr>
-          <tr>
-            <NameCell name="Mc" />
-            <td>{mc.sign}</td>
-            <td>{mc.formattedDegrees}</td>
-          </tr>
-          {points.slice(local)}
+          {points.filter((_) => !POINT_NEEDS_BIRTH_TIME[_.name]).map(toRow)}
+          {visibility.ascMc && (
+            <>
+              <tr>
+                <NameCell name="Asc" />
+                <td>{ascendant.sign}</td>
+                <td>{ascendant.formattedDegrees}</td>
+              </tr>
+              <tr>
+                <NameCell name="Mc" />
+                <td>{mc.sign}</td>
+                <td>{mc.formattedDegrees}</td>
+              </tr>
+            </>
+          )}
+          {points.filter((_) => POINT_NEEDS_BIRTH_TIME[_.name]).map(toRow)}
         </tbody>
       </table>
     </div>

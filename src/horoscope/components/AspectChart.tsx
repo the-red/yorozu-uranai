@@ -8,9 +8,11 @@ import {
   PlanetName,
   PointName,
   ALL_PLANETS,
+  Visibility,
   getPointConjunctions,
+  isPointVisible,
 } from '../models'
-type Props = { horoscope: Horoscope; orb: number; pointOrb: number }
+type Props = { horoscope: Horoscope; orb: number; pointOrb: number; visibility: Visibility }
 
 const addClassByAspectType = (aspect: MajorAspect | undefined) => {
   return `${aspect?.type === 'hard' && 'hard-aspect'}
@@ -32,7 +34,7 @@ const PlanetCell = ({ planetIcon }: PlanetCellProps) => (
   <div className={`inner-item planet-icon ${planetIcon.length > 1 ? 'text-icon' : ''}`}>{planetIcon}</div>
 )
 
-type AspectRowProps = Omit<Props, 'pointOrb'> & {
+type AspectRowProps = Omit<Props, 'pointOrb' | 'visibility'> & {
   targetPlanet: PlanetName
 }
 // 対象の惑星と、それより前の惑星とのアスペクト
@@ -52,7 +54,12 @@ const [CONJUNCTION] = Planet.ALL_MAJOR_ASPECTS
 
 // 惑星と、感受点のアスペクト
 // NOTE: 感受点どうしのアスペクトは読まないので、三角の表には足さずに、惑星 × 感受点の四角い表にする
-const PointChart = ({ horoscope, pointOrb }: Omit<Props, 'orb'>) => {
+const PointChart = ({ horoscope, pointOrb, visibility }: Omit<Props, 'orb'>) => {
+  const points = POINT_NAMES.filter((_) => isPointVisible(_, visibility))
+  if (points.length === 0) {
+    return null
+  }
+
   const conjunctions = getPointConjunctions(horoscope, pointOrb)
   const isConjunction = (point: PointName, planet: PlanetName) =>
     conjunctions.some((_) => _.point === point && _.planet === planet)
@@ -66,7 +73,7 @@ const PointChart = ({ horoscope, pointOrb }: Omit<Props, 'orb'>) => {
             <PlanetCell key={planet} planetIcon={PLANET_ICONS[planet]} />
           ))}
         </div>
-        {POINT_NAMES.map((point) => (
+        {points.map((point) => (
           <div key={point} className="outer-item">
             <PlanetCell planetIcon={POINT_ICONS[point]} />
             {ALL_PLANETS.map((planet) => (
@@ -84,7 +91,7 @@ const PointChart = ({ horoscope, pointOrb }: Omit<Props, 'orb'>) => {
   )
 }
 
-export default function AspectChart({ horoscope, orb, pointOrb }: Props) {
+export default function AspectChart({ horoscope, orb, pointOrb, visibility }: Props) {
   return (
     <div>
       <div className="list">Aspect Chart</div>
@@ -96,7 +103,7 @@ export default function AspectChart({ horoscope, orb, pointOrb }: Props) {
         ))}
       </div>
       <div className="aspect-chart-note">オーブ {orb}°</div>
-      <PointChart horoscope={horoscope} pointOrb={pointOrb} />
+      <PointChart horoscope={horoscope} pointOrb={pointOrb} visibility={visibility} />
     </div>
   )
 }

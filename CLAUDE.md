@@ -40,6 +40,14 @@ yarn path         # src/lib/$path.ts を再生成
 | TypeScript | 6.0 系 | `eslint-config-next` が使う `typescript-eslint` の対応範囲が 6.1 未満。7 系にすると ESLint が動かない |
 | ESLint | 9 系 | `eslint-config-next` が使う `eslint-plugin-react` などが 10 系に未対応 |
 
+## ライセンス
+
+AGPL-3.0-or-later で公開している（`LICENSE`）。
+
+- `swisseph` が使っている Swiss Ephemeris は、オープンソースのライセンスか、有償のライセンスかを選ぶ仕組み。オープンソースのライセンスは、今使っている版（2.09.03）が GPL バージョン 2 以降、最新の版が AGPL。最新の版に合わせて、AGPL にしている
+- AGPL は、ネットワーク越しに使う人にも、ソースコードを受け取る権利を保証する。このリポジトリは公開しているので、条件を満たしている。リポジトリを非公開にすると、満たせなくなる
+- ライブラリを追加するときは、ライセンスが AGPL のバージョン 3 と組み合わせられるかを確かめる。MIT、BSD、Apache-2.0、GPL バージョン 3（バージョン 2 以降を含む）は組み合わせられる。GPL バージョン 2 だけ（以降を含まない）は、組み合わせられない
+
 ## テストの注意点
 
 - **計算結果は、実行環境のタイムゾーンに依存させない**。本番サーバー（Vercel）は UTC で動き、利用者のブラウザも日本時間とは限らないため。日時を扱う変更をしたら `TZ=UTC yarn test` と `TZ=America/New_York yarn test` でも確認する

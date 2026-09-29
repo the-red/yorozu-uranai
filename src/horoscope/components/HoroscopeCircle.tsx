@@ -258,13 +258,14 @@ type Body = {
   icon: string
   position: Position
   isRetrograde: boolean
+  hasLeader: boolean // 引き出し線を引くか
 }
 
 // 惑星、感受点、Asc、Mc の記号
 // 記号は、重ならないようにずらした位置（shown）に置く。本当の位置は、目盛りから引き出し線を引いて示す
 const BodyIcons = ({ frame, bodies }: { frame: Frame; bodies: (Body & { shown: number })[] }) => (
   <>
-    {bodies.map(({ name, icon, position, isRetrograde, shown }) => {
+    {bodies.map(({ name, icon, position, isRetrograde, hasLeader, shown }) => {
       const { radius, houseLongitude } = frame
       const [leaderFrom, leaderTo] = RINGS.leader
       const from = degreesToCoordinate(radius, {
@@ -278,11 +279,11 @@ const BodyIcons = ({ frame, bodies }: { frame: Frame; bodies: (Body & { shown: n
       const degrees = `${position.degreesInt}°${isRetrograde ? 'R' : ''}`
       const texts = [
         { text: degrees, size: 0.045, coordinate: RINGS.degrees },
-        { text: icon, size: isText ? 0.065 : 0.1, coordinate: RINGS.icon },
+        { text: icon, size: isText ? 0.055 : 0.1, coordinate: RINGS.icon },
       ]
       return (
         <Fragment key={name}>
-          <Line points={[from.x, from.y, to.x, to.y]} stroke="#352e2b" strokeWidth={0.75} />
+          {hasLeader && <Line points={[from.x, from.y, to.x, to.y]} stroke="#352e2b" strokeWidth={0.75} />}
           {texts.map(({ text, size, coordinate }) => (
             <ScaledText
               key={coordinate}
@@ -379,9 +380,11 @@ export default function HoroscopeCircle({
       icon,
       position,
       isRetrograde,
+      hasLeader: true,
     })),
-    { name: 'ascendant', icon: 'Asc', position: house.ascendant, isRetrograde: false },
-    { name: 'mc', icon: 'Mc', position: house.mc, isRetrograde: false },
+    // NOTE: Asc と Mc は、ハウスの線が位置を示しているので、引き出し線は引かない
+    { name: 'ascendant', icon: 'Asc', position: house.ascendant, isRetrograde: false, hasLeader: false },
+    { name: 'mc', icon: 'Mc', position: house.mc, isRetrograde: false, hasLeader: false },
   ]
   const shown = spreadLongitudes(
     bodies.map((_) => _.position.longitude),

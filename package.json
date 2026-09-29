@@ -12,7 +12,7 @@
     "format": "prettier --write \"src/**/*.{js,ts,jsx,tsx,json}\"",
     "test": "tsc --noEmit -p test && vitest run"
   },
-  "license": "UNLICENSED",
+  "license": "AGPL-3.0-or-later",
   "engines": {
     "node": "24.x"
   },

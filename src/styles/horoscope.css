@@ -100,11 +100,16 @@
   background-color: #e4e7e2;
   font-family: var(--symbol-font);
   font-size: 21px;
+  /* 記号用のフォントは、記号が、文字の枠の中央より上に描かれている（マスの中で、平均 1.4px）。中央に来るように、下げる */
+  padding-top: 2px;
 }
 /* 記号の代わりに、名前を表示するもの（Vx、PoF） */
 .horoscope .planet-icon.text-icon {
   font-family: inherit;
   font-size: 13px;
+  /* 下に伸びる文字が無いので、中央より下に見える（0.9px）。上げる */
+  padding-top: 0;
+  padding-bottom: 2px;
 }
 .horoscope .soft-aspect {
   color: blue;

@@ -36,8 +36,10 @@ type AspectRowProps = Omit<Props, 'pointOrb'> & {
   targetPlanet: PlanetName
 }
 // 対象の惑星と、それより前の惑星とのアスペクト
+// NOTE: 左に1マス空けて、惑星の記号の横の位置を、下の表（惑星 × 感受点）とそろえる
 const AspectRow = ({ horoscope: { planets }, orb, targetPlanet }: AspectRowProps) => (
   <>
+    <div className="inner-item corner" />
     {ALL_PLANETS.filter((planet, index) => index < ALL_PLANETS.indexOf(targetPlanet)).map((basePlanet, i) => (
       <AspectCell key={i} aspect={planets[basePlanet].majorAspect(planets[targetPlanet], orb)} />
     ))}

@@ -137,29 +137,46 @@ GET 以外は 405 を返す。
 
 #### 感受点（2026-09-29 に追加）
 
-感受点は、天体ではなく、計算で求める点。今は、ヘッドとテイル（ドラゴンヘッド、ドラゴンテイル）だけがある。
+感受点は、天体ではなく、計算で求める点。ヘッドとテイル（ドラゴンヘッド、ドラゴンテイル）、リリス、Vx（バーテックス）、PoF（パート・オブ・フォーチュン）の5つがある。
 
-`raw` に、ヘッドの位置（`node`）を足す。`result` には、次の項目を足す。
+`raw` に、ヘッドの位置（`node`）と、リリスの位置（`lilith`）を足す。バーテックスの位置は、`raw.houses.vertex` に入っている。`result` には、次の項目を足す。
 
 ```jsonc
 "result": {
   "points": [
     { "name": "northNode", "nameJa": "ヘッド", "type": "node", "variant": "true", "sign": "牡羊座", "degrees": 2.374847, "longitude": 2.374847, "isRetrograde": true, "house": 5 },
-    { "name": "southNode", "nameJa": "テイル", "type": "node", "variant": "true", "sign": "天秤座", "degrees": 2.374847, "longitude": 182.374847, "isRetrograde": true, "house": 11 }
+    { "name": "southNode", "nameJa": "テイル", "type": "node", "variant": "true", "sign": "天秤座", "degrees": 2.374847, "longitude": 182.374847, "isRetrograde": true, "house": 11 },
+    { "name": "lilith", "nameJa": "リリス", "type": "apogee", "variant": "mean", "sign": "獅子座", "degrees": 2.301895, "longitude": 122.301895, "isRetrograde": false, "house": 9 },
+    { "name": "vertex", "nameJa": "Vx", "type": "angle", "variant": null, "sign": "双子座", "degrees": 1.847894, "longitude": 61.847894, "isRetrograde": false, "house": 8 },
+    { "name": "partOfFortune", "nameJa": "PoF", "type": "lot", "variant": "day", "sign": "牡牛座", "degrees": 1.153606, "longitude": 31.153606, "isRetrograde": false, "house": 7 }
   ],
   "aspects": {
     "pointOrb": 3,
-    "points": [{ "point": "southNode", "planet": "mercury", "name": "conjunction", "degrees": 0 }]
+    "points": [
+      { "point": "southNode", "planet": "mercury", "name": "conjunction", "degrees": 0 },
+      { "point": "partOfFortune", "planet": "jupiter", "name": "conjunction", "degrees": 0 }
+    ]
   }
 }
 ```
 
 - `planets` には含めない。`planets` は、10 個の天体のままにする
 - 種類ごとに項目を分けず、`points` にまとめる。種類は `type` で区別する。感受点を増やしても、配列の要素が増えるだけで、形は変わらない
-- `variant` は、求め方が複数あるものについて、どれで求めたかを示す。ヘッドとテイルは、真位置（`true`）。求め方が1つのものは `null`
+- `variant` は、求め方が複数あるものについて、どれで求めたかを示す。求め方が1つのものは `null`
+  - ヘッドとテイルは、真位置（`true`）
+  - リリスは、平均の位置（`mean`）
+  - PoF は、昼生まれの式（`day`。ASC + 月 − 太陽）か、夜生まれの式（`night`。ASC + 太陽 − 月）
+- バーテックスと PoF は、進む向きが無いので、`isRetrograde` は常に `false`
 - 天体ではないので、四元素などの分類（`element` / `quality` / `polarity`）は持たない
 - 惑星とのアスペクトは、コンジャンクションだけを求める。オーブは 3 度
-- 経緯は #190
+- 経緯は #190 と #194
+
+外部のサイトの値と照合した結果（2026-09-29。惑星の位置から逆算した日時は、世界時の 1980-06-15 02:51）:
+
+- 惑星 10 個と PoF は、1 分以内で一致した
+- ヘッドは、平均の位置（`SE_MEAN_NODE`）で計算すると一致した。そのサイトは、平均の位置を使っている
+- リリスは、平均の位置で 9 分の差があった。Meeus の式（月の近地点の平均の位置の反対側）で求めると、2 分の差になる。Swiss Ephemeris は、月の軌道の傾きを計算に入れるので、単純な式とは 0.1 度ほど違う
+- バーテックスは、出生地が分からないので、照合できていない
 
 ### 四柱推命
 

@@ -1,5 +1,5 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
-import { Horoscope, HoroscopeProps, NODE_ORB, ORB, toHoroscopeResult } from '../../horoscope/models'
+import { Horoscope, HoroscopeProps, POINT_ORB, ORB, toHoroscopeResult } from '../../horoscope/models'
 import { getHoroscopeProps } from '../../horoscope/models/horoscopeFactory'
 import {
   ErrorJson,
@@ -34,7 +34,7 @@ const horoscope = async (req: NextApiRequest, res: NextApiResponse<HoroscopeJson
     page: pageUrl(req, '/horoscope', input),
     raw,
     // ページと同じく、材料から復元したモデルを変換する
-    result: toHoroscopeResult(new Horoscope(raw), ORB, NODE_ORB),
+    result: toHoroscopeResult(new Horoscope(raw), ORB, POINT_ORB),
   })
 }
 

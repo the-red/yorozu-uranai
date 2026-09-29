@@ -1,7 +1,7 @@
 import type { PlanetName } from '../../astronomy/types'
 import { ALL_PLANETS } from './ALL_PLANETS'
 import type { Horoscope } from './Horoscope'
-import { NODE_NAMES, NODE_NAMES_JA, NodeConjunction, NodeName, getNodeConjunctions } from './Node'
+import { POINT_NAMES, POINT_NAMES_JA, POINT_TYPES, PointConjunction, PointName, getPointConjunctions } from './Point'
 import { MajorAspect, PLANET_NAMES_JA, Planet } from './Planet'
 import { Position } from './Position'
 
@@ -25,10 +25,12 @@ type PlanetJson = PositionJson & {
   polarity: NonNullable<Planet['polarity']> | null
 }
 
-// ドラゴンヘッドとドラゴンテイル。天体ではないので、四元素などの分類は持たない
-type NodeJson = PositionJson & {
-  name: NodeName
-  nameJa: (typeof NODE_NAMES_JA)[NodeName]
+// 感受点。天体ではないので、四元素などの分類は持たない
+type PointJson = PositionJson & {
+  name: PointName
+  nameJa: (typeof POINT_NAMES_JA)[PointName]
+  type: (typeof POINT_TYPES)[PointName]
+  variant: 'true' | null // 求め方が複数あるものは、どれで求めたか。ヘッドとテイルは、真位置（トゥルーノード）
   isRetrograde: boolean
   house: number | null
 }
@@ -40,16 +42,15 @@ type AspectJson = {
   type: MajorAspect['type']
 }
 
-// ドラゴンヘッド・ドラゴンテイルと、惑星のコンジャンクション
-type NodeAspectJson = NodeConjunction & {
+// 感受点と、惑星のコンジャンクション
+type PointAspectJson = PointConjunction & {
   name: 'conjunction'
   degrees: 0
 }
 
 export type HoroscopeResult = {
   planets: PlanetJson[]
-  nodeType: 'true' // ドラゴンヘッドの求め方。真位置（トゥルーノード）
-  nodes: NodeJson[]
+  points: PointJson[]
   houses: {
     ascendant: PositionJson
     mc: PositionJson
@@ -58,15 +59,15 @@ export type HoroscopeResult = {
   aspects: {
     orb: number
     major: AspectJson[]
-    nodeOrb: number
-    nodes: NodeAspectJson[]
+    pointOrb: number
+    points: PointAspectJson[]
   }
 }
 
 const toPositionJson = ({ sign, degrees, longitude }: Position): PositionJson => ({ sign, degrees, longitude })
 
-export const toHoroscopeResult = (horoscope: Horoscope, orb: number, nodeOrb: number): HoroscopeResult => {
-  const { planets, nodes, house } = horoscope
+export const toHoroscopeResult = (horoscope: Horoscope, orb: number, pointOrb: number): HoroscopeResult => {
+  const { planets, points, house } = horoscope
   return {
     planets: ALL_PLANETS.map((name) => {
       const planet = planets[name]
@@ -81,15 +82,16 @@ export const toHoroscopeResult = (horoscope: Horoscope, orb: number, nodeOrb: nu
         polarity: planet.polarity ?? null,
       }
     }),
-    nodeType: 'true',
-    nodes: NODE_NAMES.map((name) => {
-      const node = nodes[name]
+    points: POINT_NAMES.map((name) => {
+      const point = points[name]
       return {
         name,
-        nameJa: NODE_NAMES_JA[name],
-        ...toPositionJson(node.position),
-        isRetrograde: node.isRetrograde,
-        house: node.house ?? null,
+        nameJa: POINT_NAMES_JA[name],
+        type: POINT_TYPES[name],
+        variant: 'true' as const,
+        ...toPositionJson(point.position),
+        isRetrograde: point.isRetrograde,
+        house: point.house ?? null,
       }
     }),
     houses: {
@@ -106,8 +108,8 @@ export const toHoroscopeResult = (horoscope: Horoscope, orb: number, nodeOrb: nu
           return aspect ? [{ planets: [from, to] as [PlanetName, PlanetName], ...aspect }] : []
         })
       ),
-      nodeOrb,
-      nodes: getNodeConjunctions(horoscope, nodeOrb).map((_) => ({
+      pointOrb,
+      points: getPointConjunctions(horoscope, pointOrb).map((_) => ({
         ..._,
         name: 'conjunction' as const,
         degrees: 0 as const,

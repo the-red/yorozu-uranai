@@ -1,16 +1,16 @@
 import {
   Horoscope,
   MajorAspect,
-  NODE_ICONS,
-  NODE_NAMES,
-  NODE_NAMES_JA,
+  POINT_ICONS,
+  POINT_NAMES,
+  POINT_NAMES_JA,
   PLANET_ICONS,
   PLANET_NAMES_JA,
   PlanetName,
   ALL_PLANETS,
-  getNodeConjunctions,
+  getPointConjunctions,
 } from '../models'
-type Props = { horoscope: Horoscope; orb: number; nodeOrb: number }
+type Props = { horoscope: Horoscope; orb: number; pointOrb: number }
 
 const addClassByAspectType = (aspect: MajorAspect | undefined) => {
   return `${aspect?.type === 'hard' && 'hard-aspect'}
@@ -29,7 +29,7 @@ type PlanetCellProps = {
 }
 const PlanetCell = (props: PlanetCellProps) => <div className="inner-item planet-icon">{props.planetIcon}</div>
 
-type AspectRowProps = Omit<Props, 'nodeOrb'> & {
+type AspectRowProps = Omit<Props, 'pointOrb'> & {
   targetPlanet: PlanetName
 }
 // 対象の惑星と、それより前の惑星とのアスペクト
@@ -42,20 +42,19 @@ const AspectRow = ({ horoscope: { planets }, orb, targetPlanet }: AspectRowProps
   </>
 )
 
-// ドラゴンヘッド・ドラゴンテイルと、コンジャンクションになっている惑星
-// NOTE: コンジャンクションだけを求めるので、表の行にはせずに、一覧にする
-const NodeConjunctions = ({ horoscope, nodeOrb }: Omit<Props, 'orb'>) => {
-  const conjunctions = getNodeConjunctions(horoscope, nodeOrb)
+// 感受点と、コンジャンクションになっている惑星
+const PointConjunctions = ({ horoscope, pointOrb }: Omit<Props, 'orb'>) => {
+  const conjunctions = getPointConjunctions(horoscope, pointOrb)
   return (
-    <table className="list-table node-conjunctions">
-      <caption>コンジャンクション（オーブ {nodeOrb}°）</caption>
+    <table className="list-table point-conjunctions">
+      <caption>コンジャンクション（オーブ {pointOrb}°）</caption>
       <tbody>
-        {NODE_NAMES.map((node) => {
-          const planets = conjunctions.filter((_) => _.node === node).map((_) => PLANET_NAMES_JA[_.planet])
+        {POINT_NAMES.map((point) => {
+          const planets = conjunctions.filter((_) => _.point === point).map((_) => PLANET_NAMES_JA[_.planet])
           return (
-            <tr key={node}>
+            <tr key={point}>
               <td>
-                {NODE_ICONS[node]} {NODE_NAMES_JA[node]}
+                {POINT_ICONS[point]} {POINT_NAMES_JA[point]}
               </td>
               <td>{planets.length > 0 ? planets.join(' / ') : 'なし'}</td>
             </tr>
@@ -66,7 +65,7 @@ const NodeConjunctions = ({ horoscope, nodeOrb }: Omit<Props, 'orb'>) => {
   )
 }
 
-export default function AspectChart({ horoscope, orb, nodeOrb }: Props) {
+export default function AspectChart({ horoscope, orb, pointOrb }: Props) {
   return (
     <div>
       <div className="list">Aspect Chart</div>
@@ -77,7 +76,7 @@ export default function AspectChart({ horoscope, orb, nodeOrb }: Props) {
           </div>
         ))}
       </div>
-      <NodeConjunctions horoscope={horoscope} nodeOrb={nodeOrb} />
+      <PointConjunctions horoscope={horoscope} pointOrb={pointOrb} />
     </div>
   )
 }

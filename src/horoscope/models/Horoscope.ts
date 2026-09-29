@@ -2,19 +2,19 @@ import { Position } from './Position'
 import { Planet } from './Planet'
 import type { PlanetName, EclipticPosition, Houses } from '../../astronomy/types'
 import { House } from './House'
-import type { NodeName } from './Node'
+import type { PointName } from './Point'
 
 export type PlanetsMap = Record<PlanetName, Planet>
-export type NodesMap = { [Name in NodeName]: Planet<Name> }
+export type PointsMap = { [Name in PointName]: Planet<Name> }
 export type HoroscopeProps = {
   positions: [PlanetName, EclipticPosition][]
   houses: Houses
-  node: EclipticPosition // ドラゴンヘッド
+  node: EclipticPosition // ヘッド（ドラゴンヘッド）
 }
 
 export class Horoscope {
   readonly planets: PlanetsMap
-  readonly nodes: NodesMap
+  readonly points: PointsMap
   readonly house: House
 
   constructor({ positions, houses, node }: HoroscopeProps) {
@@ -26,8 +26,8 @@ export class Horoscope {
       ])
     ) as PlanetsMap
 
-    // ドラゴンテイルは、ドラゴンヘッドのちょうど反対側
-    this.nodes = {
+    // テイルは、ヘッドのちょうど反対側
+    this.points = {
       northNode: new Planet(new Position(node.longitude), 'northNode', node.isRetrograde, this.house),
       southNode: new Planet(new Position(node.longitude + 180), 'southNode', node.isRetrograde, this.house),
     }

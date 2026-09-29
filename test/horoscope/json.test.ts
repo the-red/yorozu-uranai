@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest'
-import { Horoscope, HoroscopeProps, NODE_ORB, ORB, toHoroscopeResult } from '../../src/horoscope/models'
+import { Horoscope, HoroscopeProps, POINT_ORB, ORB, toHoroscopeResult } from '../../src/horoscope/models'
 import { expectToBeCloseTo } from '../test-util'
 
 // 1987-09-08 08:53 札幌生まれの計算結果（test/horoscope/Horoscope.test.ts と同じ）
@@ -36,7 +36,7 @@ const props: HoroscopeProps = {
 }
 
 describe('ホロスコープ → JSON', () => {
-  const result = toHoroscopeResult(new Horoscope(props), ORB, NODE_ORB)
+  const result = toHoroscopeResult(new Horoscope(props), ORB, POINT_ORB)
 
   it('オーブは 6', () => {
     expect(ORB).toEqual(6)
@@ -208,21 +208,19 @@ describe('ホロスコープ → JSON', () => {
     ])
   })
 
-  describe('ドラゴンヘッドとドラゴンテイル', () => {
+  describe('感受点（ヘッドとテイル）', () => {
     it('惑星とは別の項目にする', () => {
       expect(result.planets).toHaveLength(10)
       expect(result.planets.map((_) => _.name)).not.toContain('northNode')
     })
 
-    it('真位置で求めていることを示す', () => {
-      expect(result.nodeType).toEqual('true')
-    })
-
     it('位置', () => {
-      expectToBeCloseTo(result.nodes, [
+      expectToBeCloseTo(result.points, [
         {
           name: 'northNode',
-          nameJa: 'ドラゴンヘッド',
+          nameJa: 'ヘッド',
+          type: 'node',
+          variant: 'true',
           sign: '牡羊座',
           degrees: 2.374847,
           longitude: 2.374847,
@@ -231,7 +229,9 @@ describe('ホロスコープ → JSON', () => {
         },
         {
           name: 'southNode',
-          nameJa: 'ドラゴンテイル',
+          nameJa: 'テイル',
+          type: 'node',
+          variant: 'true',
           sign: '天秤座',
           degrees: 2.374847,
           longitude: 182.374847,
@@ -242,9 +242,11 @@ describe('ホロスコープ → JSON', () => {
     })
 
     it('惑星とのコンジャンクション', () => {
-      expect(result.aspects.nodeOrb).toEqual(3)
-      // ドラゴンテイル（182.37度）と、水星（180.68度）
-      expect(result.aspects.nodes).toEqual([{ node: 'southNode', planet: 'mercury', name: 'conjunction', degrees: 0 }])
+      expect(result.aspects.pointOrb).toEqual(3)
+      // テイル（182.37度）と、水星（180.68度）
+      expect(result.aspects.points).toEqual([
+        { point: 'southNode', planet: 'mercury', name: 'conjunction', degrees: 0 },
+      ])
     })
 
     it('惑星どうしのアスペクトには、含めない', () => {
@@ -256,22 +258,22 @@ describe('ホロスコープ → JSON', () => {
 
     it('オーブを変えると、コンジャンクションが変わる', () => {
       const { aspects } = toHoroscopeResult(new Horoscope(props), ORB, 1)
-      expect(aspects.nodeOrb).toEqual(1)
-      expect(aspects.nodes).toEqual([])
+      expect(aspects.pointOrb).toEqual(1)
+      expect(aspects.points).toEqual([])
     })
   })
 
   it('オーブを変えると、アスペクトが変わる', () => {
-    const { aspects } = toHoroscopeResult(new Horoscope(props), 1, NODE_ORB)
+    const { aspects } = toHoroscopeResult(new Horoscope(props), 1, POINT_ORB)
     expect(aspects.orb).toEqual(1)
     expect(aspects.major.map((_) => _.planets)).toEqual([['sun', 'saturn']])
   })
 
   it('モデルがハウスを返さない惑星は、house を null にする', () => {
     const noCusps: HoroscopeProps = { ...props, houses: { ...props.houses, house: [] } }
-    const { planets, nodes } = toHoroscopeResult(new Horoscope(noCusps), ORB, NODE_ORB)
+    const { planets, points } = toHoroscopeResult(new Horoscope(noCusps), ORB, POINT_ORB)
     expect(planets.map((_) => _.house)).toEqual(Array(10).fill(null))
-    expect(nodes.map((_) => _.house)).toEqual([null, null])
+    expect(points.map((_) => _.house)).toEqual([null, null])
   })
 
   it('JSONにしても値が変わらない', () => {

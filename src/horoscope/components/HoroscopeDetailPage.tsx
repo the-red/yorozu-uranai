@@ -10,12 +10,12 @@ import { FormProps } from '../../hooks/useYorozuUranaiForm'
 const HoroscopeCircle = dynamic(() => import('./HoroscopeCircle'), { ssr: false })
 
 // horoscope は、まだ求まっていないときと、求められなかったときは無い
-type Props = { horoscope?: Horoscope; orb: number; nodeOrb: number; loading: boolean } & FormProps
+type Props = { horoscope?: Horoscope; orb: number; pointOrb: number; loading: boolean } & FormProps
 
 const HoroscopeDetailPage: FC<Props> = ({
   horoscope,
   orb,
-  nodeOrb,
+  pointOrb,
   loading,
   onSubmit,
   defaultValues,
@@ -42,12 +42,12 @@ const HoroscopeDetailPage: FC<Props> = ({
           loading && <div className="content loading">読み込み中…</div>
         )}
       </div>
-      {horoscope && <HoroscopeTables horoscope={horoscope} orb={orb} nodeOrb={nodeOrb} />}
+      {horoscope && <HoroscopeTables horoscope={horoscope} orb={orb} pointOrb={pointOrb} />}
     </div>
   )
 }
 
-const HoroscopeTables: FC<{ horoscope: Horoscope; orb: number; nodeOrb: number }> = ({ horoscope, orb, nodeOrb }) => {
+const HoroscopeTables: FC<{ horoscope: Horoscope; orb: number; pointOrb: number }> = ({ horoscope, orb, pointOrb }) => {
   return (
     <>
       <div className="content-row">
@@ -70,7 +70,7 @@ const HoroscopeTables: FC<{ horoscope: Horoscope; orb: number; nodeOrb: number }
         </div>
         <div className="content">
           <div className="content-inner">
-            <AspectChart horoscope={horoscope} orb={orb} nodeOrb={nodeOrb} />
+            <AspectChart horoscope={horoscope} orb={orb} pointOrb={pointOrb} />
           </div>
         </div>
       </div>

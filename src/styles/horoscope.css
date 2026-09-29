@@ -228,14 +228,14 @@
 .horoscope .list-table {
   width: 100%;
 }
-/* ドラゴンヘッド・ドラゴンテイルと、惑星のコンジャンクション */
-.horoscope .node-conjunctions {
+/* 感受点と、惑星のコンジャンクション */
+.horoscope .point-conjunctions {
   margin-top: 20px;
 }
-.horoscope .node-conjunctions caption {
+.horoscope .point-conjunctions caption {
   padding-bottom: 4px;
   text-align: left;
 }
-.horoscope .node-conjunctions td:first-child {
+.horoscope .point-conjunctions td:first-child {
   width: 11em;
 }

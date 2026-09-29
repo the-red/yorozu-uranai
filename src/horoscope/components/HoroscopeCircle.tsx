@@ -2,7 +2,7 @@ import useImage from 'use-image'
 // NOTE: Image はcanvasに描く部品。HTMLの画像（alt が要る）と区別できる名前で読み込む
 import { Stage, Layer, Circle, Line, Text, Image as KonvaImage } from 'react-konva'
 import { staticPath } from '../../lib/$path'
-import { Horoscope, NodeName, PlanetsMap, Position, ALL_PLANETS, MajorAspect, Planet } from '../models'
+import { Horoscope, PointName, PlanetsMap, Position, ALL_PLANETS, MajorAspect, Planet } from '../models'
 import type { House } from '../models/House'
 import type { PlanetName } from '../../astronomy/types'
 
@@ -199,8 +199,8 @@ const SignIcons = ({ frame }: { frame: Frame }) => (
     ))}
   </>
 )
-// 惑星と、ドラゴンヘッド・ドラゴンテイルの記号
-const PlanetIcons = ({ frame, planets }: { frame: Frame; planets: Planet<PlanetName | NodeName>[] }) => (
+// 惑星と、感受点の記号
+const PlanetIcons = ({ frame, planets }: { frame: Frame; planets: Planet<PlanetName | PointName>[] }) => (
   <>
     {planets.map((planet, i) => (
       <ScaledText
@@ -283,7 +283,7 @@ export default function HoroscopeCircle({
   radius: number // 外周の半径
   orb: number
 }) {
-  const { planets, nodes, house } = horoscope
+  const { planets, points, house } = horoscope
   const frame: Frame = { radius, houseLongitude: -house.ascendant.longitude }
 
   return (
@@ -297,7 +297,7 @@ export default function HoroscopeCircle({
         <HouseCircle frame={frame} house={house} />
 
         {/* 惑星 */}
-        <PlanetIcons frame={frame} planets={[...Object.values(planets), ...Object.values(nodes)]} />
+        <PlanetIcons frame={frame} planets={[...Object.values(planets), ...Object.values(points)]} />
         <AspectLines frame={frame} planets={planets} orb={orb} />
       </Layer>
     </Stage>

@@ -135,25 +135,28 @@ GET 以外は 405 を返す。
 - アスペクトは、惑星の組み合わせごとに1つ。`planets` は `ALL_PLANETS` の順
 - オーブは画面と同じ固定値の 6。マイナーアスペクトは、画面に出していないので含めない
 
-#### ドラゴンヘッドとドラゴンテイル（2026-09-29 に追加）
+#### 感受点（2026-09-29 に追加）
 
-`raw` に、ドラゴンヘッドの位置（`node`）を足す。`result` には、次の項目を足す。
+感受点は、天体ではなく、計算で求める点。今は、ヘッドとテイル（ドラゴンヘッド、ドラゴンテイル）だけがある。
+
+`raw` に、ヘッドの位置（`node`）を足す。`result` には、次の項目を足す。
 
 ```jsonc
 "result": {
-  "nodeType": "true", // 真位置（トゥルーノード）で求めている
-  "nodes": [
-    { "name": "northNode", "nameJa": "ドラゴンヘッド", "sign": "牡羊座", "degrees": 2.374847, "longitude": 2.374847, "isRetrograde": true, "house": 5 },
-    { "name": "southNode", "nameJa": "ドラゴンテイル", "sign": "天秤座", "degrees": 2.374847, "longitude": 182.374847, "isRetrograde": true, "house": 11 }
+  "points": [
+    { "name": "northNode", "nameJa": "ヘッド", "type": "node", "variant": "true", "sign": "牡羊座", "degrees": 2.374847, "longitude": 2.374847, "isRetrograde": true, "house": 5 },
+    { "name": "southNode", "nameJa": "テイル", "type": "node", "variant": "true", "sign": "天秤座", "degrees": 2.374847, "longitude": 182.374847, "isRetrograde": true, "house": 11 }
   ],
   "aspects": {
-    "nodeOrb": 3,
-    "nodes": [{ "node": "southNode", "planet": "mercury", "name": "conjunction", "degrees": 0 }]
+    "pointOrb": 3,
+    "points": [{ "point": "southNode", "planet": "mercury", "name": "conjunction", "degrees": 0 }]
   }
 }
 ```
 
 - `planets` には含めない。`planets` は、10 個の天体のままにする
+- 種類ごとに項目を分けず、`points` にまとめる。種類は `type` で区別する。感受点を増やしても、配列の要素が増えるだけで、形は変わらない
+- `variant` は、求め方が複数あるものについて、どれで求めたかを示す。ヘッドとテイルは、真位置（`true`）。求め方が1つのものは `null`
 - 天体ではないので、四元素などの分類（`element` / `quality` / `polarity`）は持たない
 - 惑星とのアスペクトは、コンジャンクションだけを求める。オーブは 3 度
 - 経緯は #190

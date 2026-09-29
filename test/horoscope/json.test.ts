@@ -251,17 +251,6 @@ describe('ホロスコープ → JSON', () => {
           house: 9,
         },
         {
-          name: 'partOfFortune',
-          nameJa: 'PoF',
-          type: 'lot',
-          variant: 'day',
-          sign: '牡牛座',
-          degrees: 1.153606,
-          longitude: 31.153606,
-          isRetrograde: false,
-          house: 7,
-        },
-        {
           name: 'vertex',
           nameJa: 'Vx',
           type: 'angle',
@@ -271,6 +260,17 @@ describe('ホロスコープ → JSON', () => {
           longitude: 61.847894,
           isRetrograde: false,
           house: 8,
+        },
+        {
+          name: 'partOfFortune',
+          nameJa: 'PoF',
+          type: 'lot',
+          variant: 'day',
+          sign: '牡牛座',
+          degrees: 1.153606,
+          longitude: 31.153606,
+          isRetrograde: false,
+          house: 7,
         },
       ])
     })
@@ -282,7 +282,7 @@ describe('ホロスコープ → JSON', () => {
         positions: props.positions.map(([name, current]) => [name, name === 'sun' ? position(250) : current]),
       }
       const { points } = toHoroscopeResult(new Horoscope(night), ORB, POINT_ORB)
-      expectToBeCloseTo(points[3], {
+      expectToBeCloseTo(points[4], {
         name: 'partOfFortune',
         nameJa: 'PoF',
         type: 'lot',

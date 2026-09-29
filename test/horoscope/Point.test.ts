@@ -3,6 +3,7 @@ import {
   Horoscope,
   HoroscopeProps,
   POINT_NAMES,
+  POINT_NEEDS_BIRTH_TIME,
   POINT_ORB,
   PlanetName,
   getPartOfFortune,
@@ -64,14 +65,19 @@ const getNodeConjunctions = (horoscope: Horoscope, orb: number) =>
 
 describe('感受点', () => {
   it('並び順', () => {
-    // 記号が無いもの（Vx）を、最後に置く
-    expect(POINT_NAMES).toEqual(['northNode', 'southNode', 'lilith', 'partOfFortune', 'vertex'])
+    // 日時だけで決まるものを先に、出生時刻と場所で決まるものを後に置く
+    expect(POINT_NAMES).toEqual(['northNode', 'southNode', 'lilith', 'vertex', 'partOfFortune'])
     expect(Object.keys(new Horoscope(props).points)).toEqual([...POINT_NAMES])
   })
 
   it('求め方', () => {
     const horoscope = new Horoscope(props)
-    expect(POINT_NAMES.map((_) => getPointVariant(_, horoscope))).toEqual(['true', 'true', 'mean', 'day', null])
+    expect(POINT_NAMES.map((_) => getPointVariant(_, horoscope))).toEqual(['true', 'true', 'mean', null, 'day'])
+  })
+
+  it('出生時刻と場所が無いと、求められないもの', () => {
+    // Vx と PoF は、Asc や Mc と同じく、地面から見た向きで決まる
+    expect(POINT_NAMES.filter((_) => POINT_NEEDS_BIRTH_TIME[_])).toEqual(['vertex', 'partOfFortune'])
   })
 })
 

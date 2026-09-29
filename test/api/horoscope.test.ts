@@ -51,15 +51,15 @@ describe('/horoscope.json', () => {
       ['northNode', 'ヘッド', 'node', 'true', '牡羊座', 5],
       ['southNode', 'テイル', 'node', 'true', '天秤座', 11],
       ['lilith', 'リリス', 'apogee', 'mean', '獅子座', 9],
-      ['partOfFortune', 'PoF', 'lot', 'day', '牡牛座', 7],
       ['vertex', 'Vx', 'angle', null, '双子座', 8],
+      ['partOfFortune', 'PoF', 'lot', 'day', '牡牛座', 7],
     ])
     expect(json.result.points.map((_: any) => _.longitude)).toEqual([
       expect.closeTo(2.374847, NUM_DIGITS),
       expect.closeTo(182.374847, NUM_DIGITS),
       expect.closeTo(122.301895, NUM_DIGITS),
-      expect.closeTo(31.153606, NUM_DIGITS),
       expect.closeTo(61.847894, NUM_DIGITS),
+      expect.closeTo(31.153606, NUM_DIGITS),
     ])
     expect(json.result.aspects.pointOrb).toEqual(3)
     expect(json.result.aspects.points).toEqual([

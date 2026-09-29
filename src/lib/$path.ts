@@ -54,6 +54,7 @@ export const staticPath = {
       'starry_sky_jpeg': '/images/horoscope/starry-sky.jpeg'
     },
     'index': {
+      'github_logo_svg': '/images/index/github-logo.svg',
       'horoscope_white_svg': '/images/index/horoscope-white.svg',
       'horoscope_svg': '/images/index/horoscope.svg',
       'logo_svg': '/images/index/logo.svg',

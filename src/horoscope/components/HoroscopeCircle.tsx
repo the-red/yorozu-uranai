@@ -40,7 +40,7 @@ const RINGS = {
   sign: 0.8, // サインの輪の内側。目盛りは、ここから内側に引く
   leader: [0.765, 0.73], // 引き出し線。目盛りの内側の端から、度数の外側まで
   degrees: 0.69, // 度数
-  icon: 0.6, // 惑星と、感受点の記号
+  icon: 0.585, // 惑星と、感受点の記号
   aspect: 0.45, // アスペクトの線の端
 }
 // 目盛りの線の長さ。10度ごと、5度ごと、1度ごと
@@ -49,7 +49,7 @@ const TICKS = [
   { every: 5, length: 0.025 },
   { every: 1, length: 0.015 },
 ]
-// 記号どうしの間隔（度）。記号の幅は、円周の約 9.5度にあたる
+// 記号どうしの間隔（度）。記号の幅は、円周の約 9.8度にあたる
 const MIN_GAP = 10
 
 // 円の大きさと向き。どの部品も、これを基準に位置を決める
@@ -275,7 +275,7 @@ const PlanetIcons = ({
       // 記号が1文字でないもの（VX）は、ほかの記号と大きさがそろうように、小さくする
       const isText = planet.icon.length > 1
       // 度数は、度だけを表示する（分は切り捨てる）。逆行のときは、R を付ける
-      const degrees = `${planet.position.degreesInt}${planet.isRetrograde ? 'R' : ''}`
+      const degrees = `${planet.position.degreesInt}°${planet.isRetrograde ? 'R' : ''}`
       const texts = [
         { text: degrees, size: 0.045, coordinate: RINGS.degrees },
         { text: planet.icon, size: isText ? 0.075 : 0.1, coordinate: RINGS.icon },

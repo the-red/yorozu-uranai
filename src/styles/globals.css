@@ -250,7 +250,7 @@ Note: Beware of modifying this element as it can break the animations - you shou
   text-align: center;
 }
 .contact a + a {
-  margin-left: 16px;
+  margin-left: 24px;
 }
 .copyright {
   width: fit-content;

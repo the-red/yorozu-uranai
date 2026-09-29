@@ -6,6 +6,10 @@
   background-attachment: fixed;
   background-size: 100%;
   color: #ffffff;
+  /* 惑星と感受点の記号のフォント。
+     指定しないと、端末が文字ごとに別のフォントを選ぶ（♀ と ♂ は、日本語のフォントに入っている）。
+     フォントが違うと、文字の上下の位置がずれる */
+  --symbol-font: 'Apple Symbols', 'Segoe UI Symbol', 'Noto Sans Symbols 2', 'Noto Sans Symbols', sans-serif;
 }
 .horoscope .bm-burger-bars {
   background: #fff;
@@ -94,10 +98,12 @@
 }
 .horoscope .planet-icon {
   background-color: #e4e7e2;
-  font-size: 18px;
+  font-family: var(--symbol-font);
+  font-size: 21px;
 }
 /* 記号の代わりに、名前を表示するもの（Vx、PoF） */
 .horoscope .planet-icon.text-icon {
+  font-family: inherit;
   font-size: 13px;
 }
 .horoscope .soft-aspect {
@@ -237,6 +243,9 @@
    記号ごとに幅が違うので、枠の中央に置く */
 .horoscope .list-icon {
   display: inline-block;
+  font-family: var(--symbol-font);
+  font-size: 1.15em;
+  line-height: 1;
   width: 1.2em;
   margin-right: 0.3em;
   text-align: center;

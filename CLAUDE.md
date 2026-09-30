@@ -335,7 +335,7 @@ Vercel は、ビルド時に「各 API の実行に必要なファイル」を�
 
 ハウスシステム（ハウスの分け方）は、利用者が選べる（`src/horoscope/models/HouseSystem.ts`）。最初の状態は、プラシーダス。
 
-Swiss Ephemeris が計算できるもののうち、12 ハウスに分けるものを、すべて入れている（23 種類）。それに、ソーラーサインを足している（合わせて 24 種類）。選択欄では、主なもの（Placidus、Koch、Regiomontanus、Campanus、Porphyry、Equal、Whole Sign、Solar Sign）を先に出して、ほかを「Others」にまとめる。
+Swiss Ephemeris が計算できるもののうち、12 ハウスに分けるものを、すべて入れている（23 種類）。それに、ソーラーサインを足している（合わせて 24 種類）。選択欄では、主なもの（Placidus、Koch、Regiomontanus、Campanus、Porphyry、Equal、Whole Sign）を先に出して、ほかを「Others」にまとめる。
 
 - 入れていないもの: ガークラン・セクター（36 に分ける）、`E`（イコールと同じ）、`i`（サンシャインの別の計算方法。ふつうは、同じ結果になる）
 - 画面に出す名前は、アルファベットで書く（`Placidus`、`Whole Sign`）。カタカナにすると、書き方が人によって違い、どれを指すのかが分かりにくい（2026-09-30 の指示）
@@ -355,7 +355,7 @@ Swiss Ephemeris が計算できるもののうち、12 ハウスに分けるも�
 - ホールサインでは、カスプが、すべてサインの境界（0 度）になる。Asc も Mc も、ハウスの起点にならない
 - ソーラーサイン（`solarSign`）は、太陽のあるサインを、まるごと 1 ハウスにする。Swiss Ephemeris には無いので、カスプを自分で作る（`getSolarSignCusps`）
   - Asc、Mc、Vx などは、ホールサインで計算した値を使う（ハウスシステムに依らない）。`HOUSE_SYSTEM_CODES` の記号（`solarSign`）は、Swiss Ephemeris には渡さない
-  - 出生時刻が無くても、決まる。選択欄では、主なものとして、Whole Sign の隣に置いている（2026-10-01 の指示）
+  - 出生時刻が無くても、決まる。選択欄では、「Others」の最後に置いている
 
 ### サインとハウスの境界
 

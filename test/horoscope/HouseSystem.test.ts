@@ -50,9 +50,8 @@ describe('ハウスシステム', () => {
       'porphyry',
       'equal',
       'wholeSign',
-      'solarSign',
     ])
-    expect(HOUSE_SYSTEMS.slice(0, 8)).toEqual(MAIN_HOUSE_SYSTEMS)
+    expect(HOUSE_SYSTEMS.slice(0, 7)).toEqual(MAIN_HOUSE_SYSTEMS)
   })
   it('URLの値から読み取る', () => {
     for (const house of HOUSE_SYSTEMS) {

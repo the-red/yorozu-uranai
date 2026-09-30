@@ -53,11 +53,7 @@
     "react-hook-form": "^7.89.0",
     "react-konva": "^19.3.0",
     "react-tooltip": "^6.0.8",
-    "swisseph": "^0.5.17",
+    "sweph": "^2.10.3-8",
     "use-image": "^1.1.4"
-  },
-  "resolutions": {
-    "nan": "^2.29.0",
-    "node-gyp": "^13.0.2"
   }
 }

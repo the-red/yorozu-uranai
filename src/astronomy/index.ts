@@ -1,13 +1,18 @@
 import path from 'path'
-import swisseph from 'swisseph'
-import type { AsteroidName, Body, EclipticPosition, HouseCusps, Houses } from './types'
+import { calc_ut, constants, house_name, houses, julday as toJulday, set_ephe_path, time_equ } from 'sweph'
+import type { AsteroidName, Body, EclipticPosition, Houses } from './types'
 
 // 天体暦のファイルの場所。小惑星とキロンの計算に使う
-// NOTE: ファイルは、ライブラリに同梱されている。Vercelなど、必要なファイルだけを切り出して動かす環境には、
-// next.config.js の outputFileTracingIncludes で、必要なファイルだけを含めている。
+// NOTE: ファイルは、リポジトリの ephe に置いている（ライブラリには、同梱されていない）。
+// Vercelなど、必要なファイルだけを切り出して動かす環境には、next.config.js の outputFileTracingIncludes で含めている。
 // ここでは、ビルドのときに、パスを調べられないようにする（turbopackIgnore）。
-// 調べられると、フォルダ全体（12MB。使わないファイルを含む）が、ビルド結果に入る
-swisseph.swe_set_ephe_path(path.join(/* turbopackIgnore: true */ process.cwd(), 'node_modules', 'swisseph', 'ephe'))
+// 調べられると、天体暦のファイルを使わないAPIにも、ファイルが入る
+set_ephe_path(path.join(/* turbopackIgnore: true */ process.cwd(), 'ephe'))
+
+// 計算に失敗したかどうか
+// NOTE: error の有無では、判定しない。成功しても、知らせの文が入ることがある
+// （天体暦のファイルが無いので、計算式で求めた、など）
+const isFailed = ({ flag }: { flag: number }) => flag < 0
 
 const round6 = (num: number) => Math.trunc(num * 10 ** 6) / 10 ** 6
 
@@ -24,34 +29,30 @@ export const julday = (date: Date): Promise<number> => {
   const second = date.getUTCSeconds() + date.getUTCMilliseconds() / 1000
   const utcHourMinuteSecond = hour + (minute + second / 60) / 60
 
-  return new Promise((resolve) =>
-    swisseph.swe_julday(year, month, day, utcHourMinuteSecond, swisseph.SE_GREG_CAL, (julday_ut: number) =>
-      resolve(julday_ut)
-    )
-  )
+  return Promise.resolve(toJulday(year, month, day, utcHourMinuteSecond, constants.SE_GREG_CAL))
 }
 
 // Swiss Ephemeris での番号
 const BODIES: Record<Body, number> = {
-  sun: swisseph.SE_SUN,
-  moon: swisseph.SE_MOON,
-  mercury: swisseph.SE_MERCURY,
-  venus: swisseph.SE_VENUS,
-  mars: swisseph.SE_MARS,
-  jupiter: swisseph.SE_JUPITER,
-  saturn: swisseph.SE_SATURN,
-  uranus: swisseph.SE_URANUS,
-  neptune: swisseph.SE_NEPTUNE,
-  pluto: swisseph.SE_PLUTO,
+  sun: constants.SE_SUN,
+  moon: constants.SE_MOON,
+  mercury: constants.SE_MERCURY,
+  venus: constants.SE_VENUS,
+  mars: constants.SE_MARS,
+  jupiter: constants.SE_JUPITER,
+  saturn: constants.SE_SATURN,
+  uranus: constants.SE_URANUS,
+  neptune: constants.SE_NEPTUNE,
+  pluto: constants.SE_PLUTO,
   // NOTE: 平均の位置にするなら、SE_MEAN_NODE
-  trueNode: swisseph.SE_TRUE_NODE,
+  trueNode: constants.SE_TRUE_NODE,
   // NOTE: 真位置にするなら、SE_OSCU_APOG
-  meanApogee: swisseph.SE_MEAN_APOG,
-  chiron: swisseph.SE_CHIRON,
-  ceres: swisseph.SE_CERES,
-  pallas: swisseph.SE_PALLAS,
-  juno: swisseph.SE_JUNO,
-  vesta: swisseph.SE_VESTA,
+  meanApogee: constants.SE_MEAN_APOG,
+  chiron: constants.SE_CHIRON,
+  ceres: constants.SE_CERES,
+  pallas: constants.SE_PALLAS,
+  juno: constants.SE_JUNO,
+  vesta: constants.SE_VESTA,
 }
 
 const ASTEROIDS: readonly Body[] = ['chiron', 'ceres', 'pallas', 'juno', 'vesta'] satisfies AsteroidName[]
@@ -62,40 +63,36 @@ const ASTEROIDS: readonly Body[] = ['chiron', 'ceres', 'pallas', 'juno', 'vesta'
 // NOTE: 天体暦のファイルの場所を指定すると、指定が無ければ、惑星もファイルで計算するようになり、
 // 値がわずかに変わる（月で 0.8秒、ヘッドで 7.6秒）。今までの値を保つために、計算式を指定する
 const toFlag = (body: Body) =>
-  swisseph.SEFLG_SPEED | (ASTEROIDS.includes(body) ? swisseph.SEFLG_SWIEPH : swisseph.SEFLG_MOSEPH)
+  constants.SEFLG_SPEED | (ASTEROIDS.includes(body) ? constants.SEFLG_SWIEPH : constants.SEFLG_MOSEPH)
 
 // 小惑星とキロンを、計算できる日付かどうか
-// NOTE: 同梱されている天体暦のファイル（seas_18.se1）は、1800年から 2399年まで。
+// NOTE: 天体暦のファイル（seas_18.se1）は、1800年から 2399年まで。
 // 光が届くまでの時間をさかのぼって計算するので、最初の日は計算できない
 const ASTEROID_RANGE = [2378497.5, 2597641.5] // 1800-01-02 から、2400-01-01 の手前まで（世界時）
 export const isAsteroidRange = (julday_ut: number): boolean =>
   ASTEROID_RANGE[0] <= julday_ut && julday_ut < ASTEROID_RANGE[1]
 
 // 黄道座標の計算
-export const eclipticPosition = (julday_ut: number, body: Body): Promise<EclipticPosition> =>
-  new Promise((resolve, reject) =>
-    swisseph.swe_calc_ut(julday_ut, BODIES[body], toFlag(body), (result) => {
-      if ('error' in result) {
-        return reject(new Error(result.error))
-      }
-      if (!('latitude' in result)) {
-        return reject(new Error('ERROR!' + JSON.stringify(result)))
-      }
+export const eclipticPosition = async (julday_ut: number, body: Body): Promise<EclipticPosition> => {
+  const result = calc_ut(julday_ut, BODIES[body], toFlag(body))
+  if (isFailed(result)) {
+    throw new Error(result.error)
+  }
 
-      // 処理系が変わると少し誤差が出るので丸めておく
-      result.latitude = round6(result.latitude)
-      result.longitude = round6(result.longitude)
-      result.distance = round6(result.distance)
-      result.latitudeSpeed = round6(result.latitudeSpeed)
-      result.longitudeSpeed = round6(result.longitudeSpeed)
-      result.distanceSpeed = round6(result.distanceSpeed)
+  // 処理系が変わると少し誤差が出るので丸めておく
+  const [longitude, latitude, distance, longitudeSpeed, latitudeSpeed, distanceSpeed] = result.data.map(round6)
 
-      resolve({
-        ...result,
-        isRetrograde: result.longitudeSpeed < 0,
-      })
-    })
-  )
+  return {
+    longitude,
+    latitude,
+    distance,
+    longitudeSpeed,
+    latitudeSpeed,
+    distanceSpeed,
+    rflag: result.flag,
+    isRetrograde: longitudeSpeed < 0,
+  }
+}
 
 // 日付から黄経だけを算出
 export const getEclipticLongitude = async (date: Date) => {
@@ -105,98 +102,60 @@ export const getEclipticLongitude = async (date: Date) => {
 }
 
 // 均時差（視太陽時 − 平均太陽時）を分単位で算出
-export const equationOfTime = (julday_ut: number): Promise<number> =>
-  new Promise((resolve, reject) =>
-    swisseph.swe_time_equ(julday_ut, (result) => {
-      if ('error' in result) {
-        return reject(new Error(result.error))
-      }
+export const equationOfTime = async (julday_ut: number): Promise<number> => {
+  const result = time_equ(julday_ut)
+  if (isFailed(result)) {
+    throw new Error(result.error)
+  }
 
-      // 日単位で返ってくるので分に直す
-      resolve(result.timeEquation * 24 * 60)
-    })
-  )
+  // 日単位で返ってくるので分に直す
+  return result.data * 24 * 60
+}
+
+// ハウスを計算できなかったときのメッセージ
+// NOTE: プラシーダスとコッホは、極圏では計算できない。APIは、このメッセージで、緯度の問題かどうかを見分ける
+const HOUSES_ERROR = `Can't calculate houses.`
 
 // ハウスの計算
-export const calcHouses = (julday_ut: number, geolat: number, geolon: number, hsys: string = ''): Promise<Houses> =>
-  new Promise((resolve, reject) =>
-    swisseph.swe_houses(julday_ut, geolat, geolon, hsys, (result) => {
-      if ('error' in result) {
-        return reject(new Error(result.error))
-      }
+export const calcHouses = async (
+  julday_ut: number,
+  geolat: number,
+  geolon: number,
+  hsys: string = ''
+): Promise<Houses> => {
+  const result = houses(julday_ut, geolat, geolon, hsys)
+  // NOTE: 計算できなかったときも、別のハウスシステム（ポーフィリー）の値が入っている。使わずに、エラーにする
+  if (isFailed(result)) {
+    throw new Error(HOUSES_ERROR)
+  }
 
-      // 処理系が変わると少し誤差が出るので丸めておく
-      result.house = result.house.map(round6) as HouseCusps
-      result.ascendant = round6(result.ascendant)
-      result.mc = round6(result.mc)
-      result.armc = round6(result.armc)
-      result.vertex = round6(result.vertex)
-      result.equatorialAscendant = round6(result.equatorialAscendant)
-      result.kochCoAscendant = round6(result.kochCoAscendant)
-      result.munkaseyCoAscendant = round6(result.munkaseyCoAscendant)
-      result.munkaseyPolarAscendant = round6(result.munkaseyPolarAscendant)
+  // 処理系が変わると少し誤差が出るので丸めておく
+  const [
+    ascendant,
+    mc,
+    armc,
+    vertex,
+    equatorialAscendant,
+    kochCoAscendant,
+    munkaseyCoAscendant,
+    munkaseyPolarAscendant,
+  ] = result.data.points.map(round6)
 
-      resolve(result)
-    })
-  )
-
-// ハウスシステム名を略称から引く
-// swe_house_name()がNode.js版では使えないので↓のをコピって独自実装
-// https://github.com/mivion/swisseph/blob/327e9ff871db2d27062d96ca30f1656d99cd5ec9/deps/swisseph/swehouse.c#L822-L853
-export const houseSystemName = (hsys?: string) => {
-  switch (hsys) {
-    case 'A':
-      return 'equal'
-    case 'B':
-      return 'Alcabitius'
-    case 'C':
-      return 'Campanus'
-    case 'D':
-      return 'equal (MC)'
-    case 'E':
-      return 'equal'
-    case 'F':
-      return 'Carter poli-equ.'
-    case 'G':
-      return 'Gauquelin sectors'
-    case 'H':
-      return 'horizon/azimut'
-    case 'I':
-      return 'Sunshine'
-    case 'i':
-      return 'Sunshine/alt.'
-    case 'K':
-      return 'Koch'
-    case 'L':
-      return 'Pullen SD'
-    case 'M':
-      return 'Morinus'
-    case 'N':
-      return 'equal/1=Aries'
-    case 'O':
-      return 'Porphyry'
-    case 'Q':
-      return 'Pullen SR'
-    case 'R':
-      return 'Regiomontanus'
-    case 'S':
-      return 'Sripati'
-    case 'T':
-      return 'Polich/Page'
-    case 'U':
-      return 'Krusinski-Pisa-Goelzer'
-    case 'V':
-      return 'equal/Vehlow'
-    case 'W':
-      return 'equal/ whole sign'
-    case 'X':
-      return 'axial rotation system/Meridian houses'
-    case 'Y':
-      return 'APC houses'
-    default:
-      return 'Placidus'
+  return {
+    house: result.data.houses.map(round6),
+    ascendant,
+    mc,
+    armc,
+    vertex,
+    equatorialAscendant,
+    kochCoAscendant,
+    munkaseyCoAscendant,
+    munkaseyPolarAscendant,
   }
 }
+
+// ハウスシステム名を略称から引く。知らない値は、プラシーダス
+export const houseSystemName = (hsys: string = '') => house_name(hsys)
 
 // 黄経から日付を算出
 export const longitudeToDate = async (

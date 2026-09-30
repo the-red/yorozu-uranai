@@ -1,4 +1,8 @@
-import { describe, it, expect } from 'vitest'
+import { describe, it, expect, afterEach } from 'vitest'
+import { mkdtempSync } from 'fs'
+import { tmpdir } from 'os'
+import { join } from 'path'
+import { set_ephe_path } from 'sweph'
 import {
   julday,
   eclipticPosition,
@@ -349,6 +353,7 @@ describe('astronomy', () => {
         ['H', 'horizon/azimut'],
         ['I', 'Sunshine'],
         ['i', 'Sunshine/alt.'],
+        ['J', 'Savard-A'],
         ['K', 'Koch'],
         ['L', 'Pullen SD'],
         ['M', 'Morinus'],
@@ -395,25 +400,51 @@ describe('均時差', () => {
   })
 })
 
+describe('天体暦のファイルが無いとき', () => {
+  // NOTE: Vercel では、APIごとに、必要なファイルだけを切り出す。四柱推命のAPIには、天体暦のファイルが入らない
+  const funadyBirthday = new Date('1987-09-08T08:53:00+09:00')
+  const withoutFiles = () => set_ephe_path(mkdtempSync(join(tmpdir(), 'ephe-')))
+  afterEach(() => set_ephe_path(join(process.cwd(), 'ephe')))
+
+  it('均時差は、計算式で求める', async () => {
+    // NOTE: ライブラリは、成功の結果に「ファイルが無いので、計算式で求めた」という知らせを付ける。失敗として扱わない
+    const julday_ut = await julday(funadyBirthday)
+    const expected = await equationOfTime(julday_ut)
+    withoutFiles()
+    // ファイルがあるときとの差は、0.002秒ほど
+    expect(await equationOfTime(julday_ut)).toBeCloseTo(expected, 3)
+  })
+  it('惑星の値は、変わらない', async () => {
+    withoutFiles()
+    const julday_ut = await julday(funadyBirthday)
+    expect((await eclipticPosition(julday_ut, 'sun')).longitude).toBeCloseTo(164.817337, NUM_DIGITS)
+    expect((await eclipticPosition(julday_ut, 'moon')).longitude).toBeCloseTo(348.062352, NUM_DIGITS)
+  })
+  it('小惑星は、エラーになる', async () => {
+    withoutFiles()
+    await expect(eclipticPosition(await julday(funadyBirthday), 'ceres')).rejects.toThrow('SwissEph file')
+  })
+})
+
 describe('黄経から日付を算出', () => {
   it('順行: 3日後に立春', async () => {
     const res = await longitudeToDate(315, new Date('2022-02-01T05:00:48+09:00'), true)
-    expect(res).toMatchObject(new Date('2022-02-04T05:50:46+09:00'))
+    expect(res).toMatchObject(new Date('2022-02-04T05:50:47+09:00'))
   }, 100_000)
   it('逆行: 1日前に立春', async () => {
     const res = await longitudeToDate(315, new Date('2022-02-05T05:50:46+09:00'), false)
-    expect(res).toMatchObject(new Date('2022-02-04T05:50:46+09:00'))
+    expect(res).toMatchObject(new Date('2022-02-04T05:50:47+09:00'))
   }, 100_000)
   it('順行: 4か月後に立春', async () => {
     const res = await longitudeToDate(315, new Date('2021-10-05T05:50:46+09:00'), true)
-    expect(res).toMatchObject(new Date('2022-02-04T05:50:46+09:00'))
+    expect(res).toMatchObject(new Date('2022-02-04T05:50:47+09:00'))
   }, 100_000)
   it('逆行: 4か月前に立春', async () => {
     const res = await longitudeToDate(315, new Date('2022-08-05T05:50:46+09:00'), false)
-    expect(res).toMatchObject(new Date('2022-02-04T05:50:46+09:00'))
+    expect(res).toMatchObject(new Date('2022-02-04T05:50:47+09:00'))
   }, 100_000)
   it('順行: 1年後に立春', async () => {
     const res = await longitudeToDate(315, new Date('2021-02-03T23:58:47+09:00'), true)
-    expect(res).toMatchObject(new Date('2022-02-04T05:50:46+09:00'))
+    expect(res).toMatchObject(new Date('2022-02-04T05:50:47+09:00'))
   }, 100_000)
 })

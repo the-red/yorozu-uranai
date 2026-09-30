@@ -244,6 +244,28 @@ describe('ホロスコープ → JSON', () => {
     it('位置', () => {
       expectToBeCloseTo(result.points, [
         {
+          name: 'vertex',
+          nameJa: 'Vx',
+          type: 'angle',
+          variant: null,
+          sign: '双子座',
+          degrees: 1.847894,
+          longitude: 61.847894,
+          isRetrograde: false,
+          house: 8,
+        },
+        {
+          name: 'partOfFortune',
+          nameJa: 'PoF',
+          type: 'lot',
+          variant: 'day',
+          sign: '牡牛座',
+          degrees: 1.153606,
+          longitude: 31.153606,
+          isRetrograde: false,
+          house: 7,
+        },
+        {
           name: 'northNode',
           nameJa: 'ヘッド',
           type: 'node',
@@ -276,28 +298,6 @@ describe('ホロスコープ → JSON', () => {
           isRetrograde: false,
           house: 9,
         },
-        {
-          name: 'vertex',
-          nameJa: 'Vx',
-          type: 'angle',
-          variant: null,
-          sign: '双子座',
-          degrees: 1.847894,
-          longitude: 61.847894,
-          isRetrograde: false,
-          house: 8,
-        },
-        {
-          name: 'partOfFortune',
-          nameJa: 'PoF',
-          type: 'lot',
-          variant: 'day',
-          sign: '牡牛座',
-          degrees: 1.153606,
-          longitude: 31.153606,
-          isRetrograde: false,
-          house: 7,
-        },
       ])
     })
 
@@ -308,7 +308,7 @@ describe('ホロスコープ → JSON', () => {
         positions: props.positions.map(([name, current]) => [name, name === 'sun' ? position(250) : current]),
       }
       const { points } = toHoroscopeResult(new Horoscope(night), SETTINGS)
-      expectToBeCloseTo(points[4], {
+      expectToBeCloseTo(points[1], {
         name: 'partOfFortune',
         nameJa: 'PoF',
         type: 'lot',
@@ -322,10 +322,10 @@ describe('ホロスコープ → JSON', () => {
     })
 
     it('惑星とのコンジャンクション', () => {
-      // テイル（182.37度）と水星（180.68度）、PoF（31.15度）と木星（29.13度）
+      // PoF（31.15度）と木星（29.13度）、テイル（182.37度）と水星（180.68度）
       expect(result.aspects.points).toEqual([
-        { point: 'southNode', planet: 'mercury', name: 'conjunction', degrees: 0, type: 'hard' },
         { point: 'partOfFortune', planet: 'jupiter', name: 'conjunction', degrees: 0, type: 'hard' },
+        { point: 'southNode', planet: 'mercury', name: 'conjunction', degrees: 0, type: 'hard' },
       ])
     })
 

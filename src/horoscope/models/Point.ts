@@ -10,8 +10,8 @@ import { angleFrom } from './House'
 // - Vx（バーテックス）: 真東・天頂・真西を通る円と、黄道が、西側で交わる点
 // - PoF（パート・オブ・フォーチュン）: Asc・太陽・月の位置から求める点
 //
-// 並び順は、表示の順番。日時だけで決まるものを先に、出生時刻と場所で決まるものを後に置く
-export const POINT_NAMES = ['northNode', 'southNode', 'lilith', 'vertex', 'partOfFortune'] as const
+// 並び順は、表示の順番。出生時刻と場所で決まるものを先に、日時だけで決まるものを後に置く
+export const POINT_NAMES = ['vertex', 'partOfFortune', 'northNode', 'southNode', 'lilith'] as const
 export type PointName = (typeof POINT_NAMES)[number]
 
 // NOTE: Vx には、記号が無い。PoF の記号（⊗ や ⨂）は、端末によって見た目が変わるので、使わない。

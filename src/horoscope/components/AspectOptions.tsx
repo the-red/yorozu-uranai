@@ -150,7 +150,7 @@ export default function AspectOptions({ settings, onChange }: Props) {
         </tbody>
       </table>
       <div className="aspect-options-note">
-        惑星とのアスペクトを求めます。感受点は、ヘッド・テイル、リリス、Vx、PoF です。
+        惑星とのアスペクトを求めます。感受点は、Vx、PoF、ヘッド・テイル、リリスです。
       </div>
     </OptionsPanel>
   )

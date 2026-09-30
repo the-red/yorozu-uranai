@@ -101,10 +101,10 @@ const PointChart = ({ horoscope, settings, visibility }: Props) => {
 
   // 並び順は、惑星の位置の表と同じ
   const rows: PointRow[] = [
-    ...asteroids,
-    ...points.filter((_) => !POINT_NEEDS_BIRTH_TIME[_.name]),
     ...angles,
     ...points.filter((_) => POINT_NEEDS_BIRTH_TIME[_.name]),
+    ...asteroids,
+    ...points.filter((_) => !POINT_NEEDS_BIRTH_TIME[_.name]),
   ]
   if (rows.length === 0) {
     return null

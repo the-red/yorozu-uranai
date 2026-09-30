@@ -14,15 +14,16 @@ import {
 describe('惑星以外のものを、表示するかどうか', () => {
   it('切り替えの単位と、並び順', () => {
     // 4つの小惑星は、まとめて切り替える。ヘッドとテイルは、必ず正反対にあるので、まとめる。Asc と Mc も、まとめる
-    expect(VISIBILITY_KEYS).toEqual(['asteroids', 'chiron', 'node', 'lilith', 'ascMc', 'vertex', 'partOfFortune'])
+    // 出生時刻と場所で決まるもの（Asc・Mc、Vx、PoF）を先に、日時だけで決まるものを後に置く
+    expect(VISIBILITY_KEYS).toEqual(['ascMc', 'vertex', 'partOfFortune', 'asteroids', 'chiron', 'node', 'lilith'])
     expect(VISIBILITY_KEYS.map((_) => VISIBILITY_LABELS[_])).toEqual([
+      'Asc・Mc',
+      'Vx',
+      'PoF',
       '小惑星',
       'キロン',
       'ヘッド・テイル',
       'リリス',
-      'Asc・Mc',
-      'Vx',
-      'PoF',
     ])
   })
 
@@ -48,7 +49,7 @@ describe('惑星以外のものを、表示するかどうか', () => {
     })
 
     it('表示するものを、表示の順に、カンマで区切って並べる', () => {
-      expect(toShowParam({ ...DEFAULT_VISIBILITY, lilith: true, chiron: true })).toEqual('chiron,lilith,ascMc')
+      expect(toShowParam({ ...DEFAULT_VISIBILITY, lilith: true, chiron: true })).toEqual('ascMc,chiron,lilith')
       expect(toShowParam({ ...ALL_HIDDEN, vertex: true })).toEqual('vertex')
     })
 
@@ -135,9 +136,10 @@ describe('惑星以外のものを、表示するかどうか', () => {
       expect(ASTEROID_NAMES.filter((_) => isAsteroidVisible(_, visibility))).toEqual(['chiron'])
     })
 
-    it('切り替えの欄は、Asc・Mc から2段目にする', () => {
-      // 1段目は、日時だけで決まるもの。2段目は、出生時刻と場所で決まるもの（Asc・Mc、Vx、PoF）
-      expect(VISIBILITY_KEYS.indexOf('ascMc')).toEqual(4)
+    it('切り替えの欄は、惑星を先頭にして、2つずつ並べられる', () => {
+      // 惑星 / Asc・Mc、Vx / PoF、小惑星 / キロン、ヘッド・テイル / リリス
+      expect(VISIBILITY_KEYS[0]).toEqual('ascMc')
+      expect((VISIBILITY_KEYS.length - 1) % 2).toEqual(0)
     })
 
     it('4つの小惑星は、まとめて切り替わる', () => {

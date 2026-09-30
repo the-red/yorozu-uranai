@@ -78,11 +78,11 @@ const main = async () => {
       ['juno', '水瓶座', 4],
       ['vesta', '蟹座', 9],
       ['chiron', '双子座', 8],
+      ['vertex', '双子座', 8],
+      ['partOfFortune', '牡牛座', 7],
       ['northNode', '牡羊座', 5],
       ['southNode', '天秤座', 11],
       ['lilith', '獅子座', 9],
-      ['vertex', '双子座', 8],
-      ['partOfFortune', '牡牛座', 7],
     ]
   )
   await checkJson(

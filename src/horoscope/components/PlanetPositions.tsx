@@ -52,16 +52,7 @@ export default function PlanetPositions({ horoscope, visibility }: Props) {
               <td>{planet.house}ハウス</td>
             </tr>
           ))}
-          {asteroids.map((asteroid) => (
-            <tr key={asteroid.name}>
-              <NameCell icon={asteroid.icon} name={ASTEROID_NAMES_JA[asteroid.name]} />
-              <td>{asteroid.sign}</td>
-              <td>{asteroid.formattedDegrees}</td>
-              <td>{asteroid.house}ハウス</td>
-            </tr>
-          ))}
-          {/* 日時だけで決まるもの（惑星、小惑星、ヘッド、テイル、リリス）の後に、出生時刻と場所で決まるものを並べる */}
-          {points.filter((_) => !POINT_NEEDS_BIRTH_TIME[_.name]).map(toRow)}
+          {/* 出生時刻と場所で決まるもの（Asc、Mc、Vx、PoF）を先に、日時だけで決まるものを後に並べる */}
           {visibility.ascMc && (
             <>
               <tr>
@@ -79,6 +70,15 @@ export default function PlanetPositions({ horoscope, visibility }: Props) {
             </>
           )}
           {points.filter((_) => POINT_NEEDS_BIRTH_TIME[_.name]).map(toRow)}
+          {asteroids.map((asteroid) => (
+            <tr key={asteroid.name}>
+              <NameCell icon={asteroid.icon} name={ASTEROID_NAMES_JA[asteroid.name]} />
+              <td>{asteroid.sign}</td>
+              <td>{asteroid.formattedDegrees}</td>
+              <td>{asteroid.house}ハウス</td>
+            </tr>
+          ))}
+          {points.filter((_) => !POINT_NEEDS_BIRTH_TIME[_.name]).map(toRow)}
         </tbody>
       </table>
     </div>

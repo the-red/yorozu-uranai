@@ -234,7 +234,7 @@ describe('感受点と、惑星のアスペクト', () => {
     getPointAspects(horoscope, settings).map(({ point, planet, aspect }) => `${point}-${planet} ${aspect.degrees}`)
 
   it('コンジャンクションだけ', () => {
-    expect(names(SETTINGS.point)).toEqual(['southNode-mercury 0', 'partOfFortune-jupiter 0'])
+    expect(names(SETTINGS.point)).toEqual(['partOfFortune-jupiter 0', 'southNode-mercury 0'])
   })
   it('メジャーアスペクトにすると、ヘッドとテイルで、同じ組み合わせが2回ずつ出る', () => {
     const nodes = names({ aspects: 'major', orb: 3 }).filter((_) => /Node/.test(_))

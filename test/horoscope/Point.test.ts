@@ -78,14 +78,14 @@ const getNodeConjunctions = (horoscope: Horoscope, orb: number) =>
 
 describe('感受点', () => {
   it('並び順', () => {
-    // 日時だけで決まるものを先に、出生時刻と場所で決まるものを後に置く
-    expect(POINT_NAMES).toEqual(['northNode', 'southNode', 'lilith', 'vertex', 'partOfFortune'])
+    // 出生時刻と場所で決まるものを先に、日時だけで決まるものを後に置く
+    expect(POINT_NAMES).toEqual(['vertex', 'partOfFortune', 'northNode', 'southNode', 'lilith'])
     expect(Object.keys(new Horoscope(props).points)).toEqual([...POINT_NAMES])
   })
 
   it('求め方', () => {
     const horoscope = new Horoscope(props)
-    expect(POINT_NAMES.map((_) => getPointVariant(_, horoscope))).toEqual(['true', 'true', 'mean', null, 'day'])
+    expect(POINT_NAMES.map((_) => getPointVariant(_, horoscope))).toEqual([null, 'day', 'true', 'true', 'mean'])
   })
 
   it('出生時刻と場所が無いと、求められないもの', () => {
@@ -275,10 +275,10 @@ describe('感受点と、惑星のコンジャンクション', () => {
   })
 
   it('感受点の並び順に求める', () => {
-    // テイル（182.37度）と水星（180.68度）、PoF（31.15度）と木星（29.13度）
+    // PoF（31.15度）と木星（29.13度）、テイル（182.37度）と水星（180.68度）
     expect(getPointConjunctions(new Horoscope(props), POINT_ORB)).toEqual([
-      { point: 'southNode', planet: 'mercury' },
       { point: 'partOfFortune', planet: 'jupiter' },
+      { point: 'southNode', planet: 'mercury' },
     ])
   })
 

@@ -50,22 +50,22 @@ describe('/horoscope.json', () => {
     expect(json.raw.houses.vertex).toBeCloseTo(61.847894, NUM_DIGITS)
 
     expect(json.result.points.map((_: any) => [_.name, _.nameJa, _.type, _.variant, _.sign, _.house])).toEqual([
+      ['vertex', 'Vx', 'angle', null, '双子座', 8],
+      ['partOfFortune', 'PoF', 'lot', 'day', '牡牛座', 7],
       ['northNode', 'ヘッド', 'node', 'true', '牡羊座', 5],
       ['southNode', 'テイル', 'node', 'true', '天秤座', 11],
       ['lilith', 'リリス', 'apogee', 'mean', '獅子座', 9],
-      ['vertex', 'Vx', 'angle', null, '双子座', 8],
-      ['partOfFortune', 'PoF', 'lot', 'day', '牡牛座', 7],
     ])
     expect(json.result.points.map((_: any) => _.longitude)).toEqual([
+      expect.closeTo(61.847894, NUM_DIGITS),
+      expect.closeTo(31.153606, NUM_DIGITS),
       expect.closeTo(2.374847, NUM_DIGITS),
       expect.closeTo(182.374847, NUM_DIGITS),
       expect.closeTo(122.301895, NUM_DIGITS),
-      expect.closeTo(61.847894, NUM_DIGITS),
-      expect.closeTo(31.153606, NUM_DIGITS),
     ])
     expect(json.result.aspects.points).toEqual([
-      { point: 'southNode', planet: 'mercury', name: 'conjunction', degrees: 0, type: 'hard' },
       { point: 'partOfFortune', planet: 'jupiter', name: 'conjunction', degrees: 0, type: 'hard' },
+      { point: 'southNode', planet: 'mercury', name: 'conjunction', degrees: 0, type: 'hard' },
     ])
     // 惑星は、10個のまま
     expect(json.result.planets).toHaveLength(10)

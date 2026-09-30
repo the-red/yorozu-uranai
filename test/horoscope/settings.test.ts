@@ -22,7 +22,7 @@ describe('画面の設定 ⇄ URLのハッシュ', () => {
       aspects: { ...DEFAULT_ASPECT_SETTINGS, orb: 8, minor: [30, 150] },
     }
     // カンマは、そのまま入れる（%2C にしない）
-    expect(toSettingsHash(settings)).toEqual('show=chiron,ascMc&orb=8&minor=30,150')
+    expect(toSettingsHash(settings)).toEqual('show=ascMc,chiron&orb=8&minor=30,150')
   })
 
   it('片方だけ', () => {

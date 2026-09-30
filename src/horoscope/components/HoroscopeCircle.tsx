@@ -443,8 +443,6 @@ export default function HoroscopeCircle({
   // 並び順は、惑星の位置の表と同じ。同じ黄経のものは、この順に並ぶ
   const bodies: Body[] = [
     ...Object.values(planets).map(toBody),
-    ...visibleAsteroids.map(toBody),
-    ...otherPoints.map(toBody),
     // NOTE: Asc と Mc は、ハウスの線が位置を示しているときは、引き出し線を引かない。
     // ハウスシステムによっては、ハウスの起点にならない（イコールの Mc、ホールサインの Asc と Mc など）。そのときは、引く
     ...(visibility.ascMc
@@ -460,6 +458,8 @@ export default function HoroscopeCircle({
         ]
       : []),
     ...localPoints.map(toBody),
+    ...visibleAsteroids.map(toBody),
+    ...otherPoints.map(toBody),
   ]
   const shown = spreadLongitudes(
     bodies.map((_) => _.position.longitude),

@@ -4,16 +4,14 @@ import useImage from 'use-image'
 import { Stage, Layer, Circle, Line, Shape, Text, Image as KonvaImage } from 'react-konva'
 import { staticPath } from '../../lib/$path'
 import {
+  AspectSettings,
   Horoscope,
-  PlanetsMap,
   Position,
-  ALL_PLANETS,
-  MajorAspect,
   POINT_NEEDS_BIRTH_TIME,
   Visibility,
+  getPlanetAspects,
   isAsteroidVisible,
   isPointVisible,
-  Planet,
   spreadLongitudes,
 } from '../models'
 import type { House } from '../models/House'
@@ -380,51 +378,42 @@ const AspectLine = ({
     />
   )
 }
-const AspectLines = ({ frame, planets, orb }: { frame: Frame; planets: PlanetsMap; orb: number }) => {
-  const majorAspects: Record<string, [Planet, Planet, MajorAspect]> = {}
-  ALL_PLANETS.forEach((x) => {
-    const planetX = planets[x]
-    ALL_PLANETS.forEach((y) => {
-      const planetY = planets[y]
-      if (planetX.name === planetY.name) {
-        return
-      }
+// アスペクトの線の色。表の文字の色と同じ
+const ASPECT_COLORS = { hard: 'red', soft: 'blue', minor: 'green' } as const
 
-      // sun,moonとmoon,sunを同一化するキー
-      const key = [planetX.name, planetY.name].sort().join()
-
-      const majorAspect = planetX.majorAspect(planetY, orb)
-      if (majorAspect && !majorAspects[key]) {
-        majorAspects[key] = [planetX, planetY, majorAspect]
-      }
-    })
-  })
-
-  return (
-    <>
-      {Object.values(majorAspects).map(([from, to, aspect], i) => (
-        <AspectLine
-          key={i}
-          frame={frame}
-          from={from.position}
-          to={to.position}
-          color={aspect.type === 'hard' ? 'red' : 'blue'}
-          scale={RINGS.aspect}
-        />
-      ))}
-    </>
-  )
-}
+// 惑星どうしのアスペクトの線
+const AspectLines = ({
+  frame,
+  horoscope,
+  settings,
+}: {
+  frame: Frame
+  horoscope: Horoscope
+  settings: AspectSettings
+}) => (
+  <>
+    {getPlanetAspects(horoscope, settings).map(({ planets: [from, to], aspect }) => (
+      <AspectLine
+        key={`${from},${to}`}
+        frame={frame}
+        from={horoscope.planets[from].position}
+        to={horoscope.planets[to].position}
+        color={ASPECT_COLORS[aspect.type]}
+        scale={RINGS.aspect}
+      />
+    ))}
+  </>
+)
 
 export default function HoroscopeCircle({
   horoscope,
   radius,
-  orb,
+  settings,
   visibility,
 }: {
   horoscope: Horoscope
   radius: number // 外周の半径
-  orb: number
+  settings: AspectSettings
   visibility: Visibility
 }) {
   const { planets, asteroids, points, house } = horoscope
@@ -475,7 +464,7 @@ export default function HoroscopeCircle({
 
         {/* 惑星、感受点、Asc、Mc */}
         <BodyIcons frame={frame} bodies={bodies.map((body, i) => ({ ...body, shown: shown[i] }))} />
-        <AspectLines frame={frame} planets={planets} orb={orb} />
+        <AspectLines frame={frame} horoscope={horoscope} settings={settings} />
       </Layer>
     </Stage>
   )

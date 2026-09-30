@@ -1,5 +1,7 @@
 export * from './Horoscope'
 export * from './Planet'
+export * from './Aspect'
+export * from './AspectSettings'
 export * from './Point'
 export * from './Asteroid'
 export * from './Position'

@@ -1,5 +1,6 @@
 import type { AsteroidName, PlanetName } from '../../astronomy/types'
 import { ASTEROID_ICONS } from './Asteroid'
+import { MAJOR_ASPECTS, MINOR_ASPECTS, MajorAspect, MinorAspect, MinorDegrees, findAspect } from './Aspect'
 import { Position } from './Position'
 import { House } from './House'
 import { POINT_ICONS, PointName } from './Point'
@@ -31,32 +32,13 @@ export const PLANET_NAMES_JA = {
   pluto: '冥王星',
 } as const
 
-const ALL_MAJOR_ASPECTS = [
-  { degrees: 0, name: 'conjunction', type: 'hard' },
-  { degrees: 60, name: 'sextile', type: 'soft' },
-  { degrees: 90, name: 'square', type: 'hard' },
-  { degrees: 120, name: 'trine', type: 'soft' },
-  { degrees: 180, name: 'opposition', type: 'hard' },
-] as const
-export type MajorAspect = (typeof ALL_MAJOR_ASPECTS)[number]
-
-const ALL_MINOR_ASPECTS = [
-  { degrees: 30, name: 'semi-sextile' },
-  { degrees: 45, name: 'semi-square' },
-  { degrees: 72, name: 'quintile' },
-  { degrees: 135, name: 'sesquiquadrate' },
-  { degrees: 144, name: 'biquintile' },
-  { degrees: 150, name: 'quincunx' },
-] as const
-type MinorAspect = (typeof ALL_MINOR_ASPECTS)[number]
-
 const ICONS = { ...PLANET_ICONS, ...ASTEROID_ICONS, ...POINT_ICONS }
 
 // 惑星。小惑星と感受点も、同じ形で扱う
 export class Planet<Name extends PlanetName | AsteroidName | PointName = PlanetName> {
   static ALL_SIGNS = Position.ALL_SIGNS
-  static ALL_MAJOR_ASPECTS = ALL_MAJOR_ASPECTS
-  static ALL_MINOR_ASPECTS = ALL_MINOR_ASPECTS
+  static ALL_MAJOR_ASPECTS = MAJOR_ASPECTS
+  static ALL_MINOR_ASPECTS = MINOR_ASPECTS
 
   constructor(
     readonly position: Position,
@@ -128,12 +110,12 @@ export class Planet<Name extends PlanetName | AsteroidName | PointName = PlanetN
   }
 
   majorAspect(target: Planet, orb: number): MajorAspect | undefined {
-    const diff = this.diffLongitude(target.longitude)
-    return ALL_MAJOR_ASPECTS.find((aspect) => Math.abs(diff - aspect.degrees) <= orb)
+    return findAspect(this.diffLongitude(target.longitude), MAJOR_ASPECTS, orb)?.aspect
   }
 
-  minorAspect(target: Planet, orb: number): MinorAspect | undefined {
-    const diff = this.diffLongitude(target.longitude)
-    return ALL_MINOR_ASPECTS.find((aspect) => Math.abs(diff - aspect.degrees) <= orb)
+  // degrees を渡すと、その角度のマイナーアスペクトだけを求める
+  minorAspect(target: Planet, orb: number, degrees?: readonly MinorDegrees[]): MinorAspect | undefined {
+    const aspects = degrees ? MINOR_ASPECTS.filter((_) => degrees.includes(_.degrees)) : MINOR_ASPECTS
+    return findAspect(this.diffLongitude(target.longitude), aspects, orb)?.aspect
   }
 }

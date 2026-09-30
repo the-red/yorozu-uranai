@@ -1,3 +1,4 @@
+import { DEFAULT_ASPECT_SETTINGS } from '../src/horoscope/models'
 import { describe, it, expect, vi, afterEach } from 'vitest'
 import { JsonApiError, fetchJson, toErrorGuide, toJsonUrl } from '../src/lib/fetch-json'
 import { parseHoroscopeQuery, parseSuimeiQuery } from '../src/lib/json-query'
@@ -38,7 +39,10 @@ describe('フォームの値 → JSONのURL', () => {
   })
   it('APIが解釈すると、フォームの値に戻る', () => {
     const { address, gender, ...rest } = formValues
-    expect(parseHoroscopeQuery(toQuery(toJsonUrl('/horoscope', formValues)))).toEqual({ ok: true, input: rest })
+    expect(parseHoroscopeQuery(toQuery(toJsonUrl('/horoscope', formValues)))).toEqual({
+      ok: true,
+      input: { ...rest, aspects: DEFAULT_ASPECT_SETTINGS },
+    })
 
     const { address: _, ...suimei } = formValues
     expect(parseSuimeiQuery(toQuery(toJsonUrl('/suimei', formValues, { thisYear: '2026' })))).toEqual({

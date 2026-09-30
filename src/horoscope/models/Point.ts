@@ -1,5 +1,3 @@
-import type { PlanetName } from '../../astronomy/types'
-import { ALL_PLANETS } from './ALL_PLANETS'
 import type { Horoscope } from './Horoscope'
 import { angleFrom } from './House'
 
@@ -85,21 +83,3 @@ export const getPointVariant = (name: PointName, { planets, house }: Horoscope):
       return isDayBirth(house.ascendant.longitude, planets.sun.longitude) ? 'day' : 'night'
   }
 }
-
-// 惑星とのコンジャンクションのオーブ。感受点は、惑星より狭く取る
-// TODO:固定値ではなく、ユーザーが画面から指定した値を使うようにしたい
-export const POINT_ORB = 3
-
-export type PointConjunction = { point: PointName; planet: PlanetName }
-
-// 惑星とのコンジャンクション
-// NOTE: テイルは、ヘッドの反対側にある。ほかのアスペクトまで求めると、同じ情報が2回ずつ出る
-// （テイルとのセクスタイルは、ヘッドとのトライン）ので、コンジャンクションだけを求める。
-// ほかの感受点も、表をそろえるために、コンジャンクションだけにしている
-export const getPointConjunctions = ({ planets, points }: Horoscope, orb: number): PointConjunction[] =>
-  POINT_NAMES.flatMap((point) =>
-    ALL_PLANETS.filter((planet) => planets[planet].diffLongitude(points[point].longitude) <= orb).map((planet) => ({
-      point,
-      planet,
-    }))
-  )

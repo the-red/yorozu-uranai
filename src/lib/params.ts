@@ -23,6 +23,17 @@ export type Query = Partial<{
   gender: QueryValue
 }>
 
+// フォームの入力になるクエリ
+export const FORM_QUERY_KEYS = [
+  'name',
+  'date',
+  'time',
+  'zone',
+  'lat',
+  'lng',
+  'gender',
+] as const satisfies readonly (keyof Query)[]
+
 export const QUERY_DATE_FORMAT = 'yyyyMMdd' as const
 export const QUERY_TIME_FORMAT = 'HHmm' as const
 export const QUERY_TIME_UNKNOWN = 'unknown' as const

@@ -1,4 +1,5 @@
 import { DateTime, IANAZone } from 'luxon'
+import { AspectSettings, parseAspectQuery, toAspectQuery } from '../horoscope/models/AspectSettings'
 import {
   FORM_DATE_FORMAT,
   FORM_TIME_FORMAT,
@@ -20,6 +21,7 @@ export type HoroscopeInput = {
   zone: string
   lat: number
   lng: number
+  aspects: AspectSettings // アスペクトの求め方。指定が無い項目は、最初の状態
 }
 export type SuimeiInput = {
   date: string
@@ -145,6 +147,13 @@ class Parser {
     return value.trim().replace(/\s+/g, ' ').toUpperCase()
   }
 
+  // アスペクトの求め方。どれも任意
+  aspects() {
+    const { settings, invalid } = parseAspectQuery(this.query)
+    invalid.forEach((name) => this.invalid(name))
+    return settings
+  }
+
   result<T>(input: { [K in keyof T]: T[K] | undefined }): Parsed<T> {
     if (this.problems.length > 0) {
       return {
@@ -167,7 +176,16 @@ export const parseHoroscopeQuery = (query: JsonQuery): Parsed<HoroscopeInput> =>
   const zone = parser.zone()
   const lat = parser.degrees('lat', 90)
   const lng = parser.degrees('lng', 180)
-  return parser.result<HoroscopeInput>({ date, time: time?.time, timeUnknown: time?.timeUnknown, zone, lat, lng })
+  const aspects = parser.aspects()
+  return parser.result<HoroscopeInput>({
+    date,
+    time: time?.time,
+    timeUnknown: time?.timeUnknown,
+    zone,
+    lat,
+    lng,
+    aspects,
+  })
 }
 
 export const parseSuimeiQuery = (query: JsonQuery): Parsed<SuimeiInput> => {
@@ -216,4 +234,5 @@ export const toPageQuery = (input: PageInput): Record<string, string> => ({
   ...(input.lat != null && { lat: String(input.lat) }),
   ...(input.lng !== undefined && { lng: String(input.lng) }),
   ...(input.gender !== undefined && { gender: input.gender }),
+  ...(input.aspects !== undefined && toAspectQuery(input.aspects)),
 })

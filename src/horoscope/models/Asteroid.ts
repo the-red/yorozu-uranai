@@ -1,6 +1,4 @@
-import type { AsteroidName, PlanetName } from '../../astronomy/types'
-import { ALL_PLANETS } from './ALL_PLANETS'
-import type { Horoscope } from './Horoscope'
+import type { AsteroidName } from '../../astronomy/types'
 
 // 小惑星（セレス、パラス、ジュノ、ベスタ）と、キロン
 // 惑星と同じく、実際にある天体。サインとハウスを読み、逆行もする
@@ -32,16 +30,3 @@ export const ASTEROID_TYPES = {
   juno: 'asteroid',
   vesta: 'asteroid',
 } as const
-
-export type AsteroidConjunction = { asteroid: AsteroidName; planet: PlanetName }
-
-// 惑星とのコンジャンクション
-// NOTE: 感受点と同じ表に並べるので、感受点と同じく、コンジャンクションだけを求める
-export const getAsteroidConjunctions = ({ planets, asteroids }: Horoscope, orb: number): AsteroidConjunction[] =>
-  asteroids
-    ? ASTEROID_NAMES.flatMap((asteroid) =>
-        ALL_PLANETS.filter((planet) => planets[planet].diffLongitude(asteroids[asteroid].longitude) <= orb).map(
-          (planet) => ({ asteroid, planet })
-        )
-      )
-    : []

@@ -1,15 +1,36 @@
 import { DateTime } from 'luxon'
 import type { NextRouter } from 'next/router'
-import { Dispatch, SetStateAction, useEffect } from 'react'
+import { Dispatch, SetStateAction, useEffect, useRef } from 'react'
 import { TOKYO_STATION } from '../lib/location'
-import { queryToFormValues, FORM_DATE_FORMAT, FORM_TIME_FORMAT } from '../lib/params'
+import { queryToFormValues, FORM_DATE_FORMAT, FORM_TIME_FORMAT, FORM_QUERY_KEYS } from '../lib/params'
 import type { FormValues } from './useYorozuUranaiForm'
 import { fetchAddressFromLatLng } from '../lib/fetch-geocode'
 
 export const useFormValues = (setFormValues: Dispatch<SetStateAction<FormValues | undefined>>, router: NextRouter) => {
+  // 直前の画面の移動が、shallow だったか
+  const shallow = useRef(false)
+  // 読み取り済みの入力
+  const loaded = useRef<string>(undefined)
+  useEffect(() => {
+    const onStart = (_url: string, { shallow: isShallow }: { shallow: boolean }) => {
+      shallow.current = isShallow
+    }
+    router.events.on('routeChangeStart', onStart)
+    return () => router.events.off('routeChangeStart', onStart)
+  }, [router.events])
+
   useEffect(() => {
     const setDefaultFormValues = async () => {
       if (router.isReady) {
+        // 入力に関係のないクエリ（アスペクトの求め方など）だけを、shallow で変えたときは、読み直さない。
+        // 読み直すと、住所の検索と、結果の取得が走る
+        // NOTE: 同じ入力でも、フォームを送信したとき（shallow でない）は、読み直す。失敗のあとの再試行のため
+        const key = JSON.stringify(FORM_QUERY_KEYS.map((_) => router.query[_] ?? null))
+        if (shallow.current && loaded.current === key) {
+          return
+        }
+        loaded.current = key
+
         const f = queryToFormValues(router.query)
         const now = DateTime.local({ zone: f.zone })
         const zone = now.zoneName

@@ -117,6 +117,9 @@
 .horoscope .hard-aspect {
   color: red;
 }
+.horoscope .minor-aspect {
+  color: green;
+}
 
 /* スマホ用 */
 @media all and (max-width: 767.98px) {
@@ -297,4 +300,62 @@
   padding-left: 30px;
   font-size: 13px;
   line-height: 1.6;
+}
+/* アスペクトの求め方の調整 */
+.horoscope .aspect-options {
+  width: 100%;
+  margin-top: 4px;
+  border-collapse: collapse;
+}
+.horoscope .aspect-options th,
+.horoscope .aspect-options td {
+  padding: 3px 5px 3px 0;
+  font-weight: normal;
+  text-align: left;
+  vertical-align: middle;
+}
+/* 行の見出し（惑星、Asc・Mc など）。折り返さない */
+.horoscope .aspect-options tbody th {
+  white-space: nowrap;
+}
+.horoscope .aspect-options thead th {
+  font-size: 13px;
+}
+/* オーブの列 */
+.horoscope .aspect-options th:last-child,
+.horoscope .aspect-options td:last-child {
+  padding-right: 0;
+  text-align: right;
+}
+/* マイナーアスペクト。3つずつ、2段に並べる */
+.horoscope .aspect-options-minor {
+  display: grid;
+  grid-template-columns: repeat(3, max-content);
+  gap: 2px 6px;
+}
+.horoscope .aspect-options-minor label {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  cursor: pointer;
+}
+.horoscope .aspect-options-note {
+  padding-top: 8px;
+  font-size: 13px;
+  line-height: 1.6;
+}
+.horoscope .aspect-options-reset {
+  display: block;
+  margin-top: 8px;
+  padding: 4px 10px;
+  border: 1px solid #fff;
+  border-radius: 3px;
+  background-color: transparent;
+  color: #fff;
+  font-size: 13px;
+  cursor: pointer;
+}
+.horoscope .aspect-options-reset:disabled {
+  opacity: 0.5;
+  cursor: default;
 }

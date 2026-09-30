@@ -1,17 +1,23 @@
 import { describe, it, expect } from 'vitest'
 import {
+  DEFAULT_ASPECT_SETTINGS,
   Horoscope,
   HoroscopeProps,
   POINT_NAMES,
   POINT_NEEDS_BIRTH_TIME,
-  POINT_ORB,
   PlanetName,
   getPartOfFortune,
-  getPointConjunctions,
+  getPointAspects,
   getPointVariant,
   isDayBirth,
 } from '../../src/horoscope/models'
 import { NUM_DIGITS } from '../test-util'
+
+const POINT_ORB = DEFAULT_ASPECT_SETTINGS.point.orb
+
+// 感受点と、惑星のコンジャンクション
+const getPointConjunctions = (horoscope: Horoscope, orb: number) =>
+  getPointAspects(horoscope, { aspects: 'conjunction', orb }).map(({ point, planet }) => ({ point, planet }))
 
 const position = (longitude: number, isRetrograde = false) =>
   ({ longitude, isRetrograde }) as HoroscopeProps['positions'][number][1]

@@ -392,42 +392,42 @@ describe('Planet', () => {
       it('ちょうど基準値', () => {
         const planet1 = new Planet(new Position(10), 'sun', false, house)
         const planet2 = new Planet(new Position(40), 'sun', false, house)
-        expect(planet1.minorAspect(planet2, orb)).toEqual({ degrees: 30, name: 'semi-sextile' })
+        expect(planet1.minorAspect(planet2, orb)).toEqual({ degrees: 30, name: 'semi-sextile', type: 'minor' })
       })
     })
     describe('45度：セミスクエア', () => {
       it('ちょうど基準値', () => {
         const planet1 = new Planet(new Position(10), 'sun', false, house)
         const planet2 = new Planet(new Position(55), 'sun', false, house)
-        expect(planet1.minorAspect(planet2, orb)).toEqual({ degrees: 45, name: 'semi-square' })
+        expect(planet1.minorAspect(planet2, orb)).toEqual({ degrees: 45, name: 'semi-square', type: 'minor' })
       })
     })
     describe('72度：クィンタイル', () => {
       it('ちょうど基準値', () => {
         const planet1 = new Planet(new Position(10), 'sun', false, house)
         const planet2 = new Planet(new Position(82), 'sun', false, house)
-        expect(planet1.minorAspect(planet2, orb)).toEqual({ degrees: 72, name: 'quintile' })
+        expect(planet1.minorAspect(planet2, orb)).toEqual({ degrees: 72, name: 'quintile', type: 'minor' })
       })
     })
     describe('135度：セスキコードレート', () => {
       it('ちょうど基準値', () => {
         const planet1 = new Planet(new Position(10), 'sun', false, house)
         const planet2 = new Planet(new Position(145), 'sun', false, house)
-        expect(planet1.minorAspect(planet2, orb)).toEqual({ degrees: 135, name: 'sesquiquadrate' })
+        expect(planet1.minorAspect(planet2, orb)).toEqual({ degrees: 135, name: 'sesquiquadrate', type: 'minor' })
       })
     })
     describe('144度：バイクインタイル', () => {
       it('ちょうど基準値', () => {
         const planet1 = new Planet(new Position(10), 'sun', false, house)
         const planet2 = new Planet(new Position(154), 'sun', false, house)
-        expect(planet1.minorAspect(planet2, orb)).toEqual({ degrees: 144, name: 'biquintile' })
+        expect(planet1.minorAspect(planet2, orb)).toEqual({ degrees: 144, name: 'biquintile', type: 'minor' })
       })
     })
     describe('150度：クインカンクス', () => {
       it('ちょうど基準値', () => {
         const planet1 = new Planet(new Position(10), 'sun', false, house)
         const sign150 = new Planet(new Position(160), 'sun', false, house)
-        expect(planet1.minorAspect(sign150, orb)).toEqual({ degrees: 150, name: 'quincunx' })
+        expect(planet1.minorAspect(sign150, orb)).toEqual({ degrees: 150, name: 'quincunx', type: 'minor' })
       })
     })
 
@@ -439,10 +439,10 @@ describe('Planet', () => {
         )
 
       it('セミセクスタイル', () => {
-        expect(aspect(345, 15)).toEqual({ degrees: 30, name: 'semi-sextile' })
+        expect(aspect(345, 15)).toEqual({ degrees: 30, name: 'semi-sextile', type: 'minor' })
       })
       it('クインカンクス', () => {
-        expect(aspect(300, 90)).toEqual({ degrees: 150, name: 'quincunx' })
+        expect(aspect(300, 90)).toEqual({ degrees: 150, name: 'quincunx', type: 'minor' })
       })
     })
   })

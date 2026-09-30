@@ -1,29 +1,19 @@
 import type { AsteroidName, PlanetName } from '../../astronomy/types'
 import { ALL_PLANETS } from './ALL_PLANETS'
+import type { Aspect, MajorAspect } from './Aspect'
 import {
-  ASTEROID_NAMES,
-  ASTEROID_NAMES_JA,
-  ASTEROID_TYPES,
-  AsteroidConjunction,
-  getAsteroidConjunctions,
-} from './Asteroid'
+  AngleName,
+  AspectSettings,
+  getAngleAspects,
+  getAsteroidAspects,
+  getPlanetAspects,
+  getPointAspects,
+} from './AspectSettings'
+import { ASTEROID_NAMES, ASTEROID_NAMES_JA, ASTEROID_TYPES } from './Asteroid'
 import type { Horoscope } from './Horoscope'
-import {
-  POINT_NAMES,
-  POINT_NAMES_JA,
-  POINT_TYPES,
-  PointConjunction,
-  PointName,
-  PointVariant,
-  getPointConjunctions,
-  getPointVariant,
-} from './Point'
-import { MajorAspect, PLANET_NAMES_JA, Planet } from './Planet'
+import { POINT_NAMES, POINT_NAMES_JA, POINT_TYPES, PointName, PointVariant, getPointVariant } from './Point'
+import { PLANET_NAMES_JA, Planet } from './Planet'
 import { Position } from './Position'
-
-// アスペクトのオーブ
-// TODO:固定値ではなく、ユーザーが画面から指定した値を使うようにしたい
-export const ORB = 6
 
 type PositionJson = {
   sign: Position['sign']
@@ -60,24 +50,15 @@ type AsteroidJson = PositionJson & {
   house: number | null
 }
 
-type AspectJson = {
-  planets: [PlanetName, PlanetName]
-  name: MajorAspect['name']
-  degrees: MajorAspect['degrees']
-  type: MajorAspect['type']
-}
+// アスペクトの名前と、角度と、種類（hard / soft / minor）
+type AspectKindJson<T extends Aspect = Aspect> = Pick<T, 'name' | 'degrees' | 'type'>
 
-// 感受点と、惑星のコンジャンクション
-type PointAspectJson = PointConjunction & {
-  name: 'conjunction'
-  degrees: 0
-}
+type AspectJson<T extends Aspect = Aspect> = AspectKindJson<T> & { planets: [PlanetName, PlanetName] }
 
-// 小惑星と、惑星のコンジャンクション
-type AsteroidAspectJson = AsteroidConjunction & {
-  name: 'conjunction'
-  degrees: 0
-}
+// 惑星以外のものと、惑星のアスペクト
+type AngleAspectJson = AspectKindJson<MajorAspect> & { angle: AngleName; planet: PlanetName }
+type AsteroidAspectJson = AspectKindJson<MajorAspect> & { asteroid: AsteroidName; planet: PlanetName }
+type PointAspectJson = AspectKindJson<MajorAspect> & { point: PointName; planet: PlanetName }
 
 export type HoroscopeResult = {
   planets: PlanetJson[]
@@ -89,18 +70,26 @@ export type HoroscopeResult = {
     cusps: (PositionJson & { house: number })[]
   }
   aspects: {
-    orb: number
-    major: AspectJson[]
-    pointOrb: number // 感受点と、小惑星のオーブ
-    points: PointAspectJson[]
+    settings: AspectSettings // アスペクトの求め方（オーブなど）
+    major: AspectJson<MajorAspect>[]
+    minor: AspectJson[] // settings.minor で選んだものだけ
+    angles: AngleAspectJson[]
     asteroids: AsteroidAspectJson[]
+    points: PointAspectJson[]
   }
 }
 
 const toPositionJson = ({ sign, degrees, longitude }: Position): PositionJson => ({ sign, degrees, longitude })
 
-export const toHoroscopeResult = (horoscope: Horoscope, orb: number, pointOrb: number): HoroscopeResult => {
+// NOTE: オブジェクトを展開（...）すると、アスペクトの項目が先に並ぶ。今までの並び順（相手が先）を保つ
+const toAspectKindJson = <T extends Aspect>({ name, degrees, type }: T): AspectKindJson<T> => ({ name, degrees, type })
+
+export const toHoroscopeResult = (horoscope: Horoscope, settings: AspectSettings): HoroscopeResult => {
   const { planets, asteroids, points, house } = horoscope
+  const planetAspects = getPlanetAspects(horoscope, settings).map(({ planets, aspect }) => ({
+    planets,
+    ...toAspectKindJson(aspect),
+  }))
   return {
     planets: ALL_PLANETS.map((name) => {
       const planet = planets[name]
@@ -146,24 +135,24 @@ export const toHoroscopeResult = (horoscope: Horoscope, orb: number, pointOrb: n
       cusps: house.cusps.map((cusp, i) => ({ house: i + 1, ...toPositionJson(cusp) })),
     },
     aspects: {
-      orb,
-      // 惑星の組み合わせごとに1つ
-      major: ALL_PLANETS.flatMap((from, i) =>
-        ALL_PLANETS.slice(i + 1).flatMap((to) => {
-          const aspect = planets[from].majorAspect(planets[to], orb)
-          return aspect ? [{ planets: [from, to] as [PlanetName, PlanetName], ...aspect }] : []
-        })
-      ),
-      pointOrb,
-      points: getPointConjunctions(horoscope, pointOrb).map((_) => ({
-        ..._,
-        name: 'conjunction' as const,
-        degrees: 0 as const,
+      settings,
+      // 惑星の組み合わせごとに1つ。メジャーかマイナーの、どちらかに入る
+      major: planetAspects.filter((_): _ is AspectJson<MajorAspect> => _.type !== 'minor'),
+      minor: planetAspects.filter((_) => _.type === 'minor'),
+      angles: getAngleAspects(horoscope, settings.ascMc).map(({ angle, planet, aspect }) => ({
+        angle,
+        planet,
+        ...toAspectKindJson(aspect),
       })),
-      asteroids: getAsteroidConjunctions(horoscope, pointOrb).map((_) => ({
-        ..._,
-        name: 'conjunction' as const,
-        degrees: 0 as const,
+      asteroids: getAsteroidAspects(horoscope, settings.asteroid).map(({ asteroid, planet, aspect }) => ({
+        asteroid,
+        planet,
+        ...toAspectKindJson(aspect),
+      })),
+      points: getPointAspects(horoscope, settings.point).map(({ point, planet, aspect }) => ({
+        point,
+        planet,
+        ...toAspectKindJson(aspect),
       })),
     },
   }

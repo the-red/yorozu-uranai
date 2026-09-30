@@ -102,6 +102,17 @@ const main = async () => {
   await checkError(`/horoscope.json?${QUERY.replace('lat=43.06', 'lat=80')}`, undefined, 400, 'calculation_failed', [
     'lat',
   ])
+  // アスペクトの求め方
+  await checkJson(
+    `/horoscope.json?${QUERY}&orb=1&minor=150`,
+    'horoscope',
+    ({ result }) => [...result.aspects.major, ...result.aspects.minor].map((_) => [..._.planets, _.degrees]),
+    [
+      ['sun', 'saturn', 90],
+      ['mercury', 'jupiter', 150],
+    ]
+  )
+  await checkError(`/horoscope.json?${QUERY}&orb=abc`, undefined, 400, 'invalid_query', ['orb'])
   await checkError(`/suimei.json?${QUERY.replace('gender=woman', 'gender=male')}`, undefined, 400, 'invalid_query', [
     'gender',
   ])

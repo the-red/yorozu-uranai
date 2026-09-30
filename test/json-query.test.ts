@@ -7,6 +7,7 @@ import {
   toDate,
   toPageQuery,
 } from '../src/lib/json-query'
+import { DEFAULT_ASPECT_SETTINGS } from '../src/horoscope/models'
 
 const horoscopeQuery = { date: '19870908', time: '0853', zone: 'Asia/Tokyo', lat: '43.06', lng: '141.35' }
 const suimeiQuery = { date: '19870908', time: '0853', zone: 'Asia/Tokyo', lng: '141.35', gender: 'woman' }
@@ -21,7 +22,15 @@ describe('ホロスコープのクエリ', () => {
   it('フォームと同じ形式の入力にする', () => {
     expect(parseHoroscopeQuery(horoscopeQuery)).toEqual({
       ok: true,
-      input: { date: '1987-09-08', time: '08:53', timeUnknown: false, zone: 'Asia/Tokyo', lat: 43.06, lng: 141.35 },
+      input: {
+        date: '1987-09-08',
+        time: '08:53',
+        timeUnknown: false,
+        zone: 'Asia/Tokyo',
+        lat: 43.06,
+        lng: 141.35,
+        aspects: DEFAULT_ASPECT_SETTINGS,
+      },
     })
   })
 
@@ -112,6 +121,34 @@ describe('ホロスコープのクエリ', () => {
     it.each(['180.1', '-180.1', '460'])('経度 %j はエラー', (lng) => {
       expect(parseHoroscopeQuery({ ...horoscopeQuery, lng })).toEqual(invalid('lng is invalid', ['lng']))
     })
+  })
+})
+
+describe('ホロスコープのクエリ: アスペクトの求め方', () => {
+  const aspects = (query: Record<string, string>) => {
+    const parsed = parseHoroscopeQuery({ ...horoscopeQuery, ...query })
+    return parsed.ok ? parsed.input.aspects : parsed.error
+  }
+
+  it('指定した項目だけが変わる', () => {
+    expect(aspects({ orb: '8', minor: '150,30', pointAspects: 'major', ascMcOrb: '2.5' })).toEqual({
+      ...DEFAULT_ASPECT_SETTINGS,
+      orb: 8,
+      minor: [30, 150],
+      ascMc: { aspects: 'major', orb: 2.5 },
+      point: { aspects: 'major', orb: 3 },
+    })
+  })
+  it('読み取れない値は、エラーにする', () => {
+    expect(aspects({ orb: 'abc', minor: '30,31', asteroidAspects: 'all' })).toEqual({
+      code: 'invalid_query',
+      message: 'orb is invalid, minor is invalid, asteroidAspects is invalid',
+      params: ['orb', 'minor', 'asteroidAspects'],
+    })
+  })
+  it('ページのクエリには、最初の状態と違う項目だけを入れる', () => {
+    const parsed = parseHoroscopeQuery({ ...horoscopeQuery, orb: '6', minorOrb: '3', sunMoonPlus: '2' })
+    expect(parsed.ok && toPageQuery(parsed.input)).toEqual({ ...horoscopeQuery, minorOrb: '3', sunMoonPlus: '2' })
   })
 })
 

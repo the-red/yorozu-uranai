@@ -35,19 +35,19 @@ export const VISIBILITY_LABELS = {
   partOfFortune: 'PoF',
 } as const
 
-// 最初の状態
-// NOTE: 小惑星とキロンは、読む人が選んで表示する。最初から表示すると、円が混み合う
+// 最初の状態。Asc と Mc だけを表示する
+// NOTE: 惑星以外は、読む人が選んで表示する。最初から表示すると、円が混み合う
 export const DEFAULT_VISIBILITY: Visibility = {
   chiron: false,
   ceres: false,
   pallas: false,
   juno: false,
   vesta: false,
-  node: true,
-  lilith: true,
+  node: false,
+  lilith: false,
   ascMc: true,
-  vertex: true,
-  partOfFortune: true,
+  vertex: false,
+  partOfFortune: false,
 }
 
 // 保存した文字列から読み取る

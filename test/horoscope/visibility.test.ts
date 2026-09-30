@@ -40,18 +40,18 @@ describe('惑星以外のものを、表示するかどうか', () => {
     ])
   })
 
-  it('最初は、小惑星とキロンを表示しない。ほかは、表示する', () => {
+  it('最初は、Asc・Mc だけを表示する', () => {
     expect(DEFAULT_VISIBILITY).toEqual({
       chiron: false,
       ceres: false,
       pallas: false,
       juno: false,
       vesta: false,
-      node: true,
-      lilith: true,
+      node: false,
+      lilith: false,
       ascMc: true,
-      vertex: true,
-      partOfFortune: true,
+      vertex: false,
+      partOfFortune: false,
     })
   })
 
@@ -61,32 +61,32 @@ describe('惑星以外のものを、表示するかどうか', () => {
     })
 
     it('保存した内容', () => {
-      const saved = JSON.stringify({ chiron: true, node: false, lilith: true, ascMc: true, vertex: false })
+      const saved = JSON.stringify({ chiron: true, node: true, lilith: true, ascMc: false, vertex: false })
       expect(parseVisibility(saved)).toEqual({
         chiron: true,
         ceres: false,
         pallas: false,
         juno: false,
         vesta: false,
-        node: false,
+        node: true,
         lilith: true,
-        ascMc: true,
+        ascMc: false,
         vertex: false,
-        partOfFortune: true,
+        partOfFortune: false,
       })
     })
 
     it('保存していない項目は、最初の状態で補う', () => {
       // 項目を増やす前に保存した内容
-      expect(parseVisibility('{"lilith":false}')).toEqual({ ...DEFAULT_VISIBILITY, lilith: false })
+      expect(parseVisibility('{"lilith":true}')).toEqual({ ...DEFAULT_VISIBILITY, lilith: true })
     })
 
     it('知らない項目は、無視する', () => {
-      expect(parseVisibility('{"lilith":false,"unknown":false}')).toEqual({ ...DEFAULT_VISIBILITY, lilith: false })
+      expect(parseVisibility('{"lilith":true,"unknown":true}')).toEqual({ ...DEFAULT_VISIBILITY, lilith: true })
     })
 
     it('真偽値でない値は、無視する', () => {
-      expect(parseVisibility('{"lilith":"false","node":0,"vertex":null}')).toEqual(DEFAULT_VISIBILITY)
+      expect(parseVisibility('{"lilith":"true","node":1,"ascMc":null}')).toEqual(DEFAULT_VISIBILITY)
     })
 
     it.each(['', 'abc', '{', 'null', '[]', '[false]', '"lilith"', '123', 'true'])(
@@ -97,65 +97,64 @@ describe('惑星以外のものを、表示するかどうか', () => {
     )
 
     it('最初の状態を、書き換えない', () => {
-      parseVisibility('{"lilith":false}')
-      expect(DEFAULT_VISIBILITY.lilith).toEqual(true)
+      parseVisibility('{"lilith":true}')
+      expect(DEFAULT_VISIBILITY.lilith).toEqual(false)
     })
   })
 
   describe('切り替える', () => {
     it('1つだけを変えた文字列を返す', () => {
-      const saved = toggleVisibility(DEFAULT_VISIBILITY, 'vertex', false)
-      expect(parseVisibility(saved)).toEqual({ ...DEFAULT_VISIBILITY, vertex: false })
+      const saved = toggleVisibility(DEFAULT_VISIBILITY, 'vertex', true)
+      expect(parseVisibility(saved)).toEqual({ ...DEFAULT_VISIBILITY, vertex: true })
     })
 
     it('元の値を、書き換えない', () => {
       const visibility = { ...DEFAULT_VISIBILITY }
-      toggleVisibility(visibility, 'vertex', false)
+      toggleVisibility(visibility, 'vertex', true)
       expect(visibility).toEqual(DEFAULT_VISIBILITY)
     })
 
     it('続けて切り替える', () => {
-      const first = parseVisibility(toggleVisibility(DEFAULT_VISIBILITY, 'node', false))
-      const second = parseVisibility(toggleVisibility(first, 'lilith', false))
-      const third = parseVisibility(toggleVisibility(second, 'node', true))
-      expect(third).toEqual({ ...DEFAULT_VISIBILITY, lilith: false })
+      const first = parseVisibility(toggleVisibility(DEFAULT_VISIBILITY, 'node', true))
+      const second = parseVisibility(toggleVisibility(first, 'lilith', true))
+      const third = parseVisibility(toggleVisibility(second, 'node', false))
+      expect(third).toEqual({ ...DEFAULT_VISIBILITY, lilith: true })
     })
   })
 
   describe('感受点を、表示するかどうか', () => {
-    it('最初は、すべて表示する', () => {
-      expect(POINT_NAMES.filter((_) => isPointVisible(_, DEFAULT_VISIBILITY))).toEqual([...POINT_NAMES])
+    it('最初は、表示しない', () => {
+      expect(POINT_NAMES.filter((_) => isPointVisible(_, DEFAULT_VISIBILITY))).toEqual([])
     })
 
     it('ヘッドとテイルは、まとめて切り替わる', () => {
-      const visibility = { ...DEFAULT_VISIBILITY, node: false }
-      expect(POINT_NAMES.filter((_) => isPointVisible(_, visibility))).toEqual(['lilith', 'vertex', 'partOfFortune'])
+      const visibility = { ...DEFAULT_VISIBILITY, node: true }
+      expect(POINT_NAMES.filter((_) => isPointVisible(_, visibility))).toEqual(['northNode', 'southNode'])
     })
 
     it.each([
-      ['lilith', ['northNode', 'southNode', 'vertex', 'partOfFortune']],
-      ['vertex', ['northNode', 'southNode', 'lilith', 'partOfFortune']],
-      ['partOfFortune', ['northNode', 'southNode', 'lilith', 'vertex']],
-    ] as const)('%s を消す', (key, expected) => {
-      const visibility = { ...DEFAULT_VISIBILITY, [key]: false }
+      ['lilith', ['lilith']],
+      ['vertex', ['vertex']],
+      ['partOfFortune', ['partOfFortune']],
+    ] as const)('%s を表示する', (key, expected) => {
+      const visibility = { ...DEFAULT_VISIBILITY, [key]: true }
       expect(POINT_NAMES.filter((_) => isPointVisible(_, visibility))).toEqual(expected)
     })
 
-    it('Asc・Mc を消しても、感受点は消えない', () => {
+    it('Asc・Mc を消しても、感受点は変わらない', () => {
       const visibility = { ...DEFAULT_VISIBILITY, ascMc: false }
-      expect(POINT_NAMES.filter((_) => isPointVisible(_, visibility))).toEqual([...POINT_NAMES])
+      expect(POINT_NAMES.filter((_) => isPointVisible(_, visibility))).toEqual([])
     })
 
-    it('すべて消す', () => {
+    it('すべて表示する', () => {
       const visibility = {
         ...DEFAULT_VISIBILITY,
-        node: false,
-        lilith: false,
-        ascMc: false,
-        vertex: false,
-        partOfFortune: false,
+        node: true,
+        lilith: true,
+        vertex: true,
+        partOfFortune: true,
       }
-      expect(POINT_NAMES.filter((_) => isPointVisible(_, visibility))).toEqual([])
+      expect(POINT_NAMES.filter((_) => isPointVisible(_, visibility))).toEqual([...POINT_NAMES])
     })
   })
 
@@ -171,7 +170,7 @@ describe('惑星以外のものを、表示するかどうか', () => {
 
     it('感受点は、変わらない', () => {
       const visibility = { ...DEFAULT_VISIBILITY, chiron: true }
-      expect(POINT_NAMES.filter((_) => isPointVisible(_, visibility))).toEqual([...POINT_NAMES])
+      expect(POINT_NAMES.filter((_) => isPointVisible(_, visibility))).toEqual([])
     })
   })
 })

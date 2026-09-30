@@ -27,7 +27,7 @@ const toGuide = (error: unknown) => {
   // ハウスを計算できない場所（極圏の、プラシーダスとコッホ）でも、ほかのハウスシステムなら、計算できる
   const isHousesError =
     error instanceof JsonApiError && error.error.code === 'calculation_failed' && error.error.params.includes('lat')
-  return toErrorGuide(error) + (isHousesError ? '\nまたは、ハウスを変えてください。' : '')
+  return toErrorGuide(error) + (isHousesError ? '\nまたは、ハウスシステムを変えてください。' : '')
 }
 
 function HoroscopePage() {

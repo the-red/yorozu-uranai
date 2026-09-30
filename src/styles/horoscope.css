@@ -206,6 +206,12 @@
 .horoscope .horoscope-form .lat-lng-label {
   margin-right: 8px;
 }
+/* 「ハウスシステム」は、ほかの見出し（幅 100px）に収まらない。折り返さずに、選択欄との間を空ける */
+.horoscope .horoscope-form .house-label {
+  width: auto;
+  margin-right: 12px;
+  white-space: nowrap;
+}
 .horoscope .horoscope-form .house-select {
   width: 100%;
   max-width: 200px;

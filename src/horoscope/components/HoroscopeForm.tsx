@@ -55,8 +55,8 @@ export const HoroscopeForm: FC<FormProps> = (props) => {
       <hr />
 
       <div className="form-row">
-        <label className="form-label" htmlFor="horoscope[house]">
-          ハウス
+        <label className="form-label house-label" htmlFor="horoscope[house]">
+          ハウスシステム
         </label>
         <div>
           <select id="horoscope[house]" className="house-select" {...register('house')}>
@@ -64,7 +64,7 @@ export const HoroscopeForm: FC<FormProps> = (props) => {
             {MAIN_HOUSE_SYSTEMS.map((_) => (
               <HouseOption key={_} house={_} />
             ))}
-            <optgroup label="そのほか">
+            <optgroup label="Others">
               {HOUSE_SYSTEMS.filter((_) => !MAIN_HOUSE_SYSTEMS.includes(_)).map((_) => (
                 <HouseOption key={_} house={_} />
               ))}

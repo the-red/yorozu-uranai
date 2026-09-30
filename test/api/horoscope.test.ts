@@ -119,6 +119,34 @@ describe('/horoscope.json', () => {
       expect(json.raw.houses.house[2]).toBeCloseTo(265.452867, NUM_DIGITS)
       expect(new URL(json.page).searchParams.get('house')).toEqual('koch')
     })
+    it('ホールサイン: Asc のあるサイン（天秤座）が、まるごと 1ハウス', async () => {
+      const { json } = await get(horoscope, { ...query, house: 'wholeSign' })
+      expect(json.raw.houses.house).toEqual([180, 210, 240, 270, 300, 330, 0, 30, 60, 90, 120, 150])
+      // カスプは、どれも、サインの 0度
+      expect(json.result.houses.cusps.map((_: any) => [_.house, _.sign, _.degrees])).toEqual([
+        [1, '天秤座', 0],
+        [2, '蠍座', 0],
+        [3, '射手座', 0],
+        [4, '山羊座', 0],
+        [5, '水瓶座', 0],
+        [6, '魚座', 0],
+        [7, '牡羊座', 0],
+        [8, '牡牛座', 0],
+        [9, '双子座', 0],
+        [10, '蟹座', 0],
+        [11, '獅子座', 0],
+        [12, '乙女座', 0],
+      ])
+      // Asc と Mc は、ハウスシステムに依らない
+      expect(json.raw.houses.ascendant).toBeCloseTo(207.908591, NUM_DIGITS)
+      expect(json.raw.houses.mc).toBeCloseTo(123.803709, NUM_DIGITS)
+      // 惑星のハウスは、サインで決まる。太陽（乙女座）は 12ハウス、月（魚座）は 6ハウス、水星（天秤座）は 1ハウス
+      expect(json.result.planets.slice(0, 3).map((_: any) => [_.name, _.sign, _.house])).toEqual([
+        ['sun', '乙女座', 12],
+        ['moon', '魚座', 6],
+        ['mercury', '天秤座', 1],
+      ])
+    })
     it('イコール: Asc から、30度ずつ', async () => {
       const { json } = await get(horoscope, { ...query, house: 'equal' })
       const { house, ascendant } = json.raw.houses

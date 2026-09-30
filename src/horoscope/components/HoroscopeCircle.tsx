@@ -440,7 +440,7 @@ export default function HoroscopeCircle({
     ...visibleAsteroids.map(toBody),
     ...otherPoints.map(toBody),
     // NOTE: Asc と Mc は、ハウスの線が位置を示しているときは、引き出し線を引かない。
-    // ハウスシステムによっては、ハウスの起点にならない（イコールの Mc）。そのときは、引く
+    // ハウスシステムによっては、ハウスの起点にならない（イコールの Mc、ホールサインの Asc と Mc）。そのときは、引く
     ...(visibility.ascMc
       ? [
           {

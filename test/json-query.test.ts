@@ -131,13 +131,13 @@ describe('ホロスコープのクエリ: ハウスシステム', () => {
     return parsed.ok ? parsed.input.house : parsed.error
   }
 
-  it.each(['placidus', 'koch', 'regiomontanus', 'campanus', 'porphyry', 'equal'])('%s', (value) => {
+  it.each(['placidus', 'koch', 'regiomontanus', 'campanus', 'porphyry', 'equal', 'wholeSign'])('%s', (value) => {
     expect(house(value)).toEqual(value)
   })
   it('空なら、プラシーダス', () => {
     expect(house('')).toEqual('placidus')
   })
-  it.each(['K', 'Koch', 'wholeSign', 'topocentric'])('読み取れない値（%s）は、エラーにする', (value) => {
+  it.each(['K', 'Koch', 'whole', 'topocentric'])('読み取れない値（%s）は、エラーにする', (value) => {
     expect(house(value)).toEqual({ code: 'invalid_query', message: 'house is invalid', params: ['house'] })
   })
   it('ページのクエリには、最初の状態（プラシーダス）でなければ、入れる', () => {

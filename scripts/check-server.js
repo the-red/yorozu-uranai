@@ -63,10 +63,15 @@ const main = async () => {
   await checkJson(
     `/horoscope.json?${QUERY}`,
     'horoscope',
-    ({ result }) => result.planets.slice(0, 2).map((_) => [_.name, _.sign, _.house]),
+    ({ result }) => [...result.planets.slice(0, 2), ...result.points].map((_) => [_.name, _.sign, _.house]),
     [
       ['sun', '乙女座', 11],
       ['moon', '魚座', 5],
+      ['northNode', '牡羊座', 5],
+      ['southNode', '天秤座', 11],
+      ['lilith', '獅子座', 9],
+      ['vertex', '双子座', 8],
+      ['partOfFortune', '牡牛座', 7],
     ]
   )
   await checkJson(

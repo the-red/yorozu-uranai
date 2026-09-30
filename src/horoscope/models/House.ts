@@ -37,4 +37,4 @@ export class House {
 }
 
 // start から longitude までの、黄経が増える向きの角度（0〜360度）
-const angleFrom = (start: number, longitude: number) => (((longitude - start) % 360) + 360) % 360
+export const angleFrom = (start: number, longitude: number) => (((longitude - start) % 360) + 360) % 360

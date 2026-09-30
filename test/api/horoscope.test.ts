@@ -1,6 +1,6 @@
 import { describe, it, expect, vi, beforeEach, afterEach, MockInstance } from 'vitest'
 import horoscope from '../../src/pages/api/horoscope'
-import { Horoscope, ORB, toHoroscopeResult } from '../../src/horoscope/models'
+import { Horoscope, POINT_ORB, ORB, toHoroscopeResult } from '../../src/horoscope/models'
 import { NUM_DIGITS } from '../test-util'
 import { get } from './test-util'
 
@@ -39,6 +39,37 @@ describe('/horoscope.json', () => {
     expect(json.result.aspects.major).toHaveLength(14)
   })
 
+  it('感受点', async () => {
+    const { json } = await get(horoscope, query)
+    expect(json.raw.node.longitude).toBeCloseTo(2.374847, NUM_DIGITS)
+    expect(json.raw.node.isRetrograde).toEqual(true)
+    expect(json.raw.lilith.longitude).toBeCloseTo(122.301895, NUM_DIGITS)
+    expect(json.raw.lilith.isRetrograde).toEqual(false)
+    expect(json.raw.houses.vertex).toBeCloseTo(61.847894, NUM_DIGITS)
+
+    expect(json.result.points.map((_: any) => [_.name, _.nameJa, _.type, _.variant, _.sign, _.house])).toEqual([
+      ['northNode', 'ヘッド', 'node', 'true', '牡羊座', 5],
+      ['southNode', 'テイル', 'node', 'true', '天秤座', 11],
+      ['lilith', 'リリス', 'apogee', 'mean', '獅子座', 9],
+      ['vertex', 'Vx', 'angle', null, '双子座', 8],
+      ['partOfFortune', 'PoF', 'lot', 'day', '牡牛座', 7],
+    ])
+    expect(json.result.points.map((_: any) => _.longitude)).toEqual([
+      expect.closeTo(2.374847, NUM_DIGITS),
+      expect.closeTo(182.374847, NUM_DIGITS),
+      expect.closeTo(122.301895, NUM_DIGITS),
+      expect.closeTo(61.847894, NUM_DIGITS),
+      expect.closeTo(31.153606, NUM_DIGITS),
+    ])
+    expect(json.result.aspects.pointOrb).toEqual(3)
+    expect(json.result.aspects.points).toEqual([
+      { point: 'southNode', planet: 'mercury', name: 'conjunction', degrees: 0 },
+      { point: 'partOfFortune', planet: 'jupiter', name: 'conjunction', degrees: 0 },
+    ])
+    // 惑星は、10個のまま
+    expect(json.result.planets).toHaveLength(10)
+  })
+
   it('海外生まれ: 同じ瞬間なら、同じ結果になる', async () => {
     // 日本時間の 1987-09-08 08:53 は、ニューヨークでは前日の 19:53（サマータイム）
     const tokyo = await get(horoscope, query)
@@ -49,7 +80,7 @@ describe('/horoscope.json', () => {
 
   it('材料からモデルを復元して変換し直すと、結果と一致する', async () => {
     const { json } = await get(horoscope, query)
-    const restored = toHoroscopeResult(new Horoscope(json.raw), ORB)
+    const restored = toHoroscopeResult(new Horoscope(json.raw), ORB, POINT_ORB)
     expect(JSON.parse(JSON.stringify(restored))).toEqual(json.result)
   })
 

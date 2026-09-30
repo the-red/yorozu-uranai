@@ -1,4 +1,5 @@
 import { VISIBILITY_KEYS, VISIBILITY_LABELS, Visibility, VisibilityKey } from '../models'
+import OptionsPanel from './OptionsPanel'
 
 type Props = {
   visibility: Visibility
@@ -15,9 +16,16 @@ const ROWS = [VISIBILITY_KEYS.slice(0, SECOND_ROW), VISIBILITY_KEYS.slice(SECOND
 
 // 惑星以外のものを、表示するかどうかの切り替え
 export default function DisplayOptions({ visibility, onChange, hasAsteroids }: Props) {
+  // 表示しているもの
+  const shown = [
+    '惑星',
+    ...VISIBILITY_KEYS.filter((key) => visibility[key] && !(isAsteroid(key) && !hasAsteroids)).map(
+      (key) => VISIBILITY_LABELS[key]
+    ),
+  ]
+
   return (
-    <div className="list-container">
-      <div className="list">Display</div>
+    <OptionsPanel title="Display" summary={shown.join('、')}>
       {ROWS.map((keys, row) => (
         <div key={row} className="display-options">
           {/* 惑星は、常に表示する。切り替えられないことを、チェックの入った状態で示す */}
@@ -47,6 +55,6 @@ export default function DisplayOptions({ visibility, onChange, hasAsteroids }: P
       {!hasAsteroids && (
         <div className="display-options-note">小惑星とキロンは、1800年から 2399年までの日付で表示できます</div>
       )}
-    </div>
+    </OptionsPanel>
   )
 }

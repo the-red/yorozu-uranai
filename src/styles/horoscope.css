@@ -248,6 +248,15 @@
 .horoscope .list-table {
   width: 100%;
 }
+/* 設定の欄。折り畳める */
+.horoscope .options-panel summary {
+  cursor: pointer;
+}
+/* 見出しの横に出す、今の設定の要約 */
+.horoscope .options-summary {
+  margin-left: 12px;
+  font-size: 13px;
+}
 /* 惑星以外のものを、表示するかどうかの切り替え */
 .horoscope .display-options {
   display: flex;

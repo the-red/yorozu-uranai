@@ -7,22 +7,29 @@ import type { FormValues } from './useYorozuUranaiForm'
 import { fetchAddressFromLatLng } from '../lib/fetch-geocode'
 
 export const useFormValues = (setFormValues: Dispatch<SetStateAction<FormValues | undefined>>, router: NextRouter) => {
-  // 直前の画面の移動が、shallow だったか
+  // 直前の画面の移動が、入力を変えないもの（shallow か、ハッシュだけの変更）だったか
   const shallow = useRef(false)
   // 読み取り済みの入力
   const loaded = useRef<string>(undefined)
   useEffect(() => {
-    const onStart = (_url: string, { shallow: isShallow }: { shallow: boolean }) => {
+    const onRouteStart = (_url: string, { shallow: isShallow }: { shallow: boolean }) => {
       shallow.current = isShallow
     }
-    router.events.on('routeChangeStart', onStart)
-    return () => router.events.off('routeChangeStart', onStart)
+    const onHashStart = () => {
+      shallow.current = true
+    }
+    router.events.on('routeChangeStart', onRouteStart)
+    router.events.on('hashChangeStart', onHashStart)
+    return () => {
+      router.events.off('routeChangeStart', onRouteStart)
+      router.events.off('hashChangeStart', onHashStart)
+    }
   }, [router.events])
 
   useEffect(() => {
     const setDefaultFormValues = async () => {
       if (router.isReady) {
-        // 入力に関係のないクエリ（アスペクトの求め方など）だけを、shallow で変えたときは、読み直さない。
+        // 入力が変わらない移動（ハッシュに持たせた、画面の設定の変更など）では、読み直さない。
         // 読み直すと、住所の検索と、結果の取得が走る
         // NOTE: 同じ入力でも、フォームを送信したとき（shallow でない）は、読み直す。失敗のあとの再試行のため
         const key = JSON.stringify(FORM_QUERY_KEYS.map((_) => router.query[_] ?? null))

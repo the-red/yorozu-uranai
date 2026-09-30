@@ -119,11 +119,15 @@ describe('/horoscope.json', () => {
       // 天文計算の結果は、変わらない
       expect(json.raw).toEqual((await get(horoscope, query)).json.raw)
     })
-    it('ページのURLにも、同じ指定を付ける', async () => {
+    it('ページのURLには、同じ指定を、ハッシュで付ける', async () => {
       const { json } = await get(horoscope, { ...query, orb: '8', minor: '30,150', orbs: 'x' })
-      expect(new URL(json.page).search).toEqual(
-        '?date=19870908&time=0853&zone=Asia%2FTokyo&lat=43.06666666666667&lng=141.35&orb=8&minor=30%2C150'
-      )
+      const page = new URL(json.page)
+      expect(page.search).toEqual('?date=19870908&time=0853&zone=Asia%2FTokyo&lat=43.06666666666667&lng=141.35')
+      expect(page.hash).toEqual('#orb=8&minor=30,150')
+    })
+    it('指定が無ければ、ページのURLに、ハッシュを付けない', async () => {
+      const { json } = await get(horoscope, query)
+      expect(json.page).not.toContain('#')
     })
     it('読み取れない値は、エラーにする', async () => {
       const { status, json } = await get(horoscope, { ...query, orb: '99', ascMcAspects: 'all' })

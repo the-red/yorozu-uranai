@@ -1,6 +1,6 @@
 import type { FC } from 'react'
 import dynamic from 'next/dynamic'
-import { AspectSettings, Horoscope, Visibility, VisibilityKey } from '../models'
+import { Horoscope, HoroscopeSettings } from '../models'
 import AspectOptions from './AspectOptions'
 import DisplayOptions from './DisplayOptions'
 import PlanetPositions from './PlanetPositions'
@@ -9,27 +9,26 @@ import SignTable from './SignTable'
 import AspectChart from './AspectChart'
 import { HoroscopeForm } from './HoroscopeForm'
 import { FormProps } from '../../hooks/useYorozuUranaiForm'
-import { useVisibility } from '../../hooks/useVisibility'
 const HoroscopeCircle = dynamic(() => import('./HoroscopeCircle'), { ssr: false })
 
 // horoscope は、まだ求まっていないときと、求められなかったときは無い
 type Props = {
   horoscope?: Horoscope
-  aspectSettings: AspectSettings
-  onChangeAspectSettings: (settings: AspectSettings) => void
+  settings: HoroscopeSettings
+  onChangeSettings: (settings: HoroscopeSettings) => void
   loading: boolean
 } & FormProps
 
 const HoroscopeDetailPage: FC<Props> = ({
   horoscope,
-  aspectSettings,
-  onChangeAspectSettings,
+  settings,
+  onChangeSettings,
   loading,
   onSubmit,
   defaultValues,
   errorMessage,
 }) => {
-  const [visibility, setVisible] = useVisibility()
+  const { visibility, aspects } = settings
 
   return (
     <div>
@@ -42,44 +41,29 @@ const HoroscopeDetailPage: FC<Props> = ({
         {horoscope ? (
           <>
             <div className="content circle pc">
-              <HoroscopeCircle horoscope={horoscope} radius={220} settings={aspectSettings} visibility={visibility} />
+              <HoroscopeCircle horoscope={horoscope} radius={220} settings={aspects} visibility={visibility} />
             </div>
             <div className="content circle sp">
-              <HoroscopeCircle horoscope={horoscope} radius={170} settings={aspectSettings} visibility={visibility} />
+              <HoroscopeCircle horoscope={horoscope} radius={170} settings={aspects} visibility={visibility} />
             </div>
           </>
         ) : (
           loading && <div className="content loading">読み込み中…</div>
         )}
       </div>
-      {horoscope && (
-        <HoroscopeTables
-          horoscope={horoscope}
-          aspectSettings={aspectSettings}
-          onChangeAspectSettings={onChangeAspectSettings}
-          visibility={visibility}
-          onChangeVisibility={setVisible}
-        />
-      )}
+      {horoscope && <HoroscopeTables horoscope={horoscope} settings={settings} onChangeSettings={onChangeSettings} />}
     </div>
   )
 }
 
 type TablesProps = {
   horoscope: Horoscope
-  aspectSettings: AspectSettings
-  onChangeAspectSettings: (settings: AspectSettings) => void
-  visibility: Visibility
-  onChangeVisibility: (key: VisibilityKey, visible: boolean) => void
+  settings: HoroscopeSettings
+  onChangeSettings: (settings: HoroscopeSettings) => void
 }
 
-const HoroscopeTables: FC<TablesProps> = ({
-  horoscope,
-  aspectSettings,
-  onChangeAspectSettings,
-  visibility,
-  onChangeVisibility,
-}) => {
+const HoroscopeTables: FC<TablesProps> = ({ horoscope, settings, onChangeSettings }) => {
+  const { visibility, aspects } = settings
   return (
     <>
       <div className="content-row">
@@ -87,14 +71,16 @@ const HoroscopeTables: FC<TablesProps> = ({
           <div className="content-inner">
             <DisplayOptions
               visibility={visibility}
-              onChange={onChangeVisibility}
+              onChange={(key, visible) =>
+                onChangeSettings({ ...settings, visibility: { ...visibility, [key]: visible } })
+              }
               hasAsteroids={horoscope.asteroids !== undefined}
             />
           </div>
         </div>
         <div className="content">
           <div className="content-inner">
-            <AspectOptions settings={aspectSettings} onChange={onChangeAspectSettings} />
+            <AspectOptions settings={aspects} onChange={(aspects) => onChangeSettings({ ...settings, aspects })} />
           </div>
         </div>
       </div>
@@ -118,7 +104,7 @@ const HoroscopeTables: FC<TablesProps> = ({
         </div>
         <div className="content">
           <div className="content-inner">
-            <AspectChart horoscope={horoscope} settings={aspectSettings} visibility={visibility} />
+            <AspectChart horoscope={horoscope} settings={aspects} visibility={visibility} />
           </div>
         </div>
       </div>

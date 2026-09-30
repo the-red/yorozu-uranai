@@ -1,5 +1,5 @@
 import { DateTime, IANAZone } from 'luxon'
-import { AspectSettings, parseAspectQuery, toAspectQuery } from '../horoscope/models/AspectSettings'
+import { AspectSettings, parseAspectQuery } from '../horoscope/models/AspectSettings'
 import {
   FORM_DATE_FORMAT,
   FORM_TIME_FORMAT,
@@ -234,5 +234,4 @@ export const toPageQuery = (input: PageInput): Record<string, string> => ({
   ...(input.lat != null && { lat: String(input.lat) }),
   ...(input.lng !== undefined && { lng: String(input.lng) }),
   ...(input.gender !== undefined && { gender: input.gender }),
-  ...(input.aspects !== undefined && toAspectQuery(input.aspects)),
 })

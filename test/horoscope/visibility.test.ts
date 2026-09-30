@@ -7,8 +7,8 @@ import {
   VISIBILITY_LABELS,
   isAsteroidVisible,
   isPointVisible,
-  parseVisibility,
-  toggleVisibility,
+  parseShowParam,
+  toShowParam,
 } from '../../src/horoscope/models'
 
 describe('惑星以外のものを、表示するかどうか', () => {
@@ -38,69 +38,54 @@ describe('惑星以外のものを、表示するかどうか', () => {
     })
   })
 
-  describe('保存した文字列から読み取る', () => {
-    it('保存していなければ、最初の状態', () => {
-      expect(parseVisibility(null)).toEqual(DEFAULT_VISIBILITY)
+  describe('URLに入れる値', () => {
+    const ALL_HIDDEN = { ...DEFAULT_VISIBILITY, ascMc: false }
+
+    it('最初の状態は、URLに入れない', () => {
+      expect(toShowParam(DEFAULT_VISIBILITY)).toBeUndefined()
+      expect(parseShowParam(undefined)).toEqual(DEFAULT_VISIBILITY)
+      expect(parseShowParam('')).toEqual(DEFAULT_VISIBILITY)
     })
 
-    it('保存した内容', () => {
-      const saved = JSON.stringify({ chiron: true, node: true, lilith: true, ascMc: false, vertex: false })
-      expect(parseVisibility(saved)).toEqual({
-        asteroids: false,
-        chiron: true,
-        node: true,
-        lilith: true,
-        ascMc: false,
-        vertex: false,
-        partOfFortune: false,
-      })
+    it('表示するものを、表示の順に、カンマで区切って並べる', () => {
+      expect(toShowParam({ ...DEFAULT_VISIBILITY, lilith: true, chiron: true })).toEqual('chiron,lilith,ascMc')
+      expect(toShowParam({ ...ALL_HIDDEN, vertex: true })).toEqual('vertex')
     })
 
-    it('保存していない項目は、最初の状態で補う', () => {
-      // 項目を増やす前に保存した内容
-      expect(parseVisibility('{"lilith":true}')).toEqual({ ...DEFAULT_VISIBILITY, lilith: true })
+    it('何も表示しないときは none', () => {
+      expect(toShowParam(ALL_HIDDEN)).toEqual('none')
+      expect(parseShowParam('none')).toEqual(ALL_HIDDEN)
+    })
+
+    it('並べたものだけを、表示する', () => {
+      expect(parseShowParam('chiron,node')).toEqual({ ...ALL_HIDDEN, chiron: true, node: true })
+      // Asc・Mc は、最初の状態では表示するが、並べなければ、表示しない
+      expect(parseShowParam('lilith').ascMc).toEqual(false)
+    })
+
+    it('並び順は、問わない', () => {
+      expect(parseShowParam('ascMc,asteroids')).toEqual(parseShowParam('asteroids,ascMc'))
     })
 
     it('知らない項目は、無視する', () => {
-      expect(parseVisibility('{"lilith":true,"unknown":true}')).toEqual({ ...DEFAULT_VISIBILITY, lilith: true })
-      // 小惑星を1つずつ切り替えていたときに、保存した内容
-      expect(parseVisibility('{"ceres":true,"vesta":true}')).toEqual(DEFAULT_VISIBILITY)
+      expect(parseShowParam('lilith,unknown,ceres')).toEqual({ ...ALL_HIDDEN, lilith: true })
     })
 
-    it('真偽値でない値は、無視する', () => {
-      expect(parseVisibility('{"lilith":"true","node":1,"ascMc":null}')).toEqual(DEFAULT_VISIBILITY)
+    it('知っている項目が1つも無ければ、最初の状態', () => {
+      expect(parseShowParam('unknown')).toEqual(DEFAULT_VISIBILITY)
+      expect(parseShowParam('ceres,vesta')).toEqual(DEFAULT_VISIBILITY)
+      expect(parseShowParam('None')).toEqual(DEFAULT_VISIBILITY)
     })
 
-    it.each(['', 'abc', '{', 'null', '[]', '[false]', '"lilith"', '123', 'true'])(
-      '読み取れない内容（%j）なら、最初の状態',
-      (saved) => {
-        expect(parseVisibility(saved)).toEqual(DEFAULT_VISIBILITY)
-      }
-    )
+    it.each(VISIBILITY_KEYS)('%s だけを切り替えても、URLにして、読み取ると、元に戻る', (key) => {
+      const visibility = { ...DEFAULT_VISIBILITY, [key]: !DEFAULT_VISIBILITY[key] }
+      expect(parseShowParam(toShowParam(visibility))).toEqual(visibility)
+    })
 
     it('最初の状態を、書き換えない', () => {
-      parseVisibility('{"lilith":true}')
+      parseShowParam('lilith').lilith = false
+      parseShowParam(undefined).lilith = true
       expect(DEFAULT_VISIBILITY.lilith).toEqual(false)
-    })
-  })
-
-  describe('切り替える', () => {
-    it('1つだけを変えた文字列を返す', () => {
-      const saved = toggleVisibility(DEFAULT_VISIBILITY, 'vertex', true)
-      expect(parseVisibility(saved)).toEqual({ ...DEFAULT_VISIBILITY, vertex: true })
-    })
-
-    it('元の値を、書き換えない', () => {
-      const visibility = { ...DEFAULT_VISIBILITY }
-      toggleVisibility(visibility, 'vertex', true)
-      expect(visibility).toEqual(DEFAULT_VISIBILITY)
-    })
-
-    it('続けて切り替える', () => {
-      const first = parseVisibility(toggleVisibility(DEFAULT_VISIBILITY, 'node', true))
-      const second = parseVisibility(toggleVisibility(first, 'lilith', true))
-      const third = parseVisibility(toggleVisibility(second, 'node', false))
-      expect(third).toEqual({ ...DEFAULT_VISIBILITY, lilith: true })
     })
   })
 

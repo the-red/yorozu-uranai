@@ -19,6 +19,8 @@ import {
   isAsteroidVisible,
   isPointVisible,
 } from '../models'
+import { toOrbNote } from './AspectOptions'
+
 type Props = { horoscope: Horoscope; settings: AspectSettings; visibility: Visibility }
 
 const ASPECT_CLASSES = { hard: 'hard-aspect', soft: 'soft-aspect', minor: 'minor-aspect' } as const
@@ -52,16 +54,6 @@ const AspectRow = ({ horoscope, settings, targetPlanet }: AspectRowProps) => (
     <PlanetCell planetIcon={PLANET_ICONS[targetPlanet]} />
   </>
 )
-
-// オーブの説明
-const toOrbNote = ({ orb, sunMoonPlus, minor, minorOrb }: AspectSettings) =>
-  [
-    `オーブ ${orb}°`,
-    sunMoonPlus > 0 && `太陽・月は ${orb + sunMoonPlus}°`,
-    minor.length > 0 && `マイナーは ${minorOrb}°`,
-  ]
-    .filter(Boolean)
-    .join('、')
 
 const toGroupNote = (label: string, { aspects, orb }: GroupSettings) =>
   `${label}: オーブ ${orb}°${aspects === 'conjunction' ? '、0° だけ' : ''}`

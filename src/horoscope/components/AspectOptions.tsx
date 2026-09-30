@@ -9,6 +9,7 @@ import {
   MinorDegrees,
   toAspectQuery,
 } from '../models'
+import OptionsPanel from './OptionsPanel'
 
 type Props = {
   settings: AspectSettings
@@ -43,6 +44,16 @@ const OrbSelect = ({ label, value, options, onChange }: OrbSelectProps) => (
   </select>
 )
 
+// 惑星どうしのオーブの説明
+export const toOrbNote = ({ orb, sunMoonPlus, minor, minorOrb }: AspectSettings) =>
+  [
+    `オーブ ${orb}°`,
+    sunMoonPlus > 0 && `太陽・月は ${orb + sunMoonPlus}°`,
+    minor.length > 0 && `マイナーは ${minorOrb}°`,
+  ]
+    .filter(Boolean)
+    .join('、')
+
 // アスペクトの求め方の調整
 export default function AspectOptions({ settings, onChange }: Props) {
   const toggleMinor = (degrees: MinorDegrees, checked: boolean) =>
@@ -53,8 +64,7 @@ export default function AspectOptions({ settings, onChange }: Props) {
   const isDefault = Object.keys(toAspectQuery(settings)).length === 0
 
   return (
-    <div className="list-container">
-      <div className="list">Aspect</div>
+    <OptionsPanel title="Aspect" summary={toOrbNote(settings)}>
       <table className="aspect-options">
         <thead>
           <tr>
@@ -160,6 +170,6 @@ export default function AspectOptions({ settings, onChange }: Props) {
           最初の状態に戻す
         </button>
       </div>
-    </div>
+    </OptionsPanel>
   )
 }

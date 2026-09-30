@@ -146,9 +146,10 @@ describe('ホロスコープのクエリ: アスペクトの求め方', () => {
       params: ['orb', 'minor', 'asteroidAspects'],
     })
   })
-  it('ページのクエリには、最初の状態と違う項目だけを入れる', () => {
-    const parsed = parseHoroscopeQuery({ ...horoscopeQuery, orb: '6', minorOrb: '3', sunMoonPlus: '2' })
-    expect(parsed.ok && toPageQuery(parsed.input)).toEqual({ ...horoscopeQuery, minorOrb: '3', sunMoonPlus: '2' })
+  it('ページのクエリには、入れない', () => {
+    // ページは、アスペクトの求め方を、URLのハッシュで受け取る
+    const parsed = parseHoroscopeQuery({ ...horoscopeQuery, orb: '8', minorOrb: '3' })
+    expect(parsed.ok && toPageQuery(parsed.input)).toEqual(horoscopeQuery)
   })
 })
 

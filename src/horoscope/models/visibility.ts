@@ -35,33 +35,28 @@ export const DEFAULT_VISIBILITY: Visibility = {
   partOfFortune: false,
 }
 
-// 保存した文字列から読み取る
-// NOTE: 保存した内容は、利用者の手元にあるので、どんな値でも受け取れるようにする。
-// 読み取れない内容、知らない項目、真偽値でない値は、無視して、最初の状態で補う
-export const parseVisibility = (saved: string | null): Visibility => {
-  let values: unknown
-  try {
-    values = JSON.parse(saved ?? '')
-  } catch {
-    return { ...DEFAULT_VISIBILITY }
+// URLに入れる値。表示するものを、カンマで区切って並べる（asteroids,ascMc）。何も表示しないときは none
+// 最初の状態と同じなら、undefined（URLに入れない）
+export const toShowParam = (visibility: Visibility): string | undefined => {
+  if (VISIBILITY_KEYS.every((key) => visibility[key] === DEFAULT_VISIBILITY[key])) {
+    return undefined
   }
-  if (typeof values !== 'object' || values === null) {
-    return { ...DEFAULT_VISIBILITY }
-  }
-
-  const visibility = { ...DEFAULT_VISIBILITY }
-  VISIBILITY_KEYS.forEach((key) => {
-    const value = (values as Record<string, unknown>)[key]
-    if (typeof value === 'boolean') {
-      visibility[key] = value
-    }
-  })
-  return visibility
+  return VISIBILITY_KEYS.filter((key) => visibility[key]).join() || 'none'
 }
 
-// 1つを切り替えて、保存する文字列を返す
-export const toggleVisibility = (visibility: Visibility, key: VisibilityKey, visible: boolean): string =>
-  JSON.stringify({ ...visibility, [key]: visible })
+// URLの値から読み取る。値が無ければ、最初の状態
+// NOTE: URLは、利用者が書き換えられるので、どんな値でも受け取れるようにする。知らない項目は、無視する
+export const parseShowParam = (value: string | undefined): Visibility => {
+  if (value === undefined || value === '') {
+    return { ...DEFAULT_VISIBILITY }
+  }
+  const shown = value.split(',')
+  // 知っている項目が1つも無ければ、読み取れない値として、最初の状態にする
+  if (value !== 'none' && !VISIBILITY_KEYS.some((key) => shown.includes(key))) {
+    return { ...DEFAULT_VISIBILITY }
+  }
+  return Object.fromEntries(VISIBILITY_KEYS.map((key) => [key, shown.includes(key)])) as Visibility
+}
 
 const POINT_KEYS: Record<PointName, VisibilityKey> = {
   northNode: 'node',

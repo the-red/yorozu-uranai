@@ -5,18 +5,17 @@ import Menu from '../components/Menu'
 import Header from '../components/Header'
 import Footer from '../components/Footer'
 
-import { AspectQuery, Horoscope } from '../horoscope/models'
+import { Horoscope } from '../horoscope/models'
 import HoroscopeDetailPage from '../horoscope/components/HoroscopeDetailPage'
 import { Query, formValuesToQuery } from '../lib/params'
 import { FormProps, FormValues } from '../hooks/useYorozuUranaiForm'
 import { useFormValues } from '../hooks/useFormValues'
 import { useResult } from '../hooks/useResult'
-import { useAspectSettings } from '../hooks/useAspectSettings'
+import { getHash, useHoroscopeSettings } from '../hooks/useHoroscopeSettings'
 import { fetchJson, toErrorGuide } from '../lib/fetch-json'
 import type { HoroscopeJson } from '../lib/json-api'
 
-// NOTE: アスペクトの求め方（orb など）も、クエリで受け取る（useAspectSettings）
-export type OptionalQuery = Query & AspectQuery
+export type OptionalQuery = Query
 
 const loadHoroscope = async (formValues: FormValues) => {
   const { raw } = await fetchJson<HoroscopeJson>('/horoscope', formValues)
@@ -28,7 +27,7 @@ function HoroscopePage() {
   const [formValues, setFormValues] = useState<FormValues>()
   useFormValues(setFormValues, router)
   const { result: horoscope, error, loading } = useResult(formValues, loadHoroscope)
-  const [aspectSettings, setAspectSettings] = useAspectSettings(router)
+  const [settings, setSettings] = useHoroscopeSettings(router)
 
   const handleSubmit: FormProps['onSubmit'] = (formValues) => {
     router.push({
@@ -36,6 +35,8 @@ function HoroscopePage() {
         ...router.query,
         ...formValuesToQuery(formValues),
       },
+      // 画面の設定は、入力を変えても、そのまま使う
+      hash: getHash(),
     })
   }
 
@@ -48,8 +49,8 @@ function HoroscopePage() {
         {formValues ? (
           <HoroscopeDetailPage
             horoscope={horoscope}
-            aspectSettings={aspectSettings}
-            onChangeAspectSettings={setAspectSettings}
+            settings={settings}
+            onChangeSettings={setSettings}
             loading={loading}
             onSubmit={handleSubmit}
             defaultValues={formValues}

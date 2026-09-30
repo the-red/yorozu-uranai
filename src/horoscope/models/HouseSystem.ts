@@ -12,6 +12,7 @@ export const HOUSE_SYSTEMS = [
   'porphyry',
   'equal',
   'wholeSign',
+  'solarSign',
   'alcabitius',
   'topocentric',
   'morinus',
@@ -28,7 +29,6 @@ export const HOUSE_SYSTEMS = [
   'savardA',
   'sunshine',
   'apc',
-  'solarSign',
 ] as const
 export type HouseSystem = (typeof HOUSE_SYSTEMS)[number]
 
@@ -47,6 +47,7 @@ export const HOUSE_SYSTEM_NAMES = {
   porphyry: 'Porphyry',
   equal: 'Equal',
   wholeSign: 'Whole Sign',
+  solarSign: 'Solar Sign',
   alcabitius: 'Alcabitius',
   topocentric: 'Topocentric',
   morinus: 'Morinus',
@@ -63,7 +64,6 @@ export const HOUSE_SYSTEM_NAMES = {
   savardA: 'Savard-A',
   sunshine: 'Sunshine',
   apc: 'APC',
-  solarSign: 'Solar Sign',
 } as const satisfies Record<HouseSystem, string>
 
 // Swiss Ephemeris での記号
@@ -82,6 +82,7 @@ export const HOUSE_SYSTEM_CODES = {
   porphyry: 'O',
   equal: 'A',
   wholeSign: 'W',
+  solarSign: 'solarSign',
   alcabitius: 'B',
   topocentric: 'T',
   morinus: 'M',
@@ -98,7 +99,6 @@ export const HOUSE_SYSTEM_CODES = {
   savardA: 'J',
   sunshine: 'I',
   apc: 'Y',
-  solarSign: 'solarSign',
 } as const satisfies Record<HouseSystem, string>
 
 // URLの値から読み取る。読み取れなければ undefined

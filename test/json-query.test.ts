@@ -7,7 +7,7 @@ import {
   toDate,
   toPageQuery,
 } from '../src/lib/json-query'
-import { DEFAULT_ASPECT_SETTINGS } from '../src/horoscope/models'
+import { DEFAULT_ASPECT_SETTINGS, HOUSE_SYSTEMS } from '../src/horoscope/models'
 
 const horoscopeQuery = { date: '19870908', time: '0853', zone: 'Asia/Tokyo', lat: '43.06', lng: '141.35' }
 const suimeiQuery = { date: '19870908', time: '0853', zone: 'Asia/Tokyo', lng: '141.35', gender: 'woman' }
@@ -131,13 +131,13 @@ describe('ホロスコープのクエリ: ハウスシステム', () => {
     return parsed.ok ? parsed.input.house : parsed.error
   }
 
-  it.each(['placidus', 'koch', 'regiomontanus', 'campanus', 'porphyry', 'equal', 'wholeSign'])('%s', (value) => {
+  it.each(HOUSE_SYSTEMS)('%s', (value) => {
     expect(house(value)).toEqual(value)
   })
   it('空なら、プラシーダス', () => {
     expect(house('')).toEqual('placidus')
   })
-  it.each(['K', 'Koch', 'whole', 'topocentric'])('読み取れない値（%s）は、エラーにする', (value) => {
+  it.each(['K', 'Koch', 'whole', 'gauquelin'])('読み取れない値（%s）は、エラーにする', (value) => {
     expect(house(value)).toEqual({ code: 'invalid_query', message: 'house is invalid', params: ['house'] })
   })
   it('ページのクエリには、最初の状態（プラシーダス）でなければ、入れる', () => {

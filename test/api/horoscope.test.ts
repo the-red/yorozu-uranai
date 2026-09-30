@@ -1,6 +1,6 @@
 import { describe, it, expect, vi, beforeEach, afterEach, MockInstance } from 'vitest'
 import horoscope from '../../src/pages/api/horoscope'
-import { DEFAULT_ASPECT_SETTINGS, Horoscope, toHoroscopeResult } from '../../src/horoscope/models'
+import { DEFAULT_ASPECT_SETTINGS, HOUSE_SYSTEMS, Horoscope, toHoroscopeResult } from '../../src/horoscope/models'
 import { NUM_DIGITS } from '../test-util'
 import { get } from './test-util'
 
@@ -156,6 +156,84 @@ describe('/horoscope.json', () => {
       expect(json.raw.houses.mc).toBeCloseTo(123.803709, NUM_DIGITS)
       expect(house[9]).toBeCloseTo(117.908591, 4)
     })
+    describe('すべてのハウスシステム', () => {
+      // 1ハウス、2ハウス、8ハウスのカスプ
+      const CUSPS: [string, number, number, number][] = [
+        ['placidus', 207.908591, 235.781911, 55.781911],
+        ['koch', 207.908591, 235.809886, 55.809886],
+        ['regiomontanus', 207.908591, 232.825342, 52.825342],
+        ['campanus', 207.908591, 240.824377, 60.824377],
+        ['porphyry', 207.908591, 239.87363, 59.87363],
+        ['equal', 207.908591, 237.908591, 57.908591],
+        ['wholeSign', 180, 210, 30],
+        ['alcabitius', 207.908591, 241.438576, 61.438576],
+        ['topocentric', 207.908591, 235.891375, 55.891375],
+        ['morinus', 213.803709, 244.241285, 64.241285],
+        ['meridian', 218.500087, 247.895237, 67.895237],
+        ['equalMc', 213.803709, 243.803709, 63.803709],
+        ['vehlow', 192.908591, 222.908591, 42.908591],
+        ['equalAries', 0, 30, 210],
+        ['sripati', 193.89111, 223.89111, 43.89111],
+        ['carter', 207.908591, 238.169504, 58.169504],
+        ['horizon', 241.847894, 276.359767, 96.359767],
+        ['krusinski', 207.908591, 232.891328, 52.891328],
+        ['pullenSd', 207.908591, 239.38237, 59.38237],
+        ['pullenSr', 207.908591, 239.345227, 59.345227],
+        ['savardA', 207.908591, 231.061417, 51.061417],
+        ['sunshine', 207.908591, 231.744456, 53.815093],
+        ['apc', 207.908591, 234.552337, 50.797828],
+      ]
+
+      it('選べるものを、すべて確かめている', () => {
+        expect(CUSPS.map(([house]) => house)).toEqual(HOUSE_SYSTEMS)
+      })
+
+      it.each(CUSPS)('%s', async (house, first, second, eighth) => {
+        const { status, json } = await get(horoscope, { ...query, house })
+        expect(status).toEqual(200)
+        expect(json.result.houses.system).toEqual(house)
+        const cusps: number[] = json.raw.houses.house
+        expect(cusps).toHaveLength(12)
+        expect(cusps[0]).toBeCloseTo(first, NUM_DIGITS)
+        expect(cusps[1]).toBeCloseTo(second, NUM_DIGITS)
+        expect(cusps[7]).toBeCloseTo(eighth, NUM_DIGITS)
+
+        // Asc と Mc は、ハウスシステムに依らない
+        expect(json.raw.houses.ascendant).toBeCloseTo(207.908591, NUM_DIGITS)
+        expect(json.raw.houses.mc).toBeCloseTo(123.803709, NUM_DIGITS)
+
+        // カスプは、黄経が増える向きに並んで、1周する
+        const widths = cusps.map((cusp, i) => (cusps[(i + 1) % 12] - cusp + 360) % 360)
+        widths.forEach((width) => expect(width).toBeGreaterThan(0))
+        expect(widths.reduce((sum, width) => sum + width, 0)).toBeCloseTo(360, 4)
+
+        // どの惑星も、小惑星も、感受点も、1〜12 のどれかのハウスに入る
+        const { planets, asteroids, points } = json.result
+        for (const body of [...planets, ...asteroids, ...points]) {
+          expect(body.house, body.name).toBeGreaterThanOrEqual(1)
+          expect(body.house, body.name).toBeLessThanOrEqual(12)
+        }
+      })
+
+      it('向かい合うカスプが、180度の反対側にならないものがある', async () => {
+        const opposite = async (house: string) => {
+          const cusps: number[] = (await get(horoscope, { ...query, house })).json.raw.houses.house
+          return (cusps[7] - cusps[1] + 360) % 360
+        }
+        expect(await opposite('placidus')).toBeCloseTo(180, 4)
+        // サンシャイン: 2ハウスは 231.74度、8ハウスは 53.82度
+        expect(await opposite('sunshine')).toBeCloseTo(182.070637, 4)
+        expect(await opposite('apc')).toBeCloseTo(176.245491, 4)
+      })
+
+      it.each(HOUSE_SYSTEMS.filter((_) => _ !== 'placidus' && _ !== 'koch'))(
+        '%s は、極圏でも計算できる',
+        async (house) => {
+          expect((await get(horoscope, { ...query, lat: '80', house })).status).toEqual(200)
+        }
+      )
+    })
+
     it('惑星の位置は、変わらない', async () => {
       const placidus = await get(horoscope, query)
       const koch = await get(horoscope, { ...query, house: 'koch' })

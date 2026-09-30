@@ -3,7 +3,9 @@ import { FC } from 'react'
 import { pagesPath } from '../../lib/$path'
 import { FormProps, useYorozuUranaiForm } from '../../hooks/useYorozuUranaiForm'
 import { buildMapQuery } from '../../lib/map-return'
-import { HOUSE_SYSTEMS, HOUSE_SYSTEM_NAMES_JA } from '../models'
+import { HOUSE_SYSTEMS, HOUSE_SYSTEM_NAMES_JA, HouseSystem, MAIN_HOUSE_SYSTEMS } from '../models'
+
+const HouseOption = ({ house }: { house: HouseSystem }) => <option value={house}>{HOUSE_SYSTEM_NAMES_JA[house]}</option>
 
 export const HoroscopeForm: FC<FormProps> = (props) => {
   const { register, hookFormHandleSubmit, values, handleSubmit, isTimeUnknownChecked, zone, lat, lng } =
@@ -58,11 +60,15 @@ export const HoroscopeForm: FC<FormProps> = (props) => {
         </label>
         <div>
           <select id="horoscope[house]" className="house-select" {...register('house')}>
-            {HOUSE_SYSTEMS.map((_) => (
-              <option key={_} value={_}>
-                {HOUSE_SYSTEM_NAMES_JA[_]}
-              </option>
+            {/* 主なものを、先に出す */}
+            {MAIN_HOUSE_SYSTEMS.map((_) => (
+              <HouseOption key={_} house={_} />
             ))}
+            <optgroup label="そのほか">
+              {HOUSE_SYSTEMS.filter((_) => !MAIN_HOUSE_SYSTEMS.includes(_)).map((_) => (
+                <HouseOption key={_} house={_} />
+              ))}
+            </optgroup>
           </select>
         </div>
       </div>

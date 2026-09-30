@@ -85,18 +85,22 @@ const ScaledCircle = ({
   scale: number
 }) => <Circle stroke={stroke} strokeWidth={1} fill={fill} x={radius} y={radius} radius={radius * scale} opacity={1} />
 
+// 円を横切る線。half なら、中心から、片側（longitude + 180 の側）だけに引く
 const ScaledLine = ({
   radius,
   longitude,
   opacity = 0.2,
   scale = 1,
+  half = false,
 }: {
   radius: number
   longitude: number
   opacity?: number | undefined
   scale?: number
+  half?: boolean
 }) => {
-  const start = degreesToCoordinate(radius, { degrees: longitude, scale })
+  // NOTE: 円の中心は、(radius, radius)
+  const start = half ? { x: radius, y: radius } : degreesToCoordinate(radius, { degrees: longitude, scale })
   const end = degreesToCoordinate(radius, { degrees: longitude + 180, scale })
 
   return <Line points={[start.x, start.y, end.x, end.y]} stroke="black" strokeWidth={1} opacity={opacity} />
@@ -204,7 +208,8 @@ const HouseLine = ({
   scale: number
 }) => (
   <>
-    {house.cusps.slice(0, 6).map((cusp, i) => {
+    {/* NOTE: カスプごとに、中心から引く。ハウスシステムによっては、向かい合うカスプが、180度の反対側にならない */}
+    {house.cusps.map((cusp, i) => {
       let opacity
       if (i % 3 === 0) {
         // { asc: 0, ic: 3, dsc: 6, mc: 9 }
@@ -217,6 +222,7 @@ const HouseLine = ({
           longitude={houseLongitude + cusp.longitude}
           opacity={opacity}
           scale={scale}
+          half
         />
       )
     })}
@@ -440,7 +446,7 @@ export default function HoroscopeCircle({
     ...visibleAsteroids.map(toBody),
     ...otherPoints.map(toBody),
     // NOTE: Asc と Mc は、ハウスの線が位置を示しているときは、引き出し線を引かない。
-    // ハウスシステムによっては、ハウスの起点にならない（イコールの Mc、ホールサインの Asc と Mc）。そのときは、引く
+    // ハウスシステムによっては、ハウスの起点にならない（イコールの Mc、ホールサインの Asc と Mc など）。そのときは、引く
     ...(visibility.ascMc
       ? [
           {

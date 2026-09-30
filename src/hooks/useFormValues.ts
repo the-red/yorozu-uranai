@@ -2,7 +2,7 @@ import { DateTime } from 'luxon'
 import type { NextRouter } from 'next/router'
 import { Dispatch, SetStateAction, useEffect, useRef } from 'react'
 import { DEFAULT_HOUSE_SYSTEM } from '../horoscope/models/HouseSystem'
-import { TOKYO_STATION } from '../lib/location'
+import { IMPERIAL_PALACE } from '../lib/location'
 import { queryToFormValues, FORM_DATE_FORMAT, FORM_TIME_FORMAT, FORM_QUERY_KEYS } from '../lib/params'
 import type { FormValues } from './useYorozuUranaiForm'
 import { fetchAddressFromLatLng } from '../lib/fetch-geocode'
@@ -67,7 +67,7 @@ export const useFormValues = (setFormValues: Dispatch<SetStateAction<FormValues 
           time = '12:00'
         }
 
-        const defaultLocation = TOKYO_STATION
+        const defaultLocation = IMPERIAL_PALACE
         const lat = f.lat === undefined ? defaultLocation.lat : f.lat
         const lng = f.lng === undefined ? defaultLocation.lng : f.lng
         const address = await fetchAddressFromLatLng(lat, lng)

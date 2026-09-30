@@ -1,9 +1,11 @@
 import { roundLatLng } from './math'
 
-export const TOKYO_STATION = {
-  // 東京駅
-  lat: 35.6812362,
-  lng: 139.7671248,
+// 出生場所の最初の値
+// NOTE: 都道府県を選んでいないときは、日本の中心として、皇居を使う。東京都を選んだとき（都庁）とは、別の場所
+export const IMPERIAL_PALACE = {
+  // 皇居
+  lat: 35.6825,
+  lng: 139.7528,
 } as const
 
 // 参考: https://syncer.jp/how-to-use-geolocation-api

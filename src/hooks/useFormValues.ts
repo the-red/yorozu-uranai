@@ -1,15 +1,44 @@
 import { DateTime } from 'luxon'
 import type { NextRouter } from 'next/router'
-import { Dispatch, SetStateAction, useEffect } from 'react'
+import { Dispatch, SetStateAction, useEffect, useRef } from 'react'
+import { DEFAULT_HOUSE_SYSTEM } from '../horoscope/models/HouseSystem'
 import { TOKYO_STATION } from '../lib/location'
-import { queryToFormValues, FORM_DATE_FORMAT, FORM_TIME_FORMAT } from '../lib/params'
+import { queryToFormValues, FORM_DATE_FORMAT, FORM_TIME_FORMAT, FORM_QUERY_KEYS } from '../lib/params'
 import type { FormValues } from './useYorozuUranaiForm'
 import { fetchAddressFromLatLng } from '../lib/fetch-geocode'
 
 export const useFormValues = (setFormValues: Dispatch<SetStateAction<FormValues | undefined>>, router: NextRouter) => {
+  // 直前の画面の移動が、入力を変えないもの（shallow か、ハッシュだけの変更）だったか
+  const shallow = useRef(false)
+  // 読み取り済みの入力
+  const loaded = useRef<string>(undefined)
+  useEffect(() => {
+    const onRouteStart = (_url: string, { shallow: isShallow }: { shallow: boolean }) => {
+      shallow.current = isShallow
+    }
+    const onHashStart = () => {
+      shallow.current = true
+    }
+    router.events.on('routeChangeStart', onRouteStart)
+    router.events.on('hashChangeStart', onHashStart)
+    return () => {
+      router.events.off('routeChangeStart', onRouteStart)
+      router.events.off('hashChangeStart', onHashStart)
+    }
+  }, [router.events])
+
   useEffect(() => {
     const setDefaultFormValues = async () => {
       if (router.isReady) {
+        // 入力が変わらない移動（ハッシュに持たせた、画面の設定の変更など）では、読み直さない。
+        // 読み直すと、住所の検索と、結果の取得が走る
+        // NOTE: 同じ入力でも、フォームを送信したとき（shallow でない）は、読み直す。失敗のあとの再試行のため
+        const key = JSON.stringify(FORM_QUERY_KEYS.map((_) => router.query[_] ?? null))
+        if (shallow.current && loaded.current === key) {
+          return
+        }
+        loaded.current = key
+
         const f = queryToFormValues(router.query)
         const now = DateTime.local({ zone: f.zone })
         const zone = now.zoneName
@@ -45,7 +74,9 @@ export const useFormValues = (setFormValues: Dispatch<SetStateAction<FormValues 
 
         const gender = f.gender ?? 'woman'
 
-        setFormValues({ ...f, date, time, zone, timeUnknown, lat, lng, address, gender })
+        const house = f.house ?? DEFAULT_HOUSE_SYSTEM
+
+        setFormValues({ ...f, date, time, zone, timeUnknown, lat, lng, address, gender, house })
       }
     }
     setDefaultFormValues()

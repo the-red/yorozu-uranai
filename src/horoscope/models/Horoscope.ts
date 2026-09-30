@@ -50,14 +50,15 @@ export class Horoscope {
     const { sun, moon } = this.planets
     const fortune = getPartOfFortune({ ascendant: houses.ascendant, sun: sun.longitude, moon: moon.longitude })
 
+    // NOTE: 並び順は、表示の順番（POINT_NAMES）にそろえる
     this.points = {
+      // NOTE: バーテックスと PoF は、その瞬間の位置だけが決まる点で、進む向きが無い。逆行はしないものとして扱う
+      vertex: point('vertex', houses.vertex, false),
+      partOfFortune: point('partOfFortune', fortune, false),
       northNode: point('northNode', node.longitude, node.isRetrograde),
       // テイルは、ヘッドのちょうど反対側
       southNode: point('southNode', node.longitude + 180, node.isRetrograde),
       lilith: point('lilith', lilith.longitude, lilith.isRetrograde),
-      // NOTE: バーテックスと PoF は、その瞬間の位置だけが決まる点で、進む向きが無い。逆行はしないものとして扱う
-      vertex: point('vertex', houses.vertex, false),
-      partOfFortune: point('partOfFortune', fortune, false),
     }
   }
 }

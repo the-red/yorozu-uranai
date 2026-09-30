@@ -3,12 +3,18 @@ import {
   ASTEROID_NAMES,
   ASTEROID_NAMES_JA,
   ASTEROID_TYPES,
+  DEFAULT_ASPECT_SETTINGS,
   Horoscope,
   HoroscopeProps,
-  POINT_ORB,
-  getAsteroidConjunctions,
+  getAsteroidAspects,
 } from '../../src/horoscope/models'
 import { NUM_DIGITS } from '../test-util'
+
+const ASTEROID_ORB = DEFAULT_ASPECT_SETTINGS.asteroid.orb
+
+// 小惑星と、惑星のコンジャンクション
+const getAsteroidConjunctions = (horoscope: Horoscope, orb: number) =>
+  getAsteroidAspects(horoscope, { aspects: 'conjunction', orb }).map(({ asteroid, planet }) => ({ asteroid, planet }))
 
 const position = (longitude: number, isRetrograde = false) =>
   ({ longitude, isRetrograde }) as HoroscopeProps['positions'][number][1]
@@ -120,7 +126,9 @@ describe('小惑星とキロン', () => {
 describe('小惑星と、惑星のコンジャンクション', () => {
   it('セレスと、天王星', () => {
     // セレスは 264.01度、天王星は 262.74度。差は 1.27度
-    expect(getAsteroidConjunctions(new Horoscope(props), POINT_ORB)).toEqual([{ asteroid: 'ceres', planet: 'uranus' }])
+    expect(getAsteroidConjunctions(new Horoscope(props), ASTEROID_ORB)).toEqual([
+      { asteroid: 'ceres', planet: 'uranus' },
+    ])
   })
 
   it('オーブの境界', () => {
@@ -159,6 +167,6 @@ describe('小惑星と、惑星のコンジャンクション', () => {
   })
 
   it('計算できない日付では、空', () => {
-    expect(getAsteroidConjunctions(new Horoscope({ ...props, asteroids: null }), POINT_ORB)).toEqual([])
+    expect(getAsteroidConjunctions(new Horoscope({ ...props, asteroids: null }), ASTEROID_ORB)).toEqual([])
   })
 })

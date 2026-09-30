@@ -1,5 +1,3 @@
-import type { PlanetName } from '../../astronomy/types'
-import { ALL_PLANETS } from './ALL_PLANETS'
 import type { Horoscope } from './Horoscope'
 import { angleFrom } from './House'
 
@@ -12,8 +10,8 @@ import { angleFrom } from './House'
 // - Vx（バーテックス）: 真東・天頂・真西を通る円と、黄道が、西側で交わる点
 // - PoF（パート・オブ・フォーチュン）: Asc・太陽・月の位置から求める点
 //
-// 並び順は、表示の順番。日時だけで決まるものを先に、出生時刻と場所で決まるものを後に置く
-export const POINT_NAMES = ['northNode', 'southNode', 'lilith', 'vertex', 'partOfFortune'] as const
+// 並び順は、表示の順番。出生時刻と場所で決まるものを先に、日時だけで決まるものを後に置く
+export const POINT_NAMES = ['vertex', 'partOfFortune', 'northNode', 'southNode', 'lilith'] as const
 export type PointName = (typeof POINT_NAMES)[number]
 
 // NOTE: Vx には、記号が無い。PoF の記号（⊗ や ⨂）は、端末によって見た目が変わるので、使わない。
@@ -56,10 +54,10 @@ export const POINT_NEEDS_BIRTH_TIME = {
 
 // 昼生まれ（太陽が、地平線より上にある）かどうか
 // NOTE: Asc から、黄経が増える向きに 180度までが、地平線の下（1〜6ハウス）。
-// 境界は、ハウスの決め方（House.where）に合わせる。Asc と同じ黄経は 12ハウス、Dsc と同じ黄経は 6ハウス
+// 境界は、ハウスの決め方（House.where）に合わせる。Asc と同じ黄経は 1ハウス（夜）、Dsc と同じ黄経は 7ハウス（昼）
 export const isDayBirth = (ascendant: number, sun: number): boolean => {
   const angle = angleFrom(ascendant, sun)
-  return angle === 0 || angle > 180
+  return angle >= 180
 }
 
 // パート・オブ・フォーチュンの黄経
@@ -85,21 +83,3 @@ export const getPointVariant = (name: PointName, { planets, house }: Horoscope):
       return isDayBirth(house.ascendant.longitude, planets.sun.longitude) ? 'day' : 'night'
   }
 }
-
-// 惑星とのコンジャンクションのオーブ。感受点は、惑星より狭く取る
-// TODO:固定値ではなく、ユーザーが画面から指定した値を使うようにしたい
-export const POINT_ORB = 3
-
-export type PointConjunction = { point: PointName; planet: PlanetName }
-
-// 惑星とのコンジャンクション
-// NOTE: テイルは、ヘッドの反対側にある。ほかのアスペクトまで求めると、同じ情報が2回ずつ出る
-// （テイルとのセクスタイルは、ヘッドとのトライン）ので、コンジャンクションだけを求める。
-// ほかの感受点も、表をそろえるために、コンジャンクションだけにしている
-export const getPointConjunctions = ({ planets, points }: Horoscope, orb: number): PointConjunction[] =>
-  POINT_NAMES.flatMap((point) =>
-    ALL_PLANETS.filter((planet) => planets[planet].diffLongitude(points[point].longitude) <= orb).map((planet) => ({
-      point,
-      planet,
-    }))
-  )

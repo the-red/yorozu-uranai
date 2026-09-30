@@ -8,6 +8,7 @@ import {
   eclipticPosition,
   isAsteroidRange,
   calcHouses,
+  snapCusps,
   houseSystemName,
   longitudeToDate,
   equationOfTime,
@@ -313,6 +314,25 @@ describe('astronomy', () => {
         kochCoAscendant: 237.939031,
         munkaseyCoAscendant: 206.8052,
         munkaseyPolarAscendant: 57.939031,
+      })
+    })
+
+    describe('カスプを、Asc と Mc にそろえる', () => {
+      it('計算の誤差だけ違うカスプは、Asc や Mc の値にする', () => {
+        const asc = 207.908591
+        const mc = 123.803709
+        expect(snapCusps([asc - 1e-12, 235.78, mc + 1e-12], [asc, mc])).toEqual([asc, 235.78, mc])
+      })
+      it('離れているカスプは、変えない', () => {
+        expect(snapCusps([207.908591, 117.908591], [207.908591, 123.803709])).toEqual([207.908591, 117.908591])
+        // 小数第6位で 1 違うものは、別の値
+        expect(snapCusps([100.000001], [100])).toEqual([100.000001])
+      })
+      it('切り捨てで値が分かれる場合でも、そろう', () => {
+        // Asc が 100.000001 で、カスプが、それより わずかに小さい。そろえないと、切り捨てで 100 になる
+        const asc = 100.000001
+        const [cusp] = snapCusps([asc - 1e-13], [asc, 50])
+        expect(Math.trunc(cusp * 1e6)).toEqual(Math.trunc(asc * 1e6))
       })
     })
 

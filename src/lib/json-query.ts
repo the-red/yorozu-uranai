@@ -1,4 +1,6 @@
 import { DateTime, IANAZone } from 'luxon'
+import { AspectSettings, parseAspectQuery } from '../horoscope/models/AspectSettings'
+import { DEFAULT_HOUSE_SYSTEM, HouseSystem, toHouseSystem } from '../horoscope/models/HouseSystem'
 import {
   FORM_DATE_FORMAT,
   FORM_TIME_FORMAT,
@@ -20,6 +22,8 @@ export type HoroscopeInput = {
   zone: string
   lat: number
   lng: number
+  house: HouseSystem // ハウスシステム。指定が無ければ、プラシーダス
+  aspects: AspectSettings // アスペクトの求め方。指定が無い項目は、最初の状態
 }
 export type SuimeiInput = {
   date: string
@@ -145,6 +149,20 @@ class Parser {
     return value.trim().replace(/\s+/g, ' ').toUpperCase()
   }
 
+  // ハウスシステム。任意
+  house() {
+    const value = this.value('house')
+    if (value === undefined) return DEFAULT_HOUSE_SYSTEM
+    return toHouseSystem(value) ?? this.invalid('house')
+  }
+
+  // アスペクトの求め方。どれも任意
+  aspects() {
+    const { settings, invalid } = parseAspectQuery(this.query)
+    invalid.forEach((name) => this.invalid(name))
+    return settings
+  }
+
   result<T>(input: { [K in keyof T]: T[K] | undefined }): Parsed<T> {
     if (this.problems.length > 0) {
       return {
@@ -167,7 +185,18 @@ export const parseHoroscopeQuery = (query: JsonQuery): Parsed<HoroscopeInput> =>
   const zone = parser.zone()
   const lat = parser.degrees('lat', 90)
   const lng = parser.degrees('lng', 180)
-  return parser.result<HoroscopeInput>({ date, time: time?.time, timeUnknown: time?.timeUnknown, zone, lat, lng })
+  const house = parser.house()
+  const aspects = parser.aspects()
+  return parser.result<HoroscopeInput>({
+    date,
+    time: time?.time,
+    timeUnknown: time?.timeUnknown,
+    zone,
+    lat,
+    lng,
+    house,
+    aspects,
+  })
 }
 
 export const parseSuimeiQuery = (query: JsonQuery): Parsed<SuimeiInput> => {
@@ -216,4 +245,6 @@ export const toPageQuery = (input: PageInput): Record<string, string> => ({
   ...(input.lat != null && { lat: String(input.lat) }),
   ...(input.lng !== undefined && { lng: String(input.lng) }),
   ...(input.gender !== undefined && { gender: input.gender }),
+  // ハウスシステム。最初の状態（プラシーダス）なら、入れない
+  ...(input.house !== undefined && input.house !== DEFAULT_HOUSE_SYSTEM && { house: input.house }),
 })

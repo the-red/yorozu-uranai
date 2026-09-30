@@ -1,6 +1,7 @@
 import type { FC } from 'react'
 import dynamic from 'next/dynamic'
-import { Horoscope, Visibility, VisibilityKey } from '../models'
+import { DEFAULT_VISIBILITY, Horoscope, HoroscopeSettings, HouseSystem } from '../models'
+import AspectOptions from './AspectOptions'
 import DisplayOptions from './DisplayOptions'
 import PlanetPositions from './PlanetPositions'
 import HouseCusp from './HouseCusp'
@@ -8,22 +9,28 @@ import SignTable from './SignTable'
 import AspectChart from './AspectChart'
 import { HoroscopeForm } from './HoroscopeForm'
 import { FormProps } from '../../hooks/useYorozuUranaiForm'
-import { useVisibility } from '../../hooks/useVisibility'
 const HoroscopeCircle = dynamic(() => import('./HoroscopeCircle'), { ssr: false })
 
 // horoscope は、まだ求まっていないときと、求められなかったときは無い
-type Props = { horoscope?: Horoscope; orb: number; pointOrb: number; loading: boolean } & FormProps
+type Props = {
+  horoscope?: Horoscope
+  houseSystem?: HouseSystem // horoscope を計算したときの、ハウスシステム
+  settings: HoroscopeSettings
+  onChangeSettings: (settings: HoroscopeSettings) => void
+  loading: boolean
+} & FormProps
 
 const HoroscopeDetailPage: FC<Props> = ({
   horoscope,
-  orb,
-  pointOrb,
+  houseSystem,
+  settings,
+  onChangeSettings,
   loading,
   onSubmit,
   defaultValues,
   errorMessage,
 }) => {
-  const [visibility, setVisible] = useVisibility()
+  const { visibility, aspects } = settings
 
   return (
     <div>
@@ -36,23 +43,22 @@ const HoroscopeDetailPage: FC<Props> = ({
         {horoscope ? (
           <>
             <div className="content circle pc">
-              <HoroscopeCircle horoscope={horoscope} radius={220} orb={orb} visibility={visibility} />
+              <HoroscopeCircle horoscope={horoscope} radius={220} settings={aspects} visibility={visibility} />
             </div>
             <div className="content circle sp">
-              <HoroscopeCircle horoscope={horoscope} radius={170} orb={orb} visibility={visibility} />
+              <HoroscopeCircle horoscope={horoscope} radius={170} settings={aspects} visibility={visibility} />
             </div>
           </>
         ) : (
           loading && <div className="content loading">読み込み中…</div>
         )}
       </div>
-      {horoscope && (
+      {horoscope && houseSystem && (
         <HoroscopeTables
           horoscope={horoscope}
-          orb={orb}
-          pointOrb={pointOrb}
-          visibility={visibility}
-          onChangeVisibility={setVisible}
+          houseSystem={houseSystem}
+          settings={settings}
+          onChangeSettings={onChangeSettings}
         />
       )}
     </div>
@@ -61,26 +67,44 @@ const HoroscopeDetailPage: FC<Props> = ({
 
 type TablesProps = {
   horoscope: Horoscope
-  orb: number
-  pointOrb: number
-  visibility: Visibility
-  onChangeVisibility: (key: VisibilityKey, visible: boolean) => void
+  houseSystem: HouseSystem
+  settings: HoroscopeSettings
+  onChangeSettings: (settings: HoroscopeSettings) => void
 }
 
-const HoroscopeTables: FC<TablesProps> = ({ horoscope, orb, pointOrb, visibility, onChangeVisibility }) => {
+const HoroscopeTables: FC<TablesProps> = ({ horoscope, houseSystem, settings, onChangeSettings }) => {
+  const { visibility, aspects } = settings
   return (
     <>
-      <div className="content-row">
-        <div className="content">
-          <div className="content-inner">
-            <DisplayOptions
-              visibility={visibility}
-              onChange={onChangeVisibility}
-              hasAsteroids={horoscope.asteroids !== undefined}
-            />
+      {/* 設定の欄。折り畳める。最初は、閉じている */}
+      <details className="settings">
+        <summary className="settings-summary">
+          <div className="content">
+            <div className="content-inner">
+              <span className="list">Settings</span>
+            </div>
+          </div>
+        </summary>
+        <div className="content-row">
+          <div className="content">
+            <div className="content-inner">
+              <DisplayOptions
+                visibility={visibility}
+                onChange={(key, visible) =>
+                  onChangeSettings({ ...settings, visibility: { ...visibility, [key]: visible } })
+                }
+                onReset={() => onChangeSettings({ ...settings, visibility: DEFAULT_VISIBILITY })}
+                hasAsteroids={horoscope.asteroids !== undefined}
+              />
+            </div>
+          </div>
+          <div className="content">
+            <div className="content-inner">
+              <AspectOptions settings={aspects} onChange={(aspects) => onChangeSettings({ ...settings, aspects })} />
+            </div>
           </div>
         </div>
-      </div>
+      </details>
       <div className="content-row">
         <div className="content">
           <div className="content-inner">
@@ -89,7 +113,7 @@ const HoroscopeTables: FC<TablesProps> = ({ horoscope, orb, pointOrb, visibility
         </div>
         <div className="content">
           <div className="content-inner">
-            <HouseCusp horoscope={horoscope} />
+            <HouseCusp horoscope={horoscope} houseSystem={houseSystem} />
           </div>
         </div>
       </div>
@@ -101,7 +125,7 @@ const HoroscopeTables: FC<TablesProps> = ({ horoscope, orb, pointOrb, visibility
         </div>
         <div className="content">
           <div className="content-inner">
-            <AspectChart horoscope={horoscope} orb={orb} pointOrb={pointOrb} visibility={visibility} />
+            <AspectChart horoscope={horoscope} settings={aspects} visibility={visibility} />
           </div>
         </div>
       </div>

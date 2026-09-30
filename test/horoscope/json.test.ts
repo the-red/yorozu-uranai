@@ -1,5 +1,11 @@
 import { describe, it, expect } from 'vitest'
-import { Horoscope, HoroscopeProps, POINT_ORB, ORB, toHoroscopeResult } from '../../src/horoscope/models'
+import {
+  AspectSettings,
+  DEFAULT_ASPECT_SETTINGS,
+  Horoscope,
+  HoroscopeProps,
+  toHoroscopeResult,
+} from '../../src/horoscope/models'
 import { expectToBeCloseTo } from '../test-util'
 
 // 1987-09-08 08:53 札幌生まれの計算結果（test/horoscope/Horoscope.test.ts と同じ）
@@ -44,11 +50,19 @@ const props: HoroscopeProps = {
 }
 
 describe('ホロスコープ → JSON', () => {
-  const result = toHoroscopeResult(new Horoscope(props), ORB, POINT_ORB)
+  const SETTINGS = DEFAULT_ASPECT_SETTINGS
+  const result = toHoroscopeResult(new Horoscope(props), SETTINGS)
 
-  it('オーブは 6', () => {
-    expect(ORB).toEqual(6)
-    expect(result.aspects.orb).toEqual(6)
+  it('アスペクトの求め方を返す', () => {
+    expect(result.aspects.settings).toEqual({
+      orb: 6,
+      sunMoonPlus: 0,
+      minor: [],
+      minorOrb: 2,
+      ascMc: { aspects: 'major', orb: 6 },
+      asteroid: { aspects: 'conjunction', orb: 3 },
+      point: { aspects: 'conjunction', orb: 3 },
+    })
   })
 
   it('惑星', () => {
@@ -177,8 +191,13 @@ describe('ホロスコープ → JSON', () => {
   })
 
   it('ハウス', () => {
-    expectToBeCloseTo(result.houses.ascendant, { sign: '天秤座', degrees: 27.908591, longitude: 207.908591 })
-    expectToBeCloseTo(result.houses.mc, { sign: '獅子座', degrees: 3.803709, longitude: 123.803709 })
+    expectToBeCloseTo(result.houses.ascendant, {
+      sign: '天秤座',
+      degrees: 27.908591,
+      longitude: 207.908591,
+      house: 1,
+    })
+    expectToBeCloseTo(result.houses.mc, { sign: '獅子座', degrees: 3.803709, longitude: 123.803709, house: 10 })
     expect(result.houses.cusps.map((_) => _.house)).toEqual([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12])
     expect(result.houses.cusps.map((_) => _.sign)).toEqual([
       '天秤座',
@@ -225,6 +244,28 @@ describe('ホロスコープ → JSON', () => {
     it('位置', () => {
       expectToBeCloseTo(result.points, [
         {
+          name: 'vertex',
+          nameJa: 'Vx',
+          type: 'angle',
+          variant: null,
+          sign: '双子座',
+          degrees: 1.847894,
+          longitude: 61.847894,
+          isRetrograde: false,
+          house: 8,
+        },
+        {
+          name: 'partOfFortune',
+          nameJa: 'PoF',
+          type: 'lot',
+          variant: 'day',
+          sign: '牡牛座',
+          degrees: 1.153606,
+          longitude: 31.153606,
+          isRetrograde: false,
+          house: 7,
+        },
+        {
           name: 'northNode',
           nameJa: 'ヘッド',
           type: 'node',
@@ -257,28 +298,6 @@ describe('ホロスコープ → JSON', () => {
           isRetrograde: false,
           house: 9,
         },
-        {
-          name: 'vertex',
-          nameJa: 'Vx',
-          type: 'angle',
-          variant: null,
-          sign: '双子座',
-          degrees: 1.847894,
-          longitude: 61.847894,
-          isRetrograde: false,
-          house: 8,
-        },
-        {
-          name: 'partOfFortune',
-          nameJa: 'PoF',
-          type: 'lot',
-          variant: 'day',
-          sign: '牡牛座',
-          degrees: 1.153606,
-          longitude: 31.153606,
-          isRetrograde: false,
-          house: 7,
-        },
       ])
     })
 
@@ -288,8 +307,8 @@ describe('ホロスコープ → JSON', () => {
         ...props,
         positions: props.positions.map(([name, current]) => [name, name === 'sun' ? position(250) : current]),
       }
-      const { points } = toHoroscopeResult(new Horoscope(night), ORB, POINT_ORB)
-      expectToBeCloseTo(points[4], {
+      const { points } = toHoroscopeResult(new Horoscope(night), SETTINGS)
+      expectToBeCloseTo(points[1], {
         name: 'partOfFortune',
         nameJa: 'PoF',
         type: 'lot',
@@ -303,11 +322,10 @@ describe('ホロスコープ → JSON', () => {
     })
 
     it('惑星とのコンジャンクション', () => {
-      expect(result.aspects.pointOrb).toEqual(3)
-      // テイル（182.37度）と水星（180.68度）、PoF（31.15度）と木星（29.13度）
+      // PoF（31.15度）と木星（29.13度）、テイル（182.37度）と水星（180.68度）
       expect(result.aspects.points).toEqual([
-        { point: 'southNode', planet: 'mercury', name: 'conjunction', degrees: 0 },
-        { point: 'partOfFortune', planet: 'jupiter', name: 'conjunction', degrees: 0 },
+        { point: 'partOfFortune', planet: 'jupiter', name: 'conjunction', degrees: 0, type: 'hard' },
+        { point: 'southNode', planet: 'mercury', name: 'conjunction', degrees: 0, type: 'hard' },
       ])
     })
 
@@ -322,8 +340,9 @@ describe('ホロスコープ → JSON', () => {
     })
 
     it('オーブを変えると、コンジャンクションが変わる', () => {
-      const { aspects } = toHoroscopeResult(new Horoscope(props), ORB, 1)
-      expect(aspects.pointOrb).toEqual(1)
+      const settings: AspectSettings = { ...SETTINGS, point: { aspects: 'conjunction', orb: 1 } }
+      const { aspects } = toHoroscopeResult(new Horoscope(props), settings)
+      expect(aspects.settings.point.orb).toEqual(1)
       expect(aspects.points).toEqual([])
     })
   })
@@ -387,7 +406,7 @@ describe('ホロスコープ → JSON', () => {
     it('惑星とのコンジャンクション', () => {
       // セレス（264.01度）と、天王星（262.74度）。オーブは、感受点と同じ
       expect(result.aspects.asteroids).toEqual([
-        { asteroid: 'ceres', planet: 'uranus', name: 'conjunction', degrees: 0 },
+        { asteroid: 'ceres', planet: 'uranus', name: 'conjunction', degrees: 0, type: 'hard' },
       ])
     })
 
@@ -401,8 +420,7 @@ describe('ホロスコープ → JSON', () => {
     it('計算できない日付では、null にする', () => {
       const { asteroids, aspects, planets, points } = toHoroscopeResult(
         new Horoscope({ ...props, asteroids: null }),
-        ORB,
-        POINT_ORB
+        SETTINGS
       )
       expect(asteroids).toBeNull()
       expect(aspects.asteroids).toEqual([])
@@ -412,14 +430,42 @@ describe('ホロスコープ → JSON', () => {
   })
 
   it('オーブを変えると、アスペクトが変わる', () => {
-    const { aspects } = toHoroscopeResult(new Horoscope(props), 1, POINT_ORB)
-    expect(aspects.orb).toEqual(1)
+    const { aspects } = toHoroscopeResult(new Horoscope(props), { ...SETTINGS, orb: 1 })
+    expect(aspects.settings.orb).toEqual(1)
     expect(aspects.major.map((_) => _.planets)).toEqual([['sun', 'saturn']])
+  })
+
+  describe('Asc・Mc と、惑星のアスペクト', () => {
+    it('メジャーアスペクトを、相手 → 惑星 → アスペクトの順に返す', () => {
+      expect(result.aspects.angles).toEqual([
+        { angle: 'ascendant', planet: 'jupiter', name: 'opposition', degrees: 180, type: 'hard' },
+        { angle: 'ascendant', planet: 'uranus', name: 'sextile', degrees: 60, type: 'soft' },
+        { angle: 'mc', planet: 'mercury', name: 'sextile', degrees: 60, type: 'soft' },
+        { angle: 'mc', planet: 'jupiter', name: 'square', degrees: 90, type: 'hard' },
+        { angle: 'mc', planet: 'pluto', name: 'square', degrees: 90, type: 'hard' },
+      ])
+      expect(Object.keys(result.aspects.angles[0])).toEqual(['angle', 'planet', 'name', 'degrees', 'type'])
+    })
+  })
+
+  describe('マイナーアスペクト', () => {
+    it('最初の状態では、求めない', () => {
+      expect(result.aspects.minor).toEqual([])
+    })
+    it('選んだものを、メジャーアスペクトとは別に返す', () => {
+      const { aspects } = toHoroscopeResult(new Horoscope(props), { ...SETTINGS, minor: [150] })
+      // 水星（180.68度）と木星（29.13度）の差は、151.55度
+      expect(aspects.minor).toEqual([
+        { planets: ['mercury', 'jupiter'], name: 'quincunx', degrees: 150, type: 'minor' },
+      ])
+      expect(aspects.major).toEqual(result.aspects.major)
+      expect(aspects.settings.minor).toEqual([150])
+    })
   })
 
   it('モデルがハウスを返さない惑星は、house を null にする', () => {
     const noCusps: HoroscopeProps = { ...props, houses: { ...props.houses, house: [] } }
-    const { planets, points, asteroids } = toHoroscopeResult(new Horoscope(noCusps), ORB, POINT_ORB)
+    const { planets, points, asteroids } = toHoroscopeResult(new Horoscope(noCusps), SETTINGS)
     expect(planets.map((_) => _.house)).toEqual(Array(10).fill(null))
     expect(points.map((_) => _.house)).toEqual(Array(5).fill(null))
     expect(asteroids?.map((_) => _.house)).toEqual(Array(5).fill(null))

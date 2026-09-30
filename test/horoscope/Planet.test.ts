@@ -18,19 +18,20 @@ describe('Planet', () => {
   })
 
   describe('星座と角度', () => {
+    // NOTE: サインの境界（ちょうど 0度）は、新しいサインに入れる
     const orb = 1
-    it('0.0: 魚座', () => {
+    it('0.0: 牡羊座', () => {
       const planet = new Planet(new Position(0), 'sun', false, house)
-      expect(planet.sign).toEqual('魚座')
+      expect(planet.sign).toEqual('牡羊座')
     })
     it('0.5: 牡羊座', () => {
       const planet = new Planet(new Position(0.5), 'sun', false, house)
       expect(planet.sign).toEqual('牡羊座')
       expect(planet.position.degrees).toBeCloseTo(0.5, NUM_DIGITS)
     })
-    it('60.0: 牡牛座', () => {
+    it('60.0: 双子座', () => {
       const planet = new Planet(new Position(60), 'sun', false, house)
-      expect(planet.sign).toEqual('牡牛座')
+      expect(planet.sign).toEqual('双子座')
       expect(planet.position.degrees).toBeCloseTo(0, NUM_DIGITS)
     })
     it('61.89: 双子座', () => {
@@ -39,41 +40,41 @@ describe('Planet', () => {
       expect(planet.sign).toEqual('双子座')
       expect(planet.position.degrees).toBeCloseTo(1.89, NUM_DIGITS)
     })
-    it('120.0: 蟹座', () => {
+    it('120.0: 獅子座', () => {
       const planet = new Planet(new Position(120), 'sun', false, house)
-      expect(planet.sign).toEqual('蟹座')
-    })
-    it('150.0: 獅子座', () => {
-      const planet = new Planet(new Position(150), 'sun', false, house)
       expect(planet.sign).toEqual('獅子座')
     })
-    it('180.0: 乙女座', () => {
-      const planet = new Planet(new Position(180), 'sun', false, house)
+    it('150.0: 乙女座', () => {
+      const planet = new Planet(new Position(150), 'sun', false, house)
       expect(planet.sign).toEqual('乙女座')
     })
-    it('210.0: 天秤座', () => {
-      const planet = new Planet(new Position(210), 'sun', false, house)
+    it('180.0: 天秤座', () => {
+      const planet = new Planet(new Position(180), 'sun', false, house)
       expect(planet.sign).toEqual('天秤座')
     })
-    it('240.0: 蠍座', () => {
-      const planet = new Planet(new Position(240), 'sun', false, house)
+    it('210.0: 蠍座', () => {
+      const planet = new Planet(new Position(210), 'sun', false, house)
       expect(planet.sign).toEqual('蠍座')
     })
-    it('270.0: 射手座', () => {
-      const planet = new Planet(new Position(270), 'sun', false, house)
+    it('240.0: 射手座', () => {
+      const planet = new Planet(new Position(240), 'sun', false, house)
       expect(planet.sign).toEqual('射手座')
     })
-    it('300.0: 山羊座', () => {
-      const planet = new Planet(new Position(300), 'sun', false, house)
+    it('270.0: 山羊座', () => {
+      const planet = new Planet(new Position(270), 'sun', false, house)
       expect(planet.sign).toEqual('山羊座')
     })
-    it('330.0: 水瓶座', () => {
-      const planet = new Planet(new Position(330), 'sun', false, house)
+    it('300.0: 水瓶座', () => {
+      const planet = new Planet(new Position(300), 'sun', false, house)
       expect(planet.sign).toEqual('水瓶座')
     })
-    it('360.0: 魚座', () => {
-      const planet = new Planet(new Position(360), 'sun', false, house)
+    it('330.0: 魚座', () => {
+      const planet = new Planet(new Position(330), 'sun', false, house)
       expect(planet.sign).toEqual('魚座')
+    })
+    it('360.0: 牡羊座', () => {
+      const planet = new Planet(new Position(360), 'sun', false, house)
+      expect(planet.sign).toEqual('牡羊座')
       expect(planet.position.degrees).toBeCloseTo(0, NUM_DIGITS)
     })
     it('360.5: 牡羊座', () => {
@@ -81,9 +82,9 @@ describe('Planet', () => {
       expect(planet.sign).toEqual('牡羊座')
       expect(planet.position.degrees).toBeCloseTo(0.5, NUM_DIGITS)
     })
-    it('3600270.0: 射手座', () => {
+    it('3600270.0: 山羊座', () => {
       const planet = new Planet(new Position(3600270), 'sun', false, house)
-      expect(planet.sign).toEqual('射手座')
+      expect(planet.sign).toEqual('山羊座')
       expect(planet.position.degrees).toBeCloseTo(0, NUM_DIGITS)
     })
   })
@@ -392,42 +393,42 @@ describe('Planet', () => {
       it('ちょうど基準値', () => {
         const planet1 = new Planet(new Position(10), 'sun', false, house)
         const planet2 = new Planet(new Position(40), 'sun', false, house)
-        expect(planet1.minorAspect(planet2, orb)).toEqual({ degrees: 30, name: 'semi-sextile' })
+        expect(planet1.minorAspect(planet2, orb)).toEqual({ degrees: 30, name: 'semi-sextile', type: 'minor' })
       })
     })
     describe('45度：セミスクエア', () => {
       it('ちょうど基準値', () => {
         const planet1 = new Planet(new Position(10), 'sun', false, house)
         const planet2 = new Planet(new Position(55), 'sun', false, house)
-        expect(planet1.minorAspect(planet2, orb)).toEqual({ degrees: 45, name: 'semi-square' })
+        expect(planet1.minorAspect(planet2, orb)).toEqual({ degrees: 45, name: 'semi-square', type: 'minor' })
       })
     })
     describe('72度：クィンタイル', () => {
       it('ちょうど基準値', () => {
         const planet1 = new Planet(new Position(10), 'sun', false, house)
         const planet2 = new Planet(new Position(82), 'sun', false, house)
-        expect(planet1.minorAspect(planet2, orb)).toEqual({ degrees: 72, name: 'quintile' })
+        expect(planet1.minorAspect(planet2, orb)).toEqual({ degrees: 72, name: 'quintile', type: 'minor' })
       })
     })
     describe('135度：セスキコードレート', () => {
       it('ちょうど基準値', () => {
         const planet1 = new Planet(new Position(10), 'sun', false, house)
         const planet2 = new Planet(new Position(145), 'sun', false, house)
-        expect(planet1.minorAspect(planet2, orb)).toEqual({ degrees: 135, name: 'sesquiquadrate' })
+        expect(planet1.minorAspect(planet2, orb)).toEqual({ degrees: 135, name: 'sesquiquadrate', type: 'minor' })
       })
     })
     describe('144度：バイクインタイル', () => {
       it('ちょうど基準値', () => {
         const planet1 = new Planet(new Position(10), 'sun', false, house)
         const planet2 = new Planet(new Position(154), 'sun', false, house)
-        expect(planet1.minorAspect(planet2, orb)).toEqual({ degrees: 144, name: 'biquintile' })
+        expect(planet1.minorAspect(planet2, orb)).toEqual({ degrees: 144, name: 'biquintile', type: 'minor' })
       })
     })
     describe('150度：クインカンクス', () => {
       it('ちょうど基準値', () => {
         const planet1 = new Planet(new Position(10), 'sun', false, house)
         const sign150 = new Planet(new Position(160), 'sun', false, house)
-        expect(planet1.minorAspect(sign150, orb)).toEqual({ degrees: 150, name: 'quincunx' })
+        expect(planet1.minorAspect(sign150, orb)).toEqual({ degrees: 150, name: 'quincunx', type: 'minor' })
       })
     })
 
@@ -439,10 +440,10 @@ describe('Planet', () => {
         )
 
       it('セミセクスタイル', () => {
-        expect(aspect(345, 15)).toEqual({ degrees: 30, name: 'semi-sextile' })
+        expect(aspect(345, 15)).toEqual({ degrees: 30, name: 'semi-sextile', type: 'minor' })
       })
       it('クインカンクス', () => {
-        expect(aspect(300, 90)).toEqual({ degrees: 150, name: 'quincunx' })
+        expect(aspect(300, 90)).toEqual({ degrees: 150, name: 'quincunx', type: 'minor' })
       })
     })
   })

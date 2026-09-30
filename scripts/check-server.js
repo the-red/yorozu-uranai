@@ -78,11 +78,11 @@ const main = async () => {
       ['juno', '水瓶座', 4],
       ['vesta', '蟹座', 9],
       ['chiron', '双子座', 8],
+      ['vertex', '双子座', 8],
+      ['partOfFortune', '牡牛座', 7],
       ['northNode', '牡羊座', 5],
       ['southNode', '天秤座', 11],
       ['lilith', '獅子座', 9],
-      ['vertex', '双子座', 8],
-      ['partOfFortune', '牡牛座', 7],
     ]
   )
   await checkJson(
@@ -102,6 +102,32 @@ const main = async () => {
   await checkError(`/horoscope.json?${QUERY.replace('lat=43.06', 'lat=80')}`, undefined, 400, 'calculation_failed', [
     'lat',
   ])
+  // ハウスシステム
+  await checkJson(
+    `/horoscope.json?${QUERY}&house=koch`,
+    'horoscope',
+    ({ result }) => [result.houses.system, ...result.houses.cusps.slice(1, 3).map((_) => Math.floor(_.longitude))],
+    ['koch', 235, 265]
+  )
+  await checkJson(
+    `/horoscope.json?${QUERY}&house=wholeSign`,
+    'horoscope',
+    ({ result }) => [result.houses.system, result.houses.cusps[0].sign, result.houses.cusps[0].degrees],
+    ['wholeSign', '天秤座', 0]
+  )
+  await checkError(`/horoscope.json?${QUERY}&house=K`, undefined, 400, 'invalid_query', ['house'])
+
+  // アスペクトの求め方
+  await checkJson(
+    `/horoscope.json?${QUERY}&orb=1&minor=150`,
+    'horoscope',
+    ({ result }) => [...result.aspects.major, ...result.aspects.minor].map((_) => [..._.planets, _.degrees]),
+    [
+      ['sun', 'saturn', 90],
+      ['mercury', 'jupiter', 150],
+    ]
+  )
+  await checkError(`/horoscope.json?${QUERY}&orb=abc`, undefined, 400, 'invalid_query', ['orb'])
   await checkError(`/suimei.json?${QUERY.replace('gender=woman', 'gender=male')}`, undefined, 400, 'invalid_query', [
     'gender',
   ])

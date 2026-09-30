@@ -13,6 +13,7 @@ describe('地図ページに渡すクエリ', () => {
       lat: 43.0617713,
       lng: 141.3544506,
       gender: 'woman',
+      house: 'placidus',
       address: '日本、北海道札幌市',
     }
     expect(buildMapQuery('suimei', formValues)).toEqual({
@@ -34,6 +35,7 @@ describe('地図ページに渡すクエリ', () => {
       lat: 35.6812362,
       lng: 139.7671248,
       gender: 'woman',
+      house: 'placidus',
       address: '',
     }
     expect(buildMapQuery('horoscope', formValues)).toMatchObject({

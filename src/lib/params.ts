@@ -1,4 +1,5 @@
 import { DateTime } from 'luxon'
+import { DEFAULT_HOUSE_SYSTEM, HouseSystem, toHouseSystem } from '../horoscope/models/HouseSystem'
 
 export type Gender = 'man' | 'woman'
 export type FormValuesBase = {
@@ -10,6 +11,7 @@ export type FormValuesBase = {
   lat?: number
   lng?: number
   gender?: Gender
+  house?: HouseSystem // ホロスコープの、ハウスシステム
 }
 
 export type QueryValue = string | string[] | undefined
@@ -21,7 +23,20 @@ export type Query = Partial<{
   lat: QueryValue
   lng: QueryValue
   gender: QueryValue
+  house: QueryValue
 }>
+
+// フォームの入力になるクエリ
+export const FORM_QUERY_KEYS = [
+  'name',
+  'date',
+  'time',
+  'zone',
+  'lat',
+  'lng',
+  'gender',
+  'house',
+] as const satisfies readonly (keyof Query)[]
 
 export const QUERY_DATE_FORMAT = 'yyyyMMdd' as const
 export const QUERY_TIME_FORMAT = 'HHmm' as const
@@ -75,6 +90,8 @@ export const queryToFormValues = (q: Query): FormValuesBase => {
     lat: lat ? Number(lat) : undefined,
     lng: lng ? Number(lng) : undefined,
     gender: gender,
+    // NOTE: 読み取れない値は、無視する（プラシーダスにする）
+    house: toHouseSystem(singleValue(q.house) ?? ''),
   }
 }
 
@@ -88,5 +105,7 @@ export const formValuesToQuery = (f: Partial<FormValuesBase>): Query => {
     ...(f.lat && { lat: f.lat.toString() }),
     ...(f.lng && { lng: f.lng.toString() }),
     ...(f.gender && { gender: f.gender }),
+    // NOTE: 最初の状態（プラシーダス）なら、入れない。今までのURLを、そのまま使う
+    ...(f.house && f.house !== DEFAULT_HOUSE_SYSTEM && { house: f.house }),
   }
 }

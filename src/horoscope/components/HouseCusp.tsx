@@ -1,10 +1,11 @@
-import type { Horoscope } from '../models'
+import { HOUSE_SYSTEM_NAMES, Horoscope, HouseSystem } from '../models'
 
 type Props = {
   horoscope: Horoscope
+  houseSystem: HouseSystem // horoscope を計算したときの、ハウスシステム
 }
 
-export default function HouseCusp({ horoscope }: Props) {
+export default function HouseCusp({ horoscope, houseSystem }: Props) {
   return (
     <div className="list-container">
       <div className="list">House Cusps</div>
@@ -19,6 +20,7 @@ export default function HouseCusp({ horoscope }: Props) {
           ))}
         </tbody>
       </table>
+      <div className="list-note">{HOUSE_SYSTEM_NAMES[houseSystem]}</div>
     </div>
   )
 }

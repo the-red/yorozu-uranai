@@ -112,6 +112,14 @@ export const equationOfTime = async (julday_ut: number): Promise<number> => {
   return result.data * 24 * 60
 }
 
+// カスプが、Asc や Mc と、計算の誤差だけ違うときは、Asc や Mc の値にそろえる
+// NOTE: ハウスシステムによっては、1ハウスのカスプと Asc（10ハウスのカスプと Mc）が、別々に計算されて、
+// 最後の桁だけ違う（Krusinski、APC、Meridian）。そろえないと、小数第6位に切り捨てたときに、まれに値が分かれて、
+// Asc が 12ハウスに、Mc が 9ハウスに入ってしまう
+const CUSP_TOLERANCE = 1e-9
+export const snapCusps = (cusps: number[], points: number[]): number[] =>
+  cusps.map((cusp) => points.find((point) => Math.abs(point - cusp) < CUSP_TOLERANCE) ?? cusp)
+
 // ハウスを計算できなかったときのメッセージ
 // NOTE: プラシーダスとコッホは、極圏では計算できない。APIは、このメッセージで、緯度の問題かどうかを見分ける
 const HOUSES_ERROR = `Can't calculate houses.`
@@ -142,7 +150,7 @@ export const calcHouses = async (
   ] = result.data.points.map(round6)
 
   return {
-    house: result.data.houses.map(round6),
+    house: snapCusps(result.data.houses, result.data.points.slice(0, 2)).map(round6),
     ascendant,
     mc,
     armc,

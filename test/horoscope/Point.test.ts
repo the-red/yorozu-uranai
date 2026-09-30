@@ -1,17 +1,23 @@
 import { describe, it, expect } from 'vitest'
 import {
+  DEFAULT_ASPECT_SETTINGS,
   Horoscope,
   HoroscopeProps,
   POINT_NAMES,
   POINT_NEEDS_BIRTH_TIME,
-  POINT_ORB,
   PlanetName,
   getPartOfFortune,
-  getPointConjunctions,
+  getPointAspects,
   getPointVariant,
   isDayBirth,
 } from '../../src/horoscope/models'
 import { NUM_DIGITS } from '../test-util'
+
+const POINT_ORB = DEFAULT_ASPECT_SETTINGS.point.orb
+
+// 感受点と、惑星のコンジャンクション
+const getPointConjunctions = (horoscope: Horoscope, orb: number) =>
+  getPointAspects(horoscope, { aspects: 'conjunction', orb }).map(({ point, planet }) => ({ point, planet }))
 
 const position = (longitude: number, isRetrograde = false) =>
   ({ longitude, isRetrograde }) as HoroscopeProps['positions'][number][1]
@@ -72,14 +78,14 @@ const getNodeConjunctions = (horoscope: Horoscope, orb: number) =>
 
 describe('感受点', () => {
   it('並び順', () => {
-    // 日時だけで決まるものを先に、出生時刻と場所で決まるものを後に置く
-    expect(POINT_NAMES).toEqual(['northNode', 'southNode', 'lilith', 'vertex', 'partOfFortune'])
+    // 出生時刻と場所で決まるものを先に、日時だけで決まるものを後に置く
+    expect(POINT_NAMES).toEqual(['vertex', 'partOfFortune', 'northNode', 'southNode', 'lilith'])
     expect(Object.keys(new Horoscope(props).points)).toEqual([...POINT_NAMES])
   })
 
   it('求め方', () => {
     const horoscope = new Horoscope(props)
-    expect(POINT_NAMES.map((_) => getPointVariant(_, horoscope))).toEqual(['true', 'true', 'mean', null, 'day'])
+    expect(POINT_NAMES.map((_) => getPointVariant(_, horoscope))).toEqual([null, 'day', 'true', 'true', 'mean'])
   })
 
   it('出生時刻と場所が無いと、求められないもの', () => {
@@ -184,11 +190,11 @@ describe('パート・オブ・フォーチュン', () => {
     })
 
     it('境界は、ハウスの決め方に合わせる', () => {
-      // カスプとちょうど同じ黄経は、手前のハウスに入る。Asc と同じなら 12ハウス（昼）、Dsc と同じなら 6ハウス（夜）
-      expect(isDayBirth(100, 100)).toEqual(true)
-      expect(isDayBirth(100, 100.000001)).toEqual(false)
-      expect(isDayBirth(100, 280)).toEqual(false)
-      expect(isDayBirth(100, 280.000001)).toEqual(true)
+      // カスプとちょうど同じ黄経は、そこから始まるハウスに入る。Asc と同じなら 1ハウス（夜）、Dsc と同じなら 7ハウス（昼）
+      expect(isDayBirth(100, 99.999999)).toEqual(true)
+      expect(isDayBirth(100, 100)).toEqual(false)
+      expect(isDayBirth(100, 279.999999)).toEqual(false)
+      expect(isDayBirth(100, 280)).toEqual(true)
     })
   })
 
@@ -216,10 +222,14 @@ describe('パート・オブ・フォーチュン', () => {
       expect(getPartOfFortune({ ascendant: 350, sun: 100, moon: 20 })).toBeCloseTo(70, NUM_DIGITS)
     })
     it('境界', () => {
-      expect(getPartOfFortune({ ascendant: 100, sun: 100, moon: 30 })).toBeCloseTo(30, NUM_DIGITS)
-      expect(getPartOfFortune({ ascendant: 100, sun: 100.000001, moon: 30 })).toBeCloseTo(170.000001, NUM_DIGITS)
-      expect(getPartOfFortune({ ascendant: 100, sun: 280, moon: 30 })).toBeCloseTo(350, NUM_DIGITS)
-      expect(getPartOfFortune({ ascendant: 100, sun: 280.000001, moon: 30 })).toBeCloseTo(209.999999, NUM_DIGITS)
+      // 昼生まれ: 100 + 30 − 99.999999
+      expect(getPartOfFortune({ ascendant: 100, sun: 99.999999, moon: 30 })).toBeCloseTo(30.000001, NUM_DIGITS)
+      // 夜生まれ: 100 + 100 − 30
+      expect(getPartOfFortune({ ascendant: 100, sun: 100, moon: 30 })).toBeCloseTo(170, NUM_DIGITS)
+      // 夜生まれ: 100 + 279.999999 − 30
+      expect(getPartOfFortune({ ascendant: 100, sun: 279.999999, moon: 30 })).toBeCloseTo(349.999999, NUM_DIGITS)
+      // 昼生まれ: 100 + 30 − 280 = −150
+      expect(getPartOfFortune({ ascendant: 100, sun: 280, moon: 30 })).toBeCloseTo(210, NUM_DIGITS)
     })
   })
 
@@ -265,10 +275,10 @@ describe('感受点と、惑星のコンジャンクション', () => {
   })
 
   it('感受点の並び順に求める', () => {
-    // テイル（182.37度）と水星（180.68度）、PoF（31.15度）と木星（29.13度）
+    // PoF（31.15度）と木星（29.13度）、テイル（182.37度）と水星（180.68度）
     expect(getPointConjunctions(new Horoscope(props), POINT_ORB)).toEqual([
-      { point: 'southNode', planet: 'mercury' },
       { point: 'partOfFortune', planet: 'jupiter' },
+      { point: 'southNode', planet: 'mercury' },
     ])
   })
 

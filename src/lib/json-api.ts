@@ -71,12 +71,18 @@ export const sendCalculationFailed = (res: NextApiResponse<ErrorJson>, e: unknow
 }
 
 // 同じ結果を表示するページのURL
-export const pageUrl = (req: NextApiRequest, pathname: string, input: Parameters<typeof toPageQuery>[0]): string => {
+// hash は、画面の設定（ホロスコープの、アスペクトの求め方）。先頭の # は付けない
+export const pageUrl = (
+  req: NextApiRequest,
+  pathname: string,
+  input: Parameters<typeof toPageQuery>[0],
+  hash: string = ''
+): string => {
   const { host } = req.headers
   // NOTE: Vercelでは、利用者が使ったプロトコルが x-forwarded-proto で届く
   // ヘッダーの値をそのままURLに入れないように、http でなければ https にする
   const forwarded = [req.headers['x-forwarded-proto']].flat()[0]?.split(',')[0]
   const proto = forwarded === 'http' ? 'http' : 'https'
   const origin = host ? `${proto}://${host}` : ''
-  return `${origin}${pathname}?${new URLSearchParams(toPageQuery(input))}`
+  return `${origin}${pathname}?${new URLSearchParams(toPageQuery(input))}${hash && `#${hash}`}`
 }

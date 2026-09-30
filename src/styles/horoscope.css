@@ -117,6 +117,9 @@
 .horoscope .hard-aspect {
   color: red;
 }
+.horoscope .minor-aspect {
+  color: green;
+}
 
 /* スマホ用 */
 @media all and (max-width: 767.98px) {
@@ -126,6 +129,10 @@
     padding: 20px 0;
   }
   .horoscope .content-row {
+    display: block;
+    margin-top: 0;
+  }
+  .horoscope .settings-summary {
     display: block;
     margin-top: 0;
   }
@@ -199,6 +206,16 @@
 .horoscope .horoscope-form .lat-lng-label {
   margin-right: 8px;
 }
+/* 「ハウスシステム」は、ほかの見出し（幅 100px）に収まらない。折り返さずに、選択欄との間を空ける */
+.horoscope .horoscope-form .house-label {
+  width: auto;
+  margin-right: 12px;
+  white-space: nowrap;
+}
+.horoscope .horoscope-form .house-select {
+  width: 100%;
+  max-width: 200px;
+}
 .horoscope .horoscope-form .lat-lng-input {
   width: 110px;
 }
@@ -244,6 +261,47 @@
 }
 .horoscope .list-table {
   width: 100%;
+}
+/* 設定の欄。折り畳める。見出しは、ほかの行と同じ位置に置く */
+.horoscope .settings-summary {
+  display: flex;
+  margin-top: 40px;
+  cursor: pointer;
+  /* 標準の三角は、消す。見出しの前に、自分で置く */
+  list-style: none;
+}
+.horoscope .settings-summary::-webkit-details-marker {
+  display: none;
+}
+.horoscope .settings-summary .content-inner {
+  padding-bottom: 0;
+}
+.horoscope .settings-summary .list::before {
+  content: '▸ ';
+}
+.horoscope .settings[open] .settings-summary .list::before {
+  content: '▾ ';
+}
+/* 初期状態に戻すボタン */
+.horoscope .options-reset {
+  display: block;
+  margin-top: 12px;
+  padding: 4px 10px;
+  border: 1px solid #fff;
+  border-radius: 3px;
+  background-color: transparent;
+  color: #fff;
+  font-size: 13px;
+  cursor: pointer;
+}
+.horoscope .options-reset:disabled {
+  opacity: 0.5;
+  cursor: default;
+}
+/* 表の下の説明（ハウスシステムの名前） */
+.horoscope .list-note {
+  padding-top: 8px;
+  font-size: 13px;
 }
 /* 惑星以外のものを、表示するかどうかの切り替え */
 .horoscope .display-options {
@@ -295,6 +353,49 @@
 .horoscope .aspect-chart-note {
   padding-top: 8px;
   padding-left: 30px;
+  font-size: 13px;
+  line-height: 1.6;
+}
+/* アスペクトの求め方の調整 */
+.horoscope .aspect-options {
+  width: 100%;
+  margin-top: 4px;
+  border-collapse: collapse;
+}
+.horoscope .aspect-options th,
+.horoscope .aspect-options td {
+  padding: 3px 5px 3px 0;
+  font-weight: normal;
+  text-align: left;
+  vertical-align: middle;
+}
+/* 行の見出し（惑星、Asc・Mc など）。折り返さない */
+.horoscope .aspect-options tbody th {
+  white-space: nowrap;
+}
+.horoscope .aspect-options thead th {
+  font-size: 13px;
+}
+/* オーブの列 */
+.horoscope .aspect-options th:last-child,
+.horoscope .aspect-options td:last-child {
+  padding-right: 0;
+  text-align: right;
+}
+/* マイナーアスペクト。3つずつ、2段に並べる */
+.horoscope .aspect-options-minor {
+  display: grid;
+  grid-template-columns: repeat(3, max-content);
+  gap: 2px 6px;
+}
+.horoscope .aspect-options-minor label {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  cursor: pointer;
+}
+.horoscope .aspect-options-note {
+  padding-top: 8px;
   font-size: 13px;
   line-height: 1.6;
 }

@@ -48,13 +48,9 @@ export class Position {
     return degreesStr + degreesMinStr
   }
 
+  // NOTE: サインの境界（ちょうど 0度）は、新しいサインに入れる。黄経 0度は、牡羊座の 0度
   get sign() {
-    let index = Math.trunc(this.longitude / this.INTERVAL)
-    if (this.degrees === 0) {
-      // 分秒がピッタリ0のときは、前のサインとする（0度は牡羊座じゃなくて魚座）
-      index = index > 0 ? index - 1 : Position.ALL_SIGNS.length - 1
-    }
-    return Position.ALL_SIGNS[index]
+    return Position.ALL_SIGNS[Math.trunc(this.longitude / this.INTERVAL)]
   }
 
   get formattedLongitude() {

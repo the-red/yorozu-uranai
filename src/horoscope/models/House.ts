@@ -19,7 +19,7 @@ export class House {
   }
 
   // 惑星が入っているハウス
-  // NOTE: カスプとちょうど同じ黄経は、サインの境界（Position.sign）と同じく、手前のハウスに入れる
+  // NOTE: カスプとちょうど同じ黄経は、サインの境界（Position.sign）と同じく、そこから始まるハウスに入れる
   where(longitude: number): number | undefined {
     const { cusps } = this
     for (let i = 0; i < cusps.length; i++) {
@@ -29,7 +29,7 @@ export class House {
       // 黄経0度をまたぐハウスでも比べられるように、ハウスの始まりからの角度に直す
       const width = angleFrom(start, end)
       const angle = angleFrom(start, longitude)
-      if (0 < angle && angle <= width) {
+      if (angle < width) {
         return i + 1
       }
     }

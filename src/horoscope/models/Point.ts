@@ -54,10 +54,10 @@ export const POINT_NEEDS_BIRTH_TIME = {
 
 // 昼生まれ（太陽が、地平線より上にある）かどうか
 // NOTE: Asc から、黄経が増える向きに 180度までが、地平線の下（1〜6ハウス）。
-// 境界は、ハウスの決め方（House.where）に合わせる。Asc と同じ黄経は 12ハウス、Dsc と同じ黄経は 6ハウス
+// 境界は、ハウスの決め方（House.where）に合わせる。Asc と同じ黄経は 1ハウス（夜）、Dsc と同じ黄経は 7ハウス（昼）
 export const isDayBirth = (ascendant: number, sun: number): boolean => {
   const angle = angleFrom(ascendant, sun)
-  return angle === 0 || angle > 180
+  return angle >= 180
 }
 
 // パート・オブ・フォーチュンの黄経

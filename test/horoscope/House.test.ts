@@ -47,13 +47,18 @@ describe('惑星のハウス', () => {
   })
 
   describe('カスプとちょうど同じ黄経', () => {
-    // サインの境界（Position.sign）と同じく、手前の側に入れる
-    it('手前のハウスに入る', () => {
-      expect(house.where(235.781911)).toEqual(1)
-      expect(house.where(5.251311)).toEqual(5)
+    // サインの境界（Position.sign）と同じく、そこから始まる側に入れる
+    it('そこから始まるハウスに入る', () => {
+      expect(house.where(235.781911)).toEqual(2)
+      expect(house.where(5.251311)).toEqual(6)
     })
-    it('アセンダントは12ハウス', () => {
-      expect(house.where(207.908591)).toEqual(12)
+    it('すぐ手前は、前のハウス', () => {
+      expect(house.where(235.78191)).toEqual(1)
+      expect(house.where(5.25131)).toEqual(5)
+    })
+    it('アセンダントは1ハウス', () => {
+      expect(house.where(207.908591)).toEqual(1)
+      expect(house.where(207.90859)).toEqual(12)
     })
   })
 
@@ -62,16 +67,19 @@ describe('惑星のハウス', () => {
     const house = toHouse([330, 0, 30, 60, 90, 120, 150, 180, 210, 240, 270, 300])
 
     it('0度の手前のハウス', () => {
+      expect(house.where(330)).toEqual(1)
       expect(house.where(345)).toEqual(1)
-      expect(house.where(0)).toEqual(1)
+      expect(house.where(359.999999)).toEqual(1)
     })
     it('0度から始まるハウス', () => {
+      expect(house.where(0)).toEqual(2)
       expect(house.where(15)).toEqual(2)
-      expect(house.where(30)).toEqual(2)
+      expect(house.where(30)).toEqual(3)
     })
     it('最後のハウス', () => {
+      expect(house.where(300)).toEqual(12)
       expect(house.where(315)).toEqual(12)
-      expect(house.where(330)).toEqual(12)
+      expect(house.where(329.999999)).toEqual(12)
     })
   })
 
@@ -83,7 +91,8 @@ describe('惑星のハウス', () => {
       [1, 10],
       [2, 35],
       [12, 335],
-      [12, 350],
+      [12, 349.999999],
+      [1, 350],
     ])('%iハウス: 黄経 %f 度', (expected, longitude) => {
       expect(house.where(longitude)).toEqual(expected)
     })

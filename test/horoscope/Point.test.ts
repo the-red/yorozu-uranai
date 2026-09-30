@@ -190,11 +190,11 @@ describe('パート・オブ・フォーチュン', () => {
     })
 
     it('境界は、ハウスの決め方に合わせる', () => {
-      // カスプとちょうど同じ黄経は、手前のハウスに入る。Asc と同じなら 12ハウス（昼）、Dsc と同じなら 6ハウス（夜）
-      expect(isDayBirth(100, 100)).toEqual(true)
-      expect(isDayBirth(100, 100.000001)).toEqual(false)
-      expect(isDayBirth(100, 280)).toEqual(false)
-      expect(isDayBirth(100, 280.000001)).toEqual(true)
+      // カスプとちょうど同じ黄経は、そこから始まるハウスに入る。Asc と同じなら 1ハウス（夜）、Dsc と同じなら 7ハウス（昼）
+      expect(isDayBirth(100, 99.999999)).toEqual(true)
+      expect(isDayBirth(100, 100)).toEqual(false)
+      expect(isDayBirth(100, 279.999999)).toEqual(false)
+      expect(isDayBirth(100, 280)).toEqual(true)
     })
   })
 
@@ -222,10 +222,14 @@ describe('パート・オブ・フォーチュン', () => {
       expect(getPartOfFortune({ ascendant: 350, sun: 100, moon: 20 })).toBeCloseTo(70, NUM_DIGITS)
     })
     it('境界', () => {
-      expect(getPartOfFortune({ ascendant: 100, sun: 100, moon: 30 })).toBeCloseTo(30, NUM_DIGITS)
-      expect(getPartOfFortune({ ascendant: 100, sun: 100.000001, moon: 30 })).toBeCloseTo(170.000001, NUM_DIGITS)
-      expect(getPartOfFortune({ ascendant: 100, sun: 280, moon: 30 })).toBeCloseTo(350, NUM_DIGITS)
-      expect(getPartOfFortune({ ascendant: 100, sun: 280.000001, moon: 30 })).toBeCloseTo(209.999999, NUM_DIGITS)
+      // 昼生まれ: 100 + 30 − 99.999999
+      expect(getPartOfFortune({ ascendant: 100, sun: 99.999999, moon: 30 })).toBeCloseTo(30.000001, NUM_DIGITS)
+      // 夜生まれ: 100 + 100 − 30
+      expect(getPartOfFortune({ ascendant: 100, sun: 100, moon: 30 })).toBeCloseTo(170, NUM_DIGITS)
+      // 夜生まれ: 100 + 279.999999 − 30
+      expect(getPartOfFortune({ ascendant: 100, sun: 279.999999, moon: 30 })).toBeCloseTo(349.999999, NUM_DIGITS)
+      // 昼生まれ: 100 + 30 − 280 = −150
+      expect(getPartOfFortune({ ascendant: 100, sun: 280, moon: 30 })).toBeCloseTo(210, NUM_DIGITS)
     })
   })
 

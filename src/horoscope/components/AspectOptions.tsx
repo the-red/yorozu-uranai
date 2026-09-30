@@ -44,16 +44,6 @@ const OrbSelect = ({ label, value, options, onChange }: OrbSelectProps) => (
   </select>
 )
 
-// 惑星どうしのオーブの説明
-export const toOrbNote = ({ orb, sunMoonPlus, minor, minorOrb }: AspectSettings) =>
-  [
-    `オーブ ${orb}°`,
-    sunMoonPlus > 0 && `太陽・月は ${orb + sunMoonPlus}°`,
-    minor.length > 0 && `マイナーは ${minorOrb}°`,
-  ]
-    .filter(Boolean)
-    .join('、')
-
 // アスペクトの求め方の調整
 export default function AspectOptions({ settings, onChange }: Props) {
   const toggleMinor = (degrees: MinorDegrees, checked: boolean) =>
@@ -64,7 +54,7 @@ export default function AspectOptions({ settings, onChange }: Props) {
   const isDefault = Object.keys(toAspectQuery(settings)).length === 0
 
   return (
-    <OptionsPanel title="Aspect" summary={toOrbNote(settings)}>
+    <OptionsPanel title="Aspect" isDefault={isDefault} onReset={() => onChange(DEFAULT_ASPECT_SETTINGS)}>
       <table className="aspect-options">
         <thead>
           <tr>
@@ -161,14 +151,6 @@ export default function AspectOptions({ settings, onChange }: Props) {
       </table>
       <div className="aspect-options-note">
         惑星とのアスペクトを求めます。感受点は、ヘッド・テイル、リリス、Vx、PoF です。
-        <button
-          type="button"
-          className="aspect-options-reset"
-          disabled={isDefault}
-          onClick={() => onChange(DEFAULT_ASPECT_SETTINGS)}
-        >
-          最初の状態に戻す
-        </button>
       </div>
     </OptionsPanel>
   )

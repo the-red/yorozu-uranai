@@ -1,6 +1,6 @@
 import type { FC } from 'react'
 import dynamic from 'next/dynamic'
-import { Horoscope, HoroscopeSettings } from '../models'
+import { DEFAULT_VISIBILITY, Horoscope, HoroscopeSettings } from '../models'
 import AspectOptions from './AspectOptions'
 import DisplayOptions from './DisplayOptions'
 import PlanetPositions from './PlanetPositions'
@@ -66,24 +66,35 @@ const HoroscopeTables: FC<TablesProps> = ({ horoscope, settings, onChangeSetting
   const { visibility, aspects } = settings
   return (
     <>
-      <div className="content-row">
-        <div className="content">
-          <div className="content-inner">
-            <DisplayOptions
-              visibility={visibility}
-              onChange={(key, visible) =>
-                onChangeSettings({ ...settings, visibility: { ...visibility, [key]: visible } })
-              }
-              hasAsteroids={horoscope.asteroids !== undefined}
-            />
+      {/* 設定の欄。折り畳める。最初は、閉じている */}
+      <details className="settings">
+        <summary className="settings-summary">
+          <div className="content">
+            <div className="content-inner">
+              <span className="list">Settings</span>
+            </div>
+          </div>
+        </summary>
+        <div className="content-row">
+          <div className="content">
+            <div className="content-inner">
+              <DisplayOptions
+                visibility={visibility}
+                onChange={(key, visible) =>
+                  onChangeSettings({ ...settings, visibility: { ...visibility, [key]: visible } })
+                }
+                onReset={() => onChangeSettings({ ...settings, visibility: DEFAULT_VISIBILITY })}
+                hasAsteroids={horoscope.asteroids !== undefined}
+              />
+            </div>
+          </div>
+          <div className="content">
+            <div className="content-inner">
+              <AspectOptions settings={aspects} onChange={(aspects) => onChangeSettings({ ...settings, aspects })} />
+            </div>
           </div>
         </div>
-        <div className="content">
-          <div className="content-inner">
-            <AspectOptions settings={aspects} onChange={(aspects) => onChangeSettings({ ...settings, aspects })} />
-          </div>
-        </div>
-      </div>
+      </details>
       <div className="content-row">
         <div className="content">
           <div className="content-inner">

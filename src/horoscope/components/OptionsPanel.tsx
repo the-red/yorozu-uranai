@@ -2,20 +2,20 @@ import type { ReactNode } from 'react'
 
 type Props = {
   title: string
-  summary: string // 今の設定の要約
+  isDefault: boolean // 初期状態のままか
+  onReset: () => void
   children: ReactNode
 }
 
-// 設定の欄。折り畳める。最初は、閉じている
-// NOTE: 閉じていても、今の設定が分かるように、見出しの横に要約を出す
-export default function OptionsPanel({ title, summary, children }: Props) {
+// 設定の欄（Display、Aspect）。その欄の設定を、初期状態に戻すボタンを付ける
+export default function OptionsPanel({ title, isDefault, onReset, children }: Props) {
   return (
-    <details className="list-container options-panel">
-      <summary>
-        <span className="list">{title}</span>
-        <span className="options-summary">{summary}</span>
-      </summary>
+    <div className="list-container">
+      <div className="list">{title}</div>
       {children}
-    </details>
+      <button type="button" className="options-reset" disabled={isDefault} onClick={onReset}>
+        初期状態に戻す
+      </button>
+    </div>
   )
 }

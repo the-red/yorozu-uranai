@@ -1,9 +1,10 @@
-import { VISIBILITY_KEYS, VISIBILITY_LABELS, Visibility, VisibilityKey } from '../models'
+import { VISIBILITY_KEYS, VISIBILITY_LABELS, Visibility, VisibilityKey, toShowParam } from '../models'
 import OptionsPanel from './OptionsPanel'
 
 type Props = {
   visibility: Visibility
   onChange: (key: VisibilityKey, visible: boolean) => void
+  onReset: () => void
   hasAsteroids: boolean // 小惑星とキロンを、計算できたか
 }
 
@@ -15,17 +16,9 @@ const SECOND_ROW = VISIBILITY_KEYS.indexOf('ascMc')
 const ROWS = [VISIBILITY_KEYS.slice(0, SECOND_ROW), VISIBILITY_KEYS.slice(SECOND_ROW)]
 
 // 惑星以外のものを、表示するかどうかの切り替え
-export default function DisplayOptions({ visibility, onChange, hasAsteroids }: Props) {
-  // 表示しているもの
-  const shown = [
-    '惑星',
-    ...VISIBILITY_KEYS.filter((key) => visibility[key] && !(isAsteroid(key) && !hasAsteroids)).map(
-      (key) => VISIBILITY_LABELS[key]
-    ),
-  ]
-
+export default function DisplayOptions({ visibility, onChange, onReset, hasAsteroids }: Props) {
   return (
-    <OptionsPanel title="Display" summary={shown.join('、')}>
+    <OptionsPanel title="Display" isDefault={toShowParam(visibility) === undefined} onReset={onReset}>
       {ROWS.map((keys, row) => (
         <div key={row} className="display-options">
           {/* 惑星は、常に表示する。切り替えられないことを、チェックの入った状態で示す */}

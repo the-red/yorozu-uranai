@@ -132,6 +132,10 @@
     display: block;
     margin-top: 0;
   }
+  .horoscope .settings-summary {
+    display: block;
+    margin-top: 0;
+  }
   .horoscope .content {
     width: 100%;
     flex-direction: row;
@@ -248,14 +252,41 @@
 .horoscope .list-table {
   width: 100%;
 }
-/* 設定の欄。折り畳める */
-.horoscope .options-panel summary {
+/* 設定の欄。折り畳める。見出しは、ほかの行と同じ位置に置く */
+.horoscope .settings-summary {
+  display: flex;
+  margin-top: 40px;
+  cursor: pointer;
+  /* 標準の三角は、消す。見出しの前に、自分で置く */
+  list-style: none;
+}
+.horoscope .settings-summary::-webkit-details-marker {
+  display: none;
+}
+.horoscope .settings-summary .content-inner {
+  padding-bottom: 0;
+}
+.horoscope .settings-summary .list::before {
+  content: '▸ ';
+}
+.horoscope .settings[open] .settings-summary .list::before {
+  content: '▾ ';
+}
+/* 初期状態に戻すボタン */
+.horoscope .options-reset {
+  display: block;
+  margin-top: 12px;
+  padding: 4px 10px;
+  border: 1px solid #fff;
+  border-radius: 3px;
+  background-color: transparent;
+  color: #fff;
+  font-size: 13px;
   cursor: pointer;
 }
-/* 見出しの横に出す、今の設定の要約 */
-.horoscope .options-summary {
-  margin-left: 12px;
-  font-size: 13px;
+.horoscope .options-reset:disabled {
+  opacity: 0.5;
+  cursor: default;
 }
 /* 惑星以外のものを、表示するかどうかの切り替え */
 .horoscope .display-options {
@@ -352,19 +383,4 @@
   padding-top: 8px;
   font-size: 13px;
   line-height: 1.6;
-}
-.horoscope .aspect-options-reset {
-  display: block;
-  margin-top: 8px;
-  padding: 4px 10px;
-  border: 1px solid #fff;
-  border-radius: 3px;
-  background-color: transparent;
-  color: #fff;
-  font-size: 13px;
-  cursor: pointer;
-}
-.horoscope .aspect-options-reset:disabled {
-  opacity: 0.5;
-  cursor: default;
 }

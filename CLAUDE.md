@@ -346,8 +346,10 @@ Vercel は、ビルド時に「各 API の実行に必要なファイル」を�
   - 変えるときは、`router.replace` を、`shallow: true`、`scroll: false` で呼ぶ。履歴は、増やさない。`scroll: false` が無いと、ハッシュが空になったときに、画面の先頭に移動する
   - フォームを送信するときは、今のハッシュを付けて移動する（入力を変えても、設定は、そのまま使う）
 - ハッシュは、`window.location.hash` から読む（`useSyncExternalStore`）。ルーターの `asPath` は、利用者がアドレスのハッシュを書き換えたときに、変わらない
-- 設定の欄（Display と Aspect）は、折り畳める（`OptionsPanel.tsx`。`<details>`）。最初は、閉じている。閉じていても、今の設定が分かるように、見出しの横に要約を出す
+- 設定の欄は、「Settings」という 1 つの折り畳み（`<details>`）にまとめている。中に、Display と Aspect を並べる。最初は、閉じている（2026-09-30 の指示）
+  - 閉じているときは、見出しだけを出す。今の設定の要約は、出さない
   - 開いているかどうかは、覚えない
+  - Display と Aspect のそれぞれに、「初期状態に戻す」ボタンを置く（`OptionsPanel.tsx`）。その欄の設定だけを戻す。初期状態のときは、押せない
 
 ### ホロスコープの描画
 
@@ -401,7 +403,3 @@ CSS から画像を参照するときは、`url('/images/map/back_blue.svg')` �
 ## 既知の不整合
 
 - `src/pages/_middleware.ts.txt` は Basic 認証ミドルウェアを拡張子で無効化したもの（現在は使われていない）
-
-<!-- BEGIN:nextjs-agent-rules -->
-
-<!-- BEGIN:nextjs-agent-rules -->

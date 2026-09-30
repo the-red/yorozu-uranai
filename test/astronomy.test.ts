@@ -166,11 +166,11 @@ describe('astronomy', () => {
       [
         'chiron', // 双子座 28°16′
         {
-          latitude: -5.579606,
+          latitude: -5.579595,
           latitudeSpeed: -0.008283,
-          longitude: 88.267633,
+          longitude: 88.267609,
           longitudeSpeed: 0.036934,
-          distance: 13.114627,
+          distance: 13.114626,
           distanceSpeed: -0.018069,
           rflag: 258,
           isRetrograde: false,
@@ -179,11 +179,11 @@ describe('astronomy', () => {
       [
         'ceres', // 射手座 24°00′
         {
-          latitude: -4.848635,
+          latitude: -4.84861,
           latitudeSpeed: -0.011396,
-          longitude: 264.007846,
+          longitude: 264.007801,
           longitudeSpeed: 0.152304,
-          distance: 2.563961,
+          distance: 2.563962,
           distanceSpeed: 0.014094,
           rflag: 258,
           isRetrograde: false,
@@ -192,11 +192,11 @@ describe('astronomy', () => {
       [
         'pallas', // 蠍座 24°32′
         {
-          latitude: 32.90457,
+          latitude: 32.904522,
           latitudeSpeed: -0.107794,
-          longitude: 234.541557,
-          longitudeSpeed: 0.30864,
-          distance: 3.273355,
+          longitude: 234.541626,
+          longitudeSpeed: 0.308639,
+          distance: 3.273354,
           distanceSpeed: 0.012331,
           rflag: 258,
           isRetrograde: false,
@@ -205,11 +205,11 @@ describe('astronomy', () => {
       [
         'juno', // 水瓶座 26°25′。逆行
         {
-          latitude: 6.253963,
+          latitude: 6.254035,
           latitudeSpeed: -0.108901,
-          longitude: 326.419652,
+          longitude: 326.419658,
           longitudeSpeed: -0.223158,
-          distance: 1.44762,
+          distance: 1.447619,
           distanceSpeed: 0.00128,
           rflag: 258,
           isRetrograde: true,
@@ -218,11 +218,11 @@ describe('astronomy', () => {
       [
         'vesta', // 蟹座 18°42′
         {
-          latitude: -1.509887,
-          latitudeSpeed: 0.018217,
+          latitude: -1.509881,
+          latitudeSpeed: 0.018216,
           longitude: 108.71123,
-          longitudeSpeed: 0.364782,
-          distance: 2.986798,
+          longitudeSpeed: 0.364783,
+          distance: 2.986796,
           distanceSpeed: -0.011225,
           rflag: 258,
           isRetrograde: false,

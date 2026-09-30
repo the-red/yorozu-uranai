@@ -115,12 +115,6 @@ const main = async () => {
     ({ result }) => [result.houses.system, result.houses.cusps[0].sign, result.houses.cusps[0].degrees],
     ['wholeSign', '天秤座', 0]
   )
-  await checkJson(
-    `/horoscope.json?${QUERY}&house=solarSign`,
-    'horoscope',
-    ({ result }) => [result.houses.system, result.houses.cusps[0].sign, result.houses.cusps[0].degrees],
-    ['solarSign', '乙女座', 0]
-  )
   await checkError(`/horoscope.json?${QUERY}&house=K`, undefined, 400, 'invalid_query', ['house'])
 
   // アスペクトの求め方

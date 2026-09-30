@@ -1,13 +1,18 @@
 // ビルド結果の確認
-// swissephのネイティブバイナリと、天体暦のファイルが、APIの実行に必要なファイルとして含まれているかを調べる。
+// swephのネイティブバイナリと、天体暦のファイルが、APIの実行に必要なファイルとして含まれているかを調べる。
 // 含まれていないと、ビルドは成功するのに、Vercel上ではホロスコープと四柱推命のAPIがエラーになる
 const fs = require('fs')
 const path = require('path')
 
-const BINARY = 'node_modules/swisseph/build/Release/swisseph.node'
+// NOTE: ライブラリには、環境ごとにビルド済みのバイナリが入っている。ビルドした環境のものを調べる。
+// インストールのときにビルドされたバイナリ（build/Release）があれば、そちらが読み込まれるので、そちらを調べる
+const BUILT_BINARY = 'node_modules/sweph/build/Release/sweph.node'
+const BINARY = fs.existsSync(BUILT_BINARY)
+  ? BUILT_BINARY
+  : `node_modules/sweph/prebuilds/${process.platform}-${process.arch}/sweph.node`
 // 天体暦のファイル。小惑星とキロンの計算に使う
 // NOTE: 惑星のファイル（sepl）が無くても計算できるが、値がわずかに変わる。エラーにならないので、ここで確かめる
-const EPHEMERIS = ['node_modules/swisseph/ephe/seas_18.se1', 'node_modules/swisseph/ephe/sepl_18.se1']
+const EPHEMERIS = ['ephe/seas_18.se1', 'ephe/sepl_18.se1']
 
 const REQUIRED_FILES = {
   horoscope: [BINARY, ...EPHEMERIS],
@@ -34,4 +39,4 @@ if (errors.length > 0) {
   errors.forEach((error) => console.error(`- ${error}`))
   process.exit(1)
 }
-console.info('ビルド結果の確認: swissephのネイティブバイナリと、天体暦のファイルが含まれています')
+console.info('ビルド結果の確認: swephのネイティブバイナリと、天体暦のファイルが含まれています')

@@ -44,10 +44,10 @@ const props: HoroscopeProps = {
   node: position(2.374847, true),
   lilith: position(122.301895),
   asteroids: [
-    ['chiron', position(88.267633)],
-    ['ceres', position(264.007846)],
-    ['pallas', position(234.541557)],
-    ['juno', position(326.419652, true)],
+    ['chiron', position(88.267609)],
+    ['ceres', position(264.007801)],
+    ['pallas', position(234.541626)],
+    ['juno', position(326.419658, true)],
     ['vesta', position(108.71123)],
   ],
 }
@@ -93,11 +93,11 @@ describe('小惑星とキロン', () => {
       ['vesta', '⚶', '蟹座', '18°43′', 9, false],
       ['chiron', '⚷', '双子座', '28°16′', 8, false],
     ])
-    expect(asteroids!.chiron.longitude).toBeCloseTo(88.267633, NUM_DIGITS)
+    expect(asteroids!.chiron.longitude).toBeCloseTo(88.267609, NUM_DIGITS)
   })
 
   it('位置が足りなければ、エラーにする', () => {
-    expect(() => new Horoscope({ ...props, asteroids: [['chiron', position(88.267633)]] })).toThrow('ceres')
+    expect(() => new Horoscope({ ...props, asteroids: [['chiron', position(88.267609)]] })).toThrow('ceres')
   })
 
   it('計算できない日付では、無い', () => {
@@ -134,9 +134,9 @@ describe('小惑星と、惑星のコンジャンクション', () => {
       ...props,
       asteroids: [
         ['chiron', position(165)],
-        ['ceres', position(264.007846)],
-        ['pallas', position(234.541557)],
-        ['juno', position(326.419652, true)],
+        ['ceres', position(264.007801)],
+        ['pallas', position(234.541626)],
+        ['juno', position(326.419658, true)],
         ['vesta', position(348)],
       ],
     })

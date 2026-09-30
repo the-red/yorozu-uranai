@@ -5,8 +5,8 @@ import ts from 'typescript'
 
 // ブラウザに配信するコードに、サーバーでしか動かないものが入っていないことを確かめる
 //
-// swisseph はネイティブアドオンなので、ブラウザでは動かない。
-// ページから import をたどって swisseph に届くと、ビルドは通っても、ブラウザで動かなくなる。
+// sweph はネイティブアドオンなので、ブラウザでは動かない。
+// ページから import をたどって sweph に届くと、ビルドは通っても、ブラウザで動かなくなる。
 //
 // NOTE: 型だけを使うときは `import type` と書く。
 // `import { Daiun } from './Daiun'` のように書くと、型しか使っていなくても、ここでは読み込むものとして数える
@@ -104,7 +104,7 @@ const apis = listFiles(API)
 // NOTE: ファイルは、絶対パスで記録している
 const ASTRONOMY = join(SRC, 'astronomy', 'index.ts')
 const SERVER_ONLY = [
-  ['swisseph', 'swisseph'],
+  ['sweph', 'sweph'],
   ['@googlemaps/google-maps-services-js', '@googlemaps/google-maps-services-js'],
   [toRelative(ASTRONOMY), ASTRONOMY],
 ]
@@ -142,18 +142,18 @@ describe('調べ方の確認', () => {
   it('天文計算を使うAPIからは、サーバーでしか動かないものに届く', () => {
     const names = ['horoscope.ts', 'suimei.ts']
     for (const api of apis.filter((_) => names.some((name) => _.endsWith(`/api/${name}`)))) {
-      expect(walk(api).get('swisseph'), toRelative(api)).toBeDefined()
+      expect(walk(api).get('sweph'), toRelative(api)).toBeDefined()
       expect(walk(api).get(ASTRONOMY), toRelative(api)).toBeDefined()
     }
     expect(walk(join(API, 'geocode.ts')).get('@googlemaps/google-maps-services-js')).toBeDefined()
     expect(apis.map(toRelative)).toEqual(expect.arrayContaining(names.map((_) => `src/pages/api/${_}`)))
   })
   it('経路を返す', () => {
-    expect(walk(join(API, 'horoscope.ts')).get('swisseph')).toEqual([
+    expect(walk(join(API, 'horoscope.ts')).get('sweph')).toEqual([
       'src/pages/api/horoscope.ts',
       'src/horoscope/models/horoscopeFactory.ts',
       'src/astronomy/index.ts',
-      'swisseph',
+      'sweph',
     ])
   })
   it('ページからは、モデルと部品に届く', () => {
@@ -174,6 +174,6 @@ describe('調べ方の確認', () => {
     // json.ts は、Daiun の型だけを使っている。Daiun.ts は SekkiUtil.ts（天文計算）を読み込む
     const reached = walk(join(SRC, 'suimei', 'models', 'json.ts'))
     expect(reached.has(join(SRC, 'suimei', 'models', 'Daiun.ts'))).toEqual(false)
-    expect(walk(join(SRC, 'suimei', 'models', 'Daiun.ts')).has('swisseph')).toEqual(true)
+    expect(walk(join(SRC, 'suimei', 'models', 'Daiun.ts')).has('sweph')).toEqual(true)
   })
 })

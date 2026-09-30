@@ -59,7 +59,7 @@ const checkError = async (path, init, status, code, params) => {
 }
 
 const main = async () => {
-  // NOTE: 天文計算の結果が返れば、swisseph のネイティブバイナリがビルド結果に含まれている
+  // NOTE: 天文計算の結果が返れば、sweph のネイティブバイナリがビルド結果に含まれている
   await checkJson(
     `/horoscope.json?${QUERY}`,
     'horoscope',

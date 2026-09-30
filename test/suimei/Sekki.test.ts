@@ -23,10 +23,10 @@ describe('二十四節気', () => {
 
 describe('日時→節気 変換', () => {
   it('小寒の最終日時分秒', async () => {
-    expect(sekki(await getEclipticLongitude(new Date('2022-02-04T05:50:45+09:00')))).toEqual('小寒')
+    expect(sekki(await getEclipticLongitude(new Date('2022-02-04T05:50:46+09:00')))).toEqual('小寒')
   })
   it('立春の開始日時分秒', async () => {
-    expect(sekki(await getEclipticLongitude(new Date('2022-02-04T05:50:46+09:00')))).toEqual('立春')
+    expect(sekki(await getEclipticLongitude(new Date('2022-02-04T05:50:47+09:00')))).toEqual('立春')
   })
 
   it('立冬の最終日時分秒', async () => {
@@ -40,27 +40,27 @@ describe('日時→節気 変換', () => {
 describe('節入り日', () => {
   it('順行: 立春→啓蟄', async () => {
     const days = await getSetsuIri(new Date('2023-02-04T12:00:00+09:00'), true)
-    expect(days).toMatchObject({ sekki: '啓蟄', date: new Date('2023-03-06T05:36:12+09:00') })
+    expect(days).toMatchObject({ sekki: '啓蟄', date: new Date('2023-03-06T05:36:13+09:00') })
   })
   it('順行: 小暑→立秋', async () => {
     const days = await getSetsuIri(new Date('2023-07-07T20:00:00+09:00'), true)
-    expect(days).toMatchObject({ sekki: '立秋', date: new Date('2023-08-08T03:22:51+09:00') })
+    expect(days).toMatchObject({ sekki: '立秋', date: new Date('2023-08-08T03:22:53+09:00') })
   })
   it('順行: 小寒→立春', async () => {
     const days = await getSetsuIri(new Date('2023-02-03T12:00:00+09:00'), true)
-    expect(days).toMatchObject({ sekki: '立春', date: new Date('2023-02-04T11:42:31+09:00') })
+    expect(days).toMatchObject({ sekki: '立春', date: new Date('2023-02-04T11:42:32+09:00') })
   })
 
   it('逆行: 立春', async () => {
     const days = await getSetsuIri(new Date('2023-03-05T12:00:00+09:00'), false)
-    expect(days).toMatchObject({ sekki: '立春', date: new Date('2023-02-04T11:42:32+09:00') })
+    expect(days).toMatchObject({ sekki: '立春', date: new Date('2023-02-04T11:42:33+09:00') })
   })
   it('逆行: 小暑', async () => {
     const days = await getSetsuIri(new Date('2023-08-07T20:00:00+09:00'), false)
-    expect(days).toMatchObject({ sekki: '小暑', date: new Date('2023-07-07T17:30:41+09:00') })
+    expect(days).toMatchObject({ sekki: '小暑', date: new Date('2023-07-07T17:30:43+09:00') })
   })
   it('逆行: 啓蟄', async () => {
     const days = await getSetsuIri(new Date('2023-03-10T17:36:00+09:00'), false)
-    expect(days).toMatchObject({ sekki: '啓蟄', date: new Date('2023-03-06T05:36:13+09:00') })
+    expect(days).toMatchObject({ sekki: '啓蟄', date: new Date('2023-03-06T05:36:14+09:00') })
   })
 })

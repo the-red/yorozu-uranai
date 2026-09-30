@@ -1,4 +1,8 @@
-import { describe, it, expect } from 'vitest'
+import { describe, it, expect, afterEach } from 'vitest'
+import { mkdtempSync } from 'fs'
+import { tmpdir } from 'os'
+import { join } from 'path'
+import { set_ephe_path } from 'sweph'
 import {
   julday,
   eclipticPosition,
@@ -162,11 +166,11 @@ describe('astronomy', () => {
       [
         'chiron', // 双子座 28°16′
         {
-          latitude: -5.579606,
+          latitude: -5.579595,
           latitudeSpeed: -0.008283,
-          longitude: 88.267633,
+          longitude: 88.267609,
           longitudeSpeed: 0.036934,
-          distance: 13.114627,
+          distance: 13.114626,
           distanceSpeed: -0.018069,
           rflag: 258,
           isRetrograde: false,
@@ -175,11 +179,11 @@ describe('astronomy', () => {
       [
         'ceres', // 射手座 24°00′
         {
-          latitude: -4.848635,
+          latitude: -4.84861,
           latitudeSpeed: -0.011396,
-          longitude: 264.007846,
+          longitude: 264.007801,
           longitudeSpeed: 0.152304,
-          distance: 2.563961,
+          distance: 2.563962,
           distanceSpeed: 0.014094,
           rflag: 258,
           isRetrograde: false,
@@ -188,11 +192,11 @@ describe('astronomy', () => {
       [
         'pallas', // 蠍座 24°32′
         {
-          latitude: 32.90457,
+          latitude: 32.904522,
           latitudeSpeed: -0.107794,
-          longitude: 234.541557,
-          longitudeSpeed: 0.30864,
-          distance: 3.273355,
+          longitude: 234.541626,
+          longitudeSpeed: 0.308639,
+          distance: 3.273354,
           distanceSpeed: 0.012331,
           rflag: 258,
           isRetrograde: false,
@@ -201,11 +205,11 @@ describe('astronomy', () => {
       [
         'juno', // 水瓶座 26°25′。逆行
         {
-          latitude: 6.253963,
+          latitude: 6.254035,
           latitudeSpeed: -0.108901,
-          longitude: 326.419652,
+          longitude: 326.419658,
           longitudeSpeed: -0.223158,
-          distance: 1.44762,
+          distance: 1.447619,
           distanceSpeed: 0.00128,
           rflag: 258,
           isRetrograde: true,
@@ -214,11 +218,11 @@ describe('astronomy', () => {
       [
         'vesta', // 蟹座 18°42′
         {
-          latitude: -1.509887,
-          latitudeSpeed: 0.018217,
+          latitude: -1.509881,
+          latitudeSpeed: 0.018216,
           longitude: 108.71123,
-          longitudeSpeed: 0.364782,
-          distance: 2.986798,
+          longitudeSpeed: 0.364783,
+          distance: 2.986796,
           distanceSpeed: -0.011225,
           rflag: 258,
           isRetrograde: false,
@@ -312,9 +316,65 @@ describe('astronomy', () => {
       })
     })
 
-    it('ハウスシステム名', async () => {
-      expect(houseSystemName('A')).toEqual('equal')
-      expect(houseSystemName()).toEqual('Placidus')
+    describe('緯度が高いとき', () => {
+      // NOTE: プラシーダスとコッホは、極圏（緯度 66.56度より上）では計算できない
+      it.each(['', 'K'])('ハウスシステム「%s」は、極圏の手前までは計算できる', async (hsys) => {
+        const { house } = await calcHouses(await julday(funadyBirthday), 66, funadyBirthLon, hsys)
+        expect(house).toHaveLength(12)
+      })
+      it.each([
+        ['', 67],
+        ['', 80],
+        ['', -80],
+        ['', 90],
+        ['K', 67],
+        ['K', -80],
+      ])('ハウスシステム「%s」は、緯度 %d度では計算できない', async (hsys, lat) => {
+        await expect(calcHouses(await julday(funadyBirthday), lat, funadyBirthLon, hsys)).rejects.toThrow(
+          `Can't calculate houses.`
+        )
+      })
+      it('ポーフィリーは、極圏でも計算できる', async () => {
+        const { house, ascendant } = await calcHouses(await julday(funadyBirthday), 80, funadyBirthLon, 'O')
+        expect(house).toHaveLength(12)
+        expect(house[0]).toEqual(ascendant)
+      })
+    })
+
+    describe('ハウスシステム名', () => {
+      it.each([
+        ['A', 'equal'],
+        ['B', 'Alcabitius'],
+        ['C', 'Campanus'],
+        ['D', 'equal (MC)'],
+        ['E', 'equal'],
+        ['F', 'Carter poli-equ.'],
+        ['G', 'Gauquelin sectors'],
+        ['H', 'horizon/azimut'],
+        ['I', 'Sunshine'],
+        ['i', 'Sunshine/alt.'],
+        ['J', 'Savard-A'],
+        ['K', 'Koch'],
+        ['L', 'Pullen SD'],
+        ['M', 'Morinus'],
+        ['N', 'equal/1=Aries'],
+        ['O', 'Porphyry'],
+        ['P', 'Placidus'],
+        ['Q', 'Pullen SR'],
+        ['R', 'Regiomontanus'],
+        ['S', 'Sripati'],
+        ['T', 'Polich/Page'],
+        ['U', 'Krusinski-Pisa-Goelzer'],
+        ['V', 'equal/Vehlow'],
+        ['W', 'equal/ whole sign'],
+        ['X', 'axial rotation system/Meridian houses'],
+        ['Y', 'APC houses'],
+      ])('%s は %s', (hsys, expected) => {
+        expect(houseSystemName(hsys)).toEqual(expected)
+      })
+      it.each([undefined, '', 'Z', '?'])('知らない値（%j）は、プラシーダス', (hsys) => {
+        expect(houseSystemName(hsys)).toEqual('Placidus')
+      })
     })
   })
 })
@@ -333,27 +393,58 @@ describe('均時差', () => {
   it('2月中旬は視太陽時が最も遅れている', async () => {
     expect(await getEquationOfTime('2023-02-11T12:00:00+09:00')).toBeCloseTo(-14.2, MINUTE_DIGITS)
   })
+  it('計算できない日付は、エラーになる', async () => {
+    // 天体の位置を計算できる範囲（紀元前3000年ごろから、西暦3000年ごろまで）の外
+    await expect(equationOfTime(2451545 + 365.25 * 8000)).rejects.toThrow()
+    await expect(equationOfTime(2451545 - 365.25 * 8000)).rejects.toThrow()
+  })
+})
+
+describe('天体暦のファイルが無いとき', () => {
+  // NOTE: Vercel では、APIごとに、必要なファイルだけを切り出す。四柱推命のAPIには、天体暦のファイルが入らない
+  const funadyBirthday = new Date('1987-09-08T08:53:00+09:00')
+  const withoutFiles = () => set_ephe_path(mkdtempSync(join(tmpdir(), 'ephe-')))
+  afterEach(() => set_ephe_path(join(process.cwd(), 'ephe')))
+
+  it('均時差は、計算式で求める', async () => {
+    // NOTE: ライブラリは、成功の結果に「ファイルが無いので、計算式で求めた」という知らせを付ける。失敗として扱わない
+    const julday_ut = await julday(funadyBirthday)
+    const expected = await equationOfTime(julday_ut)
+    withoutFiles()
+    // ファイルがあるときとの差は、0.002秒ほど
+    expect(await equationOfTime(julday_ut)).toBeCloseTo(expected, 3)
+  })
+  it('惑星の値は、変わらない', async () => {
+    withoutFiles()
+    const julday_ut = await julday(funadyBirthday)
+    expect((await eclipticPosition(julday_ut, 'sun')).longitude).toBeCloseTo(164.817337, NUM_DIGITS)
+    expect((await eclipticPosition(julday_ut, 'moon')).longitude).toBeCloseTo(348.062352, NUM_DIGITS)
+  })
+  it('小惑星は、エラーになる', async () => {
+    withoutFiles()
+    await expect(eclipticPosition(await julday(funadyBirthday), 'ceres')).rejects.toThrow('SwissEph file')
+  })
 })
 
 describe('黄経から日付を算出', () => {
   it('順行: 3日後に立春', async () => {
     const res = await longitudeToDate(315, new Date('2022-02-01T05:00:48+09:00'), true)
-    expect(res).toMatchObject(new Date('2022-02-04T05:50:46+09:00'))
+    expect(res).toMatchObject(new Date('2022-02-04T05:50:47+09:00'))
   }, 100_000)
   it('逆行: 1日前に立春', async () => {
     const res = await longitudeToDate(315, new Date('2022-02-05T05:50:46+09:00'), false)
-    expect(res).toMatchObject(new Date('2022-02-04T05:50:46+09:00'))
+    expect(res).toMatchObject(new Date('2022-02-04T05:50:47+09:00'))
   }, 100_000)
   it('順行: 4か月後に立春', async () => {
     const res = await longitudeToDate(315, new Date('2021-10-05T05:50:46+09:00'), true)
-    expect(res).toMatchObject(new Date('2022-02-04T05:50:46+09:00'))
+    expect(res).toMatchObject(new Date('2022-02-04T05:50:47+09:00'))
   }, 100_000)
   it('逆行: 4か月前に立春', async () => {
     const res = await longitudeToDate(315, new Date('2022-08-05T05:50:46+09:00'), false)
-    expect(res).toMatchObject(new Date('2022-02-04T05:50:46+09:00'))
+    expect(res).toMatchObject(new Date('2022-02-04T05:50:47+09:00'))
   }, 100_000)
   it('順行: 1年後に立春', async () => {
     const res = await longitudeToDate(315, new Date('2021-02-03T23:58:47+09:00'), true)
-    expect(res).toMatchObject(new Date('2022-02-04T05:50:46+09:00'))
+    expect(res).toMatchObject(new Date('2022-02-04T05:50:47+09:00'))
   }, 100_000)
 })

@@ -23,7 +23,6 @@ jobs:
         with:
           node-version-file: .tool-versions
           cache: yarn
-      # NOTE: swisseph はネイティブアドオンなので、ここでビルドが走る
       - run: yarn install --frozen-lockfile
       - run: yarn tsc --noEmit
       - run: yarn lint:check
@@ -61,7 +60,7 @@ jobs:
           cache: yarn
       - run: yarn install --frozen-lockfile
       # Vercelと同じように、必要なファイルだけを切り出した形でビルドする。
-      # swisseph のネイティブバイナリが含まれているかは、ビルドの最後に確認される
+      # sweph のネイティブバイナリが含まれているかは、ビルドの最後に確認される
       - run: yarn build
         env:
           NEXT_OUTPUT: standalone

@@ -142,6 +142,7 @@ Vercel は、ビルド時に「各 API の実行に必要なファイル」を�
 
 - `next.config.js` の `outputFileTracingIncludes` で、バイナリを明示的に含めている
   - バイナリは、環境ごとに `node_modules/sweph/prebuilds/<OS>-<CPU>/sweph.node` にある。ビルドする環境のものだけを含める（Vercel と CI は `linux-x64`）
+  - ビルド済みのバイナリが動かない環境では、インストールのときにビルドされて、`node_modules/sweph/build/Release/sweph.node` に置かれる。そのときは、そちらが読み込まれるので、あれば含める
 - 天体暦のファイル（`ephe/` の `seas_18.se1` と `sepl_18.se1`）も、同じ方法で含めている。小惑星とキロンの計算に使う
   - `sweph` には同梱されていないので、リポジトリに置いている。出所は `ephe/README.md`
   - 含めているのは、ホロスコープの API だけ。四柱推命の API には入らないので、均時差は計算式（Moshier）で求まる。ファイルがあるとき（テスト）との差は、0.002 秒ほど

@@ -7,8 +7,13 @@ module.exports = {
   // Vercelなど、必要なファイルだけを切り出して動かす環境に含まれるように、明示しておく
   outputFileTracingIncludes: {
     // NOTE: ライブラリには、環境ごとにビルド済みのバイナリが入っている。ビルドする環境のものだけを含める
-    // （Vercel と CI は linux-x64）
-    '/api/*': [`./node_modules/sweph/prebuilds/${process.platform}-${process.arch}/sweph.node`],
+    // （Vercel と CI は linux-x64）。
+    // ビルド済みのバイナリが動かない環境では、インストールのときにビルドされて、build/Release に置かれる。
+    // そのときは、そちらが読み込まれるので、あれば含める
+    '/api/*': [
+      `./node_modules/sweph/prebuilds/${process.platform}-${process.arch}/sweph.node`,
+      './node_modules/sweph/build/Release/sweph.node',
+    ],
     // 天体暦のファイル。小惑星とキロンの計算に使う
     // NOTE: 小惑星のファイル（seas）だけでも計算できるが、惑星のファイル（sepl）が無いと、値がわずかに変わる
     '/api/horoscope': ['./ephe/seas_18.se1', './ephe/sepl_18.se1'],

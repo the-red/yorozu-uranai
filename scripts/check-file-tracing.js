@@ -4,8 +4,12 @@
 const fs = require('fs')
 const path = require('path')
 
-// NOTE: ライブラリには、環境ごとにビルド済みのバイナリが入っている。ビルドした環境のものを調べる
-const BINARY = `node_modules/sweph/prebuilds/${process.platform}-${process.arch}/sweph.node`
+// NOTE: ライブラリには、環境ごとにビルド済みのバイナリが入っている。ビルドした環境のものを調べる。
+// インストールのときにビルドされたバイナリ（build/Release）があれば、そちらが読み込まれるので、そちらを調べる
+const BUILT_BINARY = 'node_modules/sweph/build/Release/sweph.node'
+const BINARY = fs.existsSync(BUILT_BINARY)
+  ? BUILT_BINARY
+  : `node_modules/sweph/prebuilds/${process.platform}-${process.arch}/sweph.node`
 // 天体暦のファイル。小惑星とキロンの計算に使う
 // NOTE: 惑星のファイル（sepl）が無くても計算できるが、値がわずかに変わる。エラーにならないので、ここで確かめる
 const EPHEMERIS = ['ephe/seas_18.se1', 'ephe/sepl_18.se1']

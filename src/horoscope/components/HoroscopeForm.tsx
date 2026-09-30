@@ -3,9 +3,9 @@ import { FC } from 'react'
 import { pagesPath } from '../../lib/$path'
 import { FormProps, useYorozuUranaiForm } from '../../hooks/useYorozuUranaiForm'
 import { buildMapQuery } from '../../lib/map-return'
-import { HOUSE_SYSTEMS, HOUSE_SYSTEM_NAMES_JA, HouseSystem, MAIN_HOUSE_SYSTEMS } from '../models'
+import { HOUSE_SYSTEMS, HOUSE_SYSTEM_NAMES, HouseSystem, MAIN_HOUSE_SYSTEMS } from '../models'
 
-const HouseOption = ({ house }: { house: HouseSystem }) => <option value={house}>{HOUSE_SYSTEM_NAMES_JA[house]}</option>
+const HouseOption = ({ house }: { house: HouseSystem }) => <option value={house}>{HOUSE_SYSTEM_NAMES[house]}</option>
 
 export const HoroscopeForm: FC<FormProps> = (props) => {
   const { register, hookFormHandleSubmit, values, handleSubmit, isTimeUnknownChecked, zone, lat, lng } =

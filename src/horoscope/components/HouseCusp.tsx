@@ -1,4 +1,4 @@
-import { HOUSE_SYSTEM_NAMES_JA, Horoscope, HouseSystem } from '../models'
+import { HOUSE_SYSTEM_NAMES, Horoscope, HouseSystem } from '../models'
 
 type Props = {
   horoscope: Horoscope
@@ -20,7 +20,7 @@ export default function HouseCusp({ horoscope, houseSystem }: Props) {
           ))}
         </tbody>
       </table>
-      <div className="list-note">{HOUSE_SYSTEM_NAMES_JA[houseSystem]}</div>
+      <div className="list-note">{HOUSE_SYSTEM_NAMES[houseSystem]}</div>
     </div>
   )
 }

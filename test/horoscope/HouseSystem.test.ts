@@ -3,7 +3,7 @@ import {
   DEFAULT_HOUSE_SYSTEM,
   HOUSE_SYSTEMS,
   HOUSE_SYSTEM_CODES,
-  HOUSE_SYSTEM_NAMES_JA,
+  HOUSE_SYSTEM_NAMES,
   MAIN_HOUSE_SYSTEMS,
   toHouseSystem,
 } from '../../src/horoscope/models'
@@ -16,7 +16,7 @@ describe('ハウスシステム', () => {
   it('23種類。名前も、記号も、重複しない', () => {
     expect(HOUSE_SYSTEMS).toHaveLength(23)
     expect(new Set(HOUSE_SYSTEMS).size).toEqual(23)
-    expect(new Set(Object.values(HOUSE_SYSTEM_NAMES_JA)).size).toEqual(23)
+    expect(new Set(Object.values(HOUSE_SYSTEM_NAMES)).size).toEqual(23)
     expect(new Set(Object.values(HOUSE_SYSTEM_CODES)).size).toEqual(23)
   })
   it('36 に分けるもの（G）と、ほかと同じもの（E、i）は、入れていない', () => {

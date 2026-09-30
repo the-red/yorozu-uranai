@@ -46,6 +46,13 @@ const props: HoroscopeProps = {
   },
   node: position(2.374847, true),
   lilith: position(122.301895),
+  asteroids: [
+    ['chiron', position(88.267633)],
+    ['ceres', position(264.007846)],
+    ['pallas', position(234.541557)],
+    ['juno', position(326.419652, true)],
+    ['vesta', position(108.71123)],
+  ],
 }
 
 // ヘッドの位置だけを変える

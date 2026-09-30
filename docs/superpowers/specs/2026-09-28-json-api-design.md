@@ -178,6 +178,36 @@ GET 以外は 405 を返す。
 - リリスは、平均の位置で 9 分の差があった。Meeus の式（月の近地点の平均の位置の反対側）で求めると、2 分の差になる。Swiss Ephemeris は、月の軌道の傾きを計算に入れるので、単純な式とは 0.1 度ほど違う
 - バーテックスは、出生地が分からないので、照合できていない
 
+#### 小惑星とキロン（2026-09-30 に追加）
+
+小惑星（セレス、パラス、ジュノ、ベスタ）と、キロン。`raw` と `result` に、次の項目を足す。
+
+```jsonc
+"raw": {
+  "asteroids": [
+    ["ceres", { "longitude": 264.007846, "isRetrograde": false /* … */ }],
+    // pallas, juno, vesta
+    ["chiron", { "longitude": 88.267633, "isRetrograde": false /* … */ }]
+  ]
+},
+"result": {
+  "asteroids": [
+    { "name": "ceres", "nameJa": "セレス", "type": "asteroid", "sign": "射手座", "degrees": 24.007846, "longitude": 264.007846, "isRetrograde": false, "house": 2 },
+    // pallas, juno, vesta
+    { "name": "chiron", "nameJa": "キロン", "type": "centaur", "sign": "双子座", "degrees": 28.267633, "longitude": 88.267633, "isRetrograde": false, "house": 8 }
+  ],
+  "aspects": {
+    "asteroids": [{ "asteroid": "ceres", "planet": "uranus", "name": "conjunction", "degrees": 0 }]
+  }
+}
+```
+
+- `planets` にも `points` にも含めない。実際にある天体なので、感受点（`points`）ではない。惑星（`planets`）に足すと、10 個を前提にしている利用者が困る
+- 計算できるのは、1800-01-02 から 2399-12-31 まで。範囲の外では、`raw.asteroids` と `result.asteroids` を `null` にして、`result.aspects.asteroids` を空にする。ほかの項目は返す。エラー（`calculation_failed`）にはしない
+- 惑星とのアスペクトは、感受点と同じく、コンジャンクションだけを求める。オーブは、`pointOrb` を使う
+- 画面では、表示するかどうかを切り替えられる（最初は、Asc・Mc 以外の惑星以外のものを、すべて表示しない）。JSON は、切り替えに関係なく、常にすべてを返す
+- 経緯は #201 と #202
+
 ### 四柱推命
 
 `raw` は節気ペアと均時差。

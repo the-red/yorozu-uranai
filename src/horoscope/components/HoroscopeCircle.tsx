@@ -10,6 +10,9 @@ import {
   ALL_PLANETS,
   MajorAspect,
   POINT_NEEDS_BIRTH_TIME,
+  Visibility,
+  isAsteroidVisible,
+  isPointVisible,
   Planet,
   spreadLongitudes,
 } from '../models'
@@ -417,12 +420,14 @@ export default function HoroscopeCircle({
   horoscope,
   radius,
   orb,
+  visibility,
 }: {
   horoscope: Horoscope
   radius: number // 外周の半径
   orb: number
+  visibility: Visibility
 }) {
-  const { planets, points, house } = horoscope
+  const { planets, asteroids, points, house } = horoscope
   const frame: Frame = { radius, houseLongitude: -house.ascendant.longitude }
 
   // NOTE: icon は、クラスのゲッター。オブジェクトを展開（...）すると落ちるので、値を取り出しておく
@@ -433,15 +438,23 @@ export default function HoroscopeCircle({
     isRetrograde,
     hasLeader: true,
   })
-  const localPoints = Object.values(points).filter((_) => POINT_NEEDS_BIRTH_TIME[_.name])
-  const otherPoints = Object.values(points).filter((_) => !POINT_NEEDS_BIRTH_TIME[_.name])
+  // 表示しないものは、重ならない位置を求めるときにも、数に入れない
+  const visibleAsteroids = Object.values(asteroids ?? {}).filter((_) => isAsteroidVisible(_.name, visibility))
+  const visiblePoints = Object.values(points).filter((_) => isPointVisible(_.name, visibility))
+  const localPoints = visiblePoints.filter((_) => POINT_NEEDS_BIRTH_TIME[_.name])
+  const otherPoints = visiblePoints.filter((_) => !POINT_NEEDS_BIRTH_TIME[_.name])
   // 並び順は、惑星の位置の表と同じ。同じ黄経のものは、この順に並ぶ
   const bodies: Body[] = [
     ...Object.values(planets).map(toBody),
+    ...visibleAsteroids.map(toBody),
     ...otherPoints.map(toBody),
     // NOTE: Asc と Mc は、ハウスの線が位置を示しているので、引き出し線は引かない
-    { name: 'ascendant', icon: 'Asc', position: house.ascendant, isRetrograde: false, hasLeader: false },
-    { name: 'mc', icon: 'Mc', position: house.mc, isRetrograde: false, hasLeader: false },
+    ...(visibility.ascMc
+      ? [
+          { name: 'ascendant', icon: 'Asc', position: house.ascendant, isRetrograde: false, hasLeader: false },
+          { name: 'mc', icon: 'Mc', position: house.mc, isRetrograde: false, hasLeader: false },
+        ]
+      : []),
     ...localPoints.map(toBody),
   ]
   const shown = spreadLongitudes(

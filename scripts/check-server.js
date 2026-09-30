@@ -63,10 +63,21 @@ const main = async () => {
   await checkJson(
     `/horoscope.json?${QUERY}`,
     'horoscope',
-    ({ result }) => [...result.planets.slice(0, 2), ...result.points].map((_) => [_.name, _.sign, _.house]),
+    // NOTE: 小惑星とキロンが返れば、天体暦のファイルも、ビルド結果に含まれている
+    ({ result }) =>
+      [...result.planets.slice(0, 2), ...(result.asteroids ?? []), ...result.points].map((_) => [
+        _.name,
+        _.sign,
+        _.house,
+      ]),
     [
       ['sun', '乙女座', 11],
       ['moon', '魚座', 5],
+      ['ceres', '射手座', 2],
+      ['pallas', '蠍座', 1],
+      ['juno', '水瓶座', 4],
+      ['vesta', '蟹座', 9],
+      ['chiron', '双子座', 8],
       ['northNode', '牡羊座', 5],
       ['southNode', '天秤座', 11],
       ['lilith', '獅子座', 9],

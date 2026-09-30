@@ -2,6 +2,7 @@ import { describe, it, expect } from 'vitest'
 import {
   julday,
   eclipticPosition,
+  isAsteroidRange,
   calcHouses,
   houseSystemName,
   longitudeToDate,
@@ -129,7 +130,7 @@ describe('astronomy', () => {
         longitudeSpeed: 0.111718,
         distance: 0.00271,
         distanceSpeed: 0,
-        rflag: 258,
+        rflag: 260,
         isRetrograde: false,
       })
     })
@@ -153,6 +154,126 @@ describe('astronomy', () => {
       const days = Array.from({ length: 60 }, (_, i) => new Date(Date.UTC(2026, 0, 1 + i)))
       const positions = await Promise.all(days.map(async (_) => eclipticPosition(await julday(_), 'meanApogee')))
       expect(positions.filter((_) => _.isRetrograde)).toEqual([])
+    })
+  })
+
+  describe('小惑星とキロン', () => {
+    it.each([
+      [
+        'chiron', // 双子座 28°16′
+        {
+          latitude: -5.579606,
+          latitudeSpeed: -0.008283,
+          longitude: 88.267633,
+          longitudeSpeed: 0.036934,
+          distance: 13.114627,
+          distanceSpeed: -0.018069,
+          rflag: 258,
+          isRetrograde: false,
+        },
+      ],
+      [
+        'ceres', // 射手座 24°00′
+        {
+          latitude: -4.848635,
+          latitudeSpeed: -0.011396,
+          longitude: 264.007846,
+          longitudeSpeed: 0.152304,
+          distance: 2.563961,
+          distanceSpeed: 0.014094,
+          rflag: 258,
+          isRetrograde: false,
+        },
+      ],
+      [
+        'pallas', // 蠍座 24°32′
+        {
+          latitude: 32.90457,
+          latitudeSpeed: -0.107794,
+          longitude: 234.541557,
+          longitudeSpeed: 0.30864,
+          distance: 3.273355,
+          distanceSpeed: 0.012331,
+          rflag: 258,
+          isRetrograde: false,
+        },
+      ],
+      [
+        'juno', // 水瓶座 26°25′。逆行
+        {
+          latitude: 6.253963,
+          latitudeSpeed: -0.108901,
+          longitude: 326.419652,
+          longitudeSpeed: -0.223158,
+          distance: 1.44762,
+          distanceSpeed: 0.00128,
+          rflag: 258,
+          isRetrograde: true,
+        },
+      ],
+      [
+        'vesta', // 蟹座 18°42′
+        {
+          latitude: -1.509887,
+          latitudeSpeed: 0.018217,
+          longitude: 108.71123,
+          longitudeSpeed: 0.364782,
+          distance: 2.986798,
+          distanceSpeed: -0.011225,
+          rflag: 258,
+          isRetrograde: false,
+        },
+      ],
+    ] as const)('%s', async (name, expected) => {
+      expectToBeCloseTo(await eclipticPosition(await julday(funadyBirthday), name), expected)
+    })
+
+    it('セレスが発見されたときの位置', async () => {
+      // 1801-01-01 に、パレルモで発見された。記録の位置は、赤経 51.78度、赤緯 +15.69度（牡牛座）。
+      // 黄経に直すと、53.38度
+      const { longitude } = await eclipticPosition(await julday(new Date('1801-01-01T19:00:00Z')), 'ceres')
+      expect(Math.abs(longitude - 53.38)).toBeLessThan(0.1)
+    })
+
+    describe('計算できる日付の範囲', () => {
+      // 天体暦のファイル（seas_18.se1）は、1800年から 2399年まで
+      it.each([
+        ['1799-12-31T23:59:59Z', false],
+        ['1800-01-01T00:00:00Z', false], // 光が届くまでの時間をさかのぼるので、初日は計算できない
+        ['1800-01-02T00:00:00Z', true],
+        ['1987-09-07T23:53:00Z', true],
+        ['2399-12-31T23:59:59Z', true],
+        ['2400-01-01T00:00:00Z', false],
+      ])('%s なら %j', async (iso, expected) => {
+        expect(isAsteroidRange(await julday(new Date(iso)))).toEqual(expected)
+      })
+
+      it.each(['1800-01-02T00:00:00Z', '2399-12-31T23:59:59Z'])(
+        '範囲の端（%s）でも、5つとも計算できる',
+        async (iso) => {
+          const julday_ut = await julday(new Date(iso))
+          for (const name of ['chiron', 'ceres', 'pallas', 'juno', 'vesta'] as const) {
+            const { longitude } = await eclipticPosition(julday_ut, name)
+            expect(longitude).toBeGreaterThanOrEqual(0)
+            expect(longitude).toBeLessThan(360)
+          }
+        }
+      )
+
+      it('範囲の外は、エラーになる', async () => {
+        const julday_ut = await julday(new Date('1700-01-01T00:00:00Z'))
+        await expect(eclipticPosition(julday_ut, 'ceres')).rejects.toThrow('SwissEph file')
+      })
+    })
+
+    it('惑星の値は、変わらない', async () => {
+      // NOTE: 天体暦のファイルの場所を指定すると、惑星もファイルで計算するようになり、値がわずかに変わる。
+      // 惑星は、今までと同じ計算方法（Moshier）を指定する
+      const julday_ut = await julday(funadyBirthday)
+      expect((await eclipticPosition(julday_ut, 'sun')).longitude).toBeCloseTo(164.817337, NUM_DIGITS)
+      expect((await eclipticPosition(julday_ut, 'moon')).longitude).toBeCloseTo(348.062352, NUM_DIGITS)
+      expect((await eclipticPosition(julday_ut, 'trueNode')).longitude).toBeCloseTo(2.374847, NUM_DIGITS)
+      expect((await eclipticPosition(julday_ut, 'meanApogee')).longitude).toBeCloseTo(122.301895, NUM_DIGITS)
     })
   })
 

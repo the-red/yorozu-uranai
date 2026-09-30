@@ -1,5 +1,13 @@
+import path from 'path'
 import swisseph from 'swisseph'
-import type { Body, EclipticPosition, HouseCusps, Houses } from './types'
+import type { AsteroidName, Body, EclipticPosition, HouseCusps, Houses } from './types'
+
+// 天体暦のファイルの場所。小惑星とキロンの計算に使う
+// NOTE: ファイルは、ライブラリに同梱されている。Vercelなど、必要なファイルだけを切り出して動かす環境には、
+// next.config.js の outputFileTracingIncludes で、必要なファイルだけを含めている。
+// ここでは、ビルドのときに、パスを調べられないようにする（turbopackIgnore）。
+// 調べられると、フォルダ全体（12MB。使わないファイルを含む）が、ビルド結果に入る
+swisseph.swe_set_ephe_path(path.join(/* turbopackIgnore: true */ process.cwd(), 'node_modules', 'swisseph', 'ephe'))
 
 const round6 = (num: number) => Math.trunc(num * 10 ** 6) / 10 ** 6
 
@@ -39,12 +47,34 @@ const BODIES: Record<Body, number> = {
   trueNode: swisseph.SE_TRUE_NODE,
   // NOTE: 真位置にするなら、SE_OSCU_APOG
   meanApogee: swisseph.SE_MEAN_APOG,
+  chiron: swisseph.SE_CHIRON,
+  ceres: swisseph.SE_CERES,
+  pallas: swisseph.SE_PALLAS,
+  juno: swisseph.SE_JUNO,
+  vesta: swisseph.SE_VESTA,
 }
+
+const ASTEROIDS: readonly Body[] = ['chiron', 'ceres', 'pallas', 'juno', 'vesta'] satisfies AsteroidName[]
+
+// 計算方法
+// - 小惑星とキロンは、天体暦のファイル（Swiss Ephemeris）で計算する。ほかの方法では、計算できない
+// - それ以外は、計算式（Moshier）で計算する
+// NOTE: 天体暦のファイルの場所を指定すると、指定が無ければ、惑星もファイルで計算するようになり、
+// 値がわずかに変わる（月で 0.8秒、ヘッドで 7.6秒）。今までの値を保つために、計算式を指定する
+const toFlag = (body: Body) =>
+  swisseph.SEFLG_SPEED | (ASTEROIDS.includes(body) ? swisseph.SEFLG_SWIEPH : swisseph.SEFLG_MOSEPH)
+
+// 小惑星とキロンを、計算できる日付かどうか
+// NOTE: 同梱されている天体暦のファイル（seas_18.se1）は、1800年から 2399年まで。
+// 光が届くまでの時間をさかのぼって計算するので、最初の日は計算できない
+const ASTEROID_RANGE = [2378497.5, 2597641.5] // 1800-01-02 から、2400-01-01 の手前まで（世界時）
+export const isAsteroidRange = (julday_ut: number): boolean =>
+  ASTEROID_RANGE[0] <= julday_ut && julday_ut < ASTEROID_RANGE[1]
 
 // 黄道座標の計算
 export const eclipticPosition = (julday_ut: number, body: Body): Promise<EclipticPosition> =>
   new Promise((resolve, reject) =>
-    swisseph.swe_calc_ut(julday_ut, BODIES[body], swisseph.SEFLG_SPEED, (result) => {
+    swisseph.swe_calc_ut(julday_ut, BODIES[body], toFlag(body), (result) => {
       if ('error' in result) {
         return reject(new Error(result.error))
       }

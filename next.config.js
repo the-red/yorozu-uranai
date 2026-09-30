@@ -7,6 +7,9 @@ module.exports = {
   // Vercelなど、必要なファイルだけを切り出して動かす環境に含まれるように、明示しておく
   outputFileTracingIncludes: {
     '/api/*': ['./node_modules/swisseph/build/Release/swisseph.node'],
+    // 天体暦のファイル。小惑星とキロンの計算に使う
+    // NOTE: 小惑星のファイル（seas）だけでも計算できるが、惑星のファイル（sepl）が無いと、値がわずかに変わる
+    '/api/horoscope': ['./node_modules/swisseph/ephe/seas_18.se1', './node_modules/swisseph/ephe/sepl_18.se1'],
   },
   // 占い結果のJSON。ページのURLに .json を付けると、同じ入力に対する結果を返す
   async rewrites() {

@@ -312,9 +312,64 @@ describe('astronomy', () => {
       })
     })
 
-    it('ハウスシステム名', async () => {
-      expect(houseSystemName('A')).toEqual('equal')
-      expect(houseSystemName()).toEqual('Placidus')
+    describe('緯度が高いとき', () => {
+      // NOTE: プラシーダスとコッホは、極圏（緯度 66.56度より上）では計算できない
+      it.each(['', 'K'])('ハウスシステム「%s」は、極圏の手前までは計算できる', async (hsys) => {
+        const { house } = await calcHouses(await julday(funadyBirthday), 66, funadyBirthLon, hsys)
+        expect(house).toHaveLength(12)
+      })
+      it.each([
+        ['', 67],
+        ['', 80],
+        ['', -80],
+        ['', 90],
+        ['K', 67],
+        ['K', -80],
+      ])('ハウスシステム「%s」は、緯度 %d度では計算できない', async (hsys, lat) => {
+        await expect(calcHouses(await julday(funadyBirthday), lat, funadyBirthLon, hsys)).rejects.toThrow(
+          `Can't calculate houses.`
+        )
+      })
+      it('ポーフィリーは、極圏でも計算できる', async () => {
+        const { house, ascendant } = await calcHouses(await julday(funadyBirthday), 80, funadyBirthLon, 'O')
+        expect(house).toHaveLength(12)
+        expect(house[0]).toEqual(ascendant)
+      })
+    })
+
+    describe('ハウスシステム名', () => {
+      it.each([
+        ['A', 'equal'],
+        ['B', 'Alcabitius'],
+        ['C', 'Campanus'],
+        ['D', 'equal (MC)'],
+        ['E', 'equal'],
+        ['F', 'Carter poli-equ.'],
+        ['G', 'Gauquelin sectors'],
+        ['H', 'horizon/azimut'],
+        ['I', 'Sunshine'],
+        ['i', 'Sunshine/alt.'],
+        ['K', 'Koch'],
+        ['L', 'Pullen SD'],
+        ['M', 'Morinus'],
+        ['N', 'equal/1=Aries'],
+        ['O', 'Porphyry'],
+        ['P', 'Placidus'],
+        ['Q', 'Pullen SR'],
+        ['R', 'Regiomontanus'],
+        ['S', 'Sripati'],
+        ['T', 'Polich/Page'],
+        ['U', 'Krusinski-Pisa-Goelzer'],
+        ['V', 'equal/Vehlow'],
+        ['W', 'equal/ whole sign'],
+        ['X', 'axial rotation system/Meridian houses'],
+        ['Y', 'APC houses'],
+      ])('%s は %s', (hsys, expected) => {
+        expect(houseSystemName(hsys)).toEqual(expected)
+      })
+      it.each([undefined, '', 'Z', '?'])('知らない値（%j）は、プラシーダス', (hsys) => {
+        expect(houseSystemName(hsys)).toEqual('Placidus')
+      })
     })
   })
 })
@@ -332,6 +387,11 @@ describe('均時差', () => {
   })
   it('2月中旬は視太陽時が最も遅れている', async () => {
     expect(await getEquationOfTime('2023-02-11T12:00:00+09:00')).toBeCloseTo(-14.2, MINUTE_DIGITS)
+  })
+  it('計算できない日付は、エラーになる', async () => {
+    // 天体の位置を計算できる範囲（紀元前3000年ごろから、西暦3000年ごろまで）の外
+    await expect(equationOfTime(2451545 + 365.25 * 8000)).rejects.toThrow()
+    await expect(equationOfTime(2451545 - 365.25 * 8000)).rejects.toThrow()
   })
 })
 

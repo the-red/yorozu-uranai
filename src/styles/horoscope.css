@@ -206,6 +206,10 @@
 .horoscope .horoscope-form .lat-lng-label {
   margin-right: 8px;
 }
+.horoscope .horoscope-form .house-select {
+  width: 100%;
+  max-width: 200px;
+}
 .horoscope .horoscope-form .lat-lng-input {
   width: 110px;
 }
@@ -287,6 +291,11 @@
 .horoscope .options-reset:disabled {
   opacity: 0.5;
   cursor: default;
+}
+/* 表の下の説明（ハウスシステムの名前） */
+.horoscope .list-note {
+  padding-top: 8px;
+  font-size: 13px;
 }
 /* 惑星以外のものを、表示するかどうかの切り替え */
 .horoscope .display-options {

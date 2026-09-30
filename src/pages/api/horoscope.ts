@@ -1,6 +1,7 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
 import {
   DEFAULT_VISIBILITY,
+  HOUSE_SYSTEM_CODES,
   Horoscope,
   HoroscopeProps,
   toHoroscopeResult,
@@ -29,7 +30,7 @@ const horoscope = async (req: NextApiRequest, res: NextApiResponse<HoroscopeJson
 
   let raw: HoroscopeProps
   try {
-    raw = await getHoroscopeProps(toDateTime(input).toJSDate(), input.lat, input.lng)
+    raw = await getHoroscopeProps(toDateTime(input).toJSDate(), input.lat, input.lng, HOUSE_SYSTEM_CODES[input.house])
   } catch (e) {
     return sendCalculationFailed(res, e)
   }
@@ -41,7 +42,7 @@ const horoscope = async (req: NextApiRequest, res: NextApiResponse<HoroscopeJson
     page: pageUrl(req, '/horoscope', input, toSettingsHash({ visibility: DEFAULT_VISIBILITY, aspects: input.aspects })),
     raw,
     // ページと同じく、材料から復元したモデルを変換する
-    result: toHoroscopeResult(new Horoscope(raw), input.aspects),
+    result: toHoroscopeResult(new Horoscope(raw), input.aspects, input.house),
   })
 }
 

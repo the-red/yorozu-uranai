@@ -102,6 +102,15 @@ const main = async () => {
   await checkError(`/horoscope.json?${QUERY.replace('lat=43.06', 'lat=80')}`, undefined, 400, 'calculation_failed', [
     'lat',
   ])
+  // ハウスシステム
+  await checkJson(
+    `/horoscope.json?${QUERY}&house=koch`,
+    'horoscope',
+    ({ result }) => [result.houses.system, ...result.houses.cusps.slice(1, 3).map((_) => Math.floor(_.longitude))],
+    ['koch', 235, 265]
+  )
+  await checkError(`/horoscope.json?${QUERY}&house=K`, undefined, 400, 'invalid_query', ['house'])
+
   // アスペクトの求め方
   await checkJson(
     `/horoscope.json?${QUERY}&orb=1&minor=150`,

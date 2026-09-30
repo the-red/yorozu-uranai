@@ -14,6 +14,7 @@ const formValues: FormValues = {
   lat: 43.06,
   lng: 141.35,
   gender: 'woman',
+  house: 'placidus',
   address: '北海道札幌市',
 }
 

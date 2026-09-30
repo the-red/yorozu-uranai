@@ -1,6 +1,6 @@
 import type { FC } from 'react'
 import dynamic from 'next/dynamic'
-import { DEFAULT_VISIBILITY, Horoscope, HoroscopeSettings } from '../models'
+import { DEFAULT_VISIBILITY, Horoscope, HoroscopeSettings, HouseSystem } from '../models'
 import AspectOptions from './AspectOptions'
 import DisplayOptions from './DisplayOptions'
 import PlanetPositions from './PlanetPositions'
@@ -14,6 +14,7 @@ const HoroscopeCircle = dynamic(() => import('./HoroscopeCircle'), { ssr: false 
 // horoscope は、まだ求まっていないときと、求められなかったときは無い
 type Props = {
   horoscope?: Horoscope
+  houseSystem?: HouseSystem // horoscope を計算したときの、ハウスシステム
   settings: HoroscopeSettings
   onChangeSettings: (settings: HoroscopeSettings) => void
   loading: boolean
@@ -21,6 +22,7 @@ type Props = {
 
 const HoroscopeDetailPage: FC<Props> = ({
   horoscope,
+  houseSystem,
   settings,
   onChangeSettings,
   loading,
@@ -51,18 +53,26 @@ const HoroscopeDetailPage: FC<Props> = ({
           loading && <div className="content loading">読み込み中…</div>
         )}
       </div>
-      {horoscope && <HoroscopeTables horoscope={horoscope} settings={settings} onChangeSettings={onChangeSettings} />}
+      {horoscope && houseSystem && (
+        <HoroscopeTables
+          horoscope={horoscope}
+          houseSystem={houseSystem}
+          settings={settings}
+          onChangeSettings={onChangeSettings}
+        />
+      )}
     </div>
   )
 }
 
 type TablesProps = {
   horoscope: Horoscope
+  houseSystem: HouseSystem
   settings: HoroscopeSettings
   onChangeSettings: (settings: HoroscopeSettings) => void
 }
 
-const HoroscopeTables: FC<TablesProps> = ({ horoscope, settings, onChangeSettings }) => {
+const HoroscopeTables: FC<TablesProps> = ({ horoscope, houseSystem, settings, onChangeSettings }) => {
   const { visibility, aspects } = settings
   return (
     <>
@@ -103,7 +113,7 @@ const HoroscopeTables: FC<TablesProps> = ({ horoscope, settings, onChangeSetting
         </div>
         <div className="content">
           <div className="content-inner">
-            <HouseCusp horoscope={horoscope} />
+            <HouseCusp horoscope={horoscope} houseSystem={houseSystem} />
           </div>
         </div>
       </div>

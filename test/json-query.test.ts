@@ -29,6 +29,7 @@ describe('ホロスコープのクエリ', () => {
         zone: 'Asia/Tokyo',
         lat: 43.06,
         lng: 141.35,
+        house: 'placidus',
         aspects: DEFAULT_ASPECT_SETTINGS,
       },
     })
@@ -121,6 +122,29 @@ describe('ホロスコープのクエリ', () => {
     it.each(['180.1', '-180.1', '460'])('経度 %j はエラー', (lng) => {
       expect(parseHoroscopeQuery({ ...horoscopeQuery, lng })).toEqual(invalid('lng is invalid', ['lng']))
     })
+  })
+})
+
+describe('ホロスコープのクエリ: ハウスシステム', () => {
+  const house = (value: string) => {
+    const parsed = parseHoroscopeQuery({ ...horoscopeQuery, house: value })
+    return parsed.ok ? parsed.input.house : parsed.error
+  }
+
+  it.each(['placidus', 'koch', 'regiomontanus', 'campanus', 'porphyry', 'equal'])('%s', (value) => {
+    expect(house(value)).toEqual(value)
+  })
+  it('空なら、プラシーダス', () => {
+    expect(house('')).toEqual('placidus')
+  })
+  it.each(['K', 'Koch', 'wholeSign', 'topocentric'])('読み取れない値（%s）は、エラーにする', (value) => {
+    expect(house(value)).toEqual({ code: 'invalid_query', message: 'house is invalid', params: ['house'] })
+  })
+  it('ページのクエリには、最初の状態（プラシーダス）でなければ、入れる', () => {
+    const koch = parseHoroscopeQuery({ ...horoscopeQuery, house: 'koch' })
+    expect(koch.ok && toPageQuery(koch.input)).toEqual({ ...horoscopeQuery, house: 'koch' })
+    const placidus = parseHoroscopeQuery({ ...horoscopeQuery, house: 'placidus' })
+    expect(placidus.ok && toPageQuery(placidus.input)).toEqual(horoscopeQuery)
   })
 })
 

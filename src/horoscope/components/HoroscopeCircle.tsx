@@ -427,6 +427,8 @@ export default function HoroscopeCircle({
     isRetrograde,
     hasLeader: true,
   })
+  // ハウスの線の上にあるか
+  const isOnCusp = ({ longitude }: Position) => house.cusps.some((_) => _.longitude === longitude)
   // 表示しないものは、重ならない位置を求めるときにも、数に入れない
   const visibleAsteroids = Object.values(asteroids ?? {}).filter((_) => isAsteroidVisible(_.name, visibility))
   const visiblePoints = Object.values(points).filter((_) => isPointVisible(_.name, visibility))
@@ -437,11 +439,18 @@ export default function HoroscopeCircle({
     ...Object.values(planets).map(toBody),
     ...visibleAsteroids.map(toBody),
     ...otherPoints.map(toBody),
-    // NOTE: Asc と Mc は、ハウスの線が位置を示しているので、引き出し線は引かない
+    // NOTE: Asc と Mc は、ハウスの線が位置を示しているときは、引き出し線を引かない。
+    // ハウスシステムによっては、ハウスの起点にならない（イコールの Mc）。そのときは、引く
     ...(visibility.ascMc
       ? [
-          { name: 'ascendant', icon: 'Asc', position: house.ascendant, isRetrograde: false, hasLeader: false },
-          { name: 'mc', icon: 'Mc', position: house.mc, isRetrograde: false, hasLeader: false },
+          {
+            name: 'ascendant',
+            icon: 'Asc',
+            position: house.ascendant,
+            isRetrograde: false,
+            hasLeader: !isOnCusp(house.ascendant),
+          },
+          { name: 'mc', icon: 'Mc', position: house.mc, isRetrograde: false, hasLeader: !isOnCusp(house.mc) },
         ]
       : []),
     ...localPoints.map(toBody),

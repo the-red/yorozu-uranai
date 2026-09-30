@@ -1,6 +1,7 @@
 import { DateTime } from 'luxon'
 import type { NextRouter } from 'next/router'
 import { Dispatch, SetStateAction, useEffect, useRef } from 'react'
+import { DEFAULT_HOUSE_SYSTEM } from '../horoscope/models/HouseSystem'
 import { TOKYO_STATION } from '../lib/location'
 import { queryToFormValues, FORM_DATE_FORMAT, FORM_TIME_FORMAT, FORM_QUERY_KEYS } from '../lib/params'
 import type { FormValues } from './useYorozuUranaiForm'
@@ -73,7 +74,9 @@ export const useFormValues = (setFormValues: Dispatch<SetStateAction<FormValues 
 
         const gender = f.gender ?? 'woman'
 
-        setFormValues({ ...f, date, time, zone, timeUnknown, lat, lng, address, gender })
+        const house = f.house ?? DEFAULT_HOUSE_SYSTEM
+
+        setFormValues({ ...f, date, time, zone, timeUnknown, lat, lng, address, gender, house })
       }
     }
     setDefaultFormValues()

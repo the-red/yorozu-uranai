@@ -12,6 +12,7 @@ const formValues: FormValues = {
   lat: 43.06,
   lng: 141.35,
   gender: 'woman',
+  house: 'placidus',
   address: '北海道札幌市',
 }
 
@@ -37,6 +38,13 @@ describe('フォームの値 → JSONのURL', () => {
     const query = toQuery(toJsonUrl('/horoscope', { ...formValues, lat: 0, lng: 0 }))
     expect(query).toMatchObject({ lat: '0', lng: '0' })
   })
+  it('ハウスシステムは、最初の状態（プラシーダス）でなければ、クエリに入れる', () => {
+    expect(toQuery(toJsonUrl('/horoscope', formValues))).not.toHaveProperty('house')
+    const koch = toQuery(toJsonUrl('/horoscope', { ...formValues, house: 'koch' }))
+    expect(koch.house).toEqual('koch')
+    const parsed = parseHoroscopeQuery(koch)
+    expect(parsed.ok && parsed.input.house).toEqual('koch')
+  })
   it('APIが解釈すると、フォームの値に戻る', () => {
     const { address, gender, ...rest } = formValues
     expect(parseHoroscopeQuery(toQuery(toJsonUrl('/horoscope', formValues)))).toEqual({
@@ -44,7 +52,8 @@ describe('フォームの値 → JSONのURL', () => {
       input: { ...rest, aspects: DEFAULT_ASPECT_SETTINGS },
     })
 
-    const { address: _, ...suimei } = formValues
+    // ハウスは、ホロスコープだけの項目
+    const { address: _, house, ...suimei } = formValues
     expect(parseSuimeiQuery(toQuery(toJsonUrl('/suimei', formValues, { thisYear: '2026' })))).toEqual({
       ok: true,
       input: { ...suimei, thisYear: 2026 },

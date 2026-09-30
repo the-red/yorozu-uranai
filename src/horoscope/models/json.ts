@@ -11,6 +11,7 @@ import {
 } from './AspectSettings'
 import { ASTEROID_NAMES, ASTEROID_NAMES_JA, ASTEROID_TYPES } from './Asteroid'
 import type { Horoscope } from './Horoscope'
+import { DEFAULT_HOUSE_SYSTEM, HouseSystem } from './HouseSystem'
 import { POINT_NAMES, POINT_NAMES_JA, POINT_TYPES, PointName, PointVariant, getPointVariant } from './Point'
 import { PLANET_NAMES_JA, Planet } from './Planet'
 import { Position } from './Position'
@@ -65,6 +66,7 @@ export type HoroscopeResult = {
   asteroids: AsteroidJson[] | null // 計算できない日付（1800年より前、2400年より後）では null
   points: PointJson[]
   houses: {
+    system: HouseSystem // ハウスシステム
     ascendant: PositionJson
     mc: PositionJson
     cusps: (PositionJson & { house: number })[]
@@ -84,7 +86,12 @@ const toPositionJson = ({ sign, degrees, longitude }: Position): PositionJson =>
 // NOTE: オブジェクトを展開（...）すると、アスペクトの項目が先に並ぶ。今までの並び順（相手が先）を保つ
 const toAspectKindJson = <T extends Aspect>({ name, degrees, type }: T): AspectKindJson<T> => ({ name, degrees, type })
 
-export const toHoroscopeResult = (horoscope: Horoscope, settings: AspectSettings): HoroscopeResult => {
+// houseSystem は、horoscope を計算したときの、ハウスシステム
+export const toHoroscopeResult = (
+  horoscope: Horoscope,
+  settings: AspectSettings,
+  houseSystem: HouseSystem = DEFAULT_HOUSE_SYSTEM
+): HoroscopeResult => {
   const { planets, asteroids, points, house } = horoscope
   const planetAspects = getPlanetAspects(horoscope, settings).map(({ planets, aspect }) => ({
     planets,
@@ -130,6 +137,7 @@ export const toHoroscopeResult = (horoscope: Horoscope, settings: AspectSettings
       }
     }),
     houses: {
+      system: houseSystem,
       ascendant: toPositionJson(house.ascendant),
       mc: toPositionJson(house.mc),
       cusps: house.cusps.map((cusp, i) => ({ house: i + 1, ...toPositionJson(cusp) })),

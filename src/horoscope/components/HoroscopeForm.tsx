@@ -3,6 +3,7 @@ import { FC } from 'react'
 import { pagesPath } from '../../lib/$path'
 import { FormProps, useYorozuUranaiForm } from '../../hooks/useYorozuUranaiForm'
 import { buildMapQuery } from '../../lib/map-return'
+import { HOUSE_SYSTEMS, HOUSE_SYSTEM_NAMES_JA } from '../models'
 
 export const HoroscopeForm: FC<FormProps> = (props) => {
   const { register, hookFormHandleSubmit, values, handleSubmit, isTimeUnknownChecked, zone, lat, lng } =
@@ -46,6 +47,23 @@ export const HoroscopeForm: FC<FormProps> = (props) => {
             </Link>
           </div>
           <div>{values.address}</div>
+        </div>
+      </div>
+
+      <hr />
+
+      <div className="form-row">
+        <label className="form-label" htmlFor="horoscope[house]">
+          ハウス
+        </label>
+        <div>
+          <select id="horoscope[house]" className="house-select" {...register('house')}>
+            {HOUSE_SYSTEMS.map((_) => (
+              <option key={_} value={_}>
+                {HOUSE_SYSTEM_NAMES_JA[_]}
+              </option>
+            ))}
+          </select>
         </div>
       </div>
 

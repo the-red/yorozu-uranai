@@ -19,6 +19,7 @@ describe('/horoscope.json', () => {
       zone: 'Asia/Tokyo',
       lat: 43.06666666666667,
       lng: 141.35,
+      house: 'placidus',
       aspects: DEFAULT_ASPECT_SETTINGS,
     })
     expect(json.page).toEqual(
@@ -100,6 +101,48 @@ describe('/horoscope.json', () => {
     expect(json.result.aspects.asteroids).toEqual([])
     expect(json.result.planets).toHaveLength(10)
     expect(json.result.points).toHaveLength(5)
+  })
+
+  describe('ハウスシステム', () => {
+    it('指定が無ければ、プラシーダス', async () => {
+      const { json } = await get(horoscope, query)
+      expect(json.result.houses.system).toEqual('placidus')
+      expect(json.raw.houses.house[1]).toBeCloseTo(235.781911, NUM_DIGITS)
+    })
+    it('コッホ', async () => {
+      const { status, json } = await get(horoscope, { ...query, house: 'koch' })
+      expect(status).toEqual(200)
+      expect(json.input.house).toEqual('koch')
+      expect(json.result.houses.system).toEqual('koch')
+      // 2ハウスと 3ハウスのカスプが、プラシーダスと違う（test/astronomy.test.ts の「コッホ」）
+      expect(json.raw.houses.house[1]).toBeCloseTo(235.809886, NUM_DIGITS)
+      expect(json.raw.houses.house[2]).toBeCloseTo(265.452867, NUM_DIGITS)
+      expect(new URL(json.page).searchParams.get('house')).toEqual('koch')
+    })
+    it('イコール: Asc から、30度ずつ', async () => {
+      const { json } = await get(horoscope, { ...query, house: 'equal' })
+      const { house, ascendant } = json.raw.houses
+      house.forEach((cusp: number, i: number) => expect(cusp).toBeCloseTo((ascendant + 30 * i) % 360, 4))
+      // Asc と Mc は、ハウスシステムに依らない。Mc は、10ハウスのカスプにならない
+      expect(ascendant).toBeCloseTo(207.908591, NUM_DIGITS)
+      expect(json.raw.houses.mc).toBeCloseTo(123.803709, NUM_DIGITS)
+      expect(house[9]).toBeCloseTo(117.908591, 4)
+    })
+    it('惑星の位置は、変わらない', async () => {
+      const placidus = await get(horoscope, query)
+      const koch = await get(horoscope, { ...query, house: 'koch' })
+      expect(koch.json.raw.positions).toEqual(placidus.json.raw.positions)
+    })
+    it('極圏でも、ポーフィリーなら計算できる', async () => {
+      expect((await get(horoscope, { ...query, lat: '80' })).status).toEqual(400)
+      expect((await get(horoscope, { ...query, lat: '80', house: 'koch' })).status).toEqual(400)
+      expect((await get(horoscope, { ...query, lat: '80', house: 'porphyry' })).status).toEqual(200)
+    })
+    it('読み取れない値は、エラーにする', async () => {
+      const { status, json } = await get(horoscope, { ...query, house: 'K' })
+      expect(status).toEqual(400)
+      expect(json.error).toEqual({ code: 'invalid_query', message: 'house is invalid', params: ['house'] })
+    })
   })
 
   describe('アスペクトの求め方', () => {

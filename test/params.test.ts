@@ -1,3 +1,4 @@
+import { HOUSE_SYSTEMS } from '../src/horoscope/models'
 import { describe, it, expect, beforeEach, afterEach } from 'vitest'
 import { Settings } from 'luxon'
 import { queryToFormValues, formValuesToQuery } from '../src/lib/params'
@@ -35,7 +36,33 @@ describe('クエリ → フォームの値', () => {
       lat: 43.06,
       lng: 141.35,
       gender: undefined,
+      house: undefined,
     })
+  })
+})
+
+describe('ハウスシステム', () => {
+  it('クエリから読み取る', () => {
+    expect(queryToFormValues({ house: 'koch' }).house).toEqual('koch')
+    expect(queryToFormValues({ house: 'equal' }).house).toEqual('equal')
+    expect(queryToFormValues({ house: ['campanus', 'koch'] }).house).toEqual('campanus')
+  })
+  it('無ければ、undefined（ページが、プラシーダスを補う）', () => {
+    expect(queryToFormValues({}).house).toBeUndefined()
+  })
+  it.each(['K', 'Koch', 'whole', ''])('読み取れない値（%j）は、無視する', (house) => {
+    expect(queryToFormValues({ house }).house).toBeUndefined()
+  })
+  it('最初の状態（プラシーダス）は、クエリに入れない', () => {
+    expect(formValuesToQuery({ timeUnknown: false, house: 'placidus' })).toEqual({})
+    expect(formValuesToQuery({ timeUnknown: false })).toEqual({})
+    expect(formValuesToQuery({ timeUnknown: false, house: 'koch' })).toEqual({ house: 'koch' })
+  })
+  it('クエリにして、読み取ると、元に戻る', () => {
+    for (const house of HOUSE_SYSTEMS) {
+      const restored = queryToFormValues(formValuesToQuery({ timeUnknown: false, house })).house
+      expect(restored ?? 'placidus').toEqual(house)
+    }
   })
 })
 

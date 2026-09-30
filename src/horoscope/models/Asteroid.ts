@@ -5,8 +5,8 @@ import type { Horoscope } from './Horoscope'
 // 小惑星（セレス、パラス、ジュノ、ベスタ）と、キロン
 // 惑星と同じく、実際にある天体。サインとハウスを読み、逆行もする
 //
-// 並び順は、表示の順番。よく使われるキロンを先に、小惑星は番号の順に置く
-export const ASTEROID_NAMES = ['chiron', 'ceres', 'pallas', 'juno', 'vesta'] as const satisfies readonly AsteroidName[]
+// 並び順は、表示の順番。小惑星は番号の順に、キロンは最後に置く
+export const ASTEROID_NAMES = ['ceres', 'pallas', 'juno', 'vesta', 'chiron'] as const satisfies readonly AsteroidName[]
 
 export const ASTEROID_ICONS = {
   chiron: '⚷',

@@ -72,16 +72,16 @@ describe('/horoscope.json', () => {
 
   it('小惑星とキロン', async () => {
     const { json } = await get(horoscope, query)
-    expect(json.raw.asteroids.map(([name]: [string]) => name)).toEqual(['chiron', 'ceres', 'pallas', 'juno', 'vesta'])
-    expect(json.raw.asteroids[0][1].longitude).toBeCloseTo(88.267633, NUM_DIGITS)
-    expect(json.raw.asteroids[3][1].isRetrograde).toEqual(true)
+    expect(json.raw.asteroids.map(([name]: [string]) => name)).toEqual(['ceres', 'pallas', 'juno', 'vesta', 'chiron'])
+    expect(json.raw.asteroids[4][1].longitude).toBeCloseTo(88.267633, NUM_DIGITS)
+    expect(json.raw.asteroids[2][1].isRetrograde).toEqual(true)
 
     expect(json.result.asteroids.map((_: any) => [_.name, _.nameJa, _.type, _.sign, _.house, _.isRetrograde])).toEqual([
-      ['chiron', 'キロン', 'centaur', '双子座', 8, false],
       ['ceres', 'セレス', 'asteroid', '射手座', 2, false],
       ['pallas', 'パラス', 'asteroid', '蠍座', 1, false],
       ['juno', 'ジュノ', 'asteroid', '水瓶座', 4, true],
       ['vesta', 'ベスタ', 'asteroid', '蟹座', 9, false],
+      ['chiron', 'キロン', 'centaur', '双子座', 8, false],
     ])
     expect(json.result.aspects.asteroids).toEqual([
       { asteroid: 'ceres', planet: 'uranus', name: 'conjunction', degrees: 0 },

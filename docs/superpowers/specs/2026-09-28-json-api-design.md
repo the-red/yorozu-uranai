@@ -185,16 +185,16 @@ GET 以外は 405 を返す。
 ```jsonc
 "raw": {
   "asteroids": [
-    ["chiron", { "longitude": 88.267633, "isRetrograde": false /* … */ }],
-    ["ceres", { "longitude": 264.007846, "isRetrograde": false /* … */ }]
+    ["ceres", { "longitude": 264.007846, "isRetrograde": false /* … */ }],
     // pallas, juno, vesta
+    ["chiron", { "longitude": 88.267633, "isRetrograde": false /* … */ }]
   ]
 },
 "result": {
   "asteroids": [
-    { "name": "chiron", "nameJa": "キロン", "type": "centaur", "sign": "双子座", "degrees": 28.267633, "longitude": 88.267633, "isRetrograde": false, "house": 8 },
-    { "name": "ceres", "nameJa": "セレス", "type": "asteroid", "sign": "射手座", "degrees": 24.007846, "longitude": 264.007846, "isRetrograde": false, "house": 2 }
+    { "name": "ceres", "nameJa": "セレス", "type": "asteroid", "sign": "射手座", "degrees": 24.007846, "longitude": 264.007846, "isRetrograde": false, "house": 2 },
     // pallas, juno, vesta
+    { "name": "chiron", "nameJa": "キロン", "type": "centaur", "sign": "双子座", "degrees": 28.267633, "longitude": 88.267633, "isRetrograde": false, "house": 8 }
   ],
   "aspects": {
     "asteroids": [{ "asteroid": "ceres", "planet": "uranus", "name": "conjunction", "degrees": 0 }]

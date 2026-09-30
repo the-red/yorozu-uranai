@@ -332,16 +332,6 @@ describe('ホロスコープ → JSON', () => {
     it('位置', () => {
       expectToBeCloseTo(result.asteroids, [
         {
-          name: 'chiron',
-          nameJa: 'キロン',
-          type: 'centaur',
-          sign: '双子座',
-          degrees: 28.267633,
-          longitude: 88.267633,
-          isRetrograde: false,
-          house: 8,
-        },
-        {
           name: 'ceres',
           nameJa: 'セレス',
           type: 'asteroid',
@@ -380,6 +370,16 @@ describe('ホロスコープ → JSON', () => {
           longitude: 108.71123,
           isRetrograde: false,
           house: 9,
+        },
+        {
+          name: 'chiron',
+          nameJa: 'キロン',
+          type: 'centaur',
+          sign: '双子座',
+          degrees: 28.267633,
+          longitude: 88.267633,
+          isRetrograde: false,
+          house: 8,
         },
       ])
     })

@@ -73,11 +73,11 @@ const main = async () => {
     [
       ['sun', '乙女座', 11],
       ['moon', '魚座', 5],
-      ['chiron', '双子座', 8],
       ['ceres', '射手座', 2],
       ['pallas', '蠍座', 1],
       ['juno', '水瓶座', 4],
       ['vesta', '蟹座', 9],
+      ['chiron', '双子座', 8],
       ['northNode', '牡羊座', 5],
       ['southNode', '天秤座', 11],
       ['lilith', '獅子座', 9],

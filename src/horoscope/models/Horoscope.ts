@@ -3,6 +3,7 @@ import { Planet } from './Planet'
 import type { AsteroidName, PlanetName, EclipticPosition, Houses } from '../../astronomy/types'
 import { House } from './House'
 import { PointName, getPartOfFortune } from './Point'
+import { ASTEROID_NAMES } from './Asteroid'
 
 export type PlanetsMap = Record<PlanetName, Planet>
 export type PointsMap = { [Name in PointName]: Planet<Name> }
@@ -31,11 +32,16 @@ export class Horoscope {
     ) as PlanetsMap
 
     if (asteroids) {
+      // NOTE: 並び順は、表示の順番（ASTEROID_NAMES）にそろえる。raw の並び順には、依らない
+      const positions = new Map(asteroids)
       this.asteroids = Object.fromEntries(
-        asteroids.map(([name, position]) => [
-          name,
-          new Planet(new Position(position.longitude), name, position.isRetrograde, this.house),
-        ])
+        ASTEROID_NAMES.map((name) => {
+          const position = positions.get(name)
+          if (!position) {
+            throw new Error(`${name} の位置がありません`)
+          }
+          return [name, new Planet(new Position(position.longitude), name, position.isRetrograde, this.house)]
+        })
       ) as AsteroidsMap
     }
 

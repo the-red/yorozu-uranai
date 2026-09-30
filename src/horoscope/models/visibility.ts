@@ -8,13 +8,14 @@ import type { PointName } from './Point'
 // - ヘッドとテイルは、必ず正反対にあるので、まとめて切り替える
 // - Asc と Mc も、まとめて切り替える。消しても、ハウスの線は残る
 // NOTE: 惑星は、常に表示する。切り替えの対象ではない
-export const VISIBILITY_KEYS = ['chiron', 'asteroids', 'node', 'lilith', 'ascMc', 'vertex', 'partOfFortune'] as const
+// 切り替えの欄は、日時だけで決まるものと、出生時刻と場所で決まるもの（Asc・Mc から後ろ）の、2段に分ける
+export const VISIBILITY_KEYS = ['asteroids', 'chiron', 'node', 'lilith', 'ascMc', 'vertex', 'partOfFortune'] as const
 export type VisibilityKey = (typeof VISIBILITY_KEYS)[number]
 export type Visibility = Record<VisibilityKey, boolean>
 
 export const VISIBILITY_LABELS = {
-  chiron: 'キロン',
   asteroids: '小惑星',
+  chiron: 'キロン',
   node: 'ヘッド・テイル',
   lilith: 'リリス',
   ascMc: 'Asc・Mc',
@@ -25,8 +26,8 @@ export const VISIBILITY_LABELS = {
 // 最初の状態。Asc と Mc だけを表示する
 // NOTE: 惑星以外は、読む人が選んで表示する。最初から表示すると、円が混み合う
 export const DEFAULT_VISIBILITY: Visibility = {
-  chiron: false,
   asteroids: false,
+  chiron: false,
   node: false,
   lilith: false,
   ascMc: true,

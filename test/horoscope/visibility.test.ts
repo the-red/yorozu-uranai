@@ -14,10 +14,10 @@ import {
 describe('惑星以外のものを、表示するかどうか', () => {
   it('切り替えの単位と、並び順', () => {
     // 4つの小惑星は、まとめて切り替える。ヘッドとテイルは、必ず正反対にあるので、まとめる。Asc と Mc も、まとめる
-    expect(VISIBILITY_KEYS).toEqual(['chiron', 'asteroids', 'node', 'lilith', 'ascMc', 'vertex', 'partOfFortune'])
+    expect(VISIBILITY_KEYS).toEqual(['asteroids', 'chiron', 'node', 'lilith', 'ascMc', 'vertex', 'partOfFortune'])
     expect(VISIBILITY_KEYS.map((_) => VISIBILITY_LABELS[_])).toEqual([
-      'キロン',
       '小惑星',
+      'キロン',
       'ヘッド・テイル',
       'リリス',
       'Asc・Mc',
@@ -28,8 +28,8 @@ describe('惑星以外のものを、表示するかどうか', () => {
 
   it('最初は、Asc・Mc だけを表示する', () => {
     expect(DEFAULT_VISIBILITY).toEqual({
-      chiron: false,
       asteroids: false,
+      chiron: false,
       node: false,
       lilith: false,
       ascMc: true,
@@ -46,8 +46,8 @@ describe('惑星以外のものを、表示するかどうか', () => {
     it('保存した内容', () => {
       const saved = JSON.stringify({ chiron: true, node: true, lilith: true, ascMc: false, vertex: false })
       expect(parseVisibility(saved)).toEqual({
-        chiron: true,
         asteroids: false,
+        chiron: true,
         node: true,
         lilith: true,
         ascMc: false,
@@ -148,6 +148,11 @@ describe('惑星以外のものを、表示するかどうか', () => {
     it('キロンだけを表示する', () => {
       const visibility = { ...DEFAULT_VISIBILITY, chiron: true }
       expect(ASTEROID_NAMES.filter((_) => isAsteroidVisible(_, visibility))).toEqual(['chiron'])
+    })
+
+    it('切り替えの欄は、Asc・Mc から2段目にする', () => {
+      // 1段目は、日時だけで決まるもの。2段目は、出生時刻と場所で決まるもの（Asc・Mc、Vx、PoF）
+      expect(VISIBILITY_KEYS.indexOf('ascMc')).toEqual(4)
     })
 
     it('4つの小惑星は、まとめて切り替わる', () => {

@@ -61,24 +61,25 @@ const withAsteroid = (name: string, longitude: number) =>
 
 describe('小惑星とキロン', () => {
   it('並び順と、名前', () => {
-    // よく使われるキロンを先に、小惑星は番号の順に置く
-    expect(ASTEROID_NAMES).toEqual(['chiron', 'ceres', 'pallas', 'juno', 'vesta'])
-    expect(ASTEROID_NAMES.map((_) => ASTEROID_NAMES_JA[_])).toEqual(['キロン', 'セレス', 'パラス', 'ジュノ', 'ベスタ'])
+    // 小惑星は番号の順に、キロンは最後に置く
+    expect(ASTEROID_NAMES).toEqual(['ceres', 'pallas', 'juno', 'vesta', 'chiron'])
+    expect(ASTEROID_NAMES.map((_) => ASTEROID_NAMES_JA[_])).toEqual(['セレス', 'パラス', 'ジュノ', 'ベスタ', 'キロン'])
   })
 
   it('種類', () => {
     // キロンは、小惑星と彗星の中間の天体（ケンタウルス族）
     expect(ASTEROID_NAMES.map((_) => ASTEROID_TYPES[_])).toEqual([
+      'asteroid',
+      'asteroid',
+      'asteroid',
+      'asteroid',
       'centaur',
-      'asteroid',
-      'asteroid',
-      'asteroid',
-      'asteroid',
     ])
   })
 
   it('位置', () => {
     const { asteroids } = new Horoscope(props)
+    // raw の並び順（このテストでは、キロンが先）に依らず、表示の順番にそろえる
     expect(Object.keys(asteroids ?? {})).toEqual([...ASTEROID_NAMES])
     expect(
       ASTEROID_NAMES.map((name) => {
@@ -86,13 +87,17 @@ describe('小惑星とキロン', () => {
         return [name, icon, sign, formattedDegrees, house, isRetrograde]
       })
     ).toEqual([
-      ['chiron', '⚷', '双子座', '28°16′', 8, false],
       ['ceres', '⚳', '射手座', '24°00′', 2, false],
       ['pallas', '⚴', '蠍座', '24°32′', 1, false],
       ['juno', '⚵', '水瓶座', '26°25′R', 4, true],
       ['vesta', '⚶', '蟹座', '18°43′', 9, false],
+      ['chiron', '⚷', '双子座', '28°16′', 8, false],
     ])
     expect(asteroids!.chiron.longitude).toBeCloseTo(88.267633, NUM_DIGITS)
+  })
+
+  it('位置が足りなければ、エラーにする', () => {
+    expect(() => new Horoscope({ ...props, asteroids: [['chiron', position(88.267633)]] })).toThrow('ceres')
   })
 
   it('計算できない日付では、無い', () => {
@@ -136,8 +141,8 @@ describe('小惑星と、惑星のコンジャンクション', () => {
       ],
     })
     expect(getAsteroidConjunctions(horoscope, 1)).toEqual([
-      { asteroid: 'chiron', planet: 'sun' },
       { asteroid: 'vesta', planet: 'moon' },
+      { asteroid: 'chiron', planet: 'sun' },
     ])
   })
 

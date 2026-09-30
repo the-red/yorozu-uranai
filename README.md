@@ -38,13 +38,8 @@ AGPL は、ネットワーク越しにサービスとして使う人にも、ソ
 
 ### AGPL にしている理由
 
-天体の位置の計算に、[Swiss Ephemeris](https://www.astro.com/swisseph/) を使っています（[swisseph](https://github.com/mivion/swisseph) 経由）。Swiss Ephemeris は、オープンソースのライセンスか、有償のライセンスかを選ぶ仕組みです。このプロジェクトは、オープンソースのライセンスを選んでいます。
+天体の位置の計算に、[Swiss Ephemeris](https://www.astro.com/swisseph/) を使っています（[sweph](https://github.com/timotejroiko/sweph) 経由）。Swiss Ephemeris は、オープンソースのライセンスか、有償のライセンスかを選ぶ仕組みです。このプロジェクトは、オープンソースのライセンスを選んでいます。
 
-| Swiss Ephemeris | オープンソースのライセンス |
-| --- | --- |
-| 今使っている版（2.09.03） | GPL バージョン 2 以降 |
-| 最新の版 | AGPL |
-
-今使っている版も、「公開のサービスを始める前に、ライセンスを選ぶこと」を求めていて、考え方は AGPL に近いものです。最新の版のライセンスに合わせて、AGPL にしています。
+今使っている版（2.10.03）のオープンソースのライセンスは、AGPL です。それに合わせて、AGPL にしています。`ephe/` に置いている天体暦のファイルも、Swiss Ephemeris のものです。
 
 GPL バージョン 3 のソフトウェアは、AGPL バージョン 3 のソフトウェアと組み合わせられます（GPL バージョン 3 の第 13 条）。Apache License 2.0 や MIT License のライブラリも、組み合わせられます。

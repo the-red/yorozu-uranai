@@ -77,7 +77,8 @@ yarn staging      # 今のブランチを staging に載せる（固定のURLで
 
 AGPL-3.0-or-later で公開している（`LICENSE`）。
 
-- `swisseph` が使っている Swiss Ephemeris は、オープンソースのライセンスか、有償のライセンスかを選ぶ仕組み。オープンソースのライセンスは、今使っている版（2.09.03）が GPL バージョン 2 以降、最新の版が AGPL。最新の版に合わせて、AGPL にしている
+- `sweph` が使っている Swiss Ephemeris は、オープンソースのライセンスか、有償のライセンスかを選ぶ仕組み。オープンソースのライセンスは、今使っている版（2.10.03）が AGPL（2.10.00 までは、GPL バージョン 2 以降）。それに合わせて、AGPL にしている
+  - `ephe/` に置いている天体暦のファイルも、Swiss Ephemeris のもの。同じライセンスで使っている
 - AGPL は、ネットワーク越しに使う人にも、ソースコードを受け取る権利を保証する。このリポジトリは公開しているので、条件を満たしている。リポジトリを非公開にすると、満たせなくなる
 - ライブラリを追加するときは、ライセンスが AGPL のバージョン 3 と組み合わせられるかを確かめる。MIT、BSD、Apache-2.0、GPL バージョン 3（バージョン 2 以降を含む）は組み合わせられる。GPL バージョン 2 だけ（以降を含まない）は、組み合わせられない
 
@@ -85,10 +86,11 @@ AGPL-3.0-or-later で公開している（`LICENSE`）。
 
 - **計算結果は、実行環境のタイムゾーンに依存させない**。本番サーバー（Vercel）は UTC で動き、利用者のブラウザも日本時間とは限らないため。日時を扱う変更をしたら `TZ=UTC yarn test` と `TZ=America/New_York yarn test` でも確認する
 - 小数の比較は `toBeCloseTo()` を使う。桁数は `test/test-util.ts` の `NUM_DIGITS`。オブジェクトや配列は同ファイルの `expectToBeCloseTo()` でまとめて比較する
-- `swisseph` はネイティブアドオンなので、Node.js のバージョンを変えたら `yarn install` し直す（リビルドが必要）
-  - `swisseph` が依存する `nan` と `node-gyp` は古いままだと Node.js 24 でビルドできないので、`package.json` の `resolutions` で新しいバージョンに固定している
+- `sweph` はネイティブアドオンだが、ビルド済みのバイナリが同梱されている（linux-x64 / linux-arm64 / darwin-arm64 / win32-x64）。インストールのときのビルドは要らず、macOS でも、天文計算を使うテストを実行できる
+  - Node.js のバージョンを変えても、そのまま動く（N-API）
+  - それ以外の環境では、インストールのときにビルドが走る
 - テスト対象は `src/*/models` と `src/astronomy` の計算ロジックが中心。API（`test/api`。ハンドラーを直接呼ぶ）と `src/lib` のテストもある。コンポーネントのテストは無い
-- `test/client-bundle.test.ts` は、ページから import をたどって、サーバーでしか動かないもの（`swisseph` など）に届かないことを確かめる。型だけを使うときは `import type` と書く（型しか使っていなくても、`import { … }` は読み込むものとして数える）
+- `test/client-bundle.test.ts` は、ページから import をたどって、サーバーでしか動かないもの（`sweph` など）に届かないことを確かめる。型だけを使うときは `import type` と書く（型しか使っていなくても、`import { … }` は読み込むものとして数える）
 - 既存のコードにテストを足すときは、コードをわざと壊して、テストが失敗することを確かめる
 - Vitest はテストコードの型チェックをしないので、`yarn test` の中で `tsc -p test` を先に実行している（`test/` はルートの `tsconfig.json` の対象外）
 - 期待値は実在の生年月日に対する計算結果をハードコードしている。天文計算の結果は `src/astronomy` 側で小数第6位に切り捨てている
@@ -103,7 +105,7 @@ AGPL-3.0-or-later で公開している（`LICENSE`）。
 
 ### サーバー／クライアントの境界（重要）
 
-`swisseph`（Swiss Ephemeris のネイティブバインディング）はサーバーでしか動かない。これを import しているのは `src/astronomy/index.ts` のみで、そこに依存するのは次の2つ:
+`sweph`（Swiss Ephemeris のネイティブバインディング）はサーバーでしか動かない。これを import しているのは `src/astronomy/index.ts` のみで、そこに依存するのは次の2つ:
 
 - `src/horoscope/models/horoscopeFactory.ts`
 - `src/suimei/models/SekkiUtil.ts`（と、それを使う `Daiun.ts` の `generateDaiun`）
@@ -136,14 +138,29 @@ AGPL-3.0-or-later で公開している（`LICENSE`）。
 
 ### ネイティブバイナリとデプロイ
 
-Vercel は、ビルド時に「各 API の実行に必要なファイル」を調べて、それだけを切り出して動かす。`swisseph` のネイティブバイナリ（`swisseph.node`）は、実行時に組み立てたパスで読み込まれるので、Turbopack では自動で検出されない。
+Vercel は、ビルド時に「各 API の実行に必要なファイル」を調べて、それだけを切り出して動かす。`sweph` のネイティブバイナリ（`sweph.node`）は、実行時に組み立てたパスで読み込まれるので、Turbopack では自動で検出されない。
 
 - `next.config.js` の `outputFileTracingIncludes` で、バイナリを明示的に含めている
-- 天体暦のファイル（`node_modules/swisseph/ephe/` の `seas_18.se1` と `sepl_18.se1`）も、同じ方法で含めている。小惑星とキロンの計算に使う
+  - バイナリは、環境ごとに `node_modules/sweph/prebuilds/<OS>-<CPU>/sweph.node` にある。ビルドする環境のものだけを含める（Vercel と CI は `linux-x64`）
+- 天体暦のファイル（`ephe/` の `seas_18.se1` と `sepl_18.se1`）も、同じ方法で含めている。小惑星とキロンの計算に使う
+  - `sweph` には同梱されていないので、リポジトリに置いている。出所は `ephe/README.md`
+  - 含めているのは、ホロスコープの API だけ。四柱推命の API には入らないので、均時差は計算式（Moshier）で求まる。ファイルがあるとき（テスト）との差は、0.002 秒ほど
   - 惑星のファイル（`sepl`）が無くても、小惑星は計算できる。ただし、値がわずかに変わる。エラーにならないので、気づきにくい
-  - ファイルの場所を組み立てるコード（`src/astronomy/index.ts`）には、`turbopackIgnore` を付けている。付けないと、フォルダ全体（12MB。使わないファイルを含む）が、ビルド結果に入る
+  - ファイルの場所を組み立てるコード（`src/astronomy/index.ts`）には、`turbopackIgnore` を付けている。どの API にファイルを含めるかを、`next.config.js` だけで決めるため
 - `yarn build` の最後に `scripts/check-file-tracing.js` が、バイナリと、天体暦のファイルが含まれているかを確認する。含まれていなければビルドが失敗する
 - **`yarn start` で動いても、Vercel で動くとは限らない**（`yarn start` は `node_modules` が丸ごとある状態で動くため）。ビルドやライブラリの構成を変えたら、`NEXT_OUTPUT=standalone yarn build` でビルドし、`.next/standalone/server.js` を起動して、`node scripts/check-server.js http://localhost:3000` で確認する（CI でも実行している）
+
+### 天文計算のライブラリ
+
+`sweph`（Swiss Ephemeris 2.10.03）を、`src/astronomy/index.ts` から呼ぶ。2026-09 に、更新の止まった `swisseph`（2.09.03）から移行した（#197）。
+
+- **失敗は、`flag` が負かどうかで判定する**（`isFailed`）。`error` の有無では、判定しない。成功しても、知らせの文が `error` に入ることがある（「月のファイルが無いので、計算式で求めた」など。小惑星と均時差では、常に入る）
+- ハウスの計算結果には、`error` が無い。プラシーダスとコッホは、極圏（緯度 66.56 度より上）では計算できず、`flag` が負になる。結果には別のハウスシステム（ポーフィリー）の値が入っているが、使わずにエラーにする
+  - エラーのメッセージ（`Can't calculate houses.`）は、自分で決めている。API は、このメッセージで、緯度の問題かどうかを見分ける（`src/lib/json-api.ts`）
+- 外に見せる関数は、`Promise` を返す。ライブラリの呼び出しは同期だが、移行の前の形を保っている
+- 移行で、2018 年以降の日付の結果が、わずかに変わった。ΔT（地球の自転の遅れ）の値が、新しい実測値に更新されたため。2015 年までは、変わらない
+  - 2026 年で、月が 2.3 秒角、太陽が 0.16 秒角、ほかの惑星が 0.3 秒角、小惑星が 0.07 秒角、均時差が 0.01 秒ほど。節入りの時刻は、数秒ずれる
+  - ハウスは、2049 年までと、2150 年以降は変わらない。2050 年から 2100 年ごろは、わずかに変わった（2050 年で、東京の Asc と Mc が 0.2 秒角、緯度 64 度のカスプが 1.2 秒角）。ライブラリは、2050 年から、恒星時を長期用の式で求める。そこに ΔT の違いが現れたとみている（推測）
 
 ### URL クエリ ⇄ フォーム値
 

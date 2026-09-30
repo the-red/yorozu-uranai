@@ -67,8 +67,9 @@ export type HoroscopeResult = {
   points: PointJson[]
   houses: {
     system: HouseSystem // ハウスシステム
-    ascendant: PositionJson
-    mc: PositionJson
+    // NOTE: Asc と Mc が、ハウスの起点にならないハウスシステムがある（Whole Sign の Mc は、9〜11ハウスあたりに入る）
+    ascendant: PositionJson & { house: number | null }
+    mc: PositionJson & { house: number | null }
     cusps: (PositionJson & { house: number })[]
   }
   aspects: {
@@ -138,8 +139,8 @@ export const toHoroscopeResult = (
     }),
     houses: {
       system: houseSystem,
-      ascendant: toPositionJson(house.ascendant),
-      mc: toPositionJson(house.mc),
+      ascendant: { ...toPositionJson(house.ascendant), house: house.where(house.ascendant.longitude) ?? null },
+      mc: { ...toPositionJson(house.mc), house: house.where(house.mc.longitude) ?? null },
       cusps: house.cusps.map((cusp, i) => ({ house: i + 1, ...toPositionJson(cusp) })),
     },
     aspects: {

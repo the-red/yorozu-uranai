@@ -207,12 +207,38 @@ describe('/horoscope.json', () => {
         widths.forEach((width) => expect(width).toBeGreaterThan(0))
         expect(widths.reduce((sum, width) => sum + width, 0)).toBeCloseTo(360, 4)
 
+        // Asc と Mc も、どれかのハウスに入る
+        for (const angle of [json.result.houses.ascendant, json.result.houses.mc]) {
+          expect(angle.house).toBeGreaterThanOrEqual(1)
+          expect(angle.house).toBeLessThanOrEqual(12)
+        }
+
         // どの惑星も、小惑星も、感受点も、1〜12 のどれかのハウスに入る
         const { planets, asteroids, points } = json.result
         for (const body of [...planets, ...asteroids, ...points]) {
           expect(body.house, body.name).toBeGreaterThanOrEqual(1)
           expect(body.house, body.name).toBeLessThanOrEqual(12)
         }
+      })
+
+      // Asc と Mc が入るハウス（1987-09-08 08:53 札幌）
+      // NOTE: 多くのハウスシステムでは、Asc が 1ハウスの起点、Mc が 10ハウスの起点
+      const ANGLE_HOUSES: Partial<Record<(typeof HOUSE_SYSTEMS)[number], [number, number]>> = {
+        equal: [1, 10], // Mc（123.80度）は、10ハウス（117.91度から）の途中
+        wholeSign: [1, 11], // Asc は天秤座（1ハウス）、Mc は獅子座（11ハウス）
+        morinus: [12, 9], // 1ハウスは 213.80度から、10ハウスは 128.50度から
+        meridian: [12, 10], // 1ハウスは 218.50度から
+        equalMc: [12, 10], // 1ハウスは 213.80度から
+        vehlow: [1, 10], // Asc は、1ハウス（192.91度から）の中央
+        equalAries: [7, 5], // 牡羊座が 1ハウス。天秤座は 7ハウス、獅子座は 5ハウス
+        sripati: [1, 10], // Asc は、1ハウス（193.89度から）の中央
+        carter: [1, 10], // Mc は、10ハウス（114.03度から）の途中
+        horizon: [12, 10], // 1ハウスは 241.85度から
+      }
+      it.each(HOUSE_SYSTEMS)('%s の、Asc と Mc のハウス', async (house) => {
+        const { json } = await get(horoscope, { ...query, house })
+        const { ascendant, mc } = json.result.houses
+        expect([ascendant.house, mc.house]).toEqual(ANGLE_HOUSES[house] ?? [1, 10])
       })
 
       it('向かい合うカスプが、180度の反対側にならないものがある', async () => {

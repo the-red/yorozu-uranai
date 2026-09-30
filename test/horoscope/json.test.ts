@@ -191,8 +191,13 @@ describe('ホロスコープ → JSON', () => {
   })
 
   it('ハウス', () => {
-    expectToBeCloseTo(result.houses.ascendant, { sign: '天秤座', degrees: 27.908591, longitude: 207.908591 })
-    expectToBeCloseTo(result.houses.mc, { sign: '獅子座', degrees: 3.803709, longitude: 123.803709 })
+    expectToBeCloseTo(result.houses.ascendant, {
+      sign: '天秤座',
+      degrees: 27.908591,
+      longitude: 207.908591,
+      house: 1,
+    })
+    expectToBeCloseTo(result.houses.mc, { sign: '獅子座', degrees: 3.803709, longitude: 123.803709, house: 10 })
     expect(result.houses.cusps.map((_) => _.house)).toEqual([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12])
     expect(result.houses.cusps.map((_) => _.sign)).toEqual([
       '天秤座',

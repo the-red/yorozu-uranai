@@ -24,7 +24,9 @@ const NameCell = ({ icon, name }: { icon?: string; name: string }) => (
 )
 
 export default function PlanetPositions({ horoscope, visibility }: Props) {
-  const { ascendant, mc } = horoscope.house
+  // NOTE: Asc と Mc も、ハウスを出す。ハウスシステムによっては、1ハウスと 10ハウスの起点にならない
+  const { house } = horoscope
+  const { ascendant, mc } = house
   // NOTE: 小惑星とキロンは、計算できない日付（1800年より前、2400年より後）では、無い
   const asteroids = Object.values(horoscope.asteroids ?? {}).filter((_) => isAsteroidVisible(_.name, visibility))
   const points = Object.values(horoscope.points).filter((point) => isPointVisible(point.name, visibility))
@@ -66,11 +68,13 @@ export default function PlanetPositions({ horoscope, visibility }: Props) {
                 <NameCell name="Asc" />
                 <td>{ascendant.sign}</td>
                 <td>{ascendant.formattedDegrees}</td>
+                <td>{house.where(ascendant.longitude)}ハウス</td>
               </tr>
               <tr>
                 <NameCell name="Mc" />
                 <td>{mc.sign}</td>
                 <td>{mc.formattedDegrees}</td>
+                <td>{house.where(mc.longitude)}ハウス</td>
               </tr>
             </>
           )}

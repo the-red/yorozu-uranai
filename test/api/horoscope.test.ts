@@ -147,6 +147,24 @@ describe('/horoscope.json', () => {
         ['mercury', '天秤座', 1],
       ])
     })
+    it('ソーラーサイン: 太陽のあるサイン（乙女座）が、まるごと 1ハウス', async () => {
+      const { status, json } = await get(horoscope, { ...query, house: 'solarSign' })
+      expect(status).toEqual(200)
+      expect(json.input.house).toEqual('solarSign')
+      expect(json.result.houses.system).toEqual('solarSign')
+      expect(json.raw.houses.house).toEqual([150, 180, 210, 240, 270, 300, 330, 0, 30, 60, 90, 120])
+      // Asc、Mc、Vx は、ハウスシステムに依らない
+      expect(json.raw.houses.ascendant).toBeCloseTo(207.908591, NUM_DIGITS)
+      expect(json.raw.houses.mc).toBeCloseTo(123.803709, NUM_DIGITS)
+      expect(json.raw.houses.vertex).toBeCloseTo(61.847894, NUM_DIGITS)
+      // 惑星のハウスは、サインで決まる。太陽（乙女座）は 1ハウス、月（魚座）は 7ハウス、水星（天秤座）は 2ハウス
+      expect(json.result.planets.slice(0, 3).map((_: any) => [_.name, _.sign, _.house])).toEqual([
+        ['sun', '乙女座', 1],
+        ['moon', '魚座', 7],
+        ['mercury', '天秤座', 2],
+      ])
+      expect(new URL(json.page).searchParams.get('house')).toEqual('solarSign')
+    })
     it('イコール: Asc から、30度ずつ', async () => {
       const { json } = await get(horoscope, { ...query, house: 'equal' })
       const { house, ascendant } = json.raw.houses
@@ -182,6 +200,7 @@ describe('/horoscope.json', () => {
         ['savardA', 207.908591, 231.061417, 51.061417],
         ['sunshine', 207.908591, 231.744456, 53.815093],
         ['apc', 207.908591, 234.552337, 50.797828],
+        ['solarSign', 150, 180, 0],
       ]
 
       it('選べるものを、すべて確かめている', () => {
@@ -234,6 +253,7 @@ describe('/horoscope.json', () => {
         sripati: [1, 10], // Asc は、1ハウス（193.89度から）の中央
         carter: [1, 10], // Mc は、10ハウス（114.03度から）の途中
         horizon: [12, 10], // 1ハウスは 241.85度から
+        solarSign: [2, 12], // 乙女座が 1ハウス。天秤座は 2ハウス、獅子座は 12ハウス
       }
       it.each(HOUSE_SYSTEMS)('%s の、Asc と Mc のハウス', async (house) => {
         const { json } = await get(horoscope, { ...query, house })

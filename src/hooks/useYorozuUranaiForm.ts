@@ -1,7 +1,8 @@
-import { useEffect } from 'react'
+import { ChangeEvent, useCallback, useEffect } from 'react'
 import { useForm, useWatch } from 'react-hook-form'
 import { FormValuesBase } from '../lib/params'
 import { fetchAddressFromLatLng } from '../lib/fetch-geocode'
+import { NOT_SELECTED, toLatLng, toPlace } from '../lib/prefectures'
 
 export type FormValues = Required<Omit<FormValuesBase, 'name'>> & { address: string }
 
@@ -25,17 +26,43 @@ export const useYorozuUranaiForm = ({ onSubmit, defaultValues }: FormProps) => {
     onSubmit({ lat, lng, ...rest })
   }
 
-  // 地図のタブから呼ばれる。選んだ場所を、フォームに入れる
-  useEffect(() => {
-    // @ts-expect-error
-    window.setLocation = async (lat: number, lng: number) => {
+  // 選んだ場所を、フォームに入れる
+  const setLocation = useCallback(
+    async (lat: number, lng: number) => {
       setValue('lat', lat)
       setValue('lng', lng)
       const address = await fetchAddressFromLatLng(lat, lng)
       setValue('address', address)
       return true
-    }
-  }, [setValue])
+    },
+    [setValue]
+  )
 
-  return { register, hookFormHandleSubmit, values, handleSubmit, isTimeUnknownChecked, zone, lat, lng }
+  // 地図のタブから呼ばれる
+  useEffect(() => {
+    // @ts-expect-error
+    window.setLocation = setLocation
+  }, [setLocation])
+
+  // 都道府県の選択欄の値。緯度経度から求める
+  const place = lat === undefined || lng === undefined ? NOT_SELECTED : toPlace({ lat, lng })
+  const handlePlaceChange = (event: ChangeEvent<HTMLSelectElement>) => {
+    const latLng = toLatLng(event.target.value)
+    if (latLng) {
+      setLocation(latLng.lat, latLng.lng)
+    }
+  }
+
+  return {
+    register,
+    hookFormHandleSubmit,
+    values,
+    handleSubmit,
+    isTimeUnknownChecked,
+    zone,
+    lat,
+    lng,
+    place,
+    handlePlaceChange,
+  }
 }

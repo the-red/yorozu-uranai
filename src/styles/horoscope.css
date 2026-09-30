@@ -263,6 +263,10 @@
   opacity: 0.5;
   cursor: default;
 }
+/* 常に表示するもの（惑星） */
+.horoscope .display-option.fixed {
+  cursor: default;
+}
 .horoscope .display-options-note {
   padding-top: 8px;
   font-size: 13px;

@@ -1,4 +1,4 @@
-import { ASTEROID_NAMES, VISIBILITY_KEYS, VISIBILITY_LABELS, Visibility, VisibilityKey } from '../models'
+import { VISIBILITY_KEYS, VISIBILITY_LABELS, Visibility, VisibilityKey } from '../models'
 
 type Props = {
   visibility: Visibility
@@ -6,7 +6,8 @@ type Props = {
   hasAsteroids: boolean // 小惑星とキロンを、計算できたか
 }
 
-const isAsteroid = (key: VisibilityKey) => (ASTEROID_NAMES as readonly string[]).includes(key)
+// 小惑星とキロン。計算できない日付では、選べない
+const isAsteroid = (key: VisibilityKey) => key === 'chiron' || key === 'asteroids'
 
 // 惑星以外のものを、表示するかどうかの切り替え
 export default function DisplayOptions({ visibility, onChange, hasAsteroids }: Props) {
@@ -14,6 +15,11 @@ export default function DisplayOptions({ visibility, onChange, hasAsteroids }: P
     <div className="list-container">
       <div className="list">Display</div>
       <div className="display-options">
+        {/* 惑星は、常に表示する。切り替えられないことを、チェックの入った状態で示す */}
+        <label className="display-option fixed">
+          <input type="checkbox" checked disabled />
+          惑星
+        </label>
         {VISIBILITY_KEYS.map((key) => {
           // 計算できなかったものは、選べないようにする。設定は、変えない
           const disabled = isAsteroid(key) && !hasAsteroids

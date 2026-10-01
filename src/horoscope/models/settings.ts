@@ -1,31 +1,26 @@
-import { AspectSettings, parseAspectQuery, toAspectQuery } from './AspectSettings'
+import { ASPECT_QUERY_KEYS, AspectSettings, parseAspectQuery, toAspectQuery } from './AspectSettings'
 import { Visibility, parseShowParam, toShowParam } from './visibility'
 
-// ホロスコープの画面の設定。URLのハッシュ（# の後ろ）に持たせる
-// - visibility: 惑星以外のものを、表示するかどうか
-// - aspects: アスペクトの求め方
+// ホロスコープの画面の設定。URLのクエリに持たせる
+// - aspects: アスペクトの求め方（orb など）。JSON の結果に影響する
+// - visibility: 惑星以外のものを、表示するかどうか（show）。画面だけが使う。JSON は、付けても無視して、常にすべてを返す
 //
-// NOTE: 入力（生年月日と場所）は、クエリ（? の後ろ）に持たせている。設定は、ハッシュに分ける。
-// - ハッシュは、サーバーに送られない。設定を変えても、入力の読み直し（住所の検索と、結果の取得）が要らない
-// - 最初の状態と同じ項目は、入れない。設定を変えていなければ、ハッシュは付かない
+// NOTE: 最初の状態と同じ項目は、入れない。設定を変えていなければ、URLは変わらない
 export type HoroscopeSettings = { visibility: Visibility; aspects: AspectSettings }
 
-// ハッシュから読み取る（#show=chiron,ascMc&orb=8）。先頭の # は、あっても無くてもよい
-// NOTE: 読み取れない値は、無視する（最初の状態にする）
-export const parseSettingsHash = (hash: string): HoroscopeSettings => {
-  const params = Object.fromEntries(new URLSearchParams(hash.replace(/^#/, '')))
-  return {
-    visibility: parseShowParam(params.show),
-    aspects: parseAspectQuery(params).settings,
-  }
-}
+export const SETTINGS_QUERY_KEYS = [...ASPECT_QUERY_KEYS, 'show'] as const
+export type SettingsQuery = Partial<Record<(typeof SETTINGS_QUERY_KEYS)[number], string>>
 
-// ハッシュにする。先頭の # は、付けない。最初の状態なら、空の文字列
-export const toSettingsHash = ({ visibility, aspects }: HoroscopeSettings): string => {
+// クエリから読み取る（?orb=8&minor=30,150&show=chiron,ascMc）
+// NOTE: 読み取れない値は、無視する（最初の状態にする）
+export const parseSettings = (query: Partial<Record<string, string | string[]>>): HoroscopeSettings => ({
+  // 同じパラメータが複数あるときは、最初の値を使う
+  visibility: parseShowParam([query.show].flat()[0]),
+  aspects: parseAspectQuery(query).settings,
+})
+
+// クエリにする。最初の状態なら、空
+export const toSettingsQuery = ({ visibility, aspects }: HoroscopeSettings): SettingsQuery => {
   const show = toShowParam(visibility)
-  const params = { ...(show !== undefined && { show }), ...toAspectQuery(aspects) }
-  // NOTE: 値は、英数字とカンマとピリオドだけ。カンマを %2C にしないように、自分で組み立てる
-  return Object.entries(params)
-    .map(([key, value]) => `${key}=${value}`)
-    .join('&')
+  return { ...toAspectQuery(aspects), ...(show !== undefined && { show }) }
 }

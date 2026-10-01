@@ -1,5 +1,5 @@
 import { DateTime, IANAZone } from 'luxon'
-import { AspectSettings, parseAspectQuery } from '../horoscope/models/AspectSettings'
+import { AspectSettings, parseAspectQuery, toAspectQuery } from '../horoscope/models/AspectSettings'
 import { DEFAULT_HOUSE_SYSTEM, HouseSystem, toHouseSystem } from '../horoscope/models/HouseSystem'
 import {
   FORM_DATE_FORMAT,
@@ -247,4 +247,6 @@ export const toPageQuery = (input: PageInput): Record<string, string> => ({
   ...(input.gender !== undefined && { gender: input.gender }),
   // ハウスシステム。最初の状態（プラシーダス）なら、入れない
   ...(input.house !== undefined && input.house !== DEFAULT_HOUSE_SYSTEM && { house: input.house }),
+  // アスペクトの求め方。最初の状態と同じ項目は、入れない
+  ...(input.aspects !== undefined && toAspectQuery(input.aspects)),
 })

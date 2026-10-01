@@ -3,6 +3,7 @@ import type { HoroscopeProps, HoroscopeResult } from '../horoscope/models'
 import type { NumerologyResult } from '../numerology/models/json'
 import type { SuimeiRaw, SuimeiResult } from '../suimei/models'
 import { HoroscopeInput, InvalidQuery, NumerologyInput, SuimeiInput, toPageQuery } from './json-query'
+import { toUrl } from './url'
 
 // JSON APIのレスポンス
 // NOTE: 形式は試験的なもので、今後変わることがある
@@ -71,18 +72,12 @@ export const sendCalculationFailed = (res: NextApiResponse<ErrorJson>, e: unknow
 }
 
 // 同じ結果を表示するページのURL
-// hash は、画面の設定（ホロスコープの、アスペクトの求め方）。先頭の # は付けない
-export const pageUrl = (
-  req: NextApiRequest,
-  pathname: string,
-  input: Parameters<typeof toPageQuery>[0],
-  hash: string = ''
-): string => {
+export const pageUrl = (req: NextApiRequest, pathname: string, input: Parameters<typeof toPageQuery>[0]): string => {
   const { host } = req.headers
   // NOTE: Vercelでは、利用者が使ったプロトコルが x-forwarded-proto で届く
   // ヘッダーの値をそのままURLに入れないように、http でなければ https にする
   const forwarded = [req.headers['x-forwarded-proto']].flat()[0]?.split(',')[0]
   const proto = forwarded === 'http' ? 'http' : 'https'
   const origin = host ? `${proto}://${host}` : ''
-  return `${origin}${pathname}?${new URLSearchParams(toPageQuery(input))}${hash && `#${hash}`}`
+  return `${origin}${toUrl(pathname, toPageQuery(input))}`
 }

@@ -4,6 +4,9 @@
 //
 // 使い方: node scripts/check-server.js http://localhost:3000
 
+const { readFileSync, readdirSync } = require('fs')
+const { join } = require('path')
+
 const base = process.argv[2]
 if (!base) {
   console.error('使い方: node scripts/check-server.js <サーバーのURL>')
@@ -58,6 +61,15 @@ const checkError = async (path, init, status, code, params) => {
   check(`${name}: params`, json?.error?.params, params)
 }
 
+// CSS が参照しているフォント
+const getFontUrls = () => {
+  const dir = join(__dirname, '..', 'src', 'styles')
+  return readdirSync(dir)
+    .filter((_) => _.endsWith('.css'))
+    .flatMap((_) => [...readFileSync(join(dir, _), 'utf8').matchAll(/url\('(\/fonts\/[^']+)'\)/g)])
+    .map((_) => encodeURI(_[1]))
+}
+
 const main = async () => {
   // NOTE: 天文計算の結果が返れば、swisseph のネイティブバイナリがビルド結果に含まれている
   await checkJson(
@@ -96,6 +108,13 @@ const main = async () => {
     const { status, headers } = await request(path)
     check(`${path}: ステータス`, status, 200)
     check(`${path}: Content-Type`, headers.get('content-type'), 'text/html; charset=utf-8')
+  }
+
+  // フォント
+  // NOTE: 文字を絞ったフォントは、ビルドのときに作る（yarn fonts）。
+  // 作られていないと、エラーにならずに、別のフォントで表示される
+  for (const url of getFontUrls()) {
+    check(`${url}: ステータス`, (await request(url, { method: 'HEAD' })).status, 200)
   }
 
   // 無いURL

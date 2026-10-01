@@ -38,6 +38,7 @@ yarn staging      # 今のブランチを staging に載せる（固定のURLで
 - Vercel と同じ形（`NEXT_OUTPUT=standalone`）でビルドして、サーバーを起動し、`scripts/check-server.js` で確認する
   - `next.config.js` の `rewrites`、ヘッダー、ビルド結果に含めるファイルは、ハンドラーを直接呼ぶテストでは確かめられない
   - ページを追加・削除して `yarn path` を実行し忘れていると、ここで失敗する
+  - CSS が参照するフォントが、配信されているかも確かめる
 
 `yarn lint:check` は、ESLint の警告が今の件数（6 件）を超えると失敗する。警告を減らしたら、`package.json` の `--max-warnings` の値も下げる。
 

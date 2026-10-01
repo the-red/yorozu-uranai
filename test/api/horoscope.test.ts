@@ -309,6 +309,15 @@ describe('/horoscope.json', () => {
       const second = await get(horoscope, Object.fromEntries(page.searchParams))
       expect(second.json).toEqual(first.json)
     })
+    it('表示するもの（show）は、付けてもよいが、無視する', async () => {
+      // ページのURLを、そのまま使えるようにする。JSON は、常にすべてを返す
+      const plain = await get(horoscope, query)
+      for (const show of ['chiron,ascMc', 'none', 'foo', '']) {
+        const { status, json } = await get(horoscope, { ...query, show })
+        expect(status).toEqual(200)
+        expect(json).toEqual(plain.json)
+      }
+    })
     it('指定が無ければ、ページのURLに、アスペクトの求め方を付けない', async () => {
       const { json } = await get(horoscope, query)
       expect(json.page).not.toContain('#')

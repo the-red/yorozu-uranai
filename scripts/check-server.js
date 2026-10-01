@@ -135,6 +135,13 @@ const main = async () => {
     '?date=19870908&time=0853&zone=Asia%2FTokyo&lat=43.06&lng=141.35&orb=1&minor=30,150'
   )
   await checkError(`/horoscope.json?${QUERY}&orb=abc`, undefined, 400, 'invalid_query', ['orb'])
+  // 表示するもの（show）は、付けてもよいが、無視する
+  await checkJson(
+    `/horoscope.json?${QUERY}&show=none`,
+    'horoscope',
+    ({ page, result }) => [new URL(page).search, result.points.length > 0, result.asteroids.length > 0],
+    ['?date=19870908&time=0853&zone=Asia%2FTokyo&lat=43.06&lng=141.35', true, true]
+  )
   await checkError(`/suimei.json?${QUERY.replace('gender=woman', 'gender=male')}`, undefined, 400, 'invalid_query', [
     'gender',
   ])

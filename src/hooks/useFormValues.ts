@@ -30,7 +30,7 @@ export const useFormValues = (setFormValues: Dispatch<SetStateAction<FormValues 
   useEffect(() => {
     const setDefaultFormValues = async () => {
       if (router.isReady) {
-        // 入力が変わらない移動（ハッシュに持たせた、画面の設定の変更など）では、読み直さない。
+        // 入力が変わらない移動（画面の設定の変更など）では、読み直さない。
         // 読み直すと、住所の検索と、結果の取得が走る
         // NOTE: 同じ入力でも、フォームを送信したとき（shallow でない）は、読み直す。失敗のあとの再試行のため
         const key = JSON.stringify(FORM_QUERY_KEYS.map((_) => router.query[_] ?? null))

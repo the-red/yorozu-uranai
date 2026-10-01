@@ -32,7 +32,7 @@ a {
 
 @font-face {
   font-family: 'Noto Sans JP Regular';
-  src: url('/fonts/Noto Sans JP Regular.otf');
+  src: url('/fonts/Noto Sans JP Regular.woff2') format('woff2');
 }
 
 @font-face {

@@ -1,14 +1,14 @@
 @font-face {
   font-family: 'YujiSyuku-Regular';
-  src: url('/fonts/YujiSyuku-Regular.ttf');
+  src: url('/fonts/YujiSyuku-Regular.woff2') format('woff2');
 }
 @font-face {
   font-family: 'ZenOldMincho-Regular';
-  src: url('/fonts/ZenOldMincho-Regular.ttf');
+  src: url('/fonts/ZenOldMincho-Regular.woff2') format('woff2');
 }
 @font-face {
   font-family: 'ZenOldMincho-Bold';
-  src: url('/fonts/ZenOldMincho-Bold.ttf');
+  src: url('/fonts/ZenOldMincho-Bold.woff2') format('woff2');
 }
 .suimei {
   /* フォント */

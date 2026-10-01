@@ -32,10 +32,10 @@ export const staticPath = {
     'Khand_Regular_ttf': '/fonts/Khand-Regular.ttf',
     'Lato_Regular_ttf': '/fonts/Lato Regular.ttf',
     'MTF_Wildflower_ttf': '/fonts/MTF Wildflower.ttf',
-    'Noto_Sans_JP_Regular_otf': '/fonts/Noto Sans JP Regular.otf',
-    'YujiSyuku_Regular_ttf': '/fonts/YujiSyuku-Regular.ttf',
-    'ZenOldMincho_Bold_ttf': '/fonts/ZenOldMincho-Bold.ttf',
-    'ZenOldMincho_Regular_ttf': '/fonts/ZenOldMincho-Regular.ttf'
+    'Noto_Sans_JP_Regular_woff2': '/fonts/Noto Sans JP Regular.woff2',
+    'YujiSyuku_Regular_woff2': '/fonts/YujiSyuku-Regular.woff2',
+    'ZenOldMincho_Bold_woff2': '/fonts/ZenOldMincho-Bold.woff2',
+    'ZenOldMincho_Regular_woff2': '/fonts/ZenOldMincho-Regular.woff2'
   },
   'images': {
     'horoscope': {

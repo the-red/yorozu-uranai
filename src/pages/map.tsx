@@ -5,7 +5,7 @@ import { Wrapper, Status } from '@googlemaps/react-wrapper'
 import { deepCompareEqualsForMaps } from '../lib/maps-equal'
 import { MapQuery, buildReturnUrl } from '../lib/map-return'
 import { NextPage } from 'next'
-import { TOKYO_STATION } from '../lib/location'
+import { IMPERIAL_PALACE } from '../lib/location'
 import { roundLatLng } from '../lib/math'
 import { useRouter } from 'next/router'
 import { getCurrentLocation } from '../lib/location'
@@ -139,7 +139,7 @@ const MapPage: NextPage = () => {
       const defaultLocation =
         router.query.lat && router.query.lng
           ? { lat: Number(router.query.lat), lng: Number(router.query.lng) }
-          : TOKYO_STATION
+          : IMPERIAL_PALACE
 
       setMapLocation(defaultLocation)
     }

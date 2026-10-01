@@ -216,6 +216,9 @@
   width: 100%;
   max-width: 200px;
 }
+.horoscope .horoscope-form .place-select {
+  margin-bottom: 5px;
+}
 .horoscope .horoscope-form .lat-lng-input {
   width: 110px;
 }

@@ -3,9 +3,10 @@ import { FormProps, useYorozuUranaiForm } from '../../hooks/useYorozuUranaiForm'
 import { buildMapQuery } from '../../lib/map-return'
 import Link from 'next/link'
 import { pagesPath } from '../../lib/$path'
+import { PlaceOptions } from '../../components/PlaceOptions'
 
 export const SuimeiForm: FC<FormProps> = (props) => {
-  const { register, hookFormHandleSubmit, values, handleSubmit, isTimeUnknownChecked, zone, lat, lng } =
+  const { register, hookFormHandleSubmit, values, handleSubmit, isTimeUnknownChecked, zone, place, handlePlaceChange } =
     useYorozuUranaiForm(props)
 
   return (
@@ -28,6 +29,11 @@ export const SuimeiForm: FC<FormProps> = (props) => {
             </dd>
             <dt>出生場所</dt>
             <dd className="location">
+              <div className="place">
+                <select aria-label="都道府県" value={place} onChange={handlePlaceChange}>
+                  <PlaceOptions place={place} />
+                </select>
+              </div>
               <div className="map_link">
                 <Link
                   href={pagesPath.map.$url({ query: buildMapQuery('suimei', values) })}

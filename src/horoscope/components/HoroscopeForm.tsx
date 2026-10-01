@@ -3,12 +3,13 @@ import { FC } from 'react'
 import { pagesPath } from '../../lib/$path'
 import { FormProps, useYorozuUranaiForm } from '../../hooks/useYorozuUranaiForm'
 import { buildMapQuery } from '../../lib/map-return'
+import { PlaceOptions } from '../../components/PlaceOptions'
 import { HOUSE_SYSTEMS, HOUSE_SYSTEM_NAMES, HouseSystem, MAIN_HOUSE_SYSTEMS } from '../models'
 
 const HouseOption = ({ house }: { house: HouseSystem }) => <option value={house}>{HOUSE_SYSTEM_NAMES[house]}</option>
 
 export const HoroscopeForm: FC<FormProps> = (props) => {
-  const { register, hookFormHandleSubmit, values, handleSubmit, isTimeUnknownChecked, zone, lat, lng } =
+  const { register, hookFormHandleSubmit, values, handleSubmit, isTimeUnknownChecked, zone, place, handlePlaceChange } =
     useYorozuUranaiForm(props)
 
   return (
@@ -35,6 +36,11 @@ export const HoroscopeForm: FC<FormProps> = (props) => {
       <div className="form-row">
         <label className="form-label">出生場所</label>
         <div>
+          <div>
+            <select className="place-select" aria-label="都道府県" value={place} onChange={handlePlaceChange}>
+              <PlaceOptions place={place} />
+            </select>
+          </div>
           <div>
             <label className="lat-lng-label">緯度</label>
             <input disabled type="text" className="lat-lng-input" {...register('lat', { valueAsNumber: true })} />

@@ -202,6 +202,18 @@
 .suimei .main section.information_input form dl dd.date_time input[type='date'] {
   margin-bottom: 5px;
 }
+.suimei .main section.information_input form dl dd.location .place {
+  margin-bottom: 10px;
+}
+.suimei .main section.information_input form dl dd.location .place select {
+  width: 100%;
+  height: 48px;
+  padding: 0 16px 0;
+  border: 1px solid var(--form-line-gray);
+  border-radius: 3px;
+  font-family: var(--text-regular);
+  font-size: 14px;
+}
 .suimei .main section.information_input form dl dd.location .lat span,
 .suimei .main section.information_input form dl dd.location .lng span {
   display: block;
@@ -458,6 +470,14 @@
     box-sizing: content-box;
     width: calc(84px - 16px);
     height: 26px;
+  }
+  .suimei .main section.information_input form dl dd.location .place {
+    margin-bottom: 4px;
+  }
+  .suimei .main section.information_input form dl dd.location .place select {
+    width: auto;
+    height: 28px;
+    padding: 0 7px 0;
   }
   .suimei .main section.information_input form dl dd.location .lat span,
   .suimei .main section.information_input form dl dd.location .lng span {

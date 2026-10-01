@@ -23,6 +23,9 @@ lerna-debug.log*
 # production
 /build
 
+# 文字を絞ったフォント（yarn fonts で作る）
+/public/fonts/*.subset.woff2
+
 # misc
 .DS_Store
 *.pem

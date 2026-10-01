@@ -11,8 +11,8 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 パッケージマネージャは yarn (v1)、Node.js は 24（`.tool-versions` と `package.json` の `engines`）。
 
 ```sh
-yarn dev          # next dev と pathpida --watch を並列起動
-yarn build        # pathpida 生成 → next build → ビルド結果の確認
+yarn dev          # next dev と pathpida --watch を並列起動（最初に、フォントも作る）
+yarn build        # pathpida 生成 → フォントの生成 → next build → ビルド結果の確認
 yarn test         # テストコードの型チェック → vitest 全件（1回実行）
 yarn vitest       # 変更を監視して再実行
 yarn test test/suimei/Kanshi.test.ts   # 単一ファイル
@@ -23,6 +23,7 @@ yarn format       # prettier --write
 yarn format:check # prettier --check（修正しない。test/ も対象）
 yarn tsc --noEmit # 型チェック（専用scriptは無い。test/ は tsconfig の対象外）
 yarn path         # src/lib/$path.ts を再生成
+yarn fonts        # 文字を絞ったフォントを public/fonts に作る
 yarn staging      # 今のブランチを staging に載せる（固定のURLで確認する）
 ```
 
@@ -214,6 +215,28 @@ Vercel は、ビルド時に「各 API の実行に必要なファイル」を�
 SVG は `import X from './x.svg'` で React コンポーネントとして読み込める（SVGR。`next.config.js` の `turbopack.rules`）。
 
 CSS から画像を参照するときは、`url('/images/map/back_blue.svg')` のように `public/` からの絶対パスで書く。相対パスで書くとビルドの対象になり、SVG は React コンポーネントに変換されて表示されなくなる。
+
+### フォント
+
+フォントは `public/fonts` に置いて、CSS の `@font-face` で読み込む。日本語のフォントは大きいので、小さくしている（2026-10-01）。Vercel の Deployment Storage は、デプロイごとに静的ファイルを数えるので、フォントの大きさが、そのまま使用量になる。
+
+| フォント | 使う場所 | 小さくする方法 |
+| --- | --- | --- |
+| Noto Sans JP | 全ページの本文 | WOFF2 にするだけ |
+| Zen Old Mincho Regular | 四柱推命の本文、入力欄 | WOFF2 にするだけ |
+| Yuji Syuku | 四柱推命の見出し | 文字を絞る |
+| Zen Old Mincho Bold | 四柱推命の命式の表、送信ボタン、エラーの文章 | 文字を絞る |
+
+- 本文のフォントは、文字を絞らない。住所や、利用者が入力した文字を表示するので、どの文字が来るか分からない。フォントに無い文字は、エラーにならずに、その文字だけ別のフォントで表示される
+- 決まった文言にしか使わないフォントは、ソースコード（`src/`）に出てくる文字だけに絞る（`scripts/subset-fonts.mjs`）。画面に出る文言だけを選ぶことはせず、コメントも含めて、すべての文字を入れる
+  - 元のフォントは、`fonts/` に置いている（配信されない）。出所とライセンスは `fonts/README.md`
+  - 絞ったフォント（`public/fonts/*.subset.woff2`）は、**コミットしない**。`yarn build` と `yarn dev` の中で作る。文言を変えるたびに中身が変わるので、コミットすると、ブランチの間で競合する
+  - `next build` や `next dev` を直接実行すると、作られない。そのときは、`yarn fonts` を先に実行する
+  - 絞ったフォントが元と同じ表示になること（字形、文字の幅、行の高さ、グリフの名前）は、`test/fonts.test.ts` で確かめている
+  - グリフの名前（`post` テーブル）は、残す。取り除くと、字形と幅が同じでも、Mac の Chrome で、18px 以下の文字の描画が、元とわずかに変わる（19px 以上は、変わらない）。元のフォントと、同じ文字を canvas に描いて、画素を比べて確かめた
+- 絞ったフォントを使う場所に、ソースコードに無い文字（API から受け取った文字など）を表示するなら、そのフォントは絞らない形に戻す
+- WOFF2 にするだけのフォントは、変換したものをコミットしている。変換には fontTools を使った（`TTFont(元).flavor = 'woff2'` で保存する）。中身は元と同じ
+- 欧文のフォント（Khand、Lato、Farewell Pro、MTF Wildflower）は、小さいので、そのままにしている
 
 ## コーディング規約
 

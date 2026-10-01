@@ -1,6 +1,6 @@
 @font-face {
   font-family: 'YujiSyuku-Regular';
-  src: url('/fonts/YujiSyuku-Regular.woff2') format('woff2');
+  src: url('/fonts/YujiSyuku-Regular.subset.woff2') format('woff2');
 }
 @font-face {
   font-family: 'ZenOldMincho-Regular';
@@ -8,7 +8,7 @@
 }
 @font-face {
   font-family: 'ZenOldMincho-Bold';
-  src: url('/fonts/ZenOldMincho-Bold.woff2') format('woff2');
+  src: url('/fonts/ZenOldMincho-Bold.subset.woff2') format('woff2');
 }
 .suimei {
   /* フォント */

@@ -14,8 +14,10 @@ import { useResult } from '../hooks/useResult'
 import { getHash, useHoroscopeSettings } from '../hooks/useHoroscopeSettings'
 import { JsonApiError, fetchJson, toErrorGuide } from '../lib/fetch-json'
 import type { HoroscopeJson } from '../lib/json-api'
+import { toUrl } from '../lib/url'
+import type { AspectQuery } from '../horoscope/models'
 
-export type OptionalQuery = Query
+export type OptionalQuery = Query & AspectQuery
 
 const loadHoroscope = async (formValues: FormValues) => {
   const { input, raw } = await fetchJson<HoroscopeJson>('/horoscope', formValues)
@@ -40,14 +42,8 @@ function HoroscopePage() {
   const handleSubmit: FormProps['onSubmit'] = (formValues) => {
     // NOTE: ハウスは、最初の状態（プラシーダス）のときに、クエリに入れない。前の値が残らないように、外しておく
     const { house: _, ...rest } = router.query
-    router.push({
-      query: {
-        ...rest,
-        ...formValuesToQuery(formValues),
-      },
-      // 画面の設定は、入力を変えても、そのまま使う
-      hash: getHash(),
-    })
+    // NOTE: 画面の設定は、入力を変えても、そのまま使う。アスペクトの求め方は、クエリに残っている。表示するものは、ハッシュ
+    router.push(toUrl(router.pathname, { ...rest, ...formValuesToQuery(formValues) }, getHash()))
   }
 
   return (

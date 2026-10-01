@@ -127,6 +127,13 @@ const main = async () => {
       ['mercury', 'jupiter', 150],
     ]
   )
+  // ページのURLにも、同じ求め方を、クエリで付ける
+  await checkJson(
+    `/horoscope.json?${QUERY}&orb=1&minor=30,150`,
+    'horoscope',
+    ({ page }) => new URL(page).search,
+    '?date=19870908&time=0853&zone=Asia%2FTokyo&lat=43.06&lng=141.35&orb=1&minor=30,150'
+  )
   await checkError(`/horoscope.json?${QUERY}&orb=abc`, undefined, 400, 'invalid_query', ['orb'])
   await checkError(`/suimei.json?${QUERY.replace('gender=woman', 'gender=male')}`, undefined, 400, 'invalid_query', [
     'gender',

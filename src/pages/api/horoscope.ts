@@ -1,12 +1,5 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
-import {
-  DEFAULT_VISIBILITY,
-  HOUSE_SYSTEM_CODES,
-  Horoscope,
-  HoroscopeProps,
-  toHoroscopeResult,
-  toSettingsHash,
-} from '../../horoscope/models'
+import { HOUSE_SYSTEM_CODES, Horoscope, HoroscopeProps, toHoroscopeResult } from '../../horoscope/models'
 import { getHoroscopeProps } from '../../horoscope/models/horoscopeFactory'
 import {
   ErrorJson,
@@ -38,8 +31,7 @@ const horoscope = async (req: NextApiRequest, res: NextApiResponse<HoroscopeJson
   sendResult(res, {
     type: 'horoscope',
     input,
-    // NOTE: ページは、アスペクトの求め方を、ハッシュで受け取る
-    page: pageUrl(req, '/horoscope', input, toSettingsHash({ visibility: DEFAULT_VISIBILITY, aspects: input.aspects })),
+    page: pageUrl(req, '/horoscope', input),
     raw,
     // ページと同じく、材料から復元したモデルを変換する
     result: toHoroscopeResult(new Horoscope(raw), input.aspects, input.house),

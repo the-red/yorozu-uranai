@@ -170,10 +170,12 @@ describe('ホロスコープのクエリ: アスペクトの求め方', () => {
       params: ['orb', 'minor', 'asteroidAspects'],
     })
   })
-  it('ページのクエリには、入れない', () => {
-    // ページは、アスペクトの求め方を、URLのハッシュで受け取る
-    const parsed = parseHoroscopeQuery({ ...horoscopeQuery, orb: '8', minorOrb: '3' })
-    expect(parsed.ok && toPageQuery(parsed.input)).toEqual(horoscopeQuery)
+  it('ページのクエリにも、入れる。最初の状態と同じ項目は、入れない', () => {
+    // ページも、アスペクトの求め方を、クエリで受け取る
+    const parsed = parseHoroscopeQuery({ ...horoscopeQuery, orb: '8', minorOrb: '2', minor: '150,30' })
+    expect(parsed.ok && toPageQuery(parsed.input)).toEqual({ ...horoscopeQuery, orb: '8', minor: '30,150' })
+    const initial = parseHoroscopeQuery({ ...horoscopeQuery, orb: '6' })
+    expect(initial.ok && toPageQuery(initial.input)).toEqual(horoscopeQuery)
   })
 })
 

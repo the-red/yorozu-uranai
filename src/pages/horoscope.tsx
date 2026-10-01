@@ -5,17 +5,18 @@ import Menu from '../components/Menu'
 import Header from '../components/Header'
 import Footer from '../components/Footer'
 
-import { Horoscope } from '../horoscope/models'
+import { Horoscope, SETTINGS_QUERY_KEYS, SettingsQuery, toSettingsQuery } from '../horoscope/models'
 import HoroscopeDetailPage from '../horoscope/components/HoroscopeDetailPage'
 import { Query, formValuesToQuery } from '../lib/params'
 import { FormProps, FormValues } from '../hooks/useYorozuUranaiForm'
 import { useFormValues } from '../hooks/useFormValues'
 import { useResult } from '../hooks/useResult'
-import { getHash, useHoroscopeSettings } from '../hooks/useHoroscopeSettings'
+import { useHoroscopeSettings } from '../hooks/useHoroscopeSettings'
 import { JsonApiError, fetchJson, toErrorGuide } from '../lib/fetch-json'
 import type { HoroscopeJson } from '../lib/json-api'
+import { toUrl } from '../lib/url'
 
-export type OptionalQuery = Query
+export type OptionalQuery = Query & SettingsQuery
 
 const loadHoroscope = async (formValues: FormValues) => {
   const { input, raw } = await fetchJson<HoroscopeJson>('/horoscope', formValues)
@@ -40,14 +41,11 @@ function HoroscopePage() {
   const handleSubmit: FormProps['onSubmit'] = (formValues) => {
     // NOTE: ハウスは、最初の状態（プラシーダス）のときに、クエリに入れない。前の値が残らないように、外しておく
     const { house: _, ...rest } = router.query
-    router.push({
-      query: {
-        ...rest,
-        ...formValuesToQuery(formValues),
-      },
-      // 画面の設定は、入力を変えても、そのまま使う
-      hash: getHash(),
-    })
+    // 画面の設定は、入力を変えても、そのまま使う。入力のあとに並べる
+    const input = Object.fromEntries(
+      Object.entries(rest).filter(([key]) => !(SETTINGS_QUERY_KEYS as readonly string[]).includes(key))
+    )
+    router.push(toUrl(router.pathname, { ...input, ...formValuesToQuery(formValues), ...toSettingsQuery(settings) }))
   }
 
   return (

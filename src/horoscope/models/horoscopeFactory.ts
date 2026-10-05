@@ -19,7 +19,9 @@ export const getHoroscopeProps = async (
   )
 
   const houses: Houses = await calcHouses(julday_ut, geolat, geolon, hsys)
-  return { positions, houses }
+  const node = await eclipticPosition(julday_ut, 'trueNode')
+  const lilith = await eclipticPosition(julday_ut, 'meanApogee')
+  return { positions, houses, node, lilith }
 }
 
 export const getHoroscopeInstance = async (

@@ -2,8 +2,9 @@ import useImage from 'use-image'
 // NOTE: Image はcanvasに描く部品。HTMLの画像（alt が要る）と区別できる名前で読み込む
 import { Stage, Layer, Circle, Line, Text, Image as KonvaImage } from 'react-konva'
 import { staticPath } from '../../lib/$path'
-import { Horoscope, PlanetsMap, Position, ALL_PLANETS, MajorAspect, Planet } from '../models'
+import { Horoscope, PointName, PlanetsMap, Position, ALL_PLANETS, MajorAspect, Planet } from '../models'
 import type { House } from '../models/House'
+import type { PlanetName } from '../../astronomy/types'
 
 const images = staticPath.images.horoscope
 
@@ -73,25 +74,30 @@ const ScaledText = ({
   text,
   longitude,
   scales,
+  centered = false,
 }: {
   frame: Frame
   text: string
   longitude: number
   scales: IconScales
+  centered?: boolean // 文字の幅の中央を、位置に合わせる
 }) => {
   const iconSize = radius * scales.size
   const coordinate = degreesToCoordinate(radius, {
     degrees: houseLongitude + longitude + 180 + scales.degrees,
     scale: scales.coordinate,
   })
+  // 中央に寄せるための枠の幅。文字が収まる大きさにする
+  const width = iconSize * 4
   return (
     <Text
       text={text}
       x={coordinate.x}
       y={coordinate.y}
       fontSize={iconSize}
-      offset={iconOffset(iconSize)}
+      offset={centered ? { x: width / 2, y: iconSize / 2 } : iconOffset(iconSize)}
       fill="black"
+      {...(centered && { width, align: 'center' })}
     />
   )
 }
@@ -198,17 +204,23 @@ const SignIcons = ({ frame }: { frame: Frame }) => (
     ))}
   </>
 )
-const PlanetIcons = ({ frame, planets }: { frame: Frame; planets: PlanetsMap }) => (
+// 惑星と、感受点の記号
+const PlanetIcons = ({ frame, planets }: { frame: Frame; planets: Planet<PlanetName | PointName>[] }) => (
   <>
-    {Object.values(planets).map((planet, i) => (
-      <ScaledText
-        key={i}
-        frame={frame}
-        text={planet.icon}
-        longitude={planet.longitude}
-        scales={{ size: 0.1, coordinate: 0.69, degrees: 0 }}
-      />
-    ))}
+    {planets.map((planet, i) => {
+      // 記号が1文字でないもの（Vx、PoF）は、ほかの記号と大きさがそろうように、小さくする
+      const isText = planet.icon.length > 1
+      return (
+        <ScaledText
+          key={i}
+          frame={frame}
+          text={planet.icon}
+          longitude={planet.longitude}
+          scales={{ size: isText ? 0.075 : 0.1, coordinate: 0.69, degrees: 0 }}
+          centered={isText}
+        />
+      )
+    })}
   </>
 )
 
@@ -281,7 +293,7 @@ export default function HoroscopeCircle({
   radius: number // 外周の半径
   orb: number
 }) {
-  const { planets, house } = horoscope
+  const { planets, points, house } = horoscope
   const frame: Frame = { radius, houseLongitude: -house.ascendant.longitude }
 
   return (
@@ -295,7 +307,7 @@ export default function HoroscopeCircle({
         <HouseCircle frame={frame} house={house} />
 
         {/* 惑星 */}
-        <PlanetIcons frame={frame} planets={planets} />
+        <PlanetIcons frame={frame} planets={[...Object.values(planets), ...Object.values(points)]} />
         <AspectLines frame={frame} planets={planets} orb={orb} />
       </Layer>
     </Stage>
